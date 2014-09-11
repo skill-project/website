@@ -14,6 +14,7 @@
 			<ul>
 				<li><a href="<?php echo \Controller\Router::url("home"); ?>" title="Home">Home</a></li>
 				<?php if (Utils\SecurityHelper::userIsLogged()): ?>
+					<li><a href="<?php echo \Controller\Router::url("addSkillSubPanel"); ?>" title="Add a new skill (AJAX)">Add skill (should be called by AJAX)</a></li>
 					<li><a href="<?php echo \Controller\Router::url("logout"); ?>" title="Logout">Logout</a></li>
 				<?php else: ?>
 					<li><a href="<?php echo \Controller\Router::url("login"); ?>" title="Login">Login</a></li>

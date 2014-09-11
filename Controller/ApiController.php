@@ -103,15 +103,28 @@
 
         /**
          * Deletes a node
-         * 
+         * @todo handle response correctly
          * @param int $id
          */
         function deleteNodeAction($id){
-            $node = $this->client->getNode($id);
+            //$node = $this->client->getNode($id);
+            //MATCH (n)-[r]-() WHERE id(n) = $id DELETE n, r
+            
+            $cypher = "MATCH (n)-[r]-() WHERE id(n) = {nodeId} DELETE n, r";
+            $query = new Query($this->client, $cypher, array(
+                "nodeId" => (int)$id)
+            );
+            $resultSet = $query->getResultSet();
+
+            print_r($resultSet);
+            die();
             if (is_object($node)){
                 $node->delete();
+                $json = new \Model\JsonResponse(null, "Node deleted.");
             }
-            $json = new \Model\JsonResponse(null, "Node deleted.");
+            else {
+                $json = new \Model\JsonResponse("error", "Node not found.");
+            }
             $json->send();
         }
 
@@ -119,7 +132,7 @@
         private function createSearchIndex(){
             $searchIndex = new \Everyman\Neo4j\Index\NodeIndex($this->client, 'searches');
             if ($searchIndex->save()){
-                echo "index created";
+                
             }
         }
 
@@ -170,8 +183,7 @@
             $resultSet = $query->getResultSet();
 
             //init search index
-            $searchIndex = new \Everyman\Neo4j\Index\NodeIndex($this->client, 'searches');
-            $searchIndex->save();
+            $this->createSearchIndex();
 
             //add skill label
             $label = $this->client->makeLabel('Skill');
@@ -217,7 +229,6 @@
                     $this->addToSearchIndex($n);
                 }
             }
-
         }
 
 

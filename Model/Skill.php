@@ -51,6 +51,9 @@
             return $this->node;
         }
 
+        /**
+         * Return the node for this entity, generates it if not present
+         */
         public function getNode(){
             if (!$this->node){
                 $this->generateNode();
