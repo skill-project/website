@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "aad54a0853b94f94178f620a01daa4e2",
+    "hash": "7609ae713e5878367a2d41d786287d2c",
     "packages": [
         {
             "name": "everyman/neo4jphp",
@@ -240,6 +240,7 @@
         "symfony/http-foundation": 20,
         "fzaninotto/faker": 20
     },
+    "prefer-stable": false,
     "platform": [
 
     ],

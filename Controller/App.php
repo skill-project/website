@@ -16,7 +16,7 @@
 
         private function createGlobals(){
             //some globals like $routes
-            require_once("Config/routes.php");
+            require_once("../Config/routes.php");
             $GLOBALS['routes'] = $routes;
 
             //request context globally available

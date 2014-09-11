@@ -11,6 +11,13 @@
             array('controller' => 'Main', 'action' => 'home'))
     );
 
+//common
+    $routes->add(
+        'debug',
+        new Route('/debug/', 
+            array('controller' => 'Main', 'action' => 'debug'))
+    );
+
 //panel
     $routes->add(
         'addSkillSubPanel',
