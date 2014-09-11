@@ -1,0 +1,15 @@
+{
+    "name": "skill-project/skill-project",
+    "authors": [
+        {
+            "name": "guillaume",
+            "email": "guillaume@skill-project.com"
+        }
+    ],
+    "require": {
+        "everyman/neo4jphp":"dev-master",
+        "symfony/routing":"dev-master",
+        "symfony/http-foundation":"dev-master",
+        "fzaninotto/faker": "dev-master"
+    }
+}
