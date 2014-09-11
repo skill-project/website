@@ -7,6 +7,10 @@ var Node = function(nodeData, parent) {
   this.open = false;
   this.isSelected = false;
   this.knGlow;
+  this.labelImage;
+  this.totalChildren;
+  this.appearDestX;
+  this.appearDestY;
 
   // Needed for nested functions
   var that = this;
@@ -24,22 +28,31 @@ var Node = function(nodeData, parent) {
   //Constructor
   (function() {
     //Creating node button
-    var button = new Kinetic.Rect({
+    /*var button = new Kinetic.Rect({
       x: 0,
       y: 0,
       width: 58,
       height: 56,
       fill: '#fae5e8',
-      opacity: 0.4
-    });
+      opacity: 0
+    });*/
 
     var buttonImage = new Kinetic.Image({
-      x: 58 / 2 - 22 / 2,
-      y: 56 / 2 - 4 / 2,
-      width: 22,
-      height: 4,
-      image: $("img#dotdotdot")[0]
+      x: 0,
+      y: 0,
+      width: 58,
+      height: 56,
+      image: $("img#left-notch")[0]
     })
+
+    var labelImage = new Kinetic.Image({
+      x: 58,
+      y: 0,
+      width: 179,
+      height: 56,
+      image: $("img#right-notch")[0]
+    })
+    this.labelImage = labelImage;
 
     //Creating the label
     var label = new Kinetic.Rect({
@@ -48,7 +61,7 @@ var Node = function(nodeData, parent) {
       width: 179,
       height: 56,
       fill: 'white',
-      opacity: 0.8
+      opacity: 0
     });
 
     //Writing the text of the skill
@@ -97,35 +110,70 @@ var Node = function(nodeData, parent) {
 
     //Creating the glow, off by default (opacity: 0)
     var glow = new Kinetic.Image({
-      x: -34,
-      y: -31,
+      x: -25,
+      y: -25,
       image: $("img#glow")[0],
-      width: 304,
-      height: 118,
+      width: 288,
+      height: 108,
       opacity:0
     });
     that.knGlow = glow;
 
     //Creating and positioning the main group that contains all the shapes
     if (parent == null) {
-      x = 50;
-      y = 200;
+      startX = 50;
+      startY = 200;
     }else {
-      x = that.parent.rect.attrs.x + that.parent.rect.getWidth() + 80;
-      y = that.parent.rect.attrs.y + ((that.siblings.length - 1)  * (56 + 20));
+      startX = that.parent.rect.attrs.x;
+      startY = that.parent.rect.attrs.y;
+
+      that.appearDestX = that.parent.rect.attrs.x + that.parent.rect.getWidth() + 80;
+      that.appearDestY = (that.parent.rect.attrs.y + (56 / 2)) + ((((56 + 20) * that.parent.totalChildren) - 20) / -2) + ((56 + 20) * (that.parent.children.length - 1));
+
+
+      that.midX = that.appearDestX;
+      that.midY = that.parent.rect.attrs.y;
     }
 
     var group = new Kinetic.Group({
-      x: x,
-      y: y,
+      x: startX,
+      y: startY,
       width:240,
-      height:56
+      height:56,
+      // draggable:true
     });
-    group.add(glow, labelGroup, button, buttonImage);
+    group.add(glow, labelImage, labelGroup, buttonImage);
 
-    //Adding the group to the layer and drawing the layer
     nodesLayer.add(group);
     nodesLayer.draw();
+
+    if (parent != null)
+    {
+      console.log(that.midX);
+    }
+
+    if (parent != null) {
+      var tween = new Kinetic.Tween({
+        node: group, 
+        x: that.midX,
+        y: that.midY,
+        duration: 0.15,
+        onFinish: function() {
+          // console.log(that.appearDestY);
+          var tween = new Kinetic.Tween({
+            node: group, 
+            x: that.appearDestX,
+            y: that.appearDestY,
+            duration: 0.15
+          }); 
+          tween.play();
+        }
+      });
+      tween.play();
+    }
+
+    //Adding the group to the layer and drawing the layer
+    
 
     //"Rect", unfortunate legacy name...
     that.rect = group;
@@ -144,6 +192,7 @@ var Node = function(nodeData, parent) {
       if (!that.open) {
         that.select();
         that.expand();
+        // console.log(that.children.length);
       }else {
         //Node is open, contracting it
         that.contract();
@@ -153,7 +202,7 @@ var Node = function(nodeData, parent) {
 
   //Get all visible children, recursively (stored in global array)
   this.getChildrenRecursive = function() {
-    console.log(that.children);
+    // console.log(that.children);
     that.children.forEach(function(child) {
       recursiveChildren.push(child);
       child.getChildrenRecursive();
@@ -179,6 +228,7 @@ var Node = function(nodeData, parent) {
     $.ajax({
       url: "http://192.168.0.60/skp/web/api/getNodeChildren/" + that.id + "/",
     }).done(function(json) {
+      that.totalChildren = json.data.length;
       json.data.forEach(function(child) {
         new Node(child, that);
       });
@@ -236,9 +286,13 @@ var Node = function(nodeData, parent) {
     tween.play();
   }
 
-  //Selection of the node : glow power!
+  //Selection of the node : glow super power!
   this.select = function() {
     if (that.isSelected) return;
+
+    if (that.edge != null) that.edge.selected = true;
+    // console.log(that.edge);
+    // 
 
     var tween = new Kinetic.Tween({
       node: that.knGlow, 

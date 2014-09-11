@@ -28,9 +28,10 @@ $(window).load(function  () {
       dragBoundFunc : function (e) {
         dragX = e.x;
         dragY = e.y;
+        // console.log(e.x + " - " + e.y);
         nodesLayer.offsetX(-dragX);
         nodesLayer.offsetY(-dragY);
-        nodesLayer.draw();
+        // nodesLayer.draw();
         return {
           x: dragX,
           y: dragY
@@ -79,7 +80,7 @@ $(window).load(function  () {
  
     nodesLayer = new Kinetic.Layer();
 
-    var skills = new Node({id: "0", name: "Skills"}, null);
+    var skills = new Node({id: "245", name: "Skills"}, null);
   
 
     stage.add(backLayer);
