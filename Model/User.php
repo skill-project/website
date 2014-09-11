@@ -64,7 +64,7 @@
 
 		public function getNode(){
 			if (!$this->node){
-				$this->setNode();
+				$this->generateNode();
 			}
 			return $this->node;
 		}

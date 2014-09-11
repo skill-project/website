@@ -2,8 +2,12 @@
     
     namespace Controller;
 
+    use \Model\SkillManager;
+    use \Model\Skill;
+
     use \Everyman\Neo4j\Cypher\Query;
     use \Everyman\Neo4j\Relationship;
+    use \Everyman\Neo4j\Traversal;
 
     class ApiController extends Controller {
         
@@ -11,15 +15,12 @@
          * get the root "Skills" node
          */
         public function getRootNodeAction(){
-            $cypher = 'MATCH (n {name: "Skills"}) RETURN n LIMIT 1';
-            $query = new Query($this->client, $cypher);
-            $resultSet = $query->getResultSet();
+
+            $skillManager = new SkillManager();
+            $rootNode = $skillManager->findRootNode();
             
-            if ($resultSet->count() == 1){
-                $rootNode = $resultSet[0]['n'];
-                $nodeJson = new \Model\JsonNode($rootNode->getId(), 
+            $nodeJson = new \Model\JsonNode($rootNode->getId(), 
                     $rootNode->getProperty('name'));
-            }
 
             $json = new \Model\JsonResponse();
             $json->setData($nodeJson->getArray());
@@ -173,7 +174,7 @@
             $searchIndex->save();
 
             //add skill label
-            $label = $client->makeLabel('Skill');
+            $label = $this->client->makeLabel('Skill');
 
             //lorem ipsum generator
             $faker = \Faker\Factory::create();
@@ -181,15 +182,14 @@
             //create root node
             $rootNode = $this->client->makeNode()
                             ->setProperty("name", "Skills")
-                            //setId(11131)
                             ->save();
+//              $rootNode->setId(1)->save();
             $rootNode->addLabels(array($label));
             
-
             $this->addToSearchIndex($rootNode);
 
             //top children
-            $topChildren = array("Sciences", "Sports", "Arts", "Technologies", "Social Sciences");
+            $topChildren = array("Sciences", "Sports", "Arts", "Technologies", "Social Sciences", "Technicals");
 
             //for each top children, create it, then add children
             foreach($topChildren as $topChild){
@@ -219,6 +219,47 @@
             }
 
         }
+
+
+
+        public function addSkillAction(){
+            if (!empty($_POST)){
+
+                $skillName = $_POST['skillName'];
+                $skillParentId = $_POST['skillParentId'];
+
+                $validator = new \Model\Validator();
+                $validator->validateSkillName($skillName);
+                $validator->validateSkillParentId($skillParentId);
+
+                if ($validator->isValid()){
+                    $skill = new Skill();
+                    $skill->setName($skillName);
+                    $skill->setParentId($skillParentId);
+
+                    $skillManager = new SkillManager();
+                    $skillManager->save($skill);
+
+                    //add parent child relationship
+                    $parentNode = $this->client->getNode($skillParentId);
+                    $rel = $this->client->makeRelationship();
+                    $rel->setStartNode($parentNode)
+                        ->setEndNode($skill->getNode())
+                        ->setType('HAS')->save();
+
+                    //add creator skill relationship
+                    $userNode = $this->client->getNode($_SESSION['user']['id']);
+                    $rel = $this->client->makeRelationship();
+                    $rel->setStartNode($userNode)
+                        ->setEndNode($skill->getNode())
+                        ->setType('CREATED')->save();
+                }
+                else {
+                    print_r($validator->getErrors());   
+                }
+            }
+        }
+
 
    
         /**

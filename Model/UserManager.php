@@ -20,6 +20,7 @@
             //add user label
             $label = $this->client->makeLabel('User');
             $userNode->addLabels(array($label));
+            $user->setNode($userNode);
         }
 
         public function delete(User $user){

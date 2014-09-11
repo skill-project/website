@@ -11,6 +11,13 @@
             array('controller' => 'Main', 'action' => 'home'))
     );
 
+//panel
+    $routes->add(
+        'addSkillSubPanel',
+        new Route('/add-skill-sub-panel/', 
+            array('controller' => 'Panel', 'action' => 'addSkillSubPanel'))
+    );
+
 //user
     $routes->add(
         'register',
@@ -74,3 +81,8 @@
             array('controller' => 'Api', 'action' => 'dummyData'))
     );
 
+    $routes->add(
+        'addSkill',
+        new Route('/add-skill/', 
+            array('controller' => 'Api', 'action' => 'addSkill'))
+    );   

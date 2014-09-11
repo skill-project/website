@@ -4,10 +4,10 @@
 
     class View {
 
-        private $page;
-        private $data;
+        protected $page;
+        protected $data;
 
-        private $layout = "View/layouts/default.php";
+        protected $layout = "View/layouts/default.php";
 
         public function __construct($page, $data = array()){
             $this->page = $page;

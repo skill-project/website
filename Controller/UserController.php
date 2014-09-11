@@ -131,7 +131,6 @@
                 else {
                     $errors = $validator->getErrors();
                     $params["errors"] = $errors;
-                    print_r($errors);
                 }
             }
 

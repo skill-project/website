@@ -49,6 +49,24 @@
             }
         }
 
+        public function validateSkillName($skillName){
+            if (empty($skillName)){
+                $this->addError("skillName", _("Please provide a skill name."));
+            }
+            elseif (strlen($skillName) < 3 || strlen($skillName) > 40){
+                $this->addError("skillName", _("The skill name must be between 3 and 40 caracters long."));
+            }
+        }
+
+        public function validateSkillParentId($skillParentId){
+            if (empty($skillParentId)){
+                $this->addError("skillParentId", _("Please select a skill as parent of your node."));
+            }
+            elseif(!is_numeric($skillParentId)){
+                $this->addError("skillParentId", _("The parent is not valid."));  
+            }
+        }
+
         protected function addError($fieldName, $message){
             $this->isValid = false;
             $this->errors[$fieldName] = $message;
