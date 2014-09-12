@@ -6,11 +6,12 @@
 
     class Skill extends Entity {
 
-        private $id;
-        private $name;
-        private $parentId;
+        protected $id;
+        protected $name;
+        protected $parentId;
+        protected $depth;
         
-        protected $node;
+        protected $node = null;
         protected $parentNode;
         protected $children = array();
 
@@ -56,7 +57,11 @@
         public function generateNode(){
 
             $this->node = $this->client->makeNode();
-            $this->node->setProperty("name", $this->name);
+            $this->node->setProperties(
+                array(
+                    "name" => $this->name,
+                    "depth" => $this->depth
+            ));
 
             return $this->node;
             
@@ -66,7 +71,7 @@
          * Return the node for this entity, generates it if not present
          */
         public function getNode(){
-            if (!$this->node){
+            if ($this->node == null){
                 $this->generateNode();
             }
             return $this->node;
@@ -77,6 +82,7 @@
             $data = array(
                 "id" => $this->id,
                 "name" => $this->name,
+                "depth" => $this->depth,
                 "parent" => $this->parentId
             );
             return $data;
@@ -193,4 +199,29 @@
 
             return $this;
         }
+        
+        /**
+         * Gets the value of depth.
+         *
+         * @return mixed
+         */
+        public function getDepth()
+        {
+            return $this->depth;
+        }
+
+        /**
+         * Sets the value of depth.
+         *
+         * @param mixed $depth the depth
+         *
+         * @return self
+         */
+        public function setDepth($depth)
+        {
+            $this->depth = $depth;
+
+            return $this;
+        }
+
     }

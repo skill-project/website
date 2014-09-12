@@ -69,8 +69,6 @@
             $skillManager = new SkillManager();
             $resultSet = $skillManager->findChildren($id);
             
-            print_R($resultSet);
-
             $data = array();
             foreach ($resultSet as $row) {
                 $skill = new Skill( $row['c'] );
@@ -175,9 +173,8 @@
                 if (count($nodeParentRelationship) == 1){
                     $parentId = $nodeParentRelationship[0]->getStartNode()->getId();
                 }
-                $nodeJson = new \Model\JsonNode($node->getId(), 
-                    $node->getProperty('name'), $parentId);
-                $data[] = $nodeJson->getArray();
+                $skill = new Skill( $node );
+                $data[] = $skill->getJsonData();
             }
 
             $json = new \Model\JsonResponse();
@@ -193,9 +190,6 @@
 
             $skillManager = new SkillManager();
 
-            $maxChildrenPerNode = 10;
-            $maxCharactersInSkillName = 40;
-
             $searchIndex = new \Everyman\Neo4j\Index\NodeIndex($this->client, 'searches');
             $searchIndex->delete();
 
@@ -203,14 +197,15 @@
             $query = new Query($this->client, "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r");
             $resultSet = $query->getResultSet();
 
-            //lorem ipsum generator
-            $faker = \Faker\Factory::create();
-
             //create root node
-            $rootNode = new Skill();
-            $rootNode->setName("Skills");
-            $rootNode->setParentId(NULL);
-            $skillManager->save( $rootNode );
+            $rootSkill = new Skill();
+            $rootSkill->setName("Skills");
+            $rootSkill->setParentId(NULL);
+            $rootSkill->setDepth(1);
+
+            $rootSkill->generateNode();
+
+            $skillManager->save( $rootSkill );
             
             //top children
             $topChildren = array("Sciences", "Sports", "Arts", "Technologies", "Social Sciences", "Technicals");
@@ -222,33 +217,54 @@
 
                 $firstChild = new Skill();
                 $firstChild->setName( $topChild );
-                $firstChild->setParentId( $rootNode->getId() );
+                $firstChild->setParentId( $rootSkill->getId() );
+                $firstChild->setDepth(2);
+
+                $firstChild->generateNode();
+
                 $skillManager->save( $firstChild );
-
-                $pa = $firstChild;
-                for($j=1;$j<=4;$j++){
-                    echo "<br /><br />j : $j<br />";
-                    //random number of children for this top node
-                    $numChildren = $faker->numberBetween(0,$maxChildrenPerNode);
-
-                    //add them
-                    for($i=0;$i<$numChildren;$i++){
-                        echo "i : $i<br />";
-                        $skillName = $faker->text($faker->numberBetween(5,$maxCharactersInSkillName));
-                        
-                        $newChild = new Skill();
-                        $newChild->setName( $skillName );
-                        $newChild->setParentId( $pa->getId() );
-                        $skillManager->save( $newChild );
-
-                        echo $newChild->getId() . " parent : " . $newChild->getParentId() . "<br />";
-
-                    }
-                    $pa = $newChild;
-                }
             }
+
+            $this->addDummyChildAtDepth(3);
+            $this->addDummyChildAtDepth(4);
+            $this->addDummyChildAtDepth(5);
+
             echo "<br />done";
         }
+
+
+        private function addDummyChildAtDepth($depth){
+
+            $maxChildrenPerNode = 10;
+            $maxCharactersInSkillName = 40;
+
+            //lorem ipsum generator
+            $faker = \Faker\Factory::create();
+
+            //get parents at higher level
+            $skillManager = new SkillManager();
+            $resultSet = $skillManager->findAtDepth($depth - 1);
+
+            //for each top children, create it, then add children
+            foreach($resultSet as $parentRow){
+
+                $numChildren = $faker->numberBetween(0,$maxChildrenPerNode);
+                ini_set("max_execution_time", 30);
+
+                for($i=0;$i<$numChildren;$i++){
+                    $s = new Skill();
+                    $s->setName( $faker->text($faker->numberBetween(5,$maxCharactersInSkillName)) );
+                    $s->setParentId( $parentRow['s']->getId() );
+                    $s->setDepth($depth);
+
+                    $s->generateNode();
+
+                    $skillManager->save( $s );
+                }
+
+            }
+        }
+
 
         /**
          * Add a new skill

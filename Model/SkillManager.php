@@ -32,6 +32,7 @@
 
         public function save(Skill $skill){
             $skillNode = $skill->getNode();
+
             $skillNode->save();
 
             //add skill label
@@ -120,6 +121,21 @@
                 return true;
             }
             return false;
+        }
+
+        /**
+         * Retrieve all nodes at a specified depth
+         * @param int depth
+         * @return array
+         */
+        public function findAtDepth($depth){
+            $cypher = "MATCH (s:Skill)
+                        WHERE s.depth = {depth}
+                        RETURN s";
+            $query = new Query($this->client, $cypher, array("depth" => $depth));
+            $resultSet = $query->getResultSet();
+
+            return $resultSet;
         }
 
         /**
