@@ -261,7 +261,6 @@
 
                     $skillManager->save( $s );
                 }
-
             }
         }
 
@@ -274,6 +273,7 @@
             SecurityHelper::lock();
 
             if (!empty($_POST)){
+                
 
                 $skillName = $_POST['skillName'];
                 $skillParentId = $_POST['skillParentId'];
@@ -282,13 +282,17 @@
                 $validator->validateSkillName($skillName);
                 $validator->validateSkillParentId($skillParentId);
 
-                if ($validator->isValid()){
+                $skillManager = new SkillManager();
+                $parentNode = $skillManager->findById( $skillParentId );
+
+                
+                if ($validator->isValid() && $parentNode){
 
                     $skill = new Skill();
                     $skill->setName($skillName);
                     $skill->setParentId($skillParentId);
+                    $skill->setDepth( $parentNode->getDepth() + 1 );
 
-                    $skillManager = new SkillManager();
                     $skillManager->save($skill);
 
                     //add creator skill relationship
