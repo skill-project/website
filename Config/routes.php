@@ -20,8 +20,20 @@
 //panel
     $routes->add(
         'addSkillSubPanel',
-        new Route('/add-skill-sub-panel/', 
+        new Route('/panel/add-skill-sub-panel/', 
             array('controller' => 'Panel', 'action' => 'addSkillSubPanel'))
+    );
+    
+    $routes->add(
+        'renameSkillSubPanel',
+        new Route('/panel/rename-skill-sub-panel/{id}/', 
+            array('controller' => 'Panel', 'action' => 'renameSkillSubPanel'))
+    );
+    
+    $routes->add(
+        'deleteSkillSubPanel',
+        new Route('/panel/delete-skill-sub-panel/{id}/', 
+            array('controller' => 'Panel', 'action' => 'deleteSkillSubPanel'))
     );
 
 //user
@@ -82,9 +94,15 @@
     );
 
     $routes->add(
-        'deleteNode',
-        new Route('/api/deleteNode/{id}/', 
-            array('controller' => 'Api', 'action' => 'deleteNode'))
+        'deleteSkill',
+        new Route('/api/deleteSkill/{id}/', 
+            array('controller' => 'Api', 'action' => 'deleteSkill'))
+    );
+
+    $routes->add(
+        'renameSkill',
+        new Route('/api/renameSkill/{id}/', 
+            array('controller' => 'Api', 'action' => 'renameSkill'))
     );
 
     $routes->add(

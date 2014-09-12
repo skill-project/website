@@ -29,6 +29,7 @@
         }
 
 
+
         public function save(Skill $skill){
             $skillNode = $skill->getNode();
             $skillNode->save();
@@ -65,7 +66,7 @@
 
         /**
          * Delete a node by id, and its relations
-         * @return bool true on deletion, else otherwise
+         * @return mixed True on deletion, error message otherwise
          */
         public function delete($id){
 
@@ -80,6 +81,12 @@
                     $resultSet = $query->getResultSet();
                     return true;
                 }
+                else {
+                    return _("This skill has children.");
+                }
+            }
+            else {
+                return _("This skill doesn't exists.");
             }
             return false;
 
@@ -104,8 +111,38 @@
             }
         }
 
+        /**
+         * Update an existing skill
+         */
         public function update(Skill $skill){
+            $node = $skill->getNode();
+            if ($node->save()){
+                return true;
+            }
+            return false;
+        }
 
+        /**
+         * Retrieve all modifications on a skill
+         * @param Skill the skill
+         * @return array
+         */
+        public function findRevisionHistory(Skill $skill){
+            $cypher = "MATCH (s:Skill {id:{skillId}})<-[m:MODIFIED]-(u:User) 
+                        RETURN m,u ORDER BY m.date DESC";
+            $query = new Query($this->client, $cypher, array("skillId" => $skill->getId()));
+            $resultSet = $query->getResultSet();
+
+            $revisions = array();
+            foreach($resultSet as $row){
+                $revision = array();
+                $revision['date'] = $row['m']->getProperty('date');
+                $revision['previousName'] = $row['m']->getProperty('previousName');
+                $revision['username'] = $row['u']->getProperty('username');
+                $revisions[] = $revision;
+            }
+
+            return $revisions;
         }
 
         /**
@@ -169,7 +206,7 @@
                 ->setReturnFilter(Traversal::ReturnAll)
                 ->setMaxDepth(20);
 
-            $allNodes = $traversal->getResults($rootNode, Traversal::ReturnTypeNode);
+            $allNodes = $traversal->getResults($rootNode->getNode(), Traversal::ReturnTypeNode);
             return $allNodes;
         }
 

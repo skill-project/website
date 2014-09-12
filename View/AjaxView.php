@@ -4,6 +4,6 @@
 
     class AjaxView extends View{
 
-        protected $layout = "View/layouts/ajax.php";
+        protected $layout = "../View/layouts/ajax.php";
 
     }

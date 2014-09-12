@@ -4,6 +4,7 @@
 
     use \Model\SkillManager;
     use \Model\Skill;
+    use \Utils\SecurityHelper;
 
     use \Everyman\Neo4j\Cypher\Query;
     use \Everyman\Neo4j\Relationship;
@@ -68,9 +69,12 @@
             $skillManager = new SkillManager();
             $resultSet = $skillManager->findChildren($id);
             
+            print_R($resultSet);
+
             $data = array();
             foreach ($resultSet as $row) {
                 $skill = new Skill( $row['c'] );
+                //print_r($skill);
                 $skill->setParentId($id);
                 $data[] = $skill->getJsonData();
             }
@@ -99,22 +103,62 @@
          * @todo handle response correctly
          * @param int $id
          */
-        function deleteNodeAction($id){
+        function deleteSkillAction($id){
 
             $skillManager = new SkillManager();
-            $deleted = $skillManager->delete($id);
+            $deletionResult = $skillManager->delete($id);
 
-            if ($deleted){
-                $json = new \Model\JsonResponse(null, "Node deleted.");
+            if ($deletionResult === true){
+                $json = new \Model\JsonResponse(null, _("Node deleted."));
             }
             else {
-                $json = new \Model\JsonResponse("error", "Node not found.");
+                $json = new \Model\JsonResponse("error", $deletionResult);
             }
             $json->send();
 
         }
 
+        /**
+         * Rename a skill
+         */
+        function renameSkillAction($id){
 
+            SecurityHelper::lock();
+
+            if (!empty($_POST)){
+
+                $skillName = $_POST['skillName'];
+                $skillId = $_POST['skillId'];
+
+                $validator = new \Model\Validator();
+                $validator->validateSkillName($skillName);
+                $validator->validateSkillId($skillId);
+
+                if ($validator->isValid()){
+
+                    $skillManager = new SkillManager();
+                    $skill = $skillManager->findById($skillId);
+
+                    $previousName = $skill->getName();
+                    $skill->setName( $skillName );
+
+                    $skillManager->update($skill);
+
+                    //add modifier skill relationship
+                    $userNode = $this->client->getNode($_SESSION['user']['id']);
+                    $rel = $this->client->makeRelationship();
+                    $rel->setStartNode($userNode)
+                        ->setEndNode($skill->getNode())
+                        ->setType('MODIFIED')
+                        ->setProperty('date', date("Y-m-d H:i:s"))
+                        ->setProperty('previousName', $previousName)
+                        ->save();
+                }
+                else {
+                    print_r($validator->getErrors());   
+                }
+            }
+        }
 
         /**
          * Search by keywords
@@ -206,7 +250,13 @@
             echo "<br />done";
         }
 
+        /**
+         * Add a new skill
+         */
         public function addSkillAction(){
+
+            SecurityHelper::lock();
+
             if (!empty($_POST)){
 
                 $skillName = $_POST['skillName'];
@@ -225,13 +275,6 @@
                     $skillManager = new SkillManager();
                     $skillManager->save($skill);
 
-                    //add parent child relationship
-                    $parentNode = $this->client->getNode($skillParentId);
-                    $rel = $this->client->makeRelationship();
-                    $rel->setStartNode($parentNode)
-                        ->setEndNode($skill->getNode())
-                        ->setType('HAS')->save();
-
                     //add creator skill relationship
                     $userNode = $this->client->getNode($_SESSION['user']['id']);
                     $rel = $this->client->makeRelationship();
@@ -244,78 +287,5 @@
                 }
             }
         }
-
-
-   
-        /**
-         * delete all data then load dummy data
-         */
-         /*
-            //VERSION EN CYPHER...
-         public function dummyDataAction(){
-
-            $maxChildrenPerNode = 30;
-            $maxCharactersInSkillName = 50;
-
-            $searchIndex = new \Everyman\Neo4j\Index\NodeIndex($this->client, 'searches');
-            $searchIndex->delete();
-
-            //init search index
-            $this->createSearchIndex();
-
-            //bis
-            //$query = new Query($this->client, "CREATE INDEX ON :Skill(name)");
-            //$resultSet = $query->getResultSet();
-            
-            //lorem ipsum generator
-            $faker = \Faker\Factory::create();
-            
-            //begin transaction
-            $transaction = $this->client->beginTransaction();
-
-            //delete all
-            $query = new Query($this->client, "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r");
-            $resultSet = $query->getResultSet();
-
-            //create root node
-            $query = new Query($this->client, 
-                    'CREATE (n{name:"Skills"});');
-            $result = $transaction->addStatements($query);
-
-            //top children
-            $topChildren = array("Sciences", "Sports", "Arts", "Technologies", "Social Sciences");
-
-            //for each top children, create it, then add children
-            foreach($topChildren as $topChild){
-
-                ini_set("max_execution_tie", 30);
-
-                //create top child node
-                $query = new Query($this->client, 
-                        'MATCH (n {name:"Skills"}) CREATE (n)-[r:HAS]->(:skill {name: {topChild}});',
-                        array("topChild" => $topChild));
-                $result = $transaction->addStatements($query);
-
-                //random number of children for this top node
-                $numChildren = $faker->numberBetween(2,$maxChildrenPerNode);
-
-                //add them
-                for($i=0;$i<$numChildren;$i++){
-                    $skillName = $faker->text($faker->numberBetween(5,$maxCharactersInSkillName));
-                    $query = new Query($this->client, 
-                        'MATCH (n {name:{parentName}}) CREATE (n)-[r:HAS]->(:skill {name: {skillName}});',
-                        array(
-                            "parentName" => $topChild,
-                            "skillName" => $skillName)
-                        );
-                    $result = $transaction->addStatements($query);
-                }
-            }
-
-            //go
-            $transaction->commit();
-
-        }
-        */
 
     }

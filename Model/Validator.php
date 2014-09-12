@@ -67,6 +67,15 @@
             }
         }
 
+        public function validateSkillId($skillId){
+            if (empty($skillId) && $skillId != 0){
+                $this->addError("skillId", _("Invalid skill id."));
+            }
+            elseif(!is_numeric($skillId)){
+                $this->addError("skillId", _("The skill id is not valid."));  
+            }
+        }
+
         protected function addError($fieldName, $message){
             $this->isValid = false;
             $this->errors[$fieldName] = $message;

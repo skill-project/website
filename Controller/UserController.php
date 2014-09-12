@@ -61,6 +61,7 @@
             }
 
             $view = new View("login.php", $params);
+            $view->setLayout("../View/layouts/debug.php");
             $view->send();
         }
 
@@ -135,6 +136,7 @@
             }
 
             $view = new View("register.php", $params);
+            $view->setLayout("../View/layouts/debug.php");
             $view->send();
         }
 

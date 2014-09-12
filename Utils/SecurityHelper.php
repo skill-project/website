@@ -25,9 +25,27 @@
             return $hashedPassword;
         }
 
+        public static function lock(){
+            if (!self::userIsLogged()){
+                header('HTTP/1.0 403 Forbidden');
+                die("Forbidden");
+            }
+        }
+
         public static function userIsLogged(){
             if (!empty($_SESSION['user']['id'])){
                 return true;
+            }
+            return false;
+        }
+
+        public static function getUser(){
+            if (self::userIsLogged()){
+                $userManager = new \Model\UserManager;
+                $user = $userManager->findByEmail($_SESSION['user']['email']);
+                if ($user){
+                    return $user;
+                }
             }
             return false;
         }

@@ -12,11 +12,13 @@
          */
         public function homeAction(){
             $skillManager = new SkillManager();
+
             $rootNode = $skillManager->findRootNode();
             $view = new View("home.php", array(
                 "rootNode" => $rootNode,
                 "title" => "Home !")
             );
+
             $view->send();
         }
 
