@@ -2,8 +2,6 @@
     <hr />
     <h2>Debug</h2>
     <a href="<?php echo \Controller\Router::url("home"); ?>">Accueil</a> | 
-    <a href="<?php echo \Controller\Router::url("dummyData"); ?>">Insert Dummy data</a> | 
-    <a href="<?php echo \Controller\Router::url("deleteNode", array("id" => 1)); ?>">Efface le noeud #id 1</a> |
 
     <div style="clear:both"> </div>
     <div style="width:50%; float: left;">

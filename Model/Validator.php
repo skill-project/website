@@ -20,6 +20,14 @@
             }
         }
 
+        public function validateUniqueUsername($username){
+            $userManager = new \Model\UserManager();
+            $found = $userManager->findByUsername($username);
+            if ($found){
+                $this->addError("username", _("This username is already taken !"));
+            }
+        }
+
         //email
         public function validateEmail($email){
             if (empty($email)){
@@ -28,6 +36,39 @@
             elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)){
                 $this->addError("email", _("Your email is invalid."));
             }
+        }
+
+        public function validateUniqueEmail($email){
+            $userManager = new \Model\UserManager();
+            $found = $userManager->findByEmail($email);
+            if ($found){
+                $this->addError("email", _("This email is already taken !"));
+            }
+        }
+
+        //can be an email or a username
+        public function validateLoginUsername($loginUsername){
+            $usernameValid = true;
+            $emailValid = true;
+            if (empty($loginUsername)
+                    || strlen($loginUsername) < 3 || strlen($loginUsername) > 50 
+                    || !preg_match("#^[A-Za-z0-9_.-]{3,50}$#", $loginUsername) 
+
+                ){
+                $usernameValid = false;
+            }
+         
+            if (!filter_var($loginUsername, FILTER_VALIDATE_EMAIL)){
+                $emailValid = false;
+            }
+
+            if ($usernameValid || $emailValid){
+                return true;
+            }
+            else {
+                $this->addError("loginUsername", _("Invalid username or email."));
+            }
+
         }
 
         //password 

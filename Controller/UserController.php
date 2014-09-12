@@ -8,6 +8,7 @@
     use \Model\User;
     use \Model\UserManager;
     use \Symfony\Component\Routing\Generator\UrlGenerator;
+    use \Controller\Router;
 
     class UserController extends Controller {
 
@@ -23,13 +24,13 @@
 
                 $error = true;
 
-                $email = $_POST['email'];
+                $loginUsername = $_POST['loginUsername'];
                 $password = $_POST['password'];
 
                 //validation
                 $validator = new \Model\Validator();
 
-                $validator->validateEmail($email);
+                $validator->validateLoginUsername($loginUsername);
                 $validator->validatePassword($password);
 
                 //if valid
@@ -37,7 +38,7 @@
 
                     //find user from db
                     $userManager = new UserManager();
-                    $user = $userManager->findByEmail($email);
+                    $user = $userManager->findByEmailOrUsername($loginUsername);
 
                     //if user found
                     if($user){
@@ -56,7 +57,7 @@
                 }
 
                 if($error){
-                    $params['error']['global'] = _("You email and password do not match");
+                    $params['error']['global'] = _("You username/email and password do not match");
                 }
             }
 
@@ -72,13 +73,13 @@
                 "email" => $user->getEmail()
             );
             $_SESSION['user'] = $sessionUser;
-            \Controller\Router::redirect(\Controller\Router::url('home'));
+            Router::redirect(Router::url('home'));
         }
 
         public function logoutAction(){
             $_SESSION['user'] = NULL;
             session_destroy();
-            \Controller\Router::redirect(\Controller\Router::url('home'));
+            Router::redirect(Router::url('home'));
         }
 
         /**
@@ -86,7 +87,7 @@
          */
         public function registerAction(){
             //for the view
-            $params = array("title" => "Register !");
+            $params = array("title" => "Register !", "errors" => array());
 
             //handle register form
             if (!empty($_POST)){
@@ -100,7 +101,9 @@
                 $validator = new \Model\Validator();
 
                 $validator->validateUsername($username);
+                $validator->validateUniqueUsername($username);
                 $validator->validateEmail($email);
+                $validator->validateUniqueEmail($email);
                 $validator->validatePassword($password);
                 $validator->validatePasswordBis($password_bis, $password);
 

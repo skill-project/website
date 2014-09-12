@@ -35,10 +35,9 @@
 
         }
 
-        public function findByEmail($email){
-            $cypher = "MATCH (user:User { email: {providedEmail} }) RETURN user LIMIT 1";
+        protected function getFindByResult($cypher, $data){
             $query = new Query($this->client, $cypher, array(
-                "providedEmail" => $email)
+                "data" => $data)
             );
             $resultSet = $query->getResultSet();
             if ($resultSet->count() == 1){
@@ -48,6 +47,27 @@
                 return $user;
             }
             return false;
+        }
+
+        public function findByUsername($username){
+            $cypher = "MATCH (user:User { username: {data} }) RETURN user LIMIT 1";
+            return $this->getFindByResult($cypher, $username);
+        }
+
+
+        public function findByEmail($email){
+            $cypher = "MATCH (user:User { email: {data} }) RETURN user LIMIT 1";
+            return $this->getFindByResult($cypher, $email);
+        }
+
+        /**
+         * @todo email OR username
+         */
+        public function findByEmailOrUsername($emailOrUsername){
+            $cypher = "MATCH (user:User) 
+                        WHERE user.username = {data} OR user.email = {data} 
+                        RETURN user LIMIT 1";
+            return $this->getFindByResult($cypher, $emailOrUsername);
         }
 
     }

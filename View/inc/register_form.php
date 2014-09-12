@@ -16,4 +16,9 @@
         <input type="password" name="password_bis" id="password_bis" />
     </div>
     <input type="submit" value="<?php echo _("Register") ?>" />
+    <?php
+        foreach($errors as $name => $message){
+            echo $message . "<br />";
+        }
+    ?>
 </form>
