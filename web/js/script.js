@@ -1,10 +1,16 @@
 var mouseIsDown, 
     nodesLayer,
+    backLayer,
     glowLayer, 
     zoomLevel = 1,
     stage,
     rootNode,
-    recursiveChildren = []; //Array used for recursive function Node.getChildrenRecursive()
+    recursiveChildren = [], //Array used for recursive function Node.getChildrenRecursive(),
+    panning = false,
+    panStartCoords,
+    panDistanceX,
+    panDistanceY,
+    panLayerStartCoords;
 
 var tree = new Tree;
 
@@ -25,19 +31,38 @@ $(window).load(function  () {
       width: $(window).width(),
       height: $(window).height(),
       draggable: true,
-      dragBoundFunc : function (e) {
-        dragX = e.x;
-        dragY = e.y;
-        // console.log(e.x + " - " + e.y);
-        nodesLayer.offsetX(-dragX);
-        nodesLayer.offsetY(-dragY);
-        // nodesLayer.draw();
-        return {
-          x: dragX,
-          y: dragY
-        }
-      }
+      dragDistance: 10
     });
+
+    stage.on("dragstart", function(e) {
+      panStartCoords = stage.getPointerPosition();
+      panLayerStartCoords = { x: backLayer.x(), y: backLayer.y() }
+
+      //TODO : get tree bounds
+
+      nodesLayer.cache({
+          x:0,
+          y:0,
+          width:1000,
+          height:1000
+        });
+
+    });
+
+    stage.on("dragmove", function(e) {
+      panCurCoords = stage.getPointerPosition();
+      panDistanceX = panCurCoords.x - panStartCoords.x;
+      panDistanceY = panCurCoords.y - panStartCoords.y;
+      
+      backLayer.x(panLayerStartCoords.x + (panDistanceX / 4));
+      backLayer.y(panLayerStartCoords.y + (panDistanceY / 4));
+    });
+
+    stage.on("dragend", function(e) {
+      nodesLayer.clearCache();
+      nodesLayer.draw();
+    });
+
 
     $(document).on("wheel", function (e) {
       delta = e.originalEvent.wheelDeltaY;
@@ -76,15 +101,33 @@ $(window).load(function  () {
 
     }
 
-    backLayer.draw();
+    /*backLayer.cache({
+      x:-200,
+      y:-200,
+      width:1000,
+      height:500
+    })*/
+    backLayer.listening(false);
+
+    // backLayer.draw();
  
     nodesLayer = new Kinetic.Layer();
+    // nodesLayer.listening(false);
 
     var skills = new Node({id: rootNodeId, name: "Skills"}, null);
   
 
     stage.add(backLayer);
     stage.add(nodesLayer);
+
+    //stage.on("mousemove", function () {
+    $("#kinetic").mousemove(function (e) {
+      if (!stage.isDragging()) {
+        backLayer.x(Math.round(stage.getPointerPosition().x /30));
+        backLayer.y(Math.round(stage.getPointerPosition().y /30));
+        backLayer.batchDraw();
+      }
+    });
 });
 
 

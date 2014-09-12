@@ -78,10 +78,11 @@ var Edge = function(nodeFrom, nodeTo) {
       context.arc(pos.nodeTo.x,pos.nodeTo.y,4,0,2*Math.PI);
       context.fillShape(this);
     },
-    stroke: "#fbeaed",
-    fill: "white",
+    // stroke: "#fbeaed",
+    stroke: "#eed4d8",
+    fill: "#eed4d8",
     lineCap: "round",
-    strokeWidth: 2
+    strokeWidth: 1.7
   })
 
   
