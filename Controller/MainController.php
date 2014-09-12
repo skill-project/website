@@ -3,6 +3,7 @@
     namespace Controller;
 
     use \View\View;
+    use \Model\SkillManager;
 
     class MainController extends Controller {
 
@@ -10,7 +11,12 @@
          * Home page
          */
         public function homeAction(){
-            $view = new View("home.php", array("title" => "Home !"));
+            $skillManager = new SkillManager();
+            $rootNode = $skillManager->findRootNode();
+            $view = new View("home.php", array(
+                "rootNode" => $rootNode,
+                "title" => "Home !")
+            );
             $view->send();
         }
 

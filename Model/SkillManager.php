@@ -10,10 +10,24 @@
     class SkillManager {
 
         private $client;
+        private $searchIndex;
 
         public function __construct(){
             $this->client = DatabaseFactory::getClient();
+            $this->createSearchIndex();
         }
+
+
+        private function createSearchIndex(){
+            $this->searchIndex = new \Everyman\Neo4j\Index\NodeIndex($this->client, 'searches');
+            $this->searchIndex->save();
+        }
+
+
+        private function addToSearchIndex($skill){
+            $this->searchIndex->add($skill->getNode(), 'name', strtolower($skill->getName()));
+        }
+
 
         public function save(Skill $skill){
             $skillNode = $skill->getNode();
@@ -23,20 +37,114 @@
             $label = $this->client->makeLabel('Skill');
             $skillNode->addLabels(array($label));
             $skill->setNode($skillNode);
+            $skill->hydrateFromNode();
+
+            //save parent child relationship
+            if (!empty($skill->getParentId()) || $skill->getParentId() === 0){
+                $parent = $this->findById($skill->getParentId());
+                $this->saveParentChildRelationship($parent, $skill);
+            }
+
+            //add to search index
+            $this->addToSearchIndex($skill);
+            return true;
         }
 
-        public function delete(Skill $skill){
+        /**
+         * Creates a new Parent-child relations
+         * @param Skill the parent
+         * @param Skill the child
+         */
+        public function saveParentChildRelationship(Skill $parent, Skill $child){
+            $rel = $this->client->makeRelationship();
+            $rel->setStartNode($parent->getNode())
+                ->setEndNode($child->getNode())
+                ->setType('HAS')->save();
+            return true;
+        }
 
+        /**
+         * Delete a node by id, and its relations
+         * @return bool true on deletion, else otherwise
+         */
+        public function delete($id){
+
+            $nodeExists = $this->findById($id);
+            if ($nodeExists){
+                $childrenNumber = $this->countChildren($id);
+                if($childrenNumber == 0){
+                    $cypher = "MATCH (n)-[r]-() WHERE id(n) = {nodeId} DELETE n, r";
+                    $query = new Query($this->client, $cypher, array(
+                        "nodeId" => (int)$id)
+                    );
+                    $resultSet = $query->getResultSet();
+                    return true;
+                }
+            }
+            return false;
+
+        }
+
+        /**
+         * Count number of children of a node
+         * @param int Id of the node
+         * @return int Number of children
+         * 
+         */
+        public function countChildren($id){
+            $cypher = "MATCH (n:Skill)-[:HAS]->(:Skill) 
+                        WHERE id(n) = {nodeId} 
+                        RETURN count(*) as childrenNumber";
+            $query = new Query($this->client, $cypher, array(
+                "nodeId" => (int)$id)
+            );
+            $resultSet = $query->getResultSet();
+            foreach($resultSet as $row){
+                return $row['childrenNumber'];
+            }
         }
 
         public function update(Skill $skill){
 
         }
 
+        /**
+         * Return a Skill object based on his id, false on failure
+         * @param int $id
+         * @return mixed 
+         */
         public function findById($id){
+            $node = $this->client->getNode($id);
+            if ($node){
+                $skill = new Skill( $node );
+                $skill->setParentId( $this->findNodeParentId($node) );
+                return $skill;
+            }
 
+            return false;
         }
 
+        /**
+         * Return parent id of a Node
+         * @param Node $node
+         * @return int parentid
+         */
+        public function findNodeParentId(Node $node){
+            $nodeParentRelationship = $node->getRelationships(
+                array('HAS'), Relationship::DirectionIn
+            );
+
+            $parentId = false;
+            if (count($nodeParentRelationship) == 1){
+                $parentId = $nodeParentRelationship[0]->getStartNode()->getId();
+            }
+            return $parentId;
+        }
+
+        /**
+         * Find and return the top skill node
+         * @return mixed
+         */
         public function findRootNode(){
             $cypher = 'MATCH (n {name: "Skills"}) RETURN n LIMIT 1';
             $query = new Query($this->client, $cypher);
@@ -44,7 +152,8 @@
             
             if ($resultSet->count() == 1){
                 $rootNode = $resultSet[0]['n'];
-                return $rootNode;
+                $skill = new Skill( $rootNode );
+                return $skill;
             }
             return false;
         }
@@ -64,4 +173,32 @@
             return $allNodes;
         }
 
+        /**
+         * Find parent and gp at the same time
+         * @return ResultSet
+         */
+        public function findParentAndGrandParent($nodeId){
+            //fetch grand pa at same time to get to parent's parent id
+            $cypher = "START child=node({childId})
+                        MATCH (parents)-[:HAS*1..2]->(child) 
+                        RETURN parents";
+            $query = new Query($this->client, $cypher, array(
+                "childId" => (int)$nodeId)
+            );
+            $resultSet = $query->getResultSet();
+            return $resultSet;
+        }
+
+        /**
+         * Find skill children
+         */
+        public function findChildren($nodeId){
+            $cypher = "START parent=node({parentId}) 
+                        MATCH (parent)-[:HAS]->(c:Skill) RETURN c LIMIT 100";
+            $query = new Query($this->client, $cypher, array(
+                "parentId" => (int) $nodeId)
+            );
+            $resultSet = $query->getResultSet();
+            return $resultSet;
+        }
     }

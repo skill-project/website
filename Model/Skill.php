@@ -14,6 +14,16 @@
         protected $parentNode;
         protected $children = array();
 
+        protected $jsonFormattedData;
+
+        public function __construct(Node $node = null){
+            parent::__construct();
+            if ($node){
+                $this->setNode($node);
+                $this->hydrateFromNode();
+            }
+        }
+
         /**
          * Hydrate all object properties from the node
          */
@@ -44,11 +54,12 @@
          * Sets all node properties from the object
          */
         public function generateNode(){
+
             $this->node = $this->client->makeNode();
-            
             $this->node->setProperty("name", $this->name);
 
             return $this->node;
+            
         }
 
         /**
@@ -59,6 +70,16 @@
                 $this->generateNode();
             }
             return $this->node;
+        }
+
+
+        public function getJsonData(){
+            $data = array(
+                "id" => $this->id,
+                "name" => $this->name,
+                "parent" => $this->parentId
+            );
+            return $data;
         }
 
         

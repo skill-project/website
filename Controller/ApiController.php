@@ -12,19 +12,26 @@
     class ApiController extends Controller {
         
         /**
+         * Test shit
+         */
+        public function testAction($id){
+            $skillManager = new SkillManager();
+            $skill = $skillManager->findById($id);
+            print_r($skill);
+        }
+
+        /**
          * get the root "Skills" node
          */
         public function getRootNodeAction(){
 
             $skillManager = new SkillManager();
-            $rootNode = $skillManager->findRootNode();
+            $skill = $skillManager->findRootNode();
             
-            $nodeJson = new \Model\JsonNode($rootNode->getId(), 
-                    $rootNode->getProperty('name'));
-
             $json = new \Model\JsonResponse();
-            $json->setData($nodeJson->getArray());
+            $json->setData($skill->getJsonData());
             $json->send();
+
         }
 
         /**
@@ -33,14 +40,8 @@
          * @param int $id
          */
         public function getNodeParentAction($id){
-            //fetch grand pa at same time to get to parent's parent id
-            $cypher = "START child=node({childId})
-                        MATCH (parents)-[:HAS*1..2]->(child) 
-                        RETURN parents";
-            $query = new Query($this->client, $cypher, array(
-                "childId" => (int)$id)
-            );
-            $resultSet = $query->getResultSet();
+            $skillManager = new SkillManager();
+            $resultSet = $skillManager->findParentAndGrandParent($id);
             
             $ancestorsFound = $resultSet->count();
             if ($ancestorsFound == 0){
@@ -49,13 +50,13 @@
             }
             else if ($ancestorsFound >= 1){
                 $parentNode = $resultSet[0]['parent'];
+                $skill = new Skill( $parentNode );
                 $granPaId = ($ancestorsFound == 2) ? $resultSet[1]['parent']->getId() : null;
-                $nodeJson = new \Model\JsonNode($parentNode->getId(), 
-                    $parentNode->getProperty('name'), $granPaId);
+                $skill->setParentId( $granPaId ); 
             }
 
             $json = new \Model\JsonResponse();
-            $json->setData($nodeJson->getArray());
+            $json->setData( $skill->getJsonData() );
             $json->send();
         }
 
@@ -63,16 +64,15 @@
          * get first level children of a node, by its id
          */
         public function getNodeChildrenAction($id){
-            $cypher = "START parent=node({parentId}) MATCH (parent)-[:HAS]->(c) RETURN c LIMIT 100";
-            $query = new Query($this->client, $cypher, array(
-                "parentId" => (int)$id)
-            );
-            $resultSet = $query->getResultSet();
+
+            $skillManager = new SkillManager();
+            $resultSet = $skillManager->findChildren($id);
+            
             $data = array();
             foreach ($resultSet as $row) {
-                $nodeJson = new \Model\JsonNode($row['c']->getId(), 
-                    $row['c']->getProperty('name'), $id);
-                $data[] = $nodeJson->getArray();
+                $skill = new Skill( $row['c'] );
+                $skill->setParentId($id);
+                $data[] = $skill->getJsonData();
             }
 
             $json = new \Model\JsonResponse();
@@ -84,21 +84,14 @@
          * get one node by id
          */
         public function getNodeAction($id){
-            $node = $this->client->getNode($id);
-            $nodeParentRelationship = $node->getRelationships(
-                array('HAS'), Relationship::DirectionIn
-            );
-
-            $parentId = null;
-            if (count($nodeParentRelationship) == 1){
-                $parentId = $nodeParentRelationship[0]->getStartNode()->getId();
-            }
-
-            $nodeJson = new \Model\JsonNode($node->getId(), $node->getProperty('name'), $parentId);
+            
+            $skillManager = new SkillManager();
+            $skill = $skillManager->findById($id);
 
             $json = new \Model\JsonResponse();
-            $json->setData($nodeJson->getArray());
+            $json->setData($skill->getJsonData());
             $json->send();
+
         }
 
         /**
@@ -107,39 +100,20 @@
          * @param int $id
          */
         function deleteNodeAction($id){
-            //$node = $this->client->getNode($id);
-            //MATCH (n)-[r]-() WHERE id(n) = $id DELETE n, r
-            
-            $cypher = "MATCH (n)-[r]-() WHERE id(n) = {nodeId} DELETE n, r";
-            $query = new Query($this->client, $cypher, array(
-                "nodeId" => (int)$id)
-            );
-            $resultSet = $query->getResultSet();
 
-            print_r($resultSet);
-            die();
-            if (is_object($node)){
-                $node->delete();
+            $skillManager = new SkillManager();
+            $deleted = $skillManager->delete($id);
+
+            if ($deleted){
                 $json = new \Model\JsonResponse(null, "Node deleted.");
             }
             else {
                 $json = new \Model\JsonResponse("error", "Node not found.");
             }
             $json->send();
+
         }
 
-
-        private function createSearchIndex(){
-            $searchIndex = new \Everyman\Neo4j\Index\NodeIndex($this->client, 'searches');
-            if ($searchIndex->save()){
-                
-            }
-        }
-
-        private function addToSearchIndex($skill){
-            $searchIndex = new \Everyman\Neo4j\Index\NodeIndex($this->client, 'searches');
-            $searchIndex->add($skill, 'name', strtolower($skill->getProperty('name')));
-        }
 
 
         /**
@@ -171,8 +145,11 @@
          * delete all data then load dummy data
          */
         public function dummyDataAction(){
+            echo "inserting dummy data";
 
-            $maxChildrenPerNode = 30;
+            $skillManager = new SkillManager();
+
+            $maxChildrenPerNode = 10;
             $maxCharactersInSkillName = 40;
 
             $searchIndex = new \Everyman\Neo4j\Index\NodeIndex($this->client, 'searches');
@@ -182,56 +159,52 @@
             $query = new Query($this->client, "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r");
             $resultSet = $query->getResultSet();
 
-            //init search index
-            $this->createSearchIndex();
-
-            //add skill label
-            $label = $this->client->makeLabel('Skill');
-
             //lorem ipsum generator
             $faker = \Faker\Factory::create();
 
             //create root node
-            $rootNode = $this->client->makeNode()
-                            ->setProperty("name", "Skills")
-                            ->save();
-//              $rootNode->setId(1)->save();
-            $rootNode->addLabels(array($label));
+            $rootNode = new Skill();
+            $rootNode->setName("Skills");
+            $rootNode->setParentId(NULL);
+            $skillManager->save( $rootNode );
             
-            $this->addToSearchIndex($rootNode);
-
             //top children
             $topChildren = array("Sciences", "Sports", "Arts", "Technologies", "Social Sciences", "Technicals");
 
             //for each top children, create it, then add children
             foreach($topChildren as $topChild){
 
-                ini_set("max_execution_tie", 30);
+                ini_set("max_execution_time", 30);
 
-                $topChildNode = $this->client->makeNode()->setProperty('name', $topChild)->save();
-                $rel = $this->client->makeRelationship();
-                $rel->setStartNode($rootNode)
-                    ->setEndNode($topChildNode)
-                    ->setType('HAS')->save();
-                $this->addToSearchIndex($topChildNode);
+                $firstChild = new Skill();
+                $firstChild->setName( $topChild );
+                $firstChild->setParentId( $rootNode->getId() );
+                $skillManager->save( $firstChild );
 
-                //random number of children for this top node
-                $numChildren = $faker->numberBetween(2,$maxChildrenPerNode);
+                $pa = $firstChild;
+                for($j=1;$j<=4;$j++){
+                    echo "<br /><br />j : $j<br />";
+                    //random number of children for this top node
+                    $numChildren = $faker->numberBetween(0,$maxChildrenPerNode);
 
-                //add them
-                for($i=0;$i<$numChildren;$i++){
-                    $skillName = $faker->text($faker->numberBetween(5,$maxCharactersInSkillName));
-                    $n = $this->client->makeNode()->setProperty('name', $skillName)->save();
-                    $rel = $this->client->makeRelationship();
-                    $rel->setStartNode($topChildNode)
-                        ->setEndNode($n)
-                        ->setType('HAS')->save();
-                    $this->addToSearchIndex($n);
+                    //add them
+                    for($i=0;$i<$numChildren;$i++){
+                        echo "i : $i<br />";
+                        $skillName = $faker->text($faker->numberBetween(5,$maxCharactersInSkillName));
+                        
+                        $newChild = new Skill();
+                        $newChild->setName( $skillName );
+                        $newChild->setParentId( $pa->getId() );
+                        $skillManager->save( $newChild );
+
+                        echo $newChild->getId() . " parent : " . $newChild->getParentId() . "<br />";
+
+                    }
+                    $pa = $newChild;
                 }
             }
+            echo "<br />done";
         }
-
-
 
         public function addSkillAction(){
             if (!empty($_POST)){
@@ -244,6 +217,7 @@
                 $validator->validateSkillParentId($skillParentId);
 
                 if ($validator->isValid()){
+
                     $skill = new Skill();
                     $skill->setName($skillName);
                     $skill->setParentId($skillParentId);

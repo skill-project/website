@@ -80,7 +80,7 @@ $(window).load(function  () {
  
     nodesLayer = new Kinetic.Layer();
 
-    var skills = new Node({id: "245", name: "Skills"}, null);
+    var skills = new Node({id: rootNodeId, name: "Skills"}, null);
   
 
     stage.add(backLayer);

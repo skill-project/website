@@ -11,7 +11,6 @@
             array('controller' => 'Main', 'action' => 'home'))
     );
 
-//common
     $routes->add(
         'debug',
         new Route('/debug/', 
@@ -45,6 +44,12 @@
     );
 
 //api
+    $routes->add(
+        'test',
+        new Route('/api/test/{id}/', 
+            array('controller' => 'Api', 'action' => 'test'))
+    );
+
     $routes->add(
         'getNode',
         new Route('/api/getNode/{id}/', 

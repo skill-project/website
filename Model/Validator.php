@@ -59,7 +59,7 @@
         }
 
         public function validateSkillParentId($skillParentId){
-            if (empty($skillParentId)){
+            if (empty($skillParentId) && $skillParentId != 0){
                 $this->addError("skillParentId", _("Please select a skill as parent of your node."));
             }
             elseif(!is_numeric($skillParentId)){
