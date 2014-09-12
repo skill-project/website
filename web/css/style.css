@@ -2,11 +2,27 @@ body {
 	margin:0;
     overflow: hidden;
     color:white;
+    font-family: "Avenir-Book";
+}
+
+#avenir-book {
+    font-family: "Avenir-Book";
+}
+
+@font-face {
+    font-family: 'Avenir-Book';
+    src: url('../fonts/Avenir-Book.ttf');
 }
 
 #header {
-    background-color:black;
-    height:60px;
+    width:100%;
+    background-color:#282828;
+    height:65px;
+}
+
+#header-container {
+    width: 1000px;
+    margin:0 auto;
 }
 
 #kinetic {
@@ -18,15 +34,32 @@ body {
     visibility: hidden;
 }
 
+#panel {
+    position:absolute;
+    right:0px;
+    top: 65px;
+    width: 323px;
+    opacity: 0.8;
+    height:100%;
+    background-color:black;
+    display:none;
+}
+
+#footer {
+    height: 82px;
+    position:fixed;
+    bottom:0px;
+    background-color:black;
+    width:100%;
+    opacity:0.8;
+}
+
+#footer-container {
+    width:1000px;
+    margin:0 auto;
+}
+
 #preload {
 	visibility: hidden;
 }
 
-#avenir-book {
-	font-family: "Avenir-Book";
-}
-
-@font-face {
-    font-family: 'Avenir-Book';
-    src: url('../fonts/Avenir-Book.ttf');
-}

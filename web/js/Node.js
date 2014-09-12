@@ -3,14 +3,21 @@ var Node = function(nodeData, parent) {
   this.id = nodeData.id;
   this.parent = parent ? parent : null;
   this.name = nodeData.name;
+  this.depth = nodeData.depth;
+  this.shapes;
   this.children = [];
   this.open = false;
   this.isSelected = false;
+  this.isEdited = false;
   this.knGlow;
+  this.backImage;
+  this.buttonImage;
   this.labelImage;
   this.totalChildren;
   this.appearDestX;
   this.appearDestY;
+  this.panel;
+  this.text;
 
   // Needed for nested functions
   var that = this;
@@ -27,32 +34,23 @@ var Node = function(nodeData, parent) {
 
   //Constructor
   (function() {
-    //Creating node button
-    /*var button = new Kinetic.Rect({
+
+    var backImage = new Kinetic.Image({
+      x:0,
+      y:0,
+      width:236,
+      height:56,
+      image: $("img#node-normal")[0]
+    });
+    that.backImage = backImage;
+
+    //Creating the label
+    var editButton = new Kinetic.Rect({
       x: 0,
       y: 0,
       width: 58,
-      height: 56,
-      fill: '#fae5e8',
-      opacity: 0
-    });*/
-
-    var buttonImage = new Kinetic.Image({
-      x: 0,
-      y: 0,
-      width: 58,
-      height: 56,
-      image: $("img#left-notch")[0]
-    })
-
-    var labelImage = new Kinetic.Image({
-      x: 58,
-      y: 0,
-      width: 179,
-      height: 56,
-      image: $("img#right-notch")[0]
-    })
-    this.labelImage = labelImage;
+      height: 56
+    });
 
     //Creating the label
     var label = new Kinetic.Rect({
@@ -100,6 +98,7 @@ var Node = function(nodeData, parent) {
       //Yes it does, so just position the Text
       text.setX(67).setY(22).setWidth(160);
     }
+    that.text = text;
 
     //Creating a group that will listen for events
     var labelGroup = new Kinetic.Group({
@@ -112,7 +111,7 @@ var Node = function(nodeData, parent) {
     var glow = new Kinetic.Image({
       x: -25,
       y: -25,
-      image: $("img#glow")[0],
+      image: $("img#glow-nochildren")[0],
       width: 288,
       height: 108,
       opacity:0
@@ -142,15 +141,12 @@ var Node = function(nodeData, parent) {
       height:56,
       // draggable:true
     });
-    group.add(glow, labelImage, labelGroup, buttonImage);
+    group.add(glow, backImage, editButton, labelGroup);
+    that.shapes = group;
 
+    //Adding the group to the layer and drawing the layer
     nodesLayer.add(group);
     nodesLayer.draw();
-
-    if (parent != null)
-    {
-      console.log(that.midX);
-    }
 
     if (parent != null) {
       var tween = new Kinetic.Tween({
@@ -172,9 +168,6 @@ var Node = function(nodeData, parent) {
       tween.play();
     }
 
-    //Adding the group to the layer and drawing the layer
-    
-
     //"Rect", unfortunate legacy name...
     that.rect = group;
 
@@ -188,6 +181,35 @@ var Node = function(nodeData, parent) {
       //Checking and setting a tree-wide lock
       if (tree.busy) return;
 
+      // debugger;
+      // console.clear();
+      // console.log("current depth : " + that.depth);
+      // if (tree.selectedNode) console.log("previous depth : " + tree.selectedNode.depth);
+
+
+      if (tree.rootNode.id != that.id && that.depth < tree.selectedNode.depth) {
+        that.siblings.forEach(function (sibling) {
+          if (sibling.open) {
+            sibling.contract();
+            sibling.deSelect();
+          }
+        });
+      }
+
+      if (
+          tree.selectedNode &&                    //selectedNode has not been previously deSelected
+          tree.rootNode.id != that.id &&          //Not on rootNode
+          tree.selectedNode.id != that.parent.id  //Not parent
+        ) {
+        tree.selectedNode.contract();
+        tree.selectedNode.deSelect();
+      }
+
+      // console.clear();
+      // console.log(that);
+      // debugger;
+      
+
       //Node is closed, expanding it
       if (!that.open) {
         that.select();
@@ -198,6 +220,37 @@ var Node = function(nodeData, parent) {
         that.contract();
       }
     });
+
+    editButton.on("mouseover", function() { document.body.style.cursor = 'pointer'; });
+    editButton.on("mouseout", function() { document.body.style.cursor = 'default'; });
+    editButton.on("click tap", function() {
+      // console.log(that.panel);
+      // debugger;
+      if (tree.editedNode && tree.editedNode.id != that.id)
+      {
+        /*console.log("clicked on " + that.name + " :");
+        console.log(" - isSelected : " + that.isSelected);
+        console.log(" - isEdited : " + that.isEdited);
+
+        console.log("editedNode on " + tree.editedNode.name + " :");
+        console.log(" - isSelected : " + tree.editedNode.isSelected);
+        console.log(" - isEdited : " + tree.editedNode.isEdited);
+
+        console.log("selectedNode : " + tree.selectedNode.name);
+        console.log("editedNode : " + tree.editedNode.name);*/
+
+        // console.log("First close other node : " + tree.selectedNode.name);
+        tree.editedNode.finishEdit();
+        tree.selectedNode.deSelect();
+      }
+
+      if (that.isEdited == false) {
+        that.startEdit();
+      }else {
+        that.finishEdit();
+      }
+    })
+
   }).call();
 
   //Get all visible children, recursively (stored in global array)
@@ -229,11 +282,20 @@ var Node = function(nodeData, parent) {
       url: "http://192.168.0.60/skp/web/api/getNodeChildren/" + that.id + "/",
     }).done(function(json) {
       that.totalChildren = json.data.length;
+
+      if (that.totalChildren > 0) {
+        that.open = true;
+        that.backImage.setImage($("img#node-glow-children")[0]);
+        that.knGlow.setImage($("img#glow-children")[0]);
+      }else {
+        that.backImage.setImage($("img#node-glow-children")[0]);
+        that.knGlow.setImage($("img#glow-nochildren")[0]);
+      }
+
       json.data.forEach(function(child) {
         new Node(child, that);
       });
 
-      that.open = true;    
       tree.busy = false;    //Releasing the tree-wide lock
     });
   }
@@ -260,8 +322,7 @@ var Node = function(nodeData, parent) {
     //Setting up animation to make group (with children nodes) disappear
     var tween = new Kinetic.Tween({
         node: group, 
-        duration: 0.5,
-        opacity: 0,
+        duration: 0.2,
         scaleX: 0,
         scaleY: 0,
         x: that.rect.attrs.x + that.rect.getWidth(),
@@ -274,6 +335,9 @@ var Node = function(nodeData, parent) {
           //Emptying the global array for future use
           recursiveChildren = [];
           group.destroy();
+
+          that.knGlow.setImage($("img#glow-nochildren")[0]);
+          that.backImage.setImage($("img#node-glow-nochildren")[0]);
           
           //Emptying this node's list of children
           that.children = [];
@@ -291,15 +355,74 @@ var Node = function(nodeData, parent) {
     if (that.isSelected) return;
 
     if (that.edge != null) that.edge.selected = true;
-    // console.log(that.edge);
-    // 
 
     var tween = new Kinetic.Tween({
       node: that.knGlow, 
       duration: 0.5,
-      opacity: 1,
+      opacity: 1
     });
 
     tween.play();
+
+    that.isSelected = true;
+    tree.selectedNode = that;
+  }
+
+  this.deSelect = function() {
+    // console.log(that.isSelected);
+    if (!that.isSelected) return;
+
+    if (that.edge != null) that.edge.selected = false;
+
+    that.knGlow.setImage($("img#glow-nonotch")[0]);
+    that.backImage.setImage($("img#node-normal")[0]);
+
+    var tween = new Kinetic.Tween({
+      node: that.knGlow, 
+      duration: 0.5,
+      opacity: 0,
+    });
+
+    tween.play();
+
+    that.isSelected = false;
+    tree.selectedNode = null;
+  }
+
+  this.startEdit = function() {
+    if (that.isEdited) return;
+
+    that.select();
+
+    that.panel = new Panel(that);
+
+    that.backImage.setImage($("img#node-edit")[0]);
+    that.text.setFill("#fff");
+
+    // Partial redraws not effective...
+    nodesLayer.draw();
+
+    that.isEdited = true;
+    tree.editedNode = that;
+  }
+
+  this.finishEdit = function() {
+    if (!that.isEdited) return;
+
+    that.panel.close({
+      onComplete: function () {
+        delete that.panel;
+      }
+    });
+
+    if (that.totalChildren > 0) that.backImage.setImage($("img#node-glow-children")[0]);
+    else that.backImage.setImage($("img#node-glow-nochildren")[0]);
+    that.text.setFill("#333333");
+
+    // Partial redraws not effective...
+    nodesLayer.draw();
+
+    that.isEdited = false;
+    tree.editedNode = null;
   }
 }

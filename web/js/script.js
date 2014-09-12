@@ -18,9 +18,13 @@ $(document).ready(function (){
   $("#kinetic")
     .hide()
     .width($(window).width())
-    .height($(window).height());
+    .height($(window).height() - $("#header").height() - $("#footer").height());
 
   $("#preload").hide();
+
+  $("#panel")
+    .hide()
+    .height($("#kinetic").height());
 });
 
 $(window).load(function  () {
