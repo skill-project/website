@@ -10,6 +10,20 @@
     use \Everyman\Neo4j\Relationship;
     use \Everyman\Neo4j\Traversal;
 
+    /*
+    [0] => testAction
+    [1] => getRootNodeAction
+    [2] => getNodeParentAction
+    [3] => getNodeChildrenAction
+    [4] => getNodeAction
+    [5] => deleteSkillAction
+    [6] => renameSkillAction
+    [7] => searchNodeAction
+    [8] => dummyDataAction
+    [9] => addSkillAction
+    [10] => __construct
+    */
+
     class ApiController extends Controller {
         
         /**
