@@ -12,8 +12,8 @@
 	<script type="text/javascript" src="js/kinetic-v5.1.0.js"></script>
 	<script>
 		var rootNodeId="<?php echo $rootNode->getUuid(); ?>";
-		var action="<?php echo $action; ?>";
-		var goToUUID="<?php echo $goToUUID; ?>";
+		<?php if (!empty($action)){ ?>var action="<?php echo $action; ?>";<?php } ?>
+		<?php if (!empty($goToUUID)){ ?>var goToUUID="<?php echo $goToUUID; ?>";<?php } ?>
 	</script>
 	<script type="text/javascript" src="js/Node.js"></script>
 	<script type="text/javascript" src="js/Edge.js"></script>
