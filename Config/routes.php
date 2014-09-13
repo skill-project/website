@@ -62,11 +62,6 @@
     );
 
 //api
-    $routes->add(
-        'test',
-        new Route('/api/test/{id}/', 
-            array('controller' => 'Api', 'action' => 'test'))
-    );
 
     $routes->add(
         'getNode',
@@ -95,19 +90,19 @@
 
     $routes->add(
         'getNodeChildren',
-        new Route('/api/getNodeChildren/{id}/', 
+        new Route('/api/getNodeChildren/{uuid}/', 
             array('controller' => 'Api', 'action' => 'getNodeChildren'))
     );
 
     $routes->add(
         'deleteSkill',
-        new Route('/api/deleteSkill/{id}/', 
+        new Route('/api/deleteSkill/{uuid}/', 
             array('controller' => 'Api', 'action' => 'deleteSkill'))
     );
 
     $routes->add(
         'renameSkill',
-        new Route('/api/renameSkill/{id}/', 
+        new Route('/api/renameSkill/{uuid}/', 
             array('controller' => 'Api', 'action' => 'renameSkill'))
     );
 

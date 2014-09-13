@@ -29,7 +29,6 @@
             $rootSkill = new Skill();
             $rootSkill->setNewUuid();
             $rootSkill->setName("Skills");
-            $rootSkill->setParentId(NULL);
             $rootSkill->setDepth(1);
 
             $rootSkill->generateNode();
@@ -47,12 +46,11 @@
                 $firstChild = new Skill();
                 $firstChild->setNewUuid();
                 $firstChild->setName( $topChild );
-                $firstChild->setParentId( $rootSkill->getId() );
                 $firstChild->setDepth(2);
 
                 $firstChild->generateNode();
 
-                $skillManager->save( $firstChild );
+                $skillManager->save( $firstChild, $rootSkill->getId() );
             }
 
             $this->addDummyChildAtDepth(3);
@@ -85,12 +83,11 @@
                     $s = new Skill();
                     $s->setNewUuid();
                     $s->setName( $faker->text($faker->numberBetween(5,$maxCharactersInSkillName)) );
-                    $s->setParentId( $parentRow['s']->getId() );
                     $s->setDepth($depth);
 
                     $s->generateNode();
 
-                    $skillManager->save( $s );
+                    $skillManager->save( $s, $parentRow['s']->getId() );
                 }
             }
         }

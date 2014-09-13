@@ -46,7 +46,7 @@
 
 
 
-        public function save(Skill $skill){
+        public function save(Skill $skill, $skillParentId = null){
             $skillNode = $skill->getNode();
 
             $skillNode->save();
@@ -58,8 +58,8 @@
             $skill->hydrateFromNode();
 
             //save parent child relationship
-            if (!empty($skill->getParentId()) || $skill->getParentId() === 0){
-                $parent = $this->findById($skill->getParentId());
+            if ($skillParentId){
+                $parent = $this->findById($skillParentId);
                 $this->saveParentChildRelationship($parent, $skill);
             }
 
@@ -82,18 +82,18 @@
         }
 
         /**
-         * Delete a node by id, and its relations
+         * Delete a node by uuid, and its relations
          * @return mixed True on deletion, error message otherwise
          */
-        public function delete($id){
+        public function delete($uuid){
 
-            $nodeExists = $this->findById($id);
+            $nodeExists = $this->findByUuid($uuid);
             if ($nodeExists){
-                $childrenNumber = $this->countChildren($id);
+                $childrenNumber = $this->countChildren($uuid);
                 if($childrenNumber == 0){
-                    $cypher = "MATCH (n)-[r]-() WHERE id(n) = {nodeId} DELETE n, r";
+                    $cypher = "MATCH (n)-[r]-() WHERE n.uuid = {uuid} DELETE n, r";
                     $query = new Query($this->client, $cypher, array(
-                        "nodeId" => (int)$id)
+                        "uuid" => $uuid)
                     );
                     $resultSet = $query->getResultSet();
                     return true;
@@ -110,17 +110,17 @@
         }
 
         /**
-         * Count number of children of a node
-         * @param int Id of the node
+         * Count number of children of a skill
+         * @param string uuid of the node
          * @return int Number of children
          * 
          */
-        public function countChildren($id){
+        public function countChildren($uuid){
             $cypher = "MATCH (n:Skill)-[:HAS]->(:Skill) 
-                        WHERE id(n) = {nodeId} 
+                        WHERE n.uuid = {uuid} 
                         RETURN count(*) as childrenNumber";
             $query = new Query($this->client, $cypher, array(
-                "nodeId" => (int)$id)
+                "uuid" => $uuid)
             );
             $resultSet = $query->getResultSet();
             foreach($resultSet as $row){
@@ -178,6 +178,7 @@
         }
 
         /**
+         * WARNING: should not be trusted
          * Return a Skill object based on his id, false on failure
          * @param int $id
          * @return mixed 
@@ -186,7 +187,6 @@
             $node = $this->client->getNode($id);
             if ($node){
                 $skill = new Skill( $node );
-                $skill->setParentId( $this->findNodeParentId($node) );
                 return $skill;
             }
 
@@ -209,7 +209,6 @@
                 $skill = new Skill();
                 $skill->setNode($resultSet[0]['skill']);
                 $skill->hydrateFromNode();
-                $skill->setParentId( $this->findNodeParentId($skill->getNode()) );
                 return $skill;
             }
 
@@ -284,11 +283,12 @@
         /**
          * Find skill children
          */
-        public function findChildren($nodeId){
-            $cypher = "START parent=node({parentId}) 
-                        MATCH (parent)-[:HAS]->(c:Skill) RETURN c LIMIT 100";
+        public function findChildren($uuid){
+            $cypher = "MATCH (parent)-[:HAS]->(c:Skill) 
+                        WHERE parent.uuid = {uuid}
+                        RETURN c LIMIT 100";
             $query = new Query($this->client, $cypher, array(
-                "parentId" => (int) $nodeId)
+                "uuid" => $uuid)
             );
             $resultSet = $query->getResultSet();
             return $resultSet;

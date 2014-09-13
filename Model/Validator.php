@@ -108,12 +108,10 @@
             }
         }
 
-        public function validateSkillId($skillId){
-            if (empty($skillId) && $skillId != 0){
-                $this->addError("skillId", _("Invalid skill id."));
-            }
-            elseif(!is_numeric($skillId)){
-                $this->addError("skillId", _("The skill id is not valid."));  
+        public function validateSkillUuid($uuid){
+            //5414554b1592f9f36155801
+            if (empty($uuid) || !preg_match("#^[a-f0-9]{14}f[a-f0-9]{8}$#", $uuid)){
+                $this->addError("skillUuid", _("Invalid skill id."));
             }
         }
 

@@ -27,15 +27,6 @@
     class ApiController extends Controller {
         
         /**
-         * Test shit
-         */
-        public function testAction($id){
-            $skillManager = new SkillManager();
-            $skill = $skillManager->findById($id);
-            print_r($skill);
-        }
-
-        /**
          * get the root "Skills" node
          */
         public function getRootNodeAction(){
@@ -66,8 +57,6 @@
             else if ($ancestorsFound >= 1){
                 $parentNode = $resultSet[0]['parent'];
                 $skill = new Skill( $parentNode );
-                $granPaId = ($ancestorsFound == 2) ? $resultSet[1]['parent']->getId() : null;
-                $skill->setParentId( $granPaId ); 
             }
 
             $json = new \Model\JsonResponse();
@@ -78,16 +67,14 @@
         /**
          * get first level children of a node, by its id
          */
-        public function getNodeChildrenAction($id){
+        public function getNodeChildrenAction($uuid){
 
             $skillManager = new SkillManager();
-            $resultSet = $skillManager->findChildren($id);
+            $resultSet = $skillManager->findChildren($uuid);
             
             $data = array();
             foreach ($resultSet as $row) {
                 $skill = new Skill( $row['c'] );
-                //print_r($skill);
-                $skill->setParentId($id);
                 $data[] = $skill->getJsonData();
             }
 
@@ -113,12 +100,12 @@
         /**
          * Deletes a node
          * @todo handle response correctly
-         * @param int $id
+         * @param string $uuid
          */
-        function deleteSkillAction($id){
+        function deleteSkillAction($uuid){
 
             $skillManager = new SkillManager();
-            $deletionResult = $skillManager->delete($id);
+            $deletionResult = $skillManager->delete($uuid);
 
             if ($deletionResult === true){
                 $json = new \Model\JsonResponse(null, _("Node deleted."));
@@ -178,23 +165,23 @@
         /**
          * Rename a skill
          */
-        function renameSkillAction($id){
+        function renameSkillAction($uuid){
 
             SecurityHelper::lock();
 
             if (!empty($_POST)){
 
                 $skillName = $_POST['skillName'];
-                $skillId = $_POST['skillId'];
+                $skillUuid = $_POST['skillUuid'];
 
                 $validator = new \Model\Validator();
                 $validator->validateSkillName($skillName);
-                $validator->validateSkillId($skillId);
+                $validator->validateSkillUuid($skillUuid);
 
                 if ($validator->isValid()){
 
                     $skillManager = new SkillManager();
-                    $skill = $skillManager->findById($skillId);
+                    $skill = $skillManager->findByUuid($skillUuid);
 
                     $previousName = $skill->getName();
                     $skill->setName( $skillName );
@@ -275,10 +262,9 @@
                     $skill = new Skill();
                     $skill->setNewUuid();
                     $skill->setName($skillName);
-                    $skill->setParentId($skillParentId);
                     $skill->setDepth( $parentNode->getDepth() + 1 );
 
-                    $skillManager->save($skill);
+                    $skillManager->save($skill, $skillParentId);
 
                     //add creator skill relationship
                     $userNode = $this->client->getNode($_SESSION['user']['id']);

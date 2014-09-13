@@ -1,5 +1,5 @@
 <form method="POST" action="<?php echo \Controller\Router::url("renameSkill", array("id" => $skill->getId())); ?>">
-    <input type="hidden" name="skillId" value="<?php echo $skill->getId(); ?>" />
+    <input type="hidden" name="skillUuid" value="<?php echo $skill->getUuid(); ?>" />
     <div>
         <label for="skillName"><?php echo _("Rename"); ?></label>
         <input type="text" name="skillName" id="skillName" value="<?php echo $skill->getName(); ?>" />

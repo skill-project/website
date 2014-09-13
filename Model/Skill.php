@@ -6,15 +6,12 @@
 
     class Skill extends Entity {
 
+        //uuid in Entity
         protected $name;
-        protected $parentId;
         protected $depth;
         
         protected $node = null;
-        protected $parentNode;
-        protected $children = array();
 
-        protected $jsonFormattedData;
 
         public function __construct(Node $node = null){
             parent::__construct();
@@ -83,8 +80,7 @@
             $data = array(
                 "uuid" => $this->uuid,
                 "name" => $this->name,
-                "depth" => $this->depth,
-                "parent" => $this->parentId
+                "depth" => $this->depth
             );
             return $data;
         }
@@ -114,71 +110,7 @@
             return $this;
         }
 
-        /**
-         * Gets the value of parentId.
-         *
-         * @return mixed
-         */
-        public function getParentId(){
-            return $this->parentId;
-        }
-
-        /**
-         * Sets the value of parentId.
-         *
-         * @param mixed $parentId the parent id
-         *
-         * @return self
-         */
-        public function setParentId($parentId){
-            $this->parentId = $parentId;
-
-            return $this;
-        }
-    
-        /**
-         * Gets the value of parentNode.
-         *
-         * @return mixed
-         */
-        public function getParentNode(){
-            return $this->parentNode;
-        }
-
-        /**
-         * Sets the value of parentNode.
-         *
-         * @param mixed $parentNode the parent node
-         *
-         * @return self
-         */
-        public function setParentNode($parentNode){
-            $this->parentNode = $parentNode;
-
-            return $this;
-        }
-
-        /**
-         * Gets the value of children.
-         *
-         * @return mixed
-         */
-        public function getChildren(){
-            return $this->children;
-        }
-
-        /**
-         * Sets the value of children.
-         *
-         * @param mixed $children the children
-         *
-         * @return self
-         */
-        public function setChildren($children){
-            $this->children = $children;
-
-            return $this;
-        }
+        
         
         /**
          * Gets the value of depth.
