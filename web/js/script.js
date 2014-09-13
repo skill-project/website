@@ -18,7 +18,7 @@ $(document).ready(function (){
   $("#kinetic")
     .hide()
     .width($(window).width())
-    .height($(window).height() - $("#header").height() - $("#footer").height());
+    .height($(window).height() - $("#header").height());
 
   $("#preload").hide();
 
@@ -28,12 +28,14 @@ $(document).ready(function (){
 });
 
 $(window).load(function  () {
-    $("#kinetic").css("visibility", "visible").fadeIn();
+    $("#kinetic").css("visibility", "visible").fadeIn({
+      duration: 1500
+    });
   
     stage = new Kinetic.Stage({
       container: 'kinetic',
-      width: $(window).width(),
-      height: $(window).height(),
+      width: $("#kinetic").width(),
+      height: $("#kinetic").height(),
       draggable: true,
       dragDistance: 10
     });
@@ -42,14 +44,28 @@ $(window).load(function  () {
       panStartCoords = stage.getPointerPosition();
       panLayerStartCoords = { x: backLayer.x(), y: backLayer.y() }
 
-      //TODO : get tree bounds
+      var minX = 0, maxX = 0, minY = 0, maxY = 0;
+      nodesLayer.children.forEach(function(child) {
+        if (child.x() < minX) minX = child.x();
+        if (child.y() < minY) minY = child.y();
+        if (child.x() + child.getWidth() > maxX) maxX = child.x() + child.getWidth();
+        if (child.y() + child.getHeight() > maxY) maxY = child.y() + child.getHeight();
+      });
+
+      /*console.log("minX : " + minX);
+      console.log("maxX : " + maxX);
+      console.log("minY : " + minY);
+      console.log("maxY : " + maxY);*/
 
       nodesLayer.cache({
-          x:0,
-          y:0,
-          width:1000,
-          height:1000
+          x:minX,
+          y:minY,
+          width:maxX - minX,
+          height:maxY - minY
         });
+
+      nodesLayer.x(minX);
+      nodesLayer.y(minY);
 
     });
 
@@ -64,14 +80,20 @@ $(window).load(function  () {
 
     stage.on("dragend", function(e) {
       nodesLayer.clearCache();
+
+      nodesLayer.x(0);
+      nodesLayer.y(0);
+
       nodesLayer.draw();
     });
 
 
     $(document).on("wheel", function (e) {
       delta = e.originalEvent.wheelDeltaY;
-      var newZoomLevel = zoomLevel + (delta / 120) / 10;
-      nodesLayer.scale({x: zoomLevel, y: zoomLevel});
+      console.log(delta);
+      var newZoomLevel = Math.round((zoomLevel + (delta / 120) / 10) * 1000) / 1000;
+      console.log(newZoomLevel);
+      nodesLayer.scale({x: newZoomLevel, y: newZoomLevel});
       nodesLayer.draw();
       zoomLevel = newZoomLevel;
     });
@@ -117,6 +139,15 @@ $(window).load(function  () {
  
     nodesLayer = new Kinetic.Layer();
     // nodesLayer.listening(false);
+
+    /*
+    Konami code
+    var anim = new Kinetic.Animation(function(frame) {
+      nodesLayer.rotation(frame.time / 150);
+    }, stage);
+
+    anim.start();
+    */
 
     var skills = new Node({uuid: rootNodeId, name: "Skills"}, null);
   

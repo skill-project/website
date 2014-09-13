@@ -4,9 +4,11 @@
 
     class Config {
 
-        const NEO_HOST      = "192.168.0.60";
-        const NEO_PORT      = 7474;
+        const BASE_URL		= _BASE_URL;
+
+        const NEO_HOST      = _NEO_HOST;
+        const NEO_PORT      = _NEO_PORT;
         
-        const DEBUG         = true;
+        const DEBUG         = _DEBUG;
         
     }

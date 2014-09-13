@@ -12,6 +12,12 @@
     );
 
     $routes->add(
+        'goTo',
+        new Route('/skill/{uuid}', 
+            array('controller' => 'Main', 'action' => 'goTo'))
+    );
+
+    $routes->add(
         'debug',
         new Route('/debug/', 
             array('controller' => 'Main', 'action' => 'debug'))

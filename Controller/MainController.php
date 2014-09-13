@@ -23,6 +23,23 @@
         }
 
         /**
+         * goTo a specific skill
+         */
+        public function goToAction($uuid){
+            $skillManager = new SkillManager();
+
+            $rootNode = $skillManager->findRootNode();
+            $view = new View("home.php", array(
+                "rootNode"  => $rootNode,
+                "title"     => "Home !",
+                "action"    => "goto",
+                "goToUUID"  =>  $uuid)
+            );
+
+            $view->send();
+        }
+
+        /**
          * Debug page
          */
         public function debugAction(){

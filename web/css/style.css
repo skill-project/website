@@ -3,15 +3,11 @@ body {
     overflow: hidden;
     color:white;
     font-family: "Avenir-Book";
+    background-color:#282828;
 }
 
 #avenir-book {
     font-family: "Avenir-Book";
-}
-
-@font-face {
-    font-family: 'Avenir-Book';
-    src: url('../fonts/Avenir-Book.ttf');
 }
 
 #header {

@@ -118,8 +118,8 @@ var Node = function(nodeData, parent, rank, count, isLast) {
 
     //Creating and positioning the main group that contains all the shapes
     if (parent == null) {
-      startX = 50;
-      startY = 200;
+      startX = stage.getWidth() / 6;
+      startY = (stage.getHeight() - 82) / 2 - 56 / 2 ;
     }else {
       //Starting coordinates = underneath the parent ID
       startX = that.parent.shapes.x();
