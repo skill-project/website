@@ -46,7 +46,7 @@
 
 
 
-        public function save(Skill $skill, $skillParentId = null){
+        public function save(Skill $skill, $skillParentUuid = null){
             $skillNode = $skill->getNode();
 
             $skillNode->save();
@@ -57,9 +57,11 @@
             $skill->setNode($skillNode);
             $skill->hydrateFromNode();
 
+            echo $skillParentUuid;
+
             //save parent child relationship
-            if ($skillParentId){
-                $parent = $this->findById($skillParentId);
+            if ($skillParentUuid){
+                $parent = $this->findByUuid($skillParentUuid);
                 $this->saveParentChildRelationship($parent, $skill);
             }
 
