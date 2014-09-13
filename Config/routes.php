@@ -38,7 +38,7 @@
 
     $routes->add(
         'deleteSkillSubPanel',
-        new Route('/panel/delete-skill-sub-panel/{id}/', 
+        new Route('/panel/delete-skill-sub-panel/{uuid}/', 
             array('controller' => 'Panel', 'action' => 'deleteSkillSubPanel'))
     );
 

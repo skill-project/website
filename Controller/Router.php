@@ -22,10 +22,10 @@
             }
         }
 
-        public static function fourofour($message){
+        public static function fourofour($message = null){
             header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
             echo "<h1>404 !</h1>";
-            if (\Config\Config::DEBUG){
+            if ($message && \Config\Config::DEBUG){
                 echo $message;
             }
             die();

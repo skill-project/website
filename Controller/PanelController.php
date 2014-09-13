@@ -92,11 +92,11 @@
         /**
          * Show delete subpanel page
          */
-        public function deleteSkillSubPanelAction($id){
+        public function deleteSkillSubPanelAction($uuid){
             $params = array();
 
             $skillManager = new SkillManager();
-            $skill = $skillManager->findById($id);
+            $skill = $skillManager->findByUuid($uuid);
 
             if (!$skill){ Router::fourofour(); }
 
