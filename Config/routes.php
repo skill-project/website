@@ -83,7 +83,7 @@
     //getNodeParent
     $routes->add(
         'getNodeParent',
-        new Route('/api/getNodeParent/{id}/', 
+        new Route('/api/getNodeParent/{uuid}/', 
             array('controller' => 'Api', 'action' => 'getNodeParent'))
     );
 

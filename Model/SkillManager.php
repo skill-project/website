@@ -269,13 +269,13 @@
          * Find parent and gp at the same time
          * @return ResultSet
          */
-        public function findParentAndGrandParent($nodeId){
+        public function findParentAndGrandParent($uuid){
             //fetch grand pa at same time to get to parent's parent id
-            $cypher = "START child=node({childId})
-                        MATCH (parents)-[:HAS*1..2]->(child) 
+            $cypher = "MATCH (parents:Skill)-[:HAS*1..2]->(child:Skill) 
+                        WHERE child.uuid = {uuid}
                         RETURN parents";
             $query = new Query($this->client, $cypher, array(
-                "childId" => (int)$nodeId)
+                "uuid" => $uuid)
             );
             $resultSet = $query->getResultSet();
             return $resultSet;

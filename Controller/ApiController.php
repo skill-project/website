@@ -54,9 +54,9 @@
          * 
          * @param int $id
          */
-        public function getNodeParentAction($id){
+        public function getNodeParentAction($uuid){
             $skillManager = new SkillManager();
-            $resultSet = $skillManager->findParentAndGrandParent($id);
+            $resultSet = $skillManager->findParentAndGrandParent($uuid);
             
             $ancestorsFound = $resultSet->count();
             if ($ancestorsFound == 0){
