@@ -26,7 +26,7 @@
     
     $routes->add(
         'renameSkillSubPanel',
-        new Route('/panel/rename-skill-sub-panel/{id}/', 
+        new Route('/panel/rename-skill-sub-panel/{uuid}/', 
             array('controller' => 'Panel', 'action' => 'renameSkillSubPanel'))
     );
  

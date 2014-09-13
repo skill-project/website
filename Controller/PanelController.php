@@ -33,11 +33,11 @@
         /**
          *  Show the rename subpanel page 
         */
-        public function renameSkillSubPanelAction($id){
+        public function renameSkillSubPanelAction($uuid){
             $params = array();
 
             $skillManager = new SkillManager();
-            $skill = $skillManager->findById($id);
+            $skill = $skillManager->findByUuid($uuid);
 
             if (!$skill){ Router::fourofour(); }
 

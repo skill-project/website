@@ -189,7 +189,8 @@
                     $skillManager->update($skill);
 
                     //add modifier skill relationship
-                    $userNode = $this->client->getNode($_SESSION['user']['id']);
+                    $user = \Utils\SecurityHelper::getUser();
+                    $userNode = $user->getNode();
                     $rel = $this->client->makeRelationship();
                     $rel->setStartNode($userNode)
                         ->setEndNode($skill->getNode())
