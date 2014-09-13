@@ -32,7 +32,7 @@
  
     $routes->add(
         'translateSkillSubPanel',
-        new Route('/panel/translate-skill-sub-panel/{id}/', 
+        new Route('/panel/translate-skill-sub-panel/{uuid}/', 
             array('controller' => 'Panel', 'action' => 'translateSkillSubPanel'))
     );   
 
@@ -108,7 +108,7 @@
 
     $routes->add(
         'translateSkill',
-        new Route('/api/translateSkill/{id}/', 
+        new Route('/api/translateSkill/{uuid}/', 
             array('controller' => 'Api', 'action' => 'translateSkill'))
     );
 

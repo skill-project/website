@@ -61,11 +61,11 @@
         /**
          *  Show the translate subpanel page 
         */
-        public function translateSkillSubPanelAction($id){
+        public function translateSkillSubPanelAction($uuid){
             $params = array();
 
             $skillManager = new SkillManager();
-            $skill = $skillManager->findById($id);
+            $skill = $skillManager->findByUuid($uuid);
 
             if (!$skill){ Router::fourofour(); }
 

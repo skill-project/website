@@ -1,5 +1,5 @@
-<form method="POST" action="<?php echo \Controller\Router::url("translateSkill", array("id" => $skill->getId())); ?>">
-    <input type="hidden" name="skillId" value="<?php echo $skill->getId(); ?>" />
+<form method="POST" action="<?php echo \Controller\Router::url("translateSkill", array("uuid" => $skill->getUuid())); ?>">
+    <input type="hidden" name="skillUuid" value="<?php echo $skill->getUuid(); ?>" />
     <div>
         <select name="language" id="language">
             <option value=""><?php echo _("Select your language"); ?></option>

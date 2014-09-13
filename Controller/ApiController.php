@@ -121,7 +121,7 @@
         /**
          * Translate a skill
          */
-        function translateSkillAction($id){
+        function translateSkillAction($uuid){
 
             SecurityHelper::lock();
 
@@ -129,17 +129,17 @@
 
                 $skillTrans = $_POST['skillTrans'];
                 $languageCode = $_POST['language'];
-                $skillId = $_POST['skillId'];
+                $skillUuid = $_POST['skillUuid'];
 
                 $validator = new \Model\Validator();
                 $validator->validateSkillName($skillTrans);
                 $validator->validateLanguageCode($languageCode);
-                $validator->validateSkillId($skillId);
+                $validator->validateSkillUuid($skillUuid);
 
                 if ($validator->isValid()){
 
                     $skillManager = new SkillManager();
-                    $skill = $skillManager->findById($skillId);
+                    $skill = $skillManager->findByUuid($skillUuid);
 
                     $translationManager = new TranslationManager();
 
