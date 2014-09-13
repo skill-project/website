@@ -193,14 +193,28 @@ var Node = function(nodeData, parent, rank, count, isLast) {
       tree.busy = true;
       console.log("setting tree busy");
 
+      // Do we first have to contract the selectedNode before expading a new one ?
+      // debugger;
       if (
           tree.rootNode.id != that.id &&          //Not for rootNode
           that.id != tree.selectedNode.id &&      //Not for contracting the selectedNode itself
           that.depth <= tree.selectedNode.depth && //Not for a node shallower than the selectedNode
           tree.selectedNode.id != that.parent.id  //Not for parent
         ) {
-        tree.selectedNode.contract();
-        tree.selectedNode.deSelect();
+        console.log("contracting previously expanded node");
+        if (that.depth < tree.selectedNode.depth)
+        {
+          console.log("need to find right node, it's not just selectedNode");
+          that.siblings.forEach(function (sibling) {
+            if (sibling.open && sibling.id != that.id) {
+              sibling.contract(false);
+              tree.selectedNode.deSelect();
+            }
+          });
+        } else {
+          tree.selectedNode.contract(false);
+          tree.selectedNode.deSelect();
+        }
       }
 
       //Node is closed, expanding it
@@ -209,7 +223,6 @@ var Node = function(nodeData, parent, rank, count, isLast) {
         that.expand();
       }else {
         //Node is open, contracting it
-        // debugger;
         console.log("entering contract");
         that.contract();
       }
@@ -237,7 +250,6 @@ var Node = function(nodeData, parent, rank, count, isLast) {
 
   //Get all visible children, recursively (stored in global array)
   this.getChildrenRecursive = function() {
-    console.log("getChildrenRecursive");
     that.children.forEach(function(child) {
       recursiveChildren.push(child);
       child.getChildrenRecursive();
@@ -269,6 +281,9 @@ var Node = function(nodeData, parent, rank, count, isLast) {
         that.backImage.setImage($("img#node-glow-children")[0]);
         that.knGlow.setImage($("img#glow-children")[0]);
       }else {
+        //No children, releasing tree lock
+        console.log("tree not busy anymore");
+        tree.busy = false;
         that.backImage.setImage($("img#node-glow-children")[0]);
         that.knGlow.setImage($("img#glow-nochildren")[0]);
       }
@@ -283,7 +298,8 @@ var Node = function(nodeData, parent, rank, count, isLast) {
   }
 
   //Hiding and destroying the children
-  this.contract = function() {
+  this.contract = function(releaseTreeLock) {
+    if (releaseTreeLock == null) releaseTreeLock = true;
     //tree.busy = true;
     //console.log("setting tree busy");
 
@@ -324,8 +340,10 @@ var Node = function(nodeData, parent, rank, count, isLast) {
           
           //Emptying this node's list of children
           that.children = [];
-          tree.busy = false;
-          console.log("tree not busy anymore");
+          if (releaseTreeLock == true) {
+            tree.busy = false;
+            console.log("tree not busy anymore");
+          }
           that.open = false;
         }
       });
@@ -336,7 +354,15 @@ var Node = function(nodeData, parent, rank, count, isLast) {
 
   //Selection of the node : glow super power!
   this.select = function() {
-    if (that.isSelected) return;
+    if (that.isSelected) {
+      console.log("not selecting (already selected) " + that.name);
+      return;
+    }else {
+      console.log("selecting " + that.name);
+    }
+
+    if (tree.selectedNode && tree.selectedNode.id != that.id) tree.selectedNode.deSelect();
+    
 
     if (that.edge != null) that.edge.selected = true;
 
@@ -354,7 +380,12 @@ var Node = function(nodeData, parent, rank, count, isLast) {
 
   this.deSelect = function() {
     // console.log(that.isSelected);
-    if (!that.isSelected) return;
+    if (!that.isSelected) {
+      console.log("not deSelecting (already deSelected) " + that.name);
+      return;
+    }else {
+      console.log("deSelecting " + that.name);
+    }
 
     if (that.edge != null) that.edge.selected = false;
 
