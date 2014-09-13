@@ -3,6 +3,7 @@
     namespace Controller;
 
     use \Model\SkillManager;
+    use \Model\TranslationManager;
     use \Model\Skill;
     use \Utils\SecurityHelper;
 
@@ -130,6 +131,51 @@
 
         }
 
+
+        /**
+         * Translate a skill
+         */
+        function translateSkillAction($id){
+
+            SecurityHelper::lock();
+
+            if (!empty($_POST)){
+
+                $skillTrans = $_POST['skillTrans'];
+                $languageCode = $_POST['language'];
+                $skillId = $_POST['skillId'];
+
+                $validator = new \Model\Validator();
+                $validator->validateSkillName($skillTrans);
+                $validator->validateLanguageCode($languageCode);
+                $validator->validateSkillId($skillId);
+
+                if ($validator->isValid()){
+
+                    $skillManager = new SkillManager();
+                    $skill = $skillManager->findById($skillId);
+
+                    $translationManager = new TranslationManager();
+
+                    //insert or update ?
+                    $previousTranslationNode = $translationManager->findSkillTranslationInLanguage($skill, $languageCode);
+                    
+                    //insert
+                    if (!$previousTranslationNode){
+                        $translationManager->insertSkillTranslation($languageCode, $skillTrans, $skill);
+                    }
+                    //update
+                    else {
+                        $translationManager->updateSkillTranslation($skillTrans, $previousTranslationNode);
+                    }
+
+                }
+                else {
+                    print_r($validator->getErrors());   
+                }
+            }
+        }
+
         /**
          * Rename a skill
          */
@@ -215,6 +261,7 @@
 
             //create root node
             $rootSkill = new Skill();
+            $rootSkill->setNewUuid();
             $rootSkill->setName("Skills");
             $rootSkill->setParentId(NULL);
             $rootSkill->setDepth(1);
@@ -232,6 +279,7 @@
                 ini_set("max_execution_time", 30);
 
                 $firstChild = new Skill();
+                $firstChild->setNewUuid();
                 $firstChild->setName( $topChild );
                 $firstChild->setParentId( $rootSkill->getId() );
                 $firstChild->setDepth(2);
@@ -269,6 +317,7 @@
 
                 for($i=0;$i<$numChildren;$i++){
                     $s = new Skill();
+                    $s->setNewUuid();
                     $s->setName( $faker->text($faker->numberBetween(5,$maxCharactersInSkillName)) );
                     $s->setParentId( $parentRow['s']->getId() );
                     $s->setDepth($depth);
@@ -305,6 +354,7 @@
                 if ($validator->isValid() && $parentNode){
 
                     $skill = new Skill();
+                    $skill->setNewUuid();
                     $skill->setName($skillName);
                     $skill->setParentId($skillParentId);
                     $skill->setDepth( $parentNode->getDepth() + 1 );

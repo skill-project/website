@@ -24,13 +24,12 @@
     [13] => findChildren
     */
 
-    class SkillManager {
+    class SkillManager extends Manager {
 
-        private $client;
         private $searchIndex;
 
         public function __construct(){
-            $this->client = DatabaseFactory::getClient();
+            parent::__construct();
             $this->createSearchIndex();
         }
 

@@ -29,7 +29,13 @@
         new Route('/panel/rename-skill-sub-panel/{id}/', 
             array('controller' => 'Panel', 'action' => 'renameSkillSubPanel'))
     );
-    
+ 
+    $routes->add(
+        'translateSkillSubPanel',
+        new Route('/panel/translate-skill-sub-panel/{id}/', 
+            array('controller' => 'Panel', 'action' => 'translateSkillSubPanel'))
+    );   
+
     $routes->add(
         'deleteSkillSubPanel',
         new Route('/panel/delete-skill-sub-panel/{id}/', 
@@ -103,6 +109,12 @@
         'renameSkill',
         new Route('/api/renameSkill/{id}/', 
             array('controller' => 'Api', 'action' => 'renameSkill'))
+    );
+
+    $routes->add(
+        'translateSkill',
+        new Route('/api/translateSkill/{id}/', 
+            array('controller' => 'Api', 'action' => 'translateSkill'))
     );
 
     $routes->add(

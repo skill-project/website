@@ -117,6 +117,15 @@
             }
         }
 
+        public function validateLanguageCode($languageCode){
+            if (empty($languageCode)){
+                $this->addError("language", _("Please select a language."));
+            }
+            elseif (strlen($languageCode) !== 2 || !preg_match("#[a-z]{2}#", $languageCode)){
+                $this->addError("language", _("Invalid language code."));
+            }
+        }
+
         protected function addError($fieldName, $message){
             $this->isValid = false;
             $this->errors[$fieldName] = $message;

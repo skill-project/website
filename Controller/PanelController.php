@@ -4,6 +4,7 @@
 
     use \View\AjaxView;
     use \Model\SkillManager;
+    use \Model\TranslationManager;
 
     class PanelController {
 
@@ -38,6 +39,8 @@
             $skillManager = new SkillManager();
             $skill = $skillManager->findById($id);
 
+            if (!$skill){ Router::fourofour(); }
+
             $params['skill'] = $skill;
             $revisions = $skillManager->findRevisionHistory($skill);
 
@@ -54,6 +57,38 @@
             $view->send();
         }
 
+
+        /**
+         *  Show the translate subpanel page 
+        */
+        public function translateSkillSubPanelAction($id){
+            $params = array();
+
+            $skillManager = new SkillManager();
+            $skill = $skillManager->findById($id);
+
+            if (!$skill){ Router::fourofour(); }
+
+            $params['skill'] = $skill;
+            
+            //get all Languages (for the <select>)
+            $lc = new \Model\LanguageCode();
+            $languages = $lc->getAllCodes();
+            $params['languages'] = $languages;
+
+            //get previous translations
+            $translationManager = new TranslationManager();
+            $translations = $translationManager->findSkillTranslations($skill);
+            for($i=0;$i<count($translations);$i++){
+                $translations[$i]['languageNames'] = $lc->getNames($translations[$i]['languageCode']);
+            }
+
+            $params['translations'] = $translations;
+
+            $view = new AjaxView("translate_skill_subpanel.php", $params);
+            $view->send();
+        }
+
         /**
          * Show delete subpanel page
          */
@@ -62,6 +97,8 @@
 
             $skillManager = new SkillManager();
             $skill = $skillManager->findById($id);
+
+            if (!$skill){ Router::fourofour(); }
 
             $params['skill'] = $skill;
             
