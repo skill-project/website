@@ -21,4 +21,14 @@
                 echo $route->getPath() . "<br />";
             }
         }
+
+        public static function fourofour($message){
+            header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
+            echo "<h1>404 !</h1>";
+            if (\Config\Config::DEBUG){
+                echo $message;
+            }
+            die();
+        }
+
     }

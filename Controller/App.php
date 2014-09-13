@@ -38,8 +38,8 @@
             try {
                 $urlParameters = $matcher->match($context->getPathInfo());
             }
-            catch(\ResourceNotFoundException $e){
-                die("404");
+            catch(\Symfony\Component\Routing\Exception\ResourceNotFoundException $e){
+                Router::fourofour($e->getMessage());
             }
 
             //instanciate the controller
@@ -54,8 +54,7 @@
                 $r = new \ReflectionMethod($className, $method);
             }
             catch (\ReflectionException $e){
-                echo $e->getMessage();
-                die();
+                Router::fourofour($e->getMessage());
             }
             $methodParams = $r->getParameters();
             $params = array();

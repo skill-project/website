@@ -176,8 +176,10 @@
          * Search by keywords
          */
         public function searchNodeAction($keywords){
+            $keywords = urldecode($keywords);
             $searchIndex = new \Everyman\Neo4j\Index\NodeIndex($this->client, 'searches');
             $matches = $searchIndex->query('name:*'.strtolower($keywords).'*~');
+            $data = array();
             foreach ($matches as $node) {
                 $nodeParentRelationship = $node->getRelationships(
                     array('HAS'), Relationship::DirectionIn

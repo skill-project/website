@@ -14,7 +14,14 @@
          * @return void
          */
         public static function setNewClient(){
-            self::$client = new \Everyman\Neo4j\Client(Config::NEO_HOST, Config::NEO_PORT);
+            //try{
+                self::$client = new \Everyman\Neo4j\Client(Config::NEO_HOST, Config::NEO_PORT);
+            /*}
+            catch(\Everyman\Neo4j\Exception $e){
+                if (Config::debug){
+                    echo $e->getMessage();
+                }
+            }*/
         }
 
         /**
