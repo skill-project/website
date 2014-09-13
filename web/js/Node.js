@@ -1,9 +1,12 @@
-var Node = function(nodeData, parent) {
+var Node = function(nodeData, parent, rank, count, isLast) {
   //Initializing node properties
   this.id = nodeData.id;
   this.parent = parent ? parent : null;
   this.name = nodeData.name;
   this.depth = nodeData.depth;
+  this.rank = rank;
+  this.count = count;
+  this.isLast = isLast;
   this.shapes;
   this.children = [];
   this.open = false;
@@ -153,14 +156,20 @@ var Node = function(nodeData, parent) {
         node: group, 
         x: that.midX,
         y: that.midY,
-        duration: 0.15,
+        duration: 0.10 + 0.20 * (that.rank / that.count),
         onFinish: function() {
           // console.log(that.appearDestY);
           var tween = new Kinetic.Tween({
             node: group, 
             x: that.appearDestX,
             y: that.appearDestY,
-            duration: 0.15
+            duration: 0.10 + 0.10 * (that.rank / that.count),
+            onFinish: function() {
+              if (that.isLast == true) {
+                tree.busy = false;                      //Releasing the tree-wide lock
+                console.log("tree not busy anymore");
+              }
+            }
           }); 
           tween.play();
         }
@@ -178,45 +187,30 @@ var Node = function(nodeData, parent) {
     labelGroup.on("mouseover", function() { document.body.style.cursor = 'pointer'; });
     labelGroup.on("mouseout", function() { document.body.style.cursor = 'default'; });
     labelGroup.on("click tap", function() {
-      //Checking and setting a tree-wide lock
+      //Checking and setting a tree-wide lock. 
+      //Will be released after last retrieved node has finished appearing (that.expand) or after last node has finished hiding (that.contract)
       if (tree.busy) return;
-
-      // debugger;
-      // console.clear();
-      // console.log("current depth : " + that.depth);
-      // if (tree.selectedNode) console.log("previous depth : " + tree.selectedNode.depth);
-
-
-      if (tree.rootNode.id != that.id && that.depth < tree.selectedNode.depth) {
-        that.siblings.forEach(function (sibling) {
-          if (sibling.open) {
-            sibling.contract();
-            sibling.deSelect();
-          }
-        });
-      }
+      tree.busy = true;
+      console.log("setting tree busy");
 
       if (
-          tree.selectedNode &&                    //selectedNode has not been previously deSelected
-          tree.rootNode.id != that.id &&          //Not on rootNode
-          tree.selectedNode.id != that.parent.id  //Not parent
+          tree.rootNode.id != that.id &&          //Not for rootNode
+          that.id != tree.selectedNode.id &&      //Not for contracting the selectedNode itself
+          that.depth <= tree.selectedNode.depth && //Not for a node shallower than the selectedNode
+          tree.selectedNode.id != that.parent.id  //Not for parent
         ) {
         tree.selectedNode.contract();
         tree.selectedNode.deSelect();
       }
 
-      // console.clear();
-      // console.log(that);
-      // debugger;
-      
-
       //Node is closed, expanding it
       if (!that.open) {
         that.select();
         that.expand();
-        // console.log(that.children.length);
       }else {
         //Node is open, contracting it
+        // debugger;
+        console.log("entering contract");
         that.contract();
       }
     });
@@ -228,18 +222,6 @@ var Node = function(nodeData, parent) {
       // debugger;
       if (tree.editedNode && tree.editedNode.id != that.id)
       {
-        /*console.log("clicked on " + that.name + " :");
-        console.log(" - isSelected : " + that.isSelected);
-        console.log(" - isEdited : " + that.isEdited);
-
-        console.log("editedNode on " + tree.editedNode.name + " :");
-        console.log(" - isSelected : " + tree.editedNode.isSelected);
-        console.log(" - isEdited : " + tree.editedNode.isEdited);
-
-        console.log("selectedNode : " + tree.selectedNode.name);
-        console.log("editedNode : " + tree.editedNode.name);*/
-
-        // console.log("First close other node : " + tree.selectedNode.name);
         tree.editedNode.finishEdit();
         tree.selectedNode.deSelect();
       }
@@ -255,7 +237,7 @@ var Node = function(nodeData, parent) {
 
   //Get all visible children, recursively (stored in global array)
   this.getChildrenRecursive = function() {
-    // console.log(that.children);
+    console.log("getChildrenRecursive");
     that.children.forEach(function(child) {
       recursiveChildren.push(child);
       child.getChildrenRecursive();
@@ -277,7 +259,6 @@ var Node = function(nodeData, parent) {
 
   //Query the DB for the children and show them
   this.expand = function() {
-    tree.busy = true;
     $.ajax({
       url: "http://192.168.0.60/skp/web/api/getNodeChildren/" + that.id + "/",
     }).done(function(json) {
@@ -292,17 +273,19 @@ var Node = function(nodeData, parent) {
         that.knGlow.setImage($("img#glow-nochildren")[0]);
       }
 
+      var i = 0;
+      var isLast = false;
       json.data.forEach(function(child) {
-        new Node(child, that);
+        if (++i == json.data.length) isLast = true;
+        new Node(child, that, i, json.data.length, isLast);
       });
-
-      tree.busy = false;    //Releasing the tree-wide lock
     });
   }
 
   //Hiding and destroying the children
   this.contract = function() {
-    tree.busy = true;
+    //tree.busy = true;
+    //console.log("setting tree busy");
 
     //Getting all children, recursively
     that.getChildrenRecursive();
@@ -322,7 +305,7 @@ var Node = function(nodeData, parent) {
     //Setting up animation to make group (with children nodes) disappear
     var tween = new Kinetic.Tween({
         node: group, 
-        duration: 0.2,
+        duration: 0.4,
         scaleX: 0,
         scaleY: 0,
         x: that.rect.attrs.x + that.rect.getWidth(),
@@ -342,6 +325,7 @@ var Node = function(nodeData, parent) {
           //Emptying this node's list of children
           that.children = [];
           tree.busy = false;
+          console.log("tree not busy anymore");
           that.open = false;
         }
       });
