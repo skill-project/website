@@ -35,6 +35,9 @@
 
         }
 
+        /**
+         * Just to dry methods below
+         */ 
         protected function getFindByResult($cypher, $data){
             $query = new Query($this->client, $cypher, array(
                 "data" => $data)
@@ -47,6 +50,11 @@
                 return $user;
             }
             return false;
+        }
+
+        public function findByUuid($uuid){
+            $cypher = "MATCH (user:User { uuid: {data} }) RETURN user LIMIT 1";
+            return $this->getFindByResult($cypher, $uuid);
         }
 
         public function findByUsername($username){

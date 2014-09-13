@@ -6,8 +6,6 @@
 
     class Skill extends Entity {
 
-        protected $id;
-        protected $uuid;
         protected $name;
         protected $parentId;
         protected $depth;
@@ -61,6 +59,7 @@
             $this->node->setProperties(
                 array(
                     "id" => $this->id,
+                    "uuid" => $this->uuid,
                     "name" => $this->name,
                     "depth" => $this->depth
             ));
@@ -91,53 +90,6 @@
         }
 
         
-        /**
-         * Gets the value of id.
-         *
-         * @return mixed
-         */
-        public function getId(){
-            return $this->id;
-        }
-
-        /**
-         * Sets the value of id.
-         *
-         * @param mixed $id the id
-         *
-         * @return self
-         */
-        public function setId($id){
-            $this->id = $id;
-            $this->getNode()->setProperty("id", $id);
-            return $this;
-        }
-
-        public function setNewUuid(){
-            $this->uuid = base64_encode(uniqid('', true));
-        }
-
-        
-        /**
-         * Gets the value of uuid.
-         *
-         * @return mixed
-         */
-        public function getUuid(){
-            return $this->uuid;
-        }
-
-        /**
-         * Sets the value of uuid.
-         *
-         * @param mixed $uuid the uuid
-         *
-         * @return self
-         */
-        public function setUuid($uuid){
-            $this->uuid = $uuid;
-            return $this;
-        }
 
         /**
          * Gets the value of name.

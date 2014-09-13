@@ -6,7 +6,6 @@
 
 	class User extends Entity {
 	
-		protected $id;
 		protected $username;
 		protected $email;
 		protected $password;
@@ -50,6 +49,7 @@
 		public function generateNode(){
 			$this->node = $this->client->makeNode();
 			
+			$this->node->setProperty("uuid", $this->uuid);
 			$this->node->setProperty("username", $this->username);
 			$this->node->setProperty("email", $this->email);
 			$this->node->setProperty("password", $this->password);
@@ -67,14 +67,6 @@
 				$this->generateNode();
 			}
 			return $this->node;
-		}
-		
-		public function getId(){
-			return $this->id;
-		}
-
-		public function setId($id){
-			$this->id = $id;
 		}
 
 		public function getUsername(){

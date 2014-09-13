@@ -70,7 +70,7 @@
 
     $routes->add(
         'getNode',
-        new Route('/api/getNode/{id}/', 
+        new Route('/api/getNode/{uuid}/', 
             array('controller' => 'Api', 'action' => 'getNode'))
     );
 
@@ -118,13 +118,17 @@
     );
 
     $routes->add(
-        'dummyData',
-        new Route('/api/dummyData/', 
-            array('controller' => 'Api', 'action' => 'dummyData'))
-    );
-
-    $routes->add(
         'addSkill',
         new Route('/add-skill/', 
             array('controller' => 'Api', 'action' => 'addSkill'))
+    );
+
+
+
+//Fixtures
+
+    $routes->add(
+        'dummyData',
+        new Route('/dummyData/', 
+            array('controller' => 'Fixture', 'action' => 'dummyData'))
     );   

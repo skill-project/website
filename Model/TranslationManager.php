@@ -16,6 +16,7 @@
                         CREATE (s)-[r:TRANSLATES_INTO]->(t:Translation {lang: {languageCode}, name: {name}})
                         RETURN t";
             $query = new Query($this->client, $cypher, array(
+                                    "uuid" => \Utils\IdGenerator::getUniqueId(),
                                     "skillId" => $skill->getId(),
                                     "languageCode" => $languageCode,
                                     "name" => $name

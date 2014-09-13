@@ -193,6 +193,29 @@
             return false;
         }
 
+
+        /**
+         * Return a Skill object based on his uuid, false on failure
+         * @param string $id
+         * @return mixed 
+         */
+        public function findByUuid($uuid){
+            $cypher = "MATCH (skill:Skill { uuid: {uuid} }) RETURN skill LIMIT 1";
+            $query = new Query($this->client, $cypher, array(
+                "uuid" => $uuid)
+            );
+            $resultSet = $query->getResultSet();
+            if ($resultSet->count() == 1){
+                $skill = new Skill();
+                $skill->setNode($resultSet[0]['skill']);
+                $skill->hydrateFromNode();
+                $skill->setParentId( $this->findNodeParentId($skill->getNode()) );
+                return $skill;
+            }
+
+            return false;
+        }
+
         /**
          * Return parent id of a Node
          * @param Node $node

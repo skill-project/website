@@ -69,6 +69,7 @@
         private function logUser(User $user){
             $sessionUser = array(
                 "id" => $user->getId(),
+                "uuid" => $user->getUuid(),
                 "username" => $user->getUsername(),
                 "email" => $user->getEmail()
             );
@@ -113,6 +114,7 @@
                     $securityHelper = new \Utils\SecurityHelper();
                     $user = new User();
                     
+                    $user->setNewUuid();
                     $user->setUsername( $username );
                     $user->setEmail( $email );
                     $user->setSalt( $securityHelper->randomString() );
