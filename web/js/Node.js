@@ -1,12 +1,14 @@
 var Node = function(nodeData, parent, rank, count, isLast) {
   //Initializing node properties
-  this.id = nodeData.id;
+  this.id = nodeData.uuid;
   this.parent = parent ? parent : null;
   this.name = nodeData.name;
   this.depth = nodeData.depth;
   this.rank = rank;
   this.count = count;
   this.isLast = isLast;
+  this.visualState = "normal";
+  this.glow = 0;
   this.shapes;
   this.children = [];
   this.open = false;
@@ -14,8 +16,6 @@ var Node = function(nodeData, parent, rank, count, isLast) {
   this.isEdited = false;
   this.knGlow;
   this.backImage;
-  this.buttonImage;
-  this.labelImage;
   this.totalChildren;
   this.appearDestX;
   this.appearDestY;
@@ -66,11 +66,6 @@ var Node = function(nodeData, parent, rank, count, isLast) {
     });
 
     //Writing the text of the skill
-
-    // var name = "Lorem ipsum dolor sit amet";
-    // var name = "Lorem ipsum";
-    //that.name = "Lorem ipsum";
-
     //First attempt
     var text = new Kinetic.Text({
       text: that.name,
@@ -126,23 +121,24 @@ var Node = function(nodeData, parent, rank, count, isLast) {
       startX = 50;
       startY = 200;
     }else {
-      startX = that.parent.rect.attrs.x;
-      startY = that.parent.rect.attrs.y;
+      //Starting coordinates = underneath the parent ID
+      startX = that.parent.shapes.x();
+      startY = that.parent.shapes.y();
 
-      that.appearDestX = that.parent.rect.attrs.x + that.parent.rect.getWidth() + 80;
-      that.appearDestY = (that.parent.rect.attrs.y + (56 / 2)) + ((((56 + 20) * that.parent.totalChildren) - 20) / -2) + ((56 + 20) * (that.parent.children.length - 1));
+      //Final coordinates = each skill in its own place
+      that.appearDestX = that.parent.shapes.x() + that.parent.shapes.getWidth() + 80;
+      that.appearDestY = (that.parent.shapes.y() + (56 / 2)) + ((((56 + 20) * that.parent.totalChildren) - 20) / -2) + ((56 + 20) * (that.parent.children.length - 1));
 
-
+      //Intermediate coordinates = when skills split up
       that.midX = that.appearDestX;
-      that.midY = that.parent.rect.attrs.y;
+      that.midY = that.parent.shapes.y();
     }
 
     var group = new Kinetic.Group({
       x: startX,
       y: startY,
       width:240,
-      height:56,
-      // draggable:true
+      height:56
     });
     group.add(glow, backImage, editButton, labelGroup);
     that.shapes = group;
@@ -151,24 +147,22 @@ var Node = function(nodeData, parent, rank, count, isLast) {
     nodesLayer.add(group);
     nodesLayer.draw();
 
+    //Chained animations of appearing nodes
     if (parent != null) {
       var tween = new Kinetic.Tween({
         node: group, 
         x: that.midX,
         y: that.midY,
-        duration: 0.10 + 0.20 * (that.rank / that.count),
+        duration: 0.05 + 0.10 * (that.rank / that.count),       // Animation speed for a single node is relative to node rank/position, first is fastest, etc.
         onFinish: function() {
-          // console.log(that.appearDestY);
           var tween = new Kinetic.Tween({
             node: group, 
             x: that.appearDestX,
             y: that.appearDestY,
-            duration: 0.10 + 0.10 * (that.rank / that.count),
+            duration: 0.05 + 0.10 * (that.rank / that.count),
             onFinish: function() {
-              if (that.isLast == true) {
-                tree.busy = false;                      //Releasing the tree-wide lock
-                console.log("tree not busy anymore");
-              }
+              //Releasing the tree-wide lock
+              if (that.isLast == true) tree.busy = false;
             }
           }); 
           tween.play();
@@ -177,41 +171,35 @@ var Node = function(nodeData, parent, rank, count, isLast) {
       tween.play();
     }
 
-    //"Rect", unfortunate legacy name...
-    that.rect = group;
-
     //Creating the edge / link with the parent node (except for the root node which has no parent)
     if (that.parent != null) that.edge = new Edge(parent, that);
 
     //Node events
     labelGroup.on("mouseover", function() { document.body.style.cursor = 'pointer'; });
     labelGroup.on("mouseout", function() { document.body.style.cursor = 'default'; });
+    //Click on skill name
     labelGroup.on("click tap", function() {
       //Checking and setting a tree-wide lock. 
       //Will be released after last retrieved node has finished appearing (that.expand) or after last node has finished hiding (that.contract)
       if (tree.busy) return;
       tree.busy = true;
-      console.log("setting tree busy");
 
       // Do we first have to contract the selectedNode before expading a new one ?
-      // debugger;
       if (
-          tree.rootNode.id != that.id &&          //Not for rootNode
-          that.id != tree.selectedNode.id &&      //Not for contracting the selectedNode itself
-          that.depth <= tree.selectedNode.depth && //Not for a node shallower than the selectedNode
-          tree.selectedNode.id != that.parent.id  //Not for parent
+          tree.rootNode.id != that.id &&                     //Not for rootNode
+          that.id != tree.selectedNode.id &&                 //Not for contracting the selectedNode itself
+          that.depth <= tree.selectedNode.depth &&           //Not for a node shallower than the selectedNode
+          tree.selectedNode.id != that.parent.id             //Not for parent
         ) {
-        console.log("contracting previously expanded node");
-        if (that.depth < tree.selectedNode.depth)
-        {
-          console.log("need to find right node, it's not just selectedNode");
+        if (that.depth < tree.selectedNode.depth)           //Currently selectedNode is deeper than current node : 
+        {                                                   //let's find, contract and deSelect current node's sibling which contains the selectedNode
           that.siblings.forEach(function (sibling) {
             if (sibling.open && sibling.id != that.id) {
               sibling.contract(false);
               tree.selectedNode.deSelect();
             }
           });
-        } else {
+        } else {                                            //Contract and deSelect previously selectedNode
           tree.selectedNode.contract(false);
           tree.selectedNode.deSelect();
         }
@@ -223,29 +211,39 @@ var Node = function(nodeData, parent, rank, count, isLast) {
         that.expand();
       }else {
         //Node is open, contracting it
-        console.log("entering contract");
         that.contract();
       }
     });
 
+    
     editButton.on("mouseover", function() { document.body.style.cursor = 'pointer'; });
     editButton.on("mouseout", function() { document.body.style.cursor = 'default'; });
+    //Click on "+" symbol for node editing
     editButton.on("click tap", function() {
-      // console.log(that.panel);
-      // debugger;
-      if (tree.editedNode && tree.editedNode.id != that.id)
-      {
-        tree.editedNode.finishEdit();
-        tree.selectedNode.deSelect();
+      //Checking and setting a tree-wide lock. 
+      //Will be released after panel slide in / slide out
+      if (tree.busy) return;
+      tree.busy = true;
+
+      //This takes care of switching from an edited node to another one
+      //We need to chain the finishEdit of the previous node with the startEdit of the next one
+      //The tree lock is released at the end of the startEdit
+      if (tree.editedNode && tree.editedNode.id != that.id) {
+        tree.editedNode.finishEdit(function() { 
+          that.startEdit();
+        });
+        return;
       }
 
+      //This takes care of the normal situation of entering / exiting edit mode for a node when no other node was being edited
       if (that.isEdited == false) {
         that.startEdit();
       }else {
         that.finishEdit();
       }
-    })
+    });
 
+  // End of Node constructor
   }).call();
 
   //Get all visible children, recursively (stored in global array)
@@ -256,52 +254,40 @@ var Node = function(nodeData, parent, rank, count, isLast) {
     });
   }
 
-  //Unused function => delete it ?
-  this.hasChildWithId = function(id) {
-    var result;
-
-    this.children.forEach(function(child) {
-      if (child.id == id) {
-        result = child;
-      }
-    });
-
-    return result;
-  }
-
-  //Query the DB for the children and show them
+  //Query the API for the children and show them
   this.expand = function() {
+    console.log(that);
     $.ajax({
       url: "http://192.168.0.60/skp/web/api/getNodeChildren/" + that.id + "/",
     }).done(function(json) {
+      console.log(json);
       that.totalChildren = json.data.length;
 
       if (that.totalChildren > 0) {
         that.open = true;
-        that.backImage.setImage($("img#node-glow-children")[0]);
-        that.knGlow.setImage($("img#glow-children")[0]);
-      }else {
-        //No children, releasing tree lock
-        console.log("tree not busy anymore");
-        tree.busy = false;
-        that.backImage.setImage($("img#node-glow-children")[0]);
-        that.knGlow.setImage($("img#glow-nochildren")[0]);
-      }
+        that.setVisualState("glow-children");
 
-      var i = 0;
-      var isLast = false;
-      json.data.forEach(function(child) {
-        if (++i == json.data.length) isLast = true;
-        new Node(child, that, i, json.data.length, isLast);
-      });
+        //Iterate through children to add them
+        //isLast parameter is needed to release the tree lock after adding the last node
+        var i = 0;
+        var isLast = false;
+
+        json.data.forEach(function(child) {
+          if (++i == json.data.length) isLast = true;
+          new Node(child, that, i, json.data.length, isLast);
+        });
+
+      }else {
+        //No children, releasing tree lock now
+        tree.busy = false;
+        that.setVisualState("glow-nochildren");
+      }
     });
   }
 
   //Hiding and destroying the children
   this.contract = function(releaseTreeLock) {
     if (releaseTreeLock == null) releaseTreeLock = true;
-    //tree.busy = true;
-    //console.log("setting tree busy");
 
     //Getting all children, recursively
     that.getChildrenRecursive();
@@ -311,7 +297,7 @@ var Node = function(nodeData, parent, rank, count, isLast) {
 
     //Adding all children to the group
     recursiveChildren.forEach(function(child) {
-      group.add(child.rect, child.edge.shape);
+      group.add(child.shapes, child.edge.shape);
     });
 
     //Group is add to the layer
@@ -324,26 +310,22 @@ var Node = function(nodeData, parent, rank, count, isLast) {
         duration: 0.4,
         scaleX: 0,
         scaleY: 0,
-        x: that.rect.attrs.x + that.rect.getWidth(),
-        y: that.rect.attrs.y + that.rect.getHeight() / 2,
+        x: that.shapes.x() + that.shapes.getWidth(),
+        y: that.shapes.y() + that.shapes.getHeight() / 2,
         onFinish: function() {
           recursiveChildren.forEach(function(child) {
-            child.rect.destroy();
+            child.shapes.destroy();
             child.edge.shape.destroy();
           });
           //Emptying the global array for future use
           recursiveChildren = [];
           group.destroy();
 
-          that.knGlow.setImage($("img#glow-nochildren")[0]);
-          that.backImage.setImage($("img#node-glow-nochildren")[0]);
+          that.setVisualState("normal");
           
           //Emptying this node's list of children
           that.children = [];
-          if (releaseTreeLock == true) {
-            tree.busy = false;
-            console.log("tree not busy anymore");
-          }
+          if (releaseTreeLock == true) tree.busy = false;
           that.open = false;
         }
       });
@@ -352,53 +334,24 @@ var Node = function(nodeData, parent, rank, count, isLast) {
     tween.play();
   }
 
-  //Selection of the node : glow super power!
+  //Selection of the node
   this.select = function() {
-    if (that.isSelected) {
-      console.log("not selecting (already selected) " + that.name);
-      return;
-    }else {
-      console.log("selecting " + that.name);
+    if (that.isSelected) return;
+
+    //deSelect previously selectedNode (only if it's not the current node itSelf)
+    if (tree.selectedNode && tree.selectedNode.id != that.id) tree.selectedNode.deSelect(); 
+
+    //Exiting edit mode for previous editedNode that is not the current node itself
+    if (tree.editedNode && that.id != tree.editedNode.id) {
+      tree.editedNode.finishEdit();
     }
-
-    if (tree.selectedNode && tree.selectedNode.id != that.id) tree.selectedNode.deSelect();
-    
-
-    if (that.edge != null) that.edge.selected = true;
-
-    var tween = new Kinetic.Tween({
-      node: that.knGlow, 
-      duration: 0.5,
-      opacity: 1
-    });
-
-    tween.play();
 
     that.isSelected = true;
     tree.selectedNode = that;
   }
 
   this.deSelect = function() {
-    // console.log(that.isSelected);
-    if (!that.isSelected) {
-      console.log("not deSelecting (already deSelected) " + that.name);
-      return;
-    }else {
-      console.log("deSelecting " + that.name);
-    }
-
-    if (that.edge != null) that.edge.selected = false;
-
-    that.knGlow.setImage($("img#glow-nonotch")[0]);
-    that.backImage.setImage($("img#node-normal")[0]);
-
-    var tween = new Kinetic.Tween({
-      node: that.knGlow, 
-      duration: 0.5,
-      opacity: 0,
-    });
-
-    tween.play();
+    if (!that.isSelected) return;
 
     that.isSelected = false;
     tree.selectedNode = null;
@@ -407,37 +360,99 @@ var Node = function(nodeData, parent, rank, count, isLast) {
   this.startEdit = function() {
     if (that.isEdited) return;
 
-    that.select();
+    that.panel = new Panel(that, {
+      onComplete: function() {
+        tree.busy = false;
+      }
+    });
 
-    that.panel = new Panel(that);
-
-    that.backImage.setImage($("img#node-edit")[0]);
-    that.text.setFill("#fff");
-
-    // Partial redraws not effective...
-    nodesLayer.draw();
+    that.setVisualState("normal-edit");
 
     that.isEdited = true;
     tree.editedNode = that;
   }
 
-  this.finishEdit = function() {
+  this.finishEdit = function(onComplete) {
     if (!that.isEdited) return;
 
-    that.panel.close({
-      onComplete: function () {
-        delete that.panel;
-      }
-    });
-
-    if (that.totalChildren > 0) that.backImage.setImage($("img#node-glow-children")[0]);
-    else that.backImage.setImage($("img#node-glow-nochildren")[0]);
-    that.text.setFill("#333333");
-
-    // Partial redraws not effective...
-    nodesLayer.draw();
+    if (that.panel) {
+      that.panel.close({
+        onComplete: function () {
+          delete that.panel;
+          actionsCount = 0;
+          if (onComplete) {
+            onComplete.call();      //Animation is being chained with new panel slide in, so tree is still busy
+          }else {
+            tree.busy = false;
+          }
+        }
+      });
+    }
 
     that.isEdited = false;
     tree.editedNode = null;
+
+    if (that.open == true) {
+      that.setVisualState("glow-children");
+    } else that.setVisualState("normal");
+
+  }
+
+  this.setVisualState = function (state) {
+    switch (state) {
+      case "normal":
+        that.knGlow.setImage($("img#glow-nonotch")[0]);
+        that.backImage.setImage($("img#node-normal")[0]);
+        if (that.edge != null) that.edge.selected = false;
+        that.text.setFill("#333333");
+        that.setGlow(0);
+        break;
+      case "glow-children":
+        if (!that.isEdited) {
+          that.backImage.setImage($("img#node-glow-children")[0]);
+          that.knGlow.setImage($("img#glow-children")[0]);
+          that.text.setFill("#333333");
+        }
+        if (that.edge != null) that.edge.selected = true;
+        that.setGlow(1);
+        break;
+      case "glow-nochildren":
+        if (!that.isEdited) {
+          that.backImage.setImage($("img#node-glow-nochildren")[0]);
+          that.knGlow.setImage($("img#glow-nochildren")[0]);
+          that.text.setFill("#333333");
+        }
+        if (that.edge != null) that.edge.selected = true;
+        that.setGlow(1);
+        break;
+      case "normal-edit":
+        that.backImage.setImage($("img#node-edit")[0]);
+        that.text.setFill("#fff");
+        break;
+      case "glow-edit":
+        if (that.totalChildren > 0) that.backImage.setImage($("img#node-glow-children")[0]);
+        else that.backImage.setImage($("img#node-glow-nochildren")[0]);
+        that.text.setFill("#333333");
+        break;
+    }
+    nodesLayer.draw();
+
+    that.visualState = state;
+  }
+
+  this.setGlow = function (state) {
+    if (that.glow == state) return;
+
+    var opacity = (state == 1) ? 1 : 0;
+
+    var tween = new Kinetic.Tween({
+      node: that.knGlow, 
+      duration: 0.5,
+      opacity: opacity
+    });
+
+    tween.play();
+
+    that.glow = state;
   }
 }

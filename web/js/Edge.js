@@ -5,10 +5,10 @@ var Edge = function(nodeFrom, nodeTo) {
   var that = this;
 
   this.getStartEndPoints = function () {
-    edgeStartX = that.nodeFrom.rect.attrs.x + that.nodeFrom.rect.getWidth();
-    edgeStartY = that.nodeFrom.rect.attrs.y + that.nodeFrom.rect.getHeight() / 2;
-    edgeEndX = that.nodeTo.rect.attrs.x
-    edgeEndY = that.nodeTo.rect.attrs.y + that.nodeTo.rect.getHeight() / 2;
+    edgeStartX = that.nodeFrom.shapes.x() + that.nodeFrom.shapes.getWidth();
+    edgeStartY = that.nodeFrom.shapes.y() + that.nodeFrom.shapes.getHeight() / 2;
+    edgeEndX = that.nodeTo.shapes.x()
+    edgeEndY = that.nodeTo.shapes.y() + that.nodeTo.shapes.getHeight() / 2;
 
     return {
       nodeFrom: {

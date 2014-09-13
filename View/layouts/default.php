@@ -8,7 +8,7 @@
 	<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="js/kinetic-v5.1.0.js"></script>
-	<script>var rootNodeId=<?php echo $rootNode->getId(); ?>;</script>
+	<script>var rootNodeId="<?php echo $rootNode->getUuid(); ?>";</script>
 	<script type="text/javascript" src="js/Node.js"></script>
 	<script type="text/javascript" src="js/Edge.js"></script>
 	<script type="text/javascript" src="js/Tree.js"></script>

@@ -118,7 +118,7 @@ $(window).load(function  () {
     nodesLayer = new Kinetic.Layer();
     // nodesLayer.listening(false);
 
-    var skills = new Node({id: rootNodeId, name: "Skills"}, null);
+    var skills = new Node({uuid: rootNodeId, name: "Skills"}, null);
   
 
     stage.add(backLayer);
