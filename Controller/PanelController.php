@@ -5,6 +5,7 @@
     use \View\AjaxView;
     use \Model\SkillManager;
     use \Model\TranslationManager;
+    use \Model\Skill;
 
     class PanelController {
 
@@ -19,11 +20,8 @@
 
             $params['skills'] = array();
             foreach($allSkillNodes as $node){
-                $n = array(
-                    'id'    => $node->getId(),
-                    'name'  => $node->getProperty('name')
-                );
-                $params['skills'][] = $n;
+                $skill = new Skill($node);
+                $params['skills'][] = $skill;
             }
 
             $view = new AjaxView("add_skill_subpanel.php", $params);

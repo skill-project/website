@@ -1,9 +1,9 @@
 <form method="POST" action="<?php echo \Controller\Router::url("addSkill"); ?>">
     <div>
-        <label for="skillParentId"><?php echo _("Skill parent"); ?></label>
-        <select name="skillParentId" id="skillParentId">
+        <label for="skillParentUuid"><?php echo _("Skill parent"); ?></label>
+        <select name="skillParentUuid" id="skillParentUuid">
             <?php foreach($skills as $skill): ?>
-                <option value="<?php echo $skill['id']; ?>"><?php echo $skill['name']; ?></option>
+                <option value="<?php echo $skill->getUuid(); ?>"><?php echo $skill->getName(); ?></option>
             <?php endforeach; ?>
         </select>
     </div>

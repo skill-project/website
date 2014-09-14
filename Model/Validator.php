@@ -99,12 +99,12 @@
             }
         }
 
-        public function validateSkillParentId($skillParentId){
-            if (empty($skillParentId) && $skillParentId != 0){
-                $this->addError("skillParentId", _("Please select a skill as parent of your node."));
+        public function validateSkillParentUuid($skillParentUuid){
+            if (empty($skillParentUuid)){
+                $this->addError("skillParentUuid", _("Please select a skill as parent of your node."));
             }
-            elseif(!is_numeric($skillParentId)){
-                $this->addError("skillParentId", _("The parent is not valid."));  
+            elseif(!preg_match("#^[a-f0-9]{14}f[a-f0-9]{8}$#", $skillParentUuid)){
+                $this->addError("skillParentUuid", _("The parent is not valid."));  
             }
         }
 

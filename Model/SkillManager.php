@@ -6,6 +6,7 @@
     use \Everyman\Neo4j\Traversal;
     use \Everyman\Neo4j\Relationship;
     use \Everyman\Neo4j\Cypher\Query;
+    use \Cocur\Slugify\Slugify;
 
     /*
     [0] => __construct
@@ -45,10 +46,16 @@
         }
 
 
-
         public function save(Skill $skill, $skillParentUuid = null){
-            $skillNode = $skill->getNode();
 
+            //if new, set slug
+            if (empty($skill->getSlug())){
+                $slugify = new Slugify();
+                $slug = $slugify->slugify($skill->getName()) . "-" . substr($skill->getUuid(), 0, 14);
+                $skill->setSlug($slug);
+            }
+
+            $skillNode = $skill->getNode();
             $skillNode->save();
 
             //add skill label
@@ -57,7 +64,7 @@
             $skill->setNode($skillNode);
             $skill->hydrateFromNode();
 
-            echo $skillParentUuid;
+            echo $skillNode->getProperty("uuid");
 
             //save parent child relationship
             if ($skillParentUuid){
@@ -205,6 +212,85 @@
             $cypher = "MATCH (skill:Skill { uuid: {uuid} }) RETURN skill LIMIT 1";
             $query = new Query($this->client, $cypher, array(
                 "uuid" => $uuid)
+            );
+            $resultSet = $query->getResultSet();
+            if ($resultSet->count() == 1){
+                $skill = new Skill();
+                $skill->setNode($resultSet[0]['skill']);
+                $skill->hydrateFromNode();
+                return $skill;
+            }
+
+            return false;
+        }
+
+        /**
+         * Return all parents up to the root, and all parent's siblings, false on failure
+         * @param string Slug
+         * @return mixed 
+         */
+        public function findNodePathToRoot($slug){
+
+            $cypher = "MATCH (child:Skill)<-[:HAS*0..1]-(parents:Skill)-[:HAS*]->(s:Skill) 
+                        WHERE s.slug = {slug}
+                        RETURN parents,s,child
+                        ORDER BY child.depth ASC";
+            $query = new Query($this->client, $cypher, array(
+                "slug" => $slug)
+            );
+            $resultSet = $query->getResultSet();
+
+            if ($resultSet->count() >= 1){
+                $path = array();
+                $parentsAdded = array();
+                $childrenAdded = array();
+
+                
+                foreach($resultSet as $row){
+                    $parentUuid = $row['parents']->getProperty("uuid");
+
+                    //first, create first level arrays
+                    if (!in_array($parentUuid, $parentsAdded)){
+                        $level = array(
+                            "uuid" => $parentUuid,
+                            "children" => array()
+                        );
+
+                        $path[] = $level;
+                        $parentsAdded[] = $parentUuid;
+                    }
+
+                    //then add children to right level array
+                    $childUuid = $row['child']->getProperty("uuid");
+
+                    //do not add himself to array
+                    if ($parentUuid == $childUuid){ continue; }
+
+                    if (!in_array($childUuid, $childrenAdded)){
+                        for($i=0;$i<count($path);$i++){
+                            if ($path[$i]['uuid'] == $parentUuid){
+                                $skill = new Skill($row['child']);
+                                $path[$i]['children'][] = $skill->getJsonData();
+                                $childrenAdded[] = $childUuid;
+                            }
+                        }
+                    }
+                }
+                return $path;
+            }
+
+            return false;
+        }
+
+        /**
+         * Return a Skill object based on his slug, false on failure
+         * @param string $id
+         * @return mixed 
+         */
+        public function findBySlug($slug){
+            $cypher = "MATCH (skill:Skill { slug: {slug} }) RETURN skill LIMIT 1";
+            $query = new Query($this->client, $cypher, array(
+                "slug" => $slug)
             );
             $resultSet = $query->getResultSet();
             if ($resultSet->count() == 1){

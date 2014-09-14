@@ -258,7 +258,7 @@ var Node = function(nodeData, parent, rank, count, isLast) {
   this.expand = function() {
     console.log(that);
     $.ajax({
-      url: "http://192.168.0.60/skp/web/api/getNodeChildren/" + that.id + "/",
+      url: baseUrl + "api/getNodeChildren/" + that.id + "/",
     }).done(function(json) {
       console.log(json);
       that.totalChildren = json.data.length;

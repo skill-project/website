@@ -84,7 +84,7 @@
         }
 
         /**
-         * get one node by id
+         * get one node by uuid
          */
         public function getNodeAction($uuid){
             
@@ -93,6 +93,21 @@
 
             $json = new \Model\JsonResponse();
             $json->setData($skill->getJsonData());
+            $json->send();
+
+        }
+
+
+        /**
+         * get all nodes up to the root
+         */
+        public function getNodePathToRootAction($slug){
+            
+            $skillManager = new SkillManager();
+            $path = $skillManager->findNodePathToRoot($slug);
+
+            $json = new \Model\JsonResponse();
+            $json->setData($path);
             $json->send();
 
         }
@@ -248,14 +263,14 @@
                 
 
                 $skillName = $_POST['skillName'];
-                $skillParentId = $_POST['skillParentId'];
+                $skillParentUuid = $_POST['skillParentUuid'];
 
                 $validator = new \Model\Validator();
                 $validator->validateSkillName($skillName);
-                $validator->validateSkillParentId($skillParentId);
+                $validator->validateSkillParentUuid($skillParentUuid);
 
                 $skillManager = new SkillManager();
-                $parentNode = $skillManager->findById( $skillParentId );
+                $parentNode = $skillManager->findByUuid( $skillParentUuid );
 
                 
                 if ($validator->isValid() && $parentNode){
@@ -265,7 +280,7 @@
                     $skill->setName($skillName);
                     $skill->setDepth( $parentNode->getDepth() + 1 );
 
-                    $skillManager->save($skill, $skillParentId);
+                    $skillManager->save($skill, $skillParentUuid);
 
                     //add creator skill relationship
                     $userNode = $this->client->getNode($_SESSION['user']['id']);

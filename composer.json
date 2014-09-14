@@ -10,6 +10,7 @@
         "everyman/neo4jphp":"dev-master",
         "symfony/routing":"dev-master",
         "symfony/http-foundation":"dev-master",
-        "fzaninotto/faker": "dev-master"
+        "fzaninotto/faker": "dev-master",
+        "cocur/slugify": "@stable"
     }
 }

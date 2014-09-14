@@ -12,6 +12,7 @@
 	<script type="text/javascript" src="js/kinetic-v5.1.0.js"></script>
 	<script>
 		var rootNodeId="<?php echo $rootNode->getUuid(); ?>";
+		var baseUrl="<?= \Config\Config::BASE_URL ?>";
 		<?php if (!empty($action)){ ?>var action="<?php echo $action; ?>";<?php } ?>
 		<?php if (!empty($goToUUID)){ ?>var goToUUID="<?php echo $goToUUID; ?>";<?php } ?>
 	</script>

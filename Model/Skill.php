@@ -9,6 +9,7 @@
         //uuid in Entity
         protected $name;
         protected $depth;
+        protected $slug;
         
         protected $node = null;
 
@@ -56,6 +57,7 @@
             $this->node->setProperties(
                 array(
                     "id" => $this->id,
+                    "slug" => $this->slug,
                     "uuid" => $this->uuid,
                     "name" => $this->name,
                     "depth" => $this->depth
@@ -80,6 +82,7 @@
             $data = array(
                 "uuid" => $this->uuid,
                 "name" => $this->name,
+                "slug" => $this->slug,
                 "depth" => $this->depth
             );
             return $data;
@@ -132,8 +135,35 @@
         public function setDepth($depth)
         {
             $this->depth = $depth;
-
+            $this->getNode()->setProperty("depth", $this->depth);
             return $this;
         }
 
+    
+        /**
+         * Gets the value of slug.
+         *
+         * @return mixed
+         */
+        public function getSlug()
+        {
+            return $this->slug;
+        }
+
+        /**
+         * Sets the value of slug.
+         *
+         * @param mixed $slug the slug
+         *
+         * @return self
+         */
+        public function setSlug($slug)
+        {
+            $this->slug = $slug;
+            if (!empty($this->getNode())){
+                $this->getNode()->setProperty('slug', $this->slug);
+            }
+
+            return $this;
+        }
     }

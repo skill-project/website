@@ -75,6 +75,14 @@
             array('controller' => 'Api', 'action' => 'getNode'))
     );
 
+
+    $routes->add(
+        'getNodePathToRoot',
+        new Route('/api/getNodePathToRoot/{slug}/', 
+            array('controller' => 'Api', 'action' => 'getNodePathToRoot'))
+    );
+
+
     $routes->add(
         'searchNode',
         new Route('/api/searchNode/{keywords}/',
