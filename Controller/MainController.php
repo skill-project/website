@@ -38,7 +38,7 @@
                 "rootNode"  => $rootNode,
                 "title"     => "Home !",
                 "action"    => "goto",
-                "jsonTest"  => $json->getJson($path, false),
+                "jsonAutoLoad"  => $json->getJson($path, false),
                 "slug"      => $slug)
             );
 

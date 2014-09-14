@@ -6,46 +6,40 @@ var Tree = function() {
     this.editedNode;
     this.rootNodeReady = $.Callbacks("unique");
     this.readyForNextLevel = $.Callbacks("unique");
+    this.autoLoad = false;
+    this.autoLoadCurrentDepth;
 
     var that = this;
 
-    this.getNodeById = function(id) {
-    	
-    }
+    //Action is set by PHP based on URL, sort of controller/route for JS
+    //this.autoload : the tree will expand itself up to the requested node
+    if (action == "goto") this.autoLoad = true;
 
+    //Tree callback, fired when the rootNode is fully initialized
     this.rootNodeReady.add(function () {
-     //that.rootNode.select().expand();
-     that.rootNode.select();
-     that.readyForNextLevel.fire();
+        //Starting autoload
+        if (tree.autoLoad == true) {
+            tree.autoLoadCurrentDepth = 0;
+            // tree.rootNode.select();
+            tree.readyForNextLevel.fire();
+        }
     });
 
+    //Tree callback, fired when the last node has finished appearing
+    //Currently, this callback function is only used for autoloading, so it stops if autoload is false
     this.readyForNextLevel.add(function () {
-        console.log(tree.rootNode);
-        console.log(tree.selectedNode);
-        if (!tree.rootNode.open)
-        {
-            console.log(jsonTest.data[tree.selectedNode.depth - 1]);
-            var children = jsonTest.data[tree.selectedNode.depth - 1].children;
-        }else {
-            if (tree.selectedNode.depth == jsonTest.data.length) {
-                tree.nodes[jsonTest.data[tree.selectedNode.depth - 1].selectedSkill].select();
-                tree.selectedNode.setVisualState("glow-nochildren");
+        if (!tree.autoLoad) return;
 
-                return;
-            }
-            else var children = jsonTest.data[tree.selectedNode.depth].children;
+        if (tree.autoLoadCurrentDepth != jsonAutoLoad.data.length) {
+            var children = jsonAutoLoad.data[tree.autoLoadCurrentDepth].children;
+            if (tree.autoLoadCurrentDepth == 0) tree.rootNode.select();
+            else tree.nodes[jsonAutoLoad.data[tree.autoLoadCurrentDepth].uuid].select();
 
-            tree.nodes[jsonTest.data[tree.selectedNode.depth].id].select();
-        }
-
-        tree.selectedNode.totalChildren = children.length;
-
-        if (tree.selectedNode.totalChildren > 0) {
+            //Same logic as in Node:labelGroup.on("click")
+            tree.selectedNode.totalChildren = children.length;            
             tree.selectedNode.open = true;
             tree.selectedNode.setVisualState("glow-children");
 
-            //Iterate through children to add them
-            //isLast parameter is needed to release the tree lock after adding the last node
             var i = 0;
             var isLast = false;
 
@@ -53,10 +47,15 @@ var Tree = function() {
               if (++i == children.length) isLast = true;
               new Node(child, tree.selectedNode, i, children.length, isLast);
             });
+
+            //Increment autoLoadCurrentDepth to be ready to handle next depth in json when the last node has finished appearing
+            tree.autoLoadCurrentDepth++;
         }
-    // that.selectedNode.children[Object.keys(that.selectedNode.children)[0]].select().expand();
+        else {  //We have reached the end of the json, no more depths, select the final Skill and make it glow!
+            tree.nodes[jsonAutoLoad.data[tree.autoLoadCurrentDepth - 1].selectedSkill].select();
+            tree.selectedNode.setVisualState("glow-nochildren");
+            tree.autoLoad = false;
+        }        
     });
     
 }
-
-//54148a1c5ea7b2f95467220

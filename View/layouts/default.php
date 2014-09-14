@@ -15,7 +15,7 @@
 		var rootNodeId="<?= $rootNode->getUuid(); ?>";
 		var baseUrl="<?= \Config\Config::BASE_URL ?>";
 		<?php if (!empty($action)){ ?>var action="<?= $action; ?>";<?php } ?>
-		<?= "var jsonTest = " . $jsonTest; ?>
+		<?php if (!empty($jsonAutoLoad)) echo "var jsonAutoLoad = " . $jsonAutoLoad; ?>
 	</script>
 	
 	<script type="text/javascript" src="js/Node.js"></script>
