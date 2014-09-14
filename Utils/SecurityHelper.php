@@ -2,6 +2,8 @@
 
     namespace Utils;
 
+    use \Model\User;
+
     class SecurityHelper {
 
         private $pepper = "biq0e923kfjw93Fwe90T#gr09w0fdfj9dfw23r2390QGGdjsgiadjob()fasdjk*";
@@ -44,10 +46,24 @@
                 $userManager = new \Model\UserManager;
                 $user = $userManager->findByEmail($_SESSION['user']['email']);
                 if ($user){
+                    self::putUserDataInSession($user);
                     return $user;
                 }
             }
             return false;
         }
+
+
+        public static function putUserDataInSession(User $user){
+            $sessionUser = array(
+                "id" => $user->getId(),
+                "uuid" => $user->getUuid(),
+                "role" => $user->getRole(),
+                "username" => $user->getUsername(),
+                "email" => $user->getEmail()
+            );
+            $_SESSION['user'] = $sessionUser;
+        }
+
 
     }

@@ -9,6 +9,7 @@
 		protected $username;
 		protected $email;
 		protected $password;
+		protected $role;		//user or admin
 		protected $salt;
 		protected $token;
 		protected $ipAtRegistration;
@@ -52,6 +53,7 @@
 			$this->node->setProperty("uuid", $this->uuid);
 			$this->node->setProperty("username", $this->username);
 			$this->node->setProperty("email", $this->email);
+			$this->node->setProperty("role", $this->role);
 			$this->node->setProperty("password", $this->password);
 			$this->node->setProperty("salt", $this->salt);
 			$this->node->setProperty("token", $this->token);
@@ -67,6 +69,10 @@
 				$this->generateNode();
 			}
 			return $this->node;
+		}
+
+		public function isAdmin(){
+			return ($this->getRole() == "admin");
 		}
 
 		public function getUsername(){
@@ -132,4 +138,28 @@
 		public function setDateModified($dateModified){
 			$this->dateModified = $dateModified;
 		}
+		
+	    /**
+	     * Gets the value of role.
+	     *
+	     * @return mixed
+	     */
+	    public function getRole()
+	    {
+	        return $this->role;
+	    }
+
+	    /**
+	     * Sets the value of role.
+	     *
+	     * @param mixed $role the role
+	     *
+	     * @return self
+	     */
+	    public function setRole($role)
+	    {
+	        $this->role = $role;
+
+	        return $this;
+	    }
 	}

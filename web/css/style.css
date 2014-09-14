@@ -6,6 +6,11 @@ body {
     background-color:#282828;
 }
 
+a {
+    text-decoration: none;
+    color: #1ADAE6;
+}
+
 #avenir-book {
     font-family: "Avenir-Book";
 }
@@ -30,6 +35,7 @@ body {
     visibility: hidden;
 }
 
+/* PANEL */
 #panel {
     position:absolute;
     right:0px;
@@ -39,7 +45,175 @@ body {
     height:100%;
     background-color:black;
     display:none;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
+
+#panels-container {
+    width: 646px;
+    position: relative;
+}
+
+.panel-hidden {
+    display: none;
+}
+
+#first-panel, #subpanel {
+    float: left;
+    width: 323px;
+}
+
+.panel-content{
+    margin: 15px 20px;
+    position: relative;
+}
+
+.panel-top {
+    font-size: 36px;
+}
+
+#panel h3 {
+    margin: 0;
+    display: inline-block;
+    font-weight: normal;
+    font-size: 32px;
+}
+
+#close-panel-btn {
+    display: inline-block;
+    float: right;
+}
+
+a.panel-btn {
+    color: #FFF;
+    font-size: 18px;
+    text-decoration: none;
+    height: 78px;
+    line-height: 78px;
+    width: 100%;
+    border-top: 1px solid #FFF;
+    display: block;
+}
+
+a.panel-btn.last {
+    border-bottom: 1px solid #FFF;
+}
+
+.back-to-panel-btn {
+    font-size: 18px;
+    color: #FFF;
+    margin-top: 4px;
+}
+
+.panel-top .skillName {
+    font-size: 13px;
+    margin: -2px 0 7px 0;
+}
+
+a.panel-btn .arrow-btn {
+    display: inline-block;
+    font-size: 22px;
+    position: relative;
+}
+
+a.panel-btn .arrow-btn-r {
+    margin-left: 24px;
+}
+
+a.panel-btn .arrow-btn-l {
+    margin-right: 10px;
+}
+
+.panel-bottom {
+
+}
+
+#panel label {
+    font-size: 14px;
+    display: block;
+    margin: 30px 0 7px 0;
+}
+
+#panel input[type=text] {
+    border: 1px solid #FFF;
+    color: #FFF;
+    background: none;
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    font-size: 15px;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+}
+
+.img-btn {
+    background-color: #000;
+}
+.img-btn:hover img { border: 1px solid #FFF; }
+.img-btn:hover img { opacity: 1;}
+.img-btn img {
+    border: 1px solid #222;
+    opacity: 0.2;
+}
+
+.img-btn.selected {
+    color: #1ADAE6;
+}
+
+.img-btn.selected img {
+    -webkit-box-shadow: 0px 0px 5px 2px rgba(26,218,230,1);
+    -moz-box-shadow: 0px 0px 5px 2px rgba(26,218,230,1);
+    box-shadow: 0px 0px 5px 2px rgba(26,218,230,1);
+    border: 1px solid #1ADAE6;
+    opacity: 1;
+}
+
+.img-btn-l {  float: left; }
+.img-btn-r {  float: right; }
+
+#panel input[type=submit] {
+    border: none;
+    background-color: #FFF;
+    color: #222;
+    padding: 12px 15px;
+    font-family: "Avenir-Book";
+    margin-top: 30px;
+}
+
+.img-btn .legend {
+    font-size: 13px;
+    display: block;
+}
+
+#panel .hint {
+    font-size: 12px;
+    margin-top: 7px;
+}
+
+#panel::-webkit-scrollbar{
+    width:10px;
+    background: none;
+    margin-right: 2px;
+} 
+#panel::-webkit-scrollbar-thumb{
+    background-color:#333;
+    border-radius:10px;
+}
+#panel::-webkit-scrollbar-thumb:hover{
+    background-color:#555;
+    border:1px solid #333333;
+}
+#panel::-webkit-scrollbar-thumb:active{
+    background-color:#666;
+    border:1px solid #333333;
+} 
+#panel::-webkit-scrollbar-track{
+    border:none;
+    border-radius:10px;
+    background-color: #000;
+} 
+
+/* END PANEL */
 
 #footer {
     height: 82px;

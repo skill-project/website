@@ -10,6 +10,24 @@
     class PanelController {
 
         /**
+         * Show the first-level panel
+         */
+        public function getPanelAction($uuid){
+
+            $params = array();
+            $user = \Utils\SecurityHelper::getUser();
+
+            $skillManager = new SkillManager();
+            $skill = $skillManager->findByUuid($uuid);
+            $params['skill'] = $skill;
+
+            $panelFile = ($user && $user->isAdmin()) ? "panel_admin" : "panel_user";
+            $view = new AjaxView("$panelFile.php", $params);
+            $view->send();
+        }
+
+
+        /**
          * Show the create skill subpanel page
          */
         public function addSkillSubPanelAction(){

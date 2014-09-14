@@ -298,7 +298,6 @@
         "fzaninotto/faker": 20,
         "cocur/slugify": 0
     },
-    "prefer-stable": false,
     "platform": [
 
     ],

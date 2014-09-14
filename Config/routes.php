@@ -24,9 +24,16 @@
     );
 
 //panel
+
+    $routes->add(
+        'getPanel',
+        new Route('/panel/getPanel/{uuid}/', 
+            array('controller' => 'Panel', 'action' => 'getPanel'))
+    );
+
     $routes->add(
         'addSkillSubPanel',
-        new Route('/panel/add-skill-sub-panel/', 
+        new Route('/panel/add-skill-sub-panel/{uuid}/', 
             array('controller' => 'Panel', 'action' => 'addSkillSubPanel'))
     );
     

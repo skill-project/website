@@ -67,13 +67,7 @@
         }
 
         private function logUser(User $user){
-            $sessionUser = array(
-                "id" => $user->getId(),
-                "uuid" => $user->getUuid(),
-                "username" => $user->getUsername(),
-                "email" => $user->getEmail()
-            );
-            $_SESSION['user'] = $sessionUser;
+            \Utils\SecurityHelper::putUserDataInSession($user);
             Router::redirect(Router::url('home'));
         }
 
@@ -117,6 +111,7 @@
                     $user->setNewUuid();
                     $user->setUsername( $username );
                     $user->setEmail( $email );
+                    $user->setRole( "user" );
                     $user->setSalt( $securityHelper->randomString() );
                     $user->setToken( $securityHelper->randomString() );
 
