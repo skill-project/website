@@ -29,11 +29,16 @@
             $skillManager = new SkillManager();
 
             $rootNode = $skillManager->findRootNode();
+
+            $path = $skillManager->findNodePathToRoot($slug);
+            $json = new \Model\JsonResponse();
+            $json->setData($path);
+            
             $view = new View("home.php", array(
                 "rootNode"  => $rootNode,
                 "title"     => "Home !",
                 "action"    => "goto",
-                "skillManager"  => $skillManager,
+                "jsonTest"  => $json->getJson($path, false),
                 "slug"      => $slug)
             );
 

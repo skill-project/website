@@ -12,12 +12,10 @@
 	<script type="text/javascript" src="js/kinetic-v5.1.0.js"></script>
 	<script type="text/javascript" src="js/compatibility.js"></script>
 	<script>
-		var rootNodeId="<?php echo $rootNode->getUuid(); ?>";
+		var rootNodeId="<?= $rootNode->getUuid(); ?>";
 		var baseUrl="<?= \Config\Config::BASE_URL ?>";
-		<?php if (!empty($action)){ ?>var action="<?php echo $action; ?>";<?php } ?>
-		<?php
-			echo "var jsonTest = " . json_encode($skillManager->findNodePathToRoot($slug)); 
-		?>
+		<?php if (!empty($action)){ ?>var action="<?= $action; ?>";<?php } ?>
+		<?= "var jsonTest = " . $jsonTest; ?>
 	</script>
 	
 	<script type="text/javascript" src="js/Node.js"></script>

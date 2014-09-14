@@ -27,15 +27,20 @@
             $this->data = $data;
         }
 
+        public function getJson($pretty = true){
+            $all['status'] = $this->status;
+            $all['message'] = $this->message;
+            $all['data'] = $this->data;
+            $json = ($pretty) ? json_encode($all, JSON_PRETTY_PRINT) : json_encode($all);
+            return $json;
+        }
+
         /**
          * end the script with the complete json response
          * @todo do NOT allow acao *
          */
         public function send(){
-            $all['status'] = $this->status;
-            $all['message'] = $this->message;
-            $all['data'] = $this->data;
-            $json = json_encode($all, JSON_PRETTY_PRINT);
+            $json = $this->getJson();
             header('Access-Control-Allow-Origin: *');  
             header('Content-Type: application/json');   
             die($json);
