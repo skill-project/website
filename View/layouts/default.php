@@ -10,12 +10,16 @@
 	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
 	<script type="text/javascript" src="js/kinetic-v5.1.0.js"></script>
+	<script type="text/javascript" src="js/compatibility.js"></script>
 	<script>
 		var rootNodeId="<?php echo $rootNode->getUuid(); ?>";
 		var baseUrl="<?= \Config\Config::BASE_URL ?>";
 		<?php if (!empty($action)){ ?>var action="<?php echo $action; ?>";<?php } ?>
-		<?php if (!empty($goToUUID)){ ?>var goToUUID="<?php echo $goToUUID; ?>";<?php } ?>
+		<?php
+			echo "var jsonTest = " . json_encode($skillManager->findNodePathToRoot($slug)); 
+		?>
 	</script>
+	
 	<script type="text/javascript" src="js/Node.js"></script>
 	<script type="text/javascript" src="js/Edge.js"></script>
 	<script type="text/javascript" src="js/Tree.js"></script>

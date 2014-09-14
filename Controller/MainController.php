@@ -25,7 +25,7 @@
         /**
          * goTo a specific skill
          */
-        public function goToAction($uuid){
+        public function goToAction($slug){
             $skillManager = new SkillManager();
 
             $rootNode = $skillManager->findRootNode();
@@ -33,7 +33,8 @@
                 "rootNode"  => $rootNode,
                 "title"     => "Home !",
                 "action"    => "goto",
-                "goToUUID"  =>  $uuid)
+                "skillManager"  => $skillManager,
+                "slug"      => $slug)
             );
 
             $view->send();

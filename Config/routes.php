@@ -13,7 +13,7 @@
 
     $routes->add(
         'goTo',
-        new Route('/skill/{uuid}', 
+        new Route('/skill/{slug}', 
             array('controller' => 'Main', 'action' => 'goTo'))
     );
 

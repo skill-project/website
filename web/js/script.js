@@ -149,11 +149,24 @@ $(window).load(function  () {
     anim.start();
     */
 
-    var skills = new Node({uuid: rootNodeId, name: "Skills"}, null);
-  
 
     stage.add(backLayer);
     stage.add(nodesLayer);
+
+    //Maybe unnecessary to trigger this event, since code execution is linear here
+    /*$(document).on("rootNodeReady", function() {
+      console.log(tree.rootNode.select().expand());
+      // tree.rootNode.select().expand();
+    });*/
+
+    var skills = new Node({uuid: rootNodeId, name: "Skills"}, null);
+
+    
+
+    // $(document).trigger("rootNodeReady");
+
+    // tree.rootNode.select().expand();
+    // tree.selectedNode.children[Object.keys(tree.selectedNode.children)[0]].select().expand();
 
     //stage.on("mousemove", function () {
     $("#kinetic").mousemove(function (e) {

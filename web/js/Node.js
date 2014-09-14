@@ -3,7 +3,7 @@ var Node = function(nodeData, parent, rank, count, isLast) {
   this.id = nodeData.uuid;
   this.parent = parent ? parent : null;
   this.name = nodeData.name;
-  this.depth = nodeData.depth;
+  this.depth = nodeData.depth ? nodeData.depth : 1;
   this.rank = rank;
   this.count = count;
   this.isLast = isLast;
@@ -21,6 +21,7 @@ var Node = function(nodeData, parent, rank, count, isLast) {
   this.appearDestY;
   this.panel;
   this.text;
+  //this.nodeReady = $.Callbacks("unique");
 
   // Needed for nested functions
   var that = this;
@@ -31,8 +32,8 @@ var Node = function(nodeData, parent, rank, count, isLast) {
   //For all nodes, except root node
   if (parent != null) {
       this.siblings = this.parent.children;   //Set siblings (children of parent)
-      tree.nodes.push(this);                  //Add current node to flat list of nodes in Tree object (for quick node retrieval)
-      this.parent.children.push(this);        //Add current node to list of parent's children
+      tree.nodes[this.id] = this;             //Add current node to flat list of nodes in Tree object (for quick node retrieval)
+      this.parent.children[this.id] = this;        //Add current node to list of parent's children
    }
 
   //Constructor
@@ -127,7 +128,7 @@ var Node = function(nodeData, parent, rank, count, isLast) {
 
       //Final coordinates = each skill in its own place
       that.appearDestX = that.parent.shapes.x() + that.parent.shapes.getWidth() + 80;
-      that.appearDestY = (that.parent.shapes.y() + (56 / 2)) + ((((56 + 20) * that.parent.totalChildren) - 20) / -2) + ((56 + 20) * (that.parent.children.length - 1));
+      that.appearDestY = (that.parent.shapes.y() + (56 / 2)) + ((((56 + 20) * that.parent.totalChildren) - 20) / -2) + ((56 + 20) * (Object.keys(that.parent.children).length - 1));
 
       //Intermediate coordinates = when skills split up
       that.midX = that.appearDestX;
@@ -161,8 +162,11 @@ var Node = function(nodeData, parent, rank, count, isLast) {
             y: that.appearDestY,
             duration: 0.05 + 0.10 * (that.rank / that.count),
             onFinish: function() {
-              //Releasing the tree-wide lock
-              if (that.isLast == true) tree.busy = false;
+              //Last child has finished appearing
+              if (that.isLast == true) {
+                tree.busy = false;                              //Releasing the tree-wide lock
+                tree.readyForNextLevel.fire();
+              }
             }
           }); 
           tween.play();
@@ -193,12 +197,13 @@ var Node = function(nodeData, parent, rank, count, isLast) {
         ) {
         if (that.depth < tree.selectedNode.depth)           //Currently selectedNode is deeper than current node : 
         {                                                   //let's find, contract and deSelect current node's sibling which contains the selectedNode
-          that.siblings.forEach(function (sibling) {
+          for (var siblingIndex in that.siblings) {
+            var sibling = that.siblings[siblingIndex];
             if (sibling.open && sibling.id != that.id) {
               sibling.contract(false);
               tree.selectedNode.deSelect();
             }
-          });
+          }
         } else {                                            //Contract and deSelect previously selectedNode
           tree.selectedNode.contract(false);
           tree.selectedNode.deSelect();
@@ -248,19 +253,22 @@ var Node = function(nodeData, parent, rank, count, isLast) {
 
   //Get all visible children, recursively (stored in global array)
   this.getChildrenRecursive = function() {
-    that.children.forEach(function(child) {
-      recursiveChildren.push(child);
-      child.getChildrenRecursive();
-    });
+    for (var child in that.children) {
+      recursiveChildren.push(that.children[child]);
+      that.children[child].getChildrenRecursive();
+    }
   }
 
   //Query the API for the children and show them
-  this.expand = function() {
-    console.log(that);
+  this.expand = function(urlFullJson) {
+    // console.log(that);
+    if (urlFullJson) var url = urlFullJson;
+    else var url = baseUrl + "api/getNodeChildren/" + that.id + "/";
+
     $.ajax({
-      url: baseUrl + "api/getNodeChildren/" + that.id + "/",
+      url: url,
     }).done(function(json) {
-      console.log(json);
+      // console.log(json);
       that.totalChildren = json.data.length;
 
       if (that.totalChildren > 0) {
@@ -316,6 +324,8 @@ var Node = function(nodeData, parent, rank, count, isLast) {
           recursiveChildren.forEach(function(child) {
             child.shapes.destroy();
             child.edge.shape.destroy();
+
+            delete tree.nodes[child.id];
           });
           //Emptying the global array for future use
           recursiveChildren = [];
@@ -348,6 +358,8 @@ var Node = function(nodeData, parent, rank, count, isLast) {
 
     that.isSelected = true;
     tree.selectedNode = that;
+
+    return that;
   }
 
   this.deSelect = function() {
@@ -454,5 +466,13 @@ var Node = function(nodeData, parent, rank, count, isLast) {
     tween.play();
 
     that.glow = state;
+  }
+
+  /*this.nodeReady.add(function() {
+
+  });*/
+
+  if (this.parent == null) {
+    tree.rootNodeReady.fire();
   }
 }
