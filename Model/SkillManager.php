@@ -271,6 +271,9 @@
                             if ($path[$i]['uuid'] == $parentUuid){
                                 $skill = new Skill($row['child']);
                                 $path[$i]['children'][] = $skill->getJsonData();
+                                if ($skill->getSlug() == $slug){
+                                    $path[$i]['selectedSkill'] = $childUuid;
+                                }
                                 $childrenAdded[] = $childUuid;
                             }
                         }
