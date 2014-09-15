@@ -23,6 +23,7 @@
 	<script type="text/javascript" src="js/Edge.js"></script>
 	<script type="text/javascript" src="js/Tree.js"></script>
 	<script type="text/javascript" src="js/Panel.js"></script>
+	<script type="text/javascript" src="js/Camera.js"></script>
 	<script type="text/javascript" src="js/script.js"></script>
 <style>
 @font-face {

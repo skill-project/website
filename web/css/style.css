@@ -26,6 +26,14 @@ a {
     margin:0 auto;
 }
 
+#backdrop {
+    position:absolute;
+    /*width:1600px;*/
+    /*height:600px;*/
+    /*margin:auto;*/
+    /*border:1px solid gray;*/
+}
+
 #kinetic {
     position:relative;
     /*width:1600px;*/

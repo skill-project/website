@@ -2,9 +2,21 @@ var Edge = function(nodeFrom, nodeTo) {
   this.nodeFrom = nodeFrom;
   this.nodeTo = nodeTo;
   this.selected = false;
+  this.x;
+  this.y;
+  this.width;
+  this.height;
   var that = this;
 
   this.getStartEndPoints = function () {
+
+    //Offsets handle correct positioning of the edges with the cached from/to nodes
+    //Cached nodes include the glow image which offsets them. Probably could have been handled differently...
+    var nodeToCachedOffset = 0;
+    var nodeFromCachedOffset = 0;
+    if (that.nodeTo.cached == true) nodeToCachedOffset = 25;
+    if (that.nodeFrom.cached == true) nodeFromCachedOffset = 25;
+
     edgeStartX = that.nodeFrom.shapes.x() + that.nodeFrom.shapes.getWidth();
     edgeStartY = that.nodeFrom.shapes.y() + that.nodeFrom.shapes.getHeight() / 2;
     edgeEndX = that.nodeTo.shapes.x()
@@ -12,12 +24,12 @@ var Edge = function(nodeFrom, nodeTo) {
 
     return {
       nodeFrom: {
-        x: edgeStartX,
-        y: edgeStartY
+        x: edgeStartX + nodeFromCachedOffset,
+        y: edgeStartY + nodeFromCachedOffset
       },
       nodeTo: {
-          x: edgeEndX,
-          y: edgeEndY
+          x: edgeEndX + nodeToCachedOffset,
+          y: edgeEndY + nodeToCachedOffset
       }
     }
   }
@@ -92,6 +104,32 @@ var Edge = function(nodeFrom, nodeTo) {
   this.shape = line;
 
   nodesLayer.add(line);
+
+
+  this.getBoundingBox = function() {
+    var startEndPoints = that.getStartEndPoints();
+    // console.log(startEndPoints);
+
+    var nodeFrom = startEndPoints.nodeFrom;
+    var nodeTo = startEndPoints.nodeTo;
+
+
+    if (nodeFrom.y < nodeTo.y) {
+      return {
+        x1: nodeFrom.x - 5,
+        y1: nodeFrom.y - 5,
+        x2: nodeTo.x + 5,
+        y2: nodeTo.y + 5
+      }
+    }else {
+      return {
+        x1: nodeFrom.x - 5,
+        y1: nodeTo.y - 5,
+        x2: nodeTo.x + 5,
+        y2: nodeFrom.y + 5
+      }
+    }
+  }
 
   
 }

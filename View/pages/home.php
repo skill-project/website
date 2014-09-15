@@ -12,6 +12,7 @@
 		<img src="img/logo-small.png" />
 	</div>
 </div>
+<div id="backdrop"></div>
 <div id="kinetic"></div>
 <div id="panel">
 	Edit Skill

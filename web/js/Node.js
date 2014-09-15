@@ -7,6 +7,7 @@ var Node = function(nodeData, parent, rank, count, isLast) {
   this.rank = rank;
   this.count = count;
   this.isLast = isLast;
+  this.objectType = "node";
   this.visualState = "normal";
   this.glow = 0;
   this.shapes;
@@ -20,8 +21,10 @@ var Node = function(nodeData, parent, rank, count, isLast) {
   this.appearDestX;
   this.appearDestY;
   this.panel;
+  this.cached = false;
+  this.cachedWidth;
+  this.cachedHeight;
   this.text;
-  //this.nodeReady = $.Callbacks("unique");
 
   // Needed for nested functions
   var that = this;
@@ -143,6 +146,8 @@ var Node = function(nodeData, parent, rank, count, isLast) {
     });
     group.add(glow, backImage, editButton, labelGroup);
     that.shapes = group;
+    that.cachedWidth = group.width();
+    that.cachedHeight = group.width();
 
     //Adding the group to the layer and drawing the layer
     nodesLayer.add(group);
@@ -260,15 +265,12 @@ var Node = function(nodeData, parent, rank, count, isLast) {
   }
 
   //Query the API for the children and show them
-  this.expand = function(urlFullJson) {
-    // console.log(that);
-    if (urlFullJson) var url = urlFullJson;
-    else var url = baseUrl + "api/getNodeChildren/" + that.id + "/";
+  this.expand = function() {
+    var url = baseUrl + "api/getNodeChildren/" + that.id + "/";
 
     $.ajax({
       url: url,
     }).done(function(json) {
-      // console.log(json);
       that.totalChildren = json.data.length;
 
       if (that.totalChildren > 0) {
@@ -355,6 +357,8 @@ var Node = function(nodeData, parent, rank, count, isLast) {
     if (tree.editedNode && that.id != tree.editedNode.id) {
       tree.editedNode.finishEdit();
     }
+
+    camera.checkCameraPosition(that);
 
     that.isSelected = true;
     tree.selectedNode = that;
@@ -468,11 +472,50 @@ var Node = function(nodeData, parent, rank, count, isLast) {
     that.glow = state;
   }
 
-  /*this.nodeReady.add(function() {
+  this.getBoundingBox = function() {
+    return {
+      x1: that.shapes.x(),
+      y1: that.shapes.y(),
+      x2: that.shapes.x() + that.cachedWidth,
+      y2: that.shapes.y() + that.cachedHeight
+    }
+  }
 
-  });*/
+  this.cache = function() {
+    that.shapes.cache({
+      x: -25,
+      y: -25,
+      width: that.shapes.width() + 50,
+      height: that.shapes.height() + 50
+    });
+
+    that.shapes.x(that.shapes.x() - 25);
+    that.shapes.y(that.shapes.y() - 25);
+
+    // Tough or impossible to cache custom drawn Shapes (drawFunc)
+    /*
+    var nodeBoundingBox = that.edge.getBoundingBox();
+
+    that.edge.shape.cache({
+      x: nodeBoundingBox.x1,
+      y: nodeBoundingBox.x1,
+      width: nodeBoundingBox.x2 - nodeBoundingBox.x1,
+      height: nodeBoundingBox.y2 - nodeBoundingBox.y1 
+    });*/
+    that.cached = true;
+  }
+
+  this.clearCache = function () {
+    that.shapes.clearCache();
+    that.shapes.x(that.shapes.x() + 25);
+    that.shapes.y(that.shapes.y() + 25);
+
+    that.cached = false;
+  }
 
   if (this.parent == null) {
     tree.rootNodeReady.fire();
   }
+
+  
 }

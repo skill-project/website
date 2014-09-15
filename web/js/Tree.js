@@ -55,7 +55,24 @@ var Tree = function() {
             tree.nodes[jsonAutoLoad.data[tree.autoLoadCurrentDepth - 1].selectedSkill].select();
             tree.selectedNode.setVisualState("glow-nochildren");
             tree.autoLoad = false;
-        }        
+            // camera.checkCameraPosition(tree.selectedNode);
+            //camera.goToCoords(tree.selectedNode.shapes.getAbsolutePosition());
+        }
+        // camera.checkCameraPosition(tree.selectedNode);
+        //if (tree.autoLoadCurrentDepth % 2) camera.goToCoords(tree.selectedNode.shapes.getAbsolutePosition());   
     });
+
+    this.countCachedNodes = function() {
+        var nodesCached = 0;
+        var nodesNotCached = 0;
+        for (var nodeId in tree.nodes) {
+            var node = tree.nodes[nodeId];
+            if (node.cached) nodesCached++;
+            else  nodesNotCached++;
+        }
+
+        console.log("Nodes cached : " + nodesCached);
+        console.log("Nodes not cached : " + nodesNotCached);
+    }
     
 }
