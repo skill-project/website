@@ -20,3 +20,4 @@
 
 <?php include("create-skill-panel.php"); ?>
 <?php include("rename-skill-panel.php"); ?> 
+<?php include("delete-skill-panel.php"); ?> 

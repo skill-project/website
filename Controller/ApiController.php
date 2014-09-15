@@ -117,13 +117,25 @@
          * @todo handle response correctly
          * @param string $uuid
          */
-        function deleteSkillAction($uuid){
+        function deleteSkillAction(){
 
-            $skillManager = new SkillManager();
-            $deletionResult = $skillManager->delete($uuid);
+            SecurityHelper::lock();
+
+            if (!empty($_POST)){
+
+                $skillUuid = $_POST['skillUuid'];
+
+                $validator = new \Model\Validator();
+                $validator->validateSkillUuid($skillUuid);
+
+                if ($validator->isValid()){
+                    $skillManager = new SkillManager();
+                    $deletionResult = $skillManager->delete($skillUuid);
+                }
+            }
 
             if ($deletionResult === true){
-                $json = new \Model\JsonResponse(null, _("Node deleted."));
+                $json = new \Model\JsonResponse("ok", _("Node deleted."));
             }
             else {
                 $json = new \Model\JsonResponse("error", $deletionResult);

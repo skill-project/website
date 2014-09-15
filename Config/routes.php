@@ -117,7 +117,7 @@
 
     $routes->add(
         'deleteSkill',
-        new Route('/api/deleteSkill/{uuid}/', 
+        new Route('/api/deleteSkill/', 
             array('controller' => 'Api', 'action' => 'deleteSkill'))
     );
 

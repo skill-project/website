@@ -90,6 +90,26 @@ var Panel = function(node, initParams) {
                         }
                     });
                 });
+                break;
+            case "delete-skill-panel":
+                $("#delete-skill-form-submit").hide();
+                $(subPanel).find(".sureToDeleteRadio").on("change", function(e){
+                    $("#delete-skill-form-submit").toggle();
+                });
+                $("#delete-skill-form").on("submit", function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        url: $("#delete-skill-form").attr("action"),
+                        type: $("#delete-skill-form").attr("method"),
+                        data: $("#delete-skill-form").serialize(),
+                        success: function(response){
+                            if (response.status == "ok"){
+                                tree.editedNode.finishEdit(); //close the panel, nothing to do here anymore    
+                            }
+                        }
+                    });
+                });
+                break;
         }
 
         //Common events
