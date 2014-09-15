@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bcb596125c9c29c57a98d7e436202151",
+    "hash": "e0e9064c2677915e353e4d8c94c8a18f",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -114,16 +114,16 @@
         },
         {
             "name": "fzaninotto/faker",
-            "version": "dev-master",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "01109315e2bca979d2bb1c88260fde036864c0c6"
+                "reference": "010c7efedd88bf31141a02719f51fb44c732d5a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/01109315e2bca979d2bb1c88260fde036864c0c6",
-                "reference": "01109315e2bca979d2bb1c88260fde036864c0c6",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/010c7efedd88bf31141a02719f51fb44c732d5a0",
+                "reference": "010c7efedd88bf31141a02719f51fb44c732d5a0",
                 "shasum": ""
             },
             "require": {
@@ -135,9 +135,9 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "1.5.x-dev"
-                }
+                "branch-alias": [
+
+                ]
             },
             "autoload": {
                 "psr-0": {
@@ -160,7 +160,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2014-09-09 17:33:15"
+            "time": "2014-06-04 14:43:02"
         },
         {
             "name": "symfony/http-foundation",
@@ -295,7 +295,7 @@
         "everyman/neo4jphp": 20,
         "symfony/routing": 20,
         "symfony/http-foundation": 20,
-        "fzaninotto/faker": 20,
+        "fzaninotto/faker": 0,
         "cocur/slugify": 0
     },
     "platform": [

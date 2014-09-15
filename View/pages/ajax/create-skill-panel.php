@@ -4,10 +4,11 @@
 
     <h3><?= _("CREATE SKILL"); ?></h3>
     <form method="POST" action="<?= \Controller\Router::url("addSkill"); ?>" id="create-skill-form">
+        <input type="hidden" name="selectedSkillUuid" id="selectedSkillUuid" value="<?= $skill->getUuid(); ?>" />
         <input type="hidden" name="skillParentUuid" id="skillParentUuid" value="<?= $skill->getUuid(); ?>" />
         <div>
             <label for="skillName"><?= _("NAME YOUR SKILL") ?></label>
-            <input type="text" name="skillName" id="skillName" maxlength="45" />
+            <input type="text" name="skillName" id="rename-skillName" maxlength="45" />
             <p class="hint"><?= _("Hint: "); ?><?= _('Tell yourself "I can" or "I know how to".'); ?><br /><?= _("45 characters max."); ?></p>
         </div>
         <div>

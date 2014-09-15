@@ -94,6 +94,41 @@
             return true;
         }
 
+
+        /**
+         * Move a skill to a new parent
+         * @param string Skill uuid to move
+         * @param string Skill new parent uuid
+         * @return bool true on success, false otherwise
+         */
+        public function move($skillUuid, $newParentUuid){
+            $cyp = "MATCH 
+                    (oldParent:Skill)-[r:HAS]->(skill:Skill {uuid: {skillUuid}}),
+                    (newParent:Skill {uuid: {newParentUuid}}) 
+                    CREATE 
+                    (newParent)-[newR:HAS {since: timestamp()}]->(skill),
+                    (oldParent)-[historyR:HAD {since: timestamp()}]->(skill) 
+                    DELETE r
+                    RETURN newParent,oldParent,skill,newR";
+            $query = new Query($this->client, $cyp, array(
+                "skillUuid" => $skillUuid, "newParentUuid" => $newParentUuid)
+            );
+            $resultSet = $query->getResultSet();
+
+            return $resultSet;
+        }
+
+        /**
+         * Duplicate a skill to a new parent
+         * @param string Skill uuid to move
+         * @param string Skill new parent uuid
+         * @return bool true on success, false otherwise
+         */
+        public function duplicate($skillUuid, $newParentUuid){
+            
+        }
+
+
         /**
          * Delete a node by uuid, and its relations
          * @return mixed True on deletion, error message otherwise
@@ -120,6 +155,36 @@
             }
             return false;
 
+        }
+
+
+        /**
+         * Update skill depth in db (usefull after a move) 
+         */
+        public function updateDepth($skill){
+            $skillNode = $skill->getNode();
+            $newDepth = $this->countParents( $skill->getUuid() ) + 1;
+            if ($newDepth == $skill->getDepth()){
+                return $newDepth;
+            }
+            $skillNode->setProperty("depth", $newDepth);
+            $skillNode->save();
+        }
+
+        /**
+         * Count number of children of a skill
+         * @param string uuid of the node
+         * @return int Number of children
+         * 
+         */
+        public function countParents($uuid){
+            $cyp = "MATCH (s:Skill {uuid: {uuid}})<-[r:HAS*]-(:Skill) RETURN count(r) as parentsNumber";
+            $query = new Query($this->client, $cyp, array("uuid" => $uuid));
+            $resultSet = $query->getResultSet();
+            $resultSet = $query->getResultSet();
+            foreach($resultSet as $row){
+                return $row['parentsNumber'];
+            }
         }
 
         /**

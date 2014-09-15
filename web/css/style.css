@@ -75,6 +75,7 @@ a {
 .panel-content{
     /*margin: 15px 20px;*/
     /*padding:15px 20px;*/
+    min-height: 100%;
     position: relative;
     background-color:black;
 }
@@ -90,12 +91,14 @@ a {
     font-size: 32px;
 }
 
+#panel h4 {
+    font-size: 18px;
+}
+
 .close-panel-btn {
     display: inline-block;
     float: right;
 }
-
-
 
 a.panel-btn {
     color: #FFF;
@@ -209,6 +212,11 @@ a.panel-btn .arrow-btn-l {
 
 .message-zone {
     margin-left: 15px;
+    background: url("../img/panel-icon-success.png") no-repeat;
+    padding-left: 24px;
+    line-height: 20px;
+    height: 22px;
+    display: none;
 }
 
 .img-btn .legend {

@@ -134,9 +134,41 @@
 
 
         /**
+         * Move or duplicate a skill
+         * @param string $type of move ("move" or "duplicate")
+         */
+        public function moveSkillAction($type){
+            SecurityHelper::lock();
+
+            if (!empty($_POST)){
+
+                $skillUuid = $_POST['skillUuid'];
+                $newParentUuid = $_POST['newParentUuid'];
+
+                $validator = new \Model\Validator();
+                $validator->validateSkillUuid($skillUuid);
+                $validator->validateSkillUuid($newParentUuid);
+
+                if ($validator->isValid()){
+
+                    $skillManager = new SkillManager();
+
+                    if ($type == "move"){
+                        $skillManager->move($skillUuid, $newParentUuid);
+                    }
+                    elseif ($type == "duplicate"){
+                        $skillManager->duplicate($skillUuid, $newParentUuid);
+                    }
+                }
+            }            
+            $json->send();
+        }
+
+
+        /**
          * Translate a skill
          */
-        function translateSkillAction($uuid){
+        public function translateSkillAction($uuid){
 
             SecurityHelper::lock();
 
@@ -180,7 +212,7 @@
         /**
          * Rename a skill
          */
-        function renameSkillAction($uuid){
+        public function renameSkillAction(){
 
             SecurityHelper::lock();
 
@@ -213,9 +245,15 @@
                         ->setProperty('date', date("Y-m-d H:i:s"))
                         ->setProperty('previousName', $previousName)
                         ->save();
+
+                    $json = new \Model\JsonResponse("ok", _("Skill saved !"));
+                    $json->setData($skill->getJsonData());
+                    $json->send();
                 }
                 else {
-                    print_r($validator->getErrors());   
+                    $json = new \Model\JsonResponse("error", _("Something went wrong."));
+                    $json->setData($validator->getErrors());
+                    $json->send(); 
                 }
             }
         }
@@ -245,7 +283,7 @@
             $json->setData($data);
             $json->send();
         }
-        
+
 
         /**
          * Add a new skill
@@ -256,11 +294,14 @@
 
             if (!empty($_POST)){
                 
+                $selectedSkillUuid = $_POST['selectedSkillUuid'];
                 $skillName = $_POST['skillName'];
                 $skillParentUuid = $_POST['skillParentUuid'];
+                $creationType = $_POST['creationType'];
 
                 $validator = new \Model\Validator();
                 $validator->validateSkillName($skillName);
+                $validator->validateSkillUuid($selectedSkillUuid);
                 $validator->validateSkillParentUuid($skillParentUuid);
 
                 $skillManager = new SkillManager();
@@ -279,7 +320,25 @@
                     $rel = $this->client->makeRelationship();
                     $rel->setStartNode($userNode)
                         ->setEndNode($skill->getNode())
+                        ->setProperty("timestamp", microtime())
                         ->setType('CREATED')->save();
+
+                    //if "create as parent" was selected, move the selected skill as a child of 
+                    //the newly created one
+                    if ($creationType == "parent"){
+                        $selectedSkill = $skillManager->findByUuid($selectedSkillUuid);
+                        $skillManager->move($selectedSkillUuid, $skill->getUuid());
+                        $skillManager->updateDepth($selectedSkill);
+
+                        //add move skill relationship
+                        $rel = $this->client->makeRelationship();
+                        $rel->setStartNode($userNode)
+                            ->setEndNode($skill->getNode())
+                            ->setProperty("timestamp", microtime())
+                            ->setProperty("fromParent", $skillParentUuid)
+                            ->setProperty("toParent", $skill->getUuid())
+                            ->setType('MOVED')->save();
+                    }
 
                     $json = new \Model\JsonResponse("ok", _("Skill saved !"));
                     $json->setData($skill->getJsonData());

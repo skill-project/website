@@ -67,13 +67,29 @@ var Panel = function(node, initParams) {
                         data: $("#create-skill-form").serialize(),
                         success: function(response){
                             if (response.status == "ok"){
-                                $("#skillName").val("");
-                                $(subPanel).find(".message-zone").html(response.message);
+                                $("#create-skillName").val("");
+                                $(subPanel).find(".message-zone").html(response.message).css("display", "inline-block");
                             }
                         }
                     });
                 });
                 break;
+            case "rename-skill-panel":
+                $("#rename-skill-form").on("submit", function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        url: $("#rename-skill-form").attr("action"),
+                        type: $("#rename-skill-form").attr("method"),
+                        data: $("#rename-skill-form").serialize(),
+                        success: function(response){
+                            if (response.status == "ok"){
+                                $("#rename-skillName").val("");
+                                $("#panel .skillName").html('"'+response.data.name+'"'); //change the skillname at top of panel
+                                $(subPanel).find(".message-zone").html(response.message).css("display", "inline-block");
+                            }
+                        }
+                    });
+                });
         }
 
         //Common events

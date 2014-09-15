@@ -123,7 +123,7 @@
 
     $routes->add(
         'renameSkill',
-        new Route('/api/renameSkill/{uuid}/', 
+        new Route('/api/renameSkill/', 
             array('controller' => 'Api', 'action' => 'renameSkill'))
     );
 

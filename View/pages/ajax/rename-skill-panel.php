@@ -3,18 +3,26 @@
     <?php include("subpanel-top.php") ?>
 
     <h3><?= _("RENAME"); ?></h3>
-    <form method="POST" action="<?= \Controller\Router::url("addSkill"); ?>" id="rename-skill-form">
+    <form method="POST" action="<?= \Controller\Router::url("renameSkill"); ?>" id="rename-skill-form">
         <input type="hidden" name="skillUuid" id="skillUuid" value="<?= $skill->getUuid(); ?>" />
         <div>
-            <input type="text" name="skillName" id="skillName" maxlength="45" />
+            <input type="text" name="skillName" id="rename-skillName" maxlength="45" />
         </div>
         <div>
-            <label for="creationType"><?= _("WHERE DOES IT GO"); ?></label>
-            <input type="hidden" name="creationType" id="creationType" value="child" />
-        </div>
-        <div>
-            <input type="submit" value="<?= _("CREATE") ?>" />
+            <input type="submit" value="<?= _("OK") ?>" />
             <span class="message-zone"></span>
         </div>
     </form>
+        
+    <?php if (count($previousNames) > 0): ?>
+        <hr />
+        <div>
+            <h4><?php _("PREVIOUS NAMES"); ?></h4>
+            <ul>
+                <?php foreach($previousNames as $name): ?>
+                <li><?php echo $name; ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
 </div>
