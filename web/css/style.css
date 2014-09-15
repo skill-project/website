@@ -53,12 +53,13 @@ a {
     height:100%;
     background-color:black;
     display:none;
-    overflow-x: hidden;
-    overflow-y: scroll;
+    padding: 15px 20px;
+    /*overflow-x: hidden;*/
+    /*overflow-y: scroll;*/
 }
 
 #panels-container {
-    width: 646px;
+    /*width: 646px;*/
     position: relative;
 }
 
@@ -72,8 +73,10 @@ a {
 }
 
 .panel-content{
-    margin: 15px 20px;
+    /*margin: 15px 20px;*/
+    /*padding:15px 20px;*/
     position: relative;
+    background-color:black;
 }
 
 .panel-top {
@@ -87,10 +90,12 @@ a {
     font-size: 32px;
 }
 
-#close-panel-btn {
+.close-panel-btn {
     display: inline-block;
     float: right;
 }
+
+
 
 a.panel-btn {
     color: #FFF;
@@ -126,6 +131,19 @@ a.panel-btn .arrow-btn {
 
 a.panel-btn .arrow-btn-r {
     margin-left: 24px;
+    -webkit-transition: 0.2s ease-in-out;
+    -webkit-transition: 0.2s ease-in-out;
+    -moz-transition: 0.2s ease-in-out;
+    -o-transition: 0.2s ease-in-out;
+    transition: 0.2s ease-in-out;
+}
+
+a.panel-btn:hover > .arrow-btn-r {
+    -webkit-transition: 0.4s ease-in-out;
+    -moz-transition: 0.4s ease-in-out;
+    -o-transition: 0.4s ease-in-out;
+    transition: 0.4s ease-in-out;
+    transform: translate(30px,0);
 }
 
 a.panel-btn .arrow-btn-l {

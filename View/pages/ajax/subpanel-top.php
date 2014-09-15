@@ -4,7 +4,7 @@
                     <span class="arrow-btn arrow-btn-left"><img src="img/panel-icon-arrow-left.png" alt="<" /></span>
                     <?= _("EDIT SKILL"); ?>
                 </a>
-                <a href="#" title="<?= _("Close this panel"); ?>" id="close-panel-btn"><img src="img/panel-icon-close.png" alt="X" /></a>
+                <a href="#" title="<?= _("Close this panel"); ?>" class="close-panel-btn"><img src="img/panel-icon-close.png" alt="X" /></a>
                 <p class="skillName">"<?= $skill->getName(); ?>"</p>
             </div>
 
