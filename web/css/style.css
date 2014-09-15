@@ -177,7 +177,12 @@ a.panel-btn .arrow-btn-l {
     color: #222;
     padding: 12px 15px;
     font-family: "Avenir-Book";
+    cursor: pointer;
     margin-top: 30px;
+}
+
+.message-zone {
+    margin-left: 15px;
 }
 
 .img-btn .legend {

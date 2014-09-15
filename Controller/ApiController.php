@@ -245,12 +245,7 @@
             $json->setData($data);
             $json->send();
         }
-
-        /**
-         * delete all data then load dummy data
-         */
-
-
+        
 
         /**
          * Add a new skill
@@ -261,7 +256,6 @@
 
             if (!empty($_POST)){
                 
-
                 $skillName = $_POST['skillName'];
                 $skillParentUuid = $_POST['skillParentUuid'];
 
@@ -271,10 +265,8 @@
 
                 $skillManager = new SkillManager();
                 $parentNode = $skillManager->findByUuid( $skillParentUuid );
-
                 
                 if ($validator->isValid() && $parentNode){
-
                     $skill = new Skill();
                     $skill->setNewUuid();
                     $skill->setName($skillName);
@@ -288,9 +280,15 @@
                     $rel->setStartNode($userNode)
                         ->setEndNode($skill->getNode())
                         ->setType('CREATED')->save();
+
+                    $json = new \Model\JsonResponse("ok", _("Skill saved !"));
+                    $json->setData($skill->getJsonData());
+                    $json->send();
                 }
                 else {
-                    print_r($validator->getErrors());   
+                    $json = new \Model\JsonResponse("error", _("Something went wrong."));
+                    $json->setData($validator->getErrors());
+                    $json->send();
                 }
             }
         }

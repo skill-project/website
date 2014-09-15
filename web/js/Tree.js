@@ -13,7 +13,7 @@ var Tree = function() {
 
     //Action is set by PHP based on URL, sort of controller/route for JS
     //this.autoload : the tree will expand itself up to the requested node
-    if (action == "goto") this.autoLoad = true;
+    if (typeof action != "undefined" && action == "goto") this.autoLoad = true;
 
     //Tree callback, fired when the rootNode is fully initialized
     this.rootNodeReady.add(function () {

@@ -46,6 +46,12 @@
         }
 
 
+        /**
+         * Save a Skill to DB
+         * @param Skill Skill to save
+         * @param string The uuid of his parent
+         * @return Skill Returns the skill
+         */
         public function save(Skill $skill, $skillParentUuid = null){
 
             //if new, set slug
@@ -64,8 +70,6 @@
             $skill->setNode($skillNode);
             $skill->hydrateFromNode();
 
-            echo $skillNode->getProperty("uuid");
-
             //save parent child relationship
             if ($skillParentUuid){
                 $parent = $this->findByUuid($skillParentUuid);
@@ -74,7 +78,7 @@
 
             //add to search index
             $this->addToSearchIndex($skill);
-            return true;
+            return $skill;
         }
 
         /**
@@ -307,20 +311,21 @@
         }
 
         /**
-         * Return parent id of a Node
+         * Return parent uuid of a Node
          * @param Node $node
-         * @return int parentid
+         * @return mixed Skill parent if found, else false
          */
-        public function findNodeParentId(Node $node){
-            $nodeParentRelationship = $node->getRelationships(
-                array('HAS'), Relationship::DirectionIn
-            );
-
-            $parentId = false;
-            if (count($nodeParentRelationship) == 1){
-                $parentId = $nodeParentRelationship[0]->getStartNode()->getId();
+        public function findParent(Skill $skill){
+            $cypher = 'MATCH (parent:Skill)-[:HAS]->(child:Skill {uuid: {uuid}}) RETURN parent LIMIT 1';
+            $query = new Query($this->client, $cypher, array("uuid" => $skill->getUuid()));
+            $resultSet = $query->getResultSet();
+            
+            if ($resultSet->count() == 1){
+                $node = $resultSet[0]['parent'];
+                $parent = new Skill( $node );
+                return $parent;
             }
-            return $parentId;
+            return false;
         }
 
         /**
