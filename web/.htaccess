@@ -1,7 +1,7 @@
 RewriteEngine On
 
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*[^/])$ http://%{HTTP_HOST}/$1/ [L,R=301]
+RewriteCond %{REQUEST_URI} /+[^\.]+$
+RewriteRule ^(.+[^/])$ %{REQUEST_URI}/ [R=301,L]
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
