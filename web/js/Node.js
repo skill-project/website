@@ -7,7 +7,6 @@ var Node = function(nodeData, parent, rank, count, isLast) {
   this.rank = rank;
   this.count = count;
   this.isLast = isLast;
-  this.objectType = "node";
   this.visualState = "normal";
   this.glow = 0;
   this.shapes;
@@ -22,8 +21,6 @@ var Node = function(nodeData, parent, rank, count, isLast) {
   this.appearDestY;
   this.panel;
   this.cached = false;
-  this.cachedWidth;
-  this.cachedHeight;
   this.text;
 
   // Needed for nested functions
@@ -41,7 +38,6 @@ var Node = function(nodeData, parent, rank, count, isLast) {
 
   //Constructor
   (function() {
-
     var backImage = new Kinetic.Image({
       x:0,
       y:0,
@@ -122,12 +118,12 @@ var Node = function(nodeData, parent, rank, count, isLast) {
 
     //Creating and positioning the main group that contains all the shapes
     if (parent == null) {
-      startX = stage.getWidth() / 6;
-      startY = (stage.getHeight() - 82) / 2 - 56 / 2 ;
+      var startX = stage.getWidth() / 6;
+      var startY = (stage.getHeight() - 82) / 2 - 56 / 2 ;
     }else {
       //Starting coordinates = underneath the parent ID
-      startX = that.parent.shapes.x();
-      startY = that.parent.shapes.y();
+      var startX = that.parent.shapes.x();
+      var startY = that.parent.shapes.y();
 
       //Final coordinates = each skill in its own place
       that.appearDestX = that.parent.shapes.x() + that.parent.shapes.getWidth() + 80;
@@ -146,8 +142,6 @@ var Node = function(nodeData, parent, rank, count, isLast) {
     });
     group.add(glow, backImage, editButton, labelGroup);
     that.shapes = group;
-    that.cachedWidth = group.width();
-    that.cachedHeight = group.width();
 
     //Adding the group to the layer and drawing the layer
     nodesLayer.add(group);
@@ -155,13 +149,13 @@ var Node = function(nodeData, parent, rank, count, isLast) {
 
     //Chained animations of appearing nodes
     if (parent != null) {
-      var tween = new Kinetic.Tween({
+      var tween1 = new Kinetic.Tween({
         node: group, 
         x: that.midX,
         y: that.midY,
         duration: 0.05 + 0.10 * (that.rank / that.count),       // Animation speed for a single node is relative to node rank/position, first is fastest, etc.
         onFinish: function() {
-          var tween = new Kinetic.Tween({
+          var tween2 = new Kinetic.Tween({
             node: group, 
             x: that.appearDestX,
             y: that.appearDestY,
@@ -174,10 +168,10 @@ var Node = function(nodeData, parent, rank, count, isLast) {
               }
             }
           }); 
-          tween.play();
+          tween2.play();
         }
       });
-      tween.play();
+      tween1.play();
     }
 
     //Creating the edge / link with the parent node (except for the root node which has no parent)
@@ -224,6 +218,7 @@ var Node = function(nodeData, parent, rank, count, isLast) {
         that.contract();
       }
     });
+    that.labelGroup = labelGroup;
 
     
     editButton.on("mouseover", function() { document.body.style.cursor = 'pointer'; });
@@ -252,6 +247,7 @@ var Node = function(nodeData, parent, rank, count, isLast) {
         that.finishEdit();
       }
     });
+    that.editButton = editButton;
 
   // End of Node constructor
   }).call();
@@ -326,7 +322,6 @@ var Node = function(nodeData, parent, rank, count, isLast) {
           recursiveChildren.forEach(function(child) {
             child.shapes.destroy();
             child.edge.shape.destroy();
-
             delete tree.nodes[child.id];
           });
           //Emptying the global array for future use
@@ -358,6 +353,7 @@ var Node = function(nodeData, parent, rank, count, isLast) {
       tree.editedNode.finishEdit();
     }
 
+    //Check camera position and reposition if needed
     camera.checkCameraPosition(that);
 
     that.isSelected = true;
@@ -373,6 +369,7 @@ var Node = function(nodeData, parent, rank, count, isLast) {
     tree.selectedNode = null;
   }
 
+  //Loads the panel
   this.startEdit = function() {
     if (that.isEdited) return;
 
@@ -388,6 +385,7 @@ var Node = function(nodeData, parent, rank, count, isLast) {
     tree.editedNode = that;
   }
 
+  //Closes the panel
   this.finishEdit = function(onComplete) {
     if (!that.isEdited) return;
 
@@ -414,6 +412,7 @@ var Node = function(nodeData, parent, rank, count, isLast) {
 
   }
 
+  //Set visual state of the node
   this.setVisualState = function (state) {
     switch (state) {
       case "normal":
@@ -456,6 +455,7 @@ var Node = function(nodeData, parent, rank, count, isLast) {
     that.visualState = state;
   }
 
+  //Make it glow...
   this.setGlow = function (state) {
     if (that.glow == state) return;
 
@@ -472,15 +472,17 @@ var Node = function(nodeData, parent, rank, count, isLast) {
     that.glow = state;
   }
 
+  //Returns the bouding box of the node (glow excluded)
   this.getBoundingBox = function() {
     return {
       x1: that.shapes.x(),
       y1: that.shapes.y(),
-      x2: that.shapes.x() + that.cachedWidth,
-      y2: that.shapes.y() + that.cachedHeight
+      x2: that.shapes.x() + that.shapes.width(),
+      y2: that.shapes.y() + that.shapes.height()
     }
   }
 
+  //Caches the node
   this.cache = function() {
     that.shapes.cache({
       x: -25,
@@ -489,33 +491,40 @@ var Node = function(nodeData, parent, rank, count, isLast) {
       height: that.shapes.height() + 50
     });
 
+    //Glow is not negatively offseted anymore so we have to reposition the node
     that.shapes.x(that.shapes.x() - 25);
     that.shapes.y(that.shapes.y() - 25);
 
-    // Tough or impossible to cache custom drawn Shapes (drawFunc)
-    /*
-    var nodeBoundingBox = that.edge.getBoundingBox();
+    //Stop listening for events on cached nodes (they are not visible anyway)
+    that.labelGroup.listening(false);
+    that.editButton.listening(false);
+    that.edge.shape.listening(false);
 
-    that.edge.shape.cache({
-      x: nodeBoundingBox.x1,
-      y: nodeBoundingBox.x1,
-      width: nodeBoundingBox.x2 - nodeBoundingBox.x1,
-      height: nodeBoundingBox.y2 - nodeBoundingBox.y1 
-    });*/
+    // Tough or impossible to cache custom drawn Shapes (drawFunc)
+    // var nodeBoundingBox = that.edge.getBoundingBox();
+    // that.edge.shape.cache({
+    //   x: nodeBoundingBox.x1,
+    //   y: nodeBoundingBox.x1,
+    //   width: nodeBoundingBox.x2 - nodeBoundingBox.x1,
+    //   height: nodeBoundingBox.y2 - nodeBoundingBox.y1 
+    // });
     that.cached = true;
   }
 
+  //Clears the cache on the node (when it becomes visible again)
   this.clearCache = function () {
     that.shapes.clearCache();
     that.shapes.x(that.shapes.x() + 25);
     that.shapes.y(that.shapes.y() + 25);
 
     that.cached = false;
+
+    that.labelGroup.listening(true);
+    that.editButton.listening(true);
   }
 
+  //Fire the rootNodeReady callback when the rootNode is ready
   if (this.parent == null) {
     tree.rootNodeReady.fire();
   }
-
-  
 }

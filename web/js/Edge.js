@@ -9,7 +9,6 @@ var Edge = function(nodeFrom, nodeTo) {
   var that = this;
 
   this.getStartEndPoints = function () {
-
     //Offsets handle correct positioning of the edges with the cached from/to nodes
     //Cached nodes include the glow image which offsets them. Probably could have been handled differently...
     var nodeToCachedOffset = 0;
@@ -36,25 +35,11 @@ var Edge = function(nodeFrom, nodeTo) {
 
   this.cachePos = this.getStartEndPoints();
 
-  /*this.shape = new Kinetic.Group({
-    x: this.cachePos.nodeFrom.x,
-    y: this.cachePos.nodeFrom.y
-  });*/
-
-  this.startPoint = new Kinetic.Circle({
-    x:0,
-    y:0,
-    radius:5,
-    fill: "#fbeaed"
-  });
-
   var line = new Kinetic.Shape({
     drawFunc: function(context) {
       //Coordinates for start and end points must be recalculated on every draw
       var pos = that.getStartEndPoints();
       that.cachePos = pos;
-
-      that.startPoint.setX(pos.nodeFrom.x).setY(pos.nodeFrom.y);
 
       cp1X = pos.nodeFrom.x + 50;
       cp1Y = pos.nodeFrom.y;
@@ -90,29 +75,21 @@ var Edge = function(nodeFrom, nodeTo) {
       context.arc(pos.nodeTo.x,pos.nodeTo.y,4,0,2*Math.PI);
       context.fillShape(this);
     },
-    // stroke: "#fbeaed",
     stroke: "#eed4d8",
     fill: "#eed4d8",
     lineCap: "round",
-    strokeWidth: 1.7
+    strokeWidth: 1.7,
+    listening: false
   })
-
-  
-
-  //this.shape.add(line, this.startPoint);
 
   this.shape = line;
 
   nodesLayer.add(line);
 
-
   this.getBoundingBox = function() {
     var startEndPoints = that.getStartEndPoints();
-    // console.log(startEndPoints);
-
     var nodeFrom = startEndPoints.nodeFrom;
     var nodeTo = startEndPoints.nodeTo;
-
 
     if (nodeFrom.y < nodeTo.y) {
       return {
@@ -130,6 +107,4 @@ var Edge = function(nodeFrom, nodeTo) {
       }
     }
   }
-
-  
 }

@@ -20,7 +20,6 @@ var Tree = function() {
         //Starting autoload
         if (tree.autoLoad == true) {
             tree.autoLoadCurrentDepth = 0;
-            // tree.rootNode.select();
             tree.readyForNextLevel.fire();
         }
     });
@@ -55,11 +54,7 @@ var Tree = function() {
             tree.nodes[jsonAutoLoad.data[tree.autoLoadCurrentDepth - 1].selectedSkill].select();
             tree.selectedNode.setVisualState("glow-nochildren");
             tree.autoLoad = false;
-            // camera.checkCameraPosition(tree.selectedNode);
-            //camera.goToCoords(tree.selectedNode.shapes.getAbsolutePosition());
         }
-        // camera.checkCameraPosition(tree.selectedNode);
-        //if (tree.autoLoadCurrentDepth % 2) camera.goToCoords(tree.selectedNode.shapes.getAbsolutePosition());   
     });
 
     this.countCachedNodes = function() {
