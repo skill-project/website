@@ -12,12 +12,12 @@
         public function insertSkillTranslation($languageCode, $name, Skill $skill){
             $user = \Utils\SecurityHelper::getUser();
 
-            $cypher = "MATCH (s:Skill) WHERE id(s) = {skillId} 
+            $cypher = "MATCH (s:Skill) WHERE s.uuid = {skillUuid}
                         CREATE (s)-[r:TRANSLATES_INTO]->(t:Translation {lang: {languageCode}, name: {name}})
                         RETURN t";
             $query = new Query($this->client, $cypher, array(
                                     "uuid" => \Utils\IdGenerator::getUniqueId(),
-                                    "skillId" => $skill->getId(),
+                                    "skillUuid" => $skill->getUuid(),
                                     "languageCode" => $languageCode,
                                     "name" => $name
                                 )
@@ -33,7 +33,7 @@
             $rel->setStartNode($user->getNode())
                 ->setEndNode($translationNode)
                 ->setType('CREATED')
-                ->setProperty('date', date("Y-m-d H:i:s"))
+                ->setProperty('timestamp', time())
                 ->save();
 
         }
@@ -48,7 +48,7 @@
             $rel->setStartNode($user->getNode())
                 ->setEndNode($translationNode)
                 ->setType('MODIFIED')
-                ->setProperty('date', date("Y-m-d H:i:s"))
+                ->setProperty('timestamp', time())
                 ->save();
 
         }
@@ -75,11 +75,11 @@
             return false;
         }
 
-        public function findSkillTranslations(Skill $skill){
+        public function findSkillTranslations($uuid){
             $cypher = "MATCH (s:Skill)-[r:TRANSLATES_INTO]->(t:Translation)
-                        WHERE id(s) = {skillId}
+                        WHERE s.uuid = {uuid}
                         RETURN t";
-            $query = new Query($this->client, $cypher, array("skillId" => $skill->getId()));
+            $query = new Query($this->client, $cypher, array("uuid" => $uuid));
             $resultSet = $query->getResultSet();
 
             $translations = array();

@@ -32,6 +32,12 @@
     );
     
     $routes->add(
+        'reloadTranslations',
+        new Route('/panel/reloadTranslations/{uuid}/', 
+            array('controller' => 'Panel', 'action' => 'reloadTranslations'))
+    );
+    
+    $routes->add(
         'reloadDiscussionMessages',
         new Route('/panel/reloadDiscussionMessages/{uuid}/', 
             array('controller' => 'Panel', 'action' => 'reloadDiscussionMessages'))

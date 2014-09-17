@@ -51,7 +51,7 @@
 
             //get previous translations
             $translationManager = new TranslationManager();
-            $translations = $translationManager->findSkillTranslations($skill);
+            $translations = $translationManager->findSkillTranslations($skill->getUuid());
             for($i=0;$i<count($translations);$i++){
                 $translations[$i]['languageNames'] = $lc->getNames($translations[$i]['languageCode']);
             }
@@ -71,6 +71,23 @@
             $discussionManager = new DiscussionManager();
             $params['messages'] = $discussionManager->getSkillMessages($uuid);
             $view = new AjaxView("discussion-messages.php", $params);
+            $view->send();
+        }
+
+        /**
+         * Retrieves and send the translations of a skill
+         */
+        public function reloadTranslationsAction($uuid){
+            $params = array();
+            $translationManager = new TranslationManager();
+            $lc = new \Model\LanguageCode();
+            $translations = $translationManager->findSkillTranslations($uuid);
+            for($i=0;$i<count($translations);$i++){
+                $translations[$i]['languageNames'] = $lc->getNames($translations[$i]['languageCode']);
+            }
+
+            $params['translations'] = $translations;
+            $view = new AjaxView("skill-translations.php", $params);
             $view->send();
         }
 

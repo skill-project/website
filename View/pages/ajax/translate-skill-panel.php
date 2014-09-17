@@ -23,14 +23,6 @@
 
     <p><?= _("OTHER TRANSLATIONS"); ?></p>
     <ul id="other-translations-list">
-        <?php foreach($translations as $trans): ?>
-        <li>
-            <div class="trans-language-name">
-                <?= $trans['languageNames']['nativeName'] ?>
-                
-            </div>
-            "<?php echo $trans['name'] ?>"
-        </li>
-        <?php endforeach; ?>
+        <?php include("skill-translations.php"); ?>
     </ul>
 </div>

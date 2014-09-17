@@ -139,7 +139,14 @@ var Panel = function(node, initParams) {
                         type: $("#translate-skill-form").attr("method"),
                         data: $("#translate-skill-form").serialize(),
                         success: function(response){
-                            console.log(response);
+                            if (response.status == "ok"){
+                                $.ajax({
+                                    url: baseUrl + "panel/reloadTranslations/" + node.id,
+                                    success: function(messagesHtml){
+                                        $("#other-translations-list").html(messagesHtml);
+                                    }
+                                });
+                            }
                         }
                     });
                 });
