@@ -110,6 +110,19 @@ var Panel = function(node, initParams) {
                     });
                 });
                 break;
+            case "translate-skill-panel":                
+                $("#translate-skill-form").on("submit", function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        url: $("#translate-skill-form").attr("action"),
+                        type: $("#translate-skill-form").attr("method"),
+                        data: $("#translate-skill-form").serialize(),
+                        success: function(response){
+                            console.log(response);
+                        }
+                    });
+                });
+                break;
         }
 
         //Common events

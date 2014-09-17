@@ -210,6 +210,29 @@ a.panel-btn .arrow-btn-l {
     margin-top: 30px;
 }
 
+#panel #trans-form-submit {
+    margin-top: 10px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+#other-translations-list li{
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+#panel hr {
+    margin-top: 30px;
+}
+
+
+#panel select {
+    margin: 10px 0;
+}
+
 .message-zone {
     margin-left: 15px;
     background: url("../img/panel-icon-success.png") no-repeat;

@@ -129,7 +129,7 @@
 
     $routes->add(
         'translateSkill',
-        new Route('/api/translateSkill/{uuid}/', 
+        new Route('/api/translateSkill/', 
             array('controller' => 'Api', 'action' => 'translateSkill'))
     );
 

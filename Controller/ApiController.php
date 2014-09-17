@@ -180,7 +180,7 @@
         /**
          * Translate a skill
          */
-        public function translateSkillAction($uuid){
+        public function translateSkillAction(){
 
             SecurityHelper::lock();
 
@@ -214,9 +214,14 @@
                         $translationManager->updateSkillTranslation($skillTrans, $previousTranslationNode);
                     }
 
+                    $json = new \Model\JsonResponse("ok", _("Translation saved !"));
+                    $json->setData($skill->getJsonData());
+                    $json->send();
                 }
                 else {
-                    print_r($validator->getErrors());   
+                    $json = new \Model\JsonResponse("error", _("Something went wrong."));
+                    $json->setData($validator->getErrors());
+                    $json->send(); 
                 }
             }
         }
