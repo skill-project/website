@@ -148,3 +148,9 @@
         new Route('/dummyData/', 
             array('controller' => 'Fixture', 'action' => 'dummyData'))
     );   
+
+    $routes->add(
+        'benchmark',
+        new Route('/benchmark/', 
+            array('controller' => 'Fixture', 'action' => 'benchmark'))
+    );  
