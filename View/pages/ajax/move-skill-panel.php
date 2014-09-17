@@ -27,4 +27,6 @@
             <span class="message-zone"></span>
         </div>
     </form>
+
+    <?php include("panel-bottom.php"); ?>
 </div>

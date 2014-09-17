@@ -25,4 +25,5 @@
         <?php include("discussion-messages.php"); ?>
     </div>
 
+    <?php include("panel-bottom.php"); ?>
 </div>

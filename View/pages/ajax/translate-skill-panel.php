@@ -25,4 +25,6 @@
     <ul id="other-translations-list">
         <?php include("skill-translations.php"); ?>
     </ul>
+
+    <?php include("panel-bottom.php"); ?>
 </div>

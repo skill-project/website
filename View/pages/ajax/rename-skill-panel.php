@@ -25,4 +25,6 @@
             </ul>
         </div>
     <?php endif; ?>
+
+    <?php include("panel-bottom.php"); ?>
 </div>

@@ -27,4 +27,6 @@
             <?= _("You cannot delete a skill if it has children."); ?>
         </p>
     </div>
+
+    <?php include("panel-bottom.php"); ?>
 </div>
