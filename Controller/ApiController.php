@@ -12,19 +12,6 @@
     use \Everyman\Neo4j\Relationship;
     use \Everyman\Neo4j\Traversal;
 
-    /*
-    [0] => testAction
-    [1] => getRootNodeAction
-    [2] => getNodeParentAction
-    [3] => getNodeChildrenAction
-    [4] => getNodeAction
-    [5] => deleteSkillAction
-    [6] => renameSkillAction
-    [7] => searchNodeAction
-    [9] => addSkillAction
-    [10] => __construct
-    */
-
     class ApiController extends Controller {
         
         /**
@@ -322,6 +309,7 @@
             $keywords = urldecode($_GET['q']);
             $searchIndex = new \Everyman\Neo4j\Index\NodeIndex($this->client, 'searches');
             $matches = $searchIndex->query('name:*'.strtolower($keywords).'*~');
+
             $data = array();
             foreach ($matches as $node) {
                 $nodeParentRelationship = $node->getRelationships(

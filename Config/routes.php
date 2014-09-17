@@ -65,6 +65,12 @@
             array('controller' => 'User', 'action' => 'logout'))
     );
 
+    $routes->add(
+        'profile',
+        new Route('/profile/{username}/',
+            array('controller' => 'User', 'action' => 'profile'))
+    );
+
 //api
 
     $routes->add(

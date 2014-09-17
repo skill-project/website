@@ -8,23 +8,6 @@
     use \Everyman\Neo4j\Cypher\Query;
     use \Cocur\Slugify\Slugify;
 
-    /*
-    [0] => __construct
-    [1] => save
-    [2] => saveParentChildRelationship
-    [3] => delete
-    [4] => countChildren
-    [5] => update
-    [6] => findAtDepth
-    [7] => findRevisionHistory
-    [8] => findById
-    [9] => findNodeParentId
-    [10] => findRootNode
-    [11] => findAll
-    [12] => findParentAndGrandParent
-    [13] => findChildren
-    */
-
     class SkillManager extends Manager {
 
         private $searchIndex;
@@ -302,8 +285,7 @@
 
             $cypher = "MATCH (child:Skill)<-[:HAS*0..1]-(parents:Skill)-[:HAS*]->(s:Skill) 
                         WHERE s.slug = {slug}
-                        RETURN parents,s,child
-                        ORDER BY child.depth ASC";
+                        RETURN parents,s,child";
             $query = new Query($this->client, $cypher, array(
                 "slug" => $slug)
             );

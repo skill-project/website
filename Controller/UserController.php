@@ -110,6 +110,7 @@
                     
                     $user->setNewUuid();
                     $user->setUsername( $username );
+                    $user->generateSlug();
                     $user->setEmail( $email );
                     $user->setRole( "user" );
                     $user->setSalt( $securityHelper->randomString() );
@@ -138,6 +139,27 @@
             $view = new View("register.php", $params);
             $view->setLayout("../View/layouts/debug.php");
             $view->send();
+        }
+
+        /**
+         * 
+         */
+        public function profileAction($username){
+
+            $userManager = new UserManager();
+            $user = $userManager->findByUsername($username);
+
+            if (!$user){
+                Router::fourofour(_("This user never was born, or vanished."));
+            }
+
+            $params = array();
+            $params['user'] = $user;
+            $params['title'] = $username . _("'s profile | Skill Project");
+            $view = new View("profile.php", $params);
+            $view->setLayout("../View/layouts/debug.php");
+            $view->send();
+        
         }
 
     }

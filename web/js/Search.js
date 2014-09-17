@@ -9,9 +9,12 @@ var Search = function(){
         $("#kw-input").on("keyup", that.autocomplete);
         //on click on a result link, show the node
         $("#autocomplete-container").on("click", "a", that.searchResultClicked);
-
         //click anywhere closes the search results
         $("body").on("click", that.close);
+        //disable form submit
+        $("#search-form").on("submit", function(e){
+            e.preventDefault();
+        });
     });
 
     //autocomplete result clicked
@@ -49,7 +52,10 @@ var Search = function(){
         var $list = $("<ul>");
         var $item, $link;
         for(i in response.data){
-            $link = $("<a>").attr("href", "#").data("uuid", response.data[i].uuid).html(response.data[i].name);
+            $link = $("<a>")
+                        .attr("href", "#")
+                        .data("uuid", response.data[i].uuid)
+                        .html(response.data[i].name);
             $item = $("<li>").html($link);
             $list.append($item);
         }
