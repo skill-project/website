@@ -25,11 +25,15 @@
 </div>
 <div id="backdrop"></div>
 <div id="kinetic"></div>
-<div id="panel">
-	Edit Skill
-</div>
+<div id="panel"></div>
 <div id="footer">
 	<div id="footer-container">
-		?
+		<form id="search-form" method="GET" action="<?php echo \Controller\Router::url("skillSearch"); ?>">
+			<div id="autocomplete-container">
+				<div id="search-results"></div>
+				<input type="search" name="q" id="kw-input" value="" autocomplete="off" />
+			</div>
+		</form>
+
 	</div>
 </div>

@@ -9,6 +9,7 @@
 	<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
+	<script type="text/javascript" src="js/jquery.highlight.js"></script>
 	<script type="text/javascript" src="js/kinetic-v5.1.0.js"></script>
 	<script type="text/javascript" src="js/compatibility.js"></script>
 	<script>
@@ -24,6 +25,7 @@
 	<script type="text/javascript" src="js/Tree.js"></script>
 	<script type="text/javascript" src="js/Panel.js"></script>
 	<script type="text/javascript" src="js/Camera.js"></script>
+	<script type="text/javascript" src="js/Search.js"></script>
 	<script type="text/javascript" src="js/script.js"></script>
 <style>
 @font-face {

@@ -82,9 +82,9 @@
 
 
     $routes->add(
-        'searchNode',
-        new Route('/api/searchNode/{keywords}/',
-            array('controller' => 'Api', 'action' => 'searchNode'))
+        'skillSearch',
+        new Route('/api/skillSearch/',
+            array('controller' => 'Api', 'action' => 'skillSearch'))
     );
 
     //getNodeParent

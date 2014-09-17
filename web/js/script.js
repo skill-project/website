@@ -19,6 +19,7 @@ var mouseIsDown,
 
 var tree = new Tree;
 var camera = new Camera;
+var search = new Search;
 
 $(document).ready(function (){
   $("#kinetic")

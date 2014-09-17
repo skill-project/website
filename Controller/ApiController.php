@@ -318,8 +318,8 @@
         /**
          * Search by keywords
          */
-        public function searchNodeAction($keywords){
-            $keywords = urldecode($keywords);
+        public function skillSearchAction(){
+            $keywords = urldecode($_GET['q']);
             $searchIndex = new \Everyman\Neo4j\Index\NodeIndex($this->client, 'searches');
             $matches = $searchIndex->query('name:*'.strtolower($keywords).'*~');
             $data = array();
