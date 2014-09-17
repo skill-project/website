@@ -1,5 +1,5 @@
 var Camera = function() {
-    this.defaultSecurityZoneFactor = 0.4;
+    this.defaultSecurityZoneFactor = 0.3;
     this.redrawStageInterval;
     this.rectZone;
     this.scale = 1;

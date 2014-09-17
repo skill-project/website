@@ -28,7 +28,6 @@ var Panel = function(node, initParams) {
 	});
 
 	this.close = function(params) {
-        console.log("ici");
 		$("#panel").hide("slide", {
 			direction: "right", 
 			complete: function() {
@@ -69,6 +68,61 @@ var Panel = function(node, initParams) {
                             if (response.status == "ok"){
                                 $("#create-skillName").val("");
                                 $(subPanel).find(".message-zone").html(response.message).css("display", "inline-block");
+
+                                //editeNode = Black Node = Parent node of the newly added node
+
+                                //editeNode is closed, 2 options :
+                                // 1. it wasn't selected (glow) 
+                                // 2. it didn't have any children prior to adding the new one
+                                if (tree.editedNode.open == false) {
+
+                                    //Option 1
+                                    if (tree.selectedNode.id != tree.editedNode.id) {
+                                        if (tree.selectedNode.id == tree.editedNode.parent.id) {
+                                            tree.editedNode.select();
+                                            tree.editedNode.expand({
+                                                onComplete: function() {
+                                                    tree.nodes[response.data.uuid].select();
+                                                    tree.nodes[response.data.uuid].expand();
+                                                }
+                                            });
+                                        }else if (tree.selectedNode.id != tree.editedNode.parent.id) {
+                                            for (var siblingIndex in tree.editedNode.siblings) {
+                                                var sibling = tree.editedNode.siblings[siblingIndex];
+                                                if (sibling.open == true) {
+                                                    sibling.contract();
+                                                    tree.selectedNode.deSelect();
+                                                }
+                                            }
+                                            tree.editedNode.select();
+                                            tree.editedNode.expand({
+                                                onComplete: function() {
+                                                    tree.nodes[response.data.uuid].select();
+                                                    tree.nodes[response.data.uuid].expand();
+                                                }
+                                            });
+                                        }
+                                    }
+                                    //Option 2
+                                    else if (tree.selectedNode.id == tree.editedNode.id) {
+                                        tree.editedNode.select();
+                                        tree.editedNode.expand();
+                                    }
+                                }else {
+                                    var newSkill = new Node(response.data, 
+                                        {
+                                            parent: tree.editedNode,
+                                            rank: tree.editedNode.totalChildren,
+                                            count: 1,
+                                            isLast: true,
+                                            onComplete: function() {
+                                                    tree.nodes[response.data.uuid].select();
+                                                    tree.nodes[response.data.uuid].expand();
+                                                }
+                                        });
+                                }
+
+                                
                             }
                         }
                     });

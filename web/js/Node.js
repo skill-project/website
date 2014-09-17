@@ -1,16 +1,19 @@
-var Node = function(nodeData, parent, rank, count, isLast) {
+var Node = function(nodeData, params) {//, parent, rank, count, isLast) {
   //Initializing node properties
   this.id = nodeData.uuid;
-  this.parent = parent ? parent : null;
+  this.params = params;
+  this.parent = params.parent ? params.parent : null;
   this.name = nodeData.name;
   this.depth = nodeData.depth ? nodeData.depth : 1;
-  this.rank = rank;
-  this.count = count;
-  this.isLast = isLast;
+  this.onComplete = params.onComplete;
+  this.rank = params.rank;
+  this.count = params.count;
+  this.isLast = params.isLast;
   this.visualState = "normal";
   this.glow = 0;
   this.shapes;
   this.children = [];
+  this.ancestors = [];
   this.open = false;
   this.isSelected = false;
   this.isEdited = false;
@@ -29,11 +32,25 @@ var Node = function(nodeData, parent, rank, count, isLast) {
   //For root node : add current node to rootNode object of Tree, (for tree traversal)
   if (this.parent == null) tree.rootNode = this;
 
+  tree.nodes[this.id] = this;
+
   //For all nodes, except root node
-  if (parent != null) {
+  if (this.parent != null) {
       this.siblings = this.parent.children;   //Set siblings (children of parent)
       tree.nodes[this.id] = this;             //Add current node to flat list of nodes in Tree object (for quick node retrieval)
       this.parent.children[this.id] = this;        //Add current node to list of parent's children
+
+      console.log("Setting ancestors for : " + this.name);
+      // debugger;
+
+      // this.ancestors = this.parent.ancestors;
+      for (var ancestorIndex in Object.keys(this.parent.ancestors))
+      {
+        var ancestorId = Object.keys(this.parent.ancestors)[ancestorIndex];
+        this.ancestors[ancestorId] = tree.nodes[ancestorId];
+      }
+      this.ancestors[this.parent.id] = this.parent; 
+      console.log(this.ancestors);
    }
 
   //Constructor
@@ -117,7 +134,7 @@ var Node = function(nodeData, parent, rank, count, isLast) {
     that.knGlow = glow;
 
     //Creating and positioning the main group that contains all the shapes
-    if (parent == null) {
+    if (that.parent == null) {
       var startX = stage.getWidth() / 6;
       var startY = (stage.getHeight() - 82) / 2 - 56 / 2 ;
     }else {
@@ -148,7 +165,7 @@ var Node = function(nodeData, parent, rank, count, isLast) {
     nodesLayer.draw();
 
     //Chained animations of appearing nodes
-    if (parent != null) {
+    if (that.parent != null) {
       var tween1 = new Kinetic.Tween({
         node: group, 
         x: that.midX,
@@ -163,7 +180,10 @@ var Node = function(nodeData, parent, rank, count, isLast) {
             onFinish: function() {
               //Last child has finished appearing
               if (that.isLast == true) {
-                tree.busy = false;                              //Releasing the tree-wide lock
+                tree.busy = false;              //Releasing the tree-wide lock
+                if (that.onComplete != null) {
+                  that.onComplete();
+                }
                 tree.readyForNextLevel.fire();
               }
             }
@@ -175,7 +195,7 @@ var Node = function(nodeData, parent, rank, count, isLast) {
     }
 
     //Creating the edge / link with the parent node (except for the root node which has no parent)
-    if (that.parent != null) that.edge = new Edge(parent, that);
+    if (that.parent != null) that.edge = new Edge(that.parent, that);
 
     //Node events
     labelGroup.on("mouseover", function() { document.body.style.cursor = 'pointer'; });
@@ -261,7 +281,10 @@ var Node = function(nodeData, parent, rank, count, isLast) {
   }
 
   //Query the API for the children and show them
-  this.expand = function() {
+  this.expand = function(params) {
+    if (params != null) {
+      var onComplete = params.onComplete;
+    }
     var url = baseUrl + "api/getNodeChildren/" + that.id + "/";
 
     $.ajax({
@@ -280,7 +303,13 @@ var Node = function(nodeData, parent, rank, count, isLast) {
 
         json.data.forEach(function(child) {
           if (++i == json.data.length) isLast = true;
-          new Node(child, that, i, json.data.length, isLast);
+          new Node(child, {
+            parent: that,
+            rank: i,
+            count: json.data.length,
+            isLast: isLast,
+            onComplete: onComplete ? onComplete : null
+          })
         });
 
       }else {
@@ -409,7 +438,10 @@ var Node = function(nodeData, parent, rank, count, isLast) {
     if (that.open == true) {
       that.setVisualState("glow-children");
     } else that.setVisualState("normal");
+  }
 
+  this.addChild = function(params) {
+    
   }
 
   //Set visual state of the node

@@ -60,7 +60,13 @@ $(window).load(function  () {
     stage.add(nodesLayer);
 
     //Adding root skill
-    var skills = new Node({uuid: rootNodeId, name: "Skills"}, null);
+    var skills = new Node({
+      uuid: rootNodeId, 
+      name: "Skills"
+    }, 
+    {
+      parent: null
+    });
 
     //Fadein effect on canvas objects (sky and nodes)
     $("#kinetic, #backdrop").css("visibility", "visible").fadeIn({
