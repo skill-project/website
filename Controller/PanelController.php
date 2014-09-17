@@ -63,4 +63,15 @@
             $view->send();
         }
 
+        /**
+         * Retrieves and send the discussion about a skill
+         */
+        public function reloadDiscussionMessagesAction($uuid){
+            $params = array();
+            $discussionManager = new DiscussionManager();
+            $params['messages'] = $discussionManager->getSkillMessages($uuid);
+            $view = new AjaxView("discussion-messages.php", $params);
+            $view->send();
+        }
+
     }

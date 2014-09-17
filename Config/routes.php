@@ -30,6 +30,14 @@
         new Route('/panel/getPanel/{uuid}/', 
             array('controller' => 'Panel', 'action' => 'getPanel'))
     );
+    
+    $routes->add(
+        'reloadDiscussionMessages',
+        new Route('/panel/reloadDiscussionMessages/{uuid}/', 
+            array('controller' => 'Panel', 'action' => 'reloadDiscussionMessages'))
+    );
+
+
 
 
 //user

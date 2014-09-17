@@ -21,19 +21,8 @@
     </form>
         
     <hr />
-    
     <div class="discuss-prev-messages">
-        <?php foreach($messages as $message): ?>
-        <div class="message">
-            <?= _("By "); ?><a href="#"><?= $message['postedBy']; ?></a><br />
-            <?= $message['date']; ?><br /><br />
-            <?php if ($topic){ echo "Topic: " . $message['topic'] . "<br /><br />"; } ?>
-            <?php
-                $message = $message['message'];
-                echo $message; 
-            ?>
-        </div>
-        <?php endforeach; ?>
+        <?php include("discussion-messages.php"); ?>
     </div>
 
 </div>
