@@ -31,29 +31,6 @@
             array('controller' => 'Panel', 'action' => 'getPanel'))
     );
 
-    $routes->add(
-        'addSkillSubPanel',
-        new Route('/panel/add-skill-sub-panel/{uuid}/', 
-            array('controller' => 'Panel', 'action' => 'addSkillSubPanel'))
-    );
-    
-    $routes->add(
-        'renameSkillSubPanel',
-        new Route('/panel/rename-skill-sub-panel/{uuid}/', 
-            array('controller' => 'Panel', 'action' => 'renameSkillSubPanel'))
-    );
- 
-    $routes->add(
-        'translateSkillSubPanel',
-        new Route('/panel/translate-skill-sub-panel/{uuid}/', 
-            array('controller' => 'Panel', 'action' => 'translateSkillSubPanel'))
-    );   
-
-    $routes->add(
-        'deleteSkillSubPanel',
-        new Route('/panel/delete-skill-sub-panel/{uuid}/', 
-            array('controller' => 'Panel', 'action' => 'deleteSkillSubPanel'))
-    );
 
 //user
     $routes->add(
