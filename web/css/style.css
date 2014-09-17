@@ -302,6 +302,14 @@ ul {
 
 /* END PANEL */
 
+#top-user-nav {
+    float: right;
+}
+
+#top-user-nav li {
+    display: inline-block;
+}
+
 #footer {
     height: 82px;
     position:fixed;
