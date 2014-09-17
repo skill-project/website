@@ -24,7 +24,7 @@
     <div>
         <p>
             <?= _("WARNING:"); ?><br />
-            <?= _("You cannot delete a child if it has children."); ?>
+            <?= _("You cannot delete a skill if it has children."); ?>
         </p>
     </div>
 </div>
