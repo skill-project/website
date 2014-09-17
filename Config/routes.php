@@ -128,9 +128,21 @@
     );
 
     $routes->add(
+        'moveSkill',
+        new Route('/api/moveSkill/', 
+            array('controller' => 'Api', 'action' => 'moveSkill'))
+    );
+    
+    $routes->add(
         'translateSkill',
         new Route('/api/translateSkill/', 
             array('controller' => 'Api', 'action' => 'translateSkill'))
+    );
+    
+    $routes->add(
+        'discussSkill',
+        new Route('/api/discussSkill/', 
+            array('controller' => 'Api', 'action' => 'discussSkill'))
     );
 
     $routes->add(

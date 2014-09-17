@@ -74,6 +74,27 @@ var Panel = function(node, initParams) {
                     });
                 });
                 break;
+            case "move-skill-panel":
+                $(subPanel).find(".img-btn").on("tap click", function() {
+                    $(subPanel).find("#moveType").val($(this).data("value"));
+                    $(subPanel).find("#move-form-submit").val($(this).data("value").toUpperCase());
+                    $(subPanel).find(".img-btn").toggleClass("selected");
+                });
+
+                $("#move-skill-form").on("submit", function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        url: $("#move-skill-form").attr("action"),
+                        type: $("#move-skill-form").attr("method"),
+                        data: $("#move-skill-form").serialize(),
+                        success: function(response){
+                            if (response.status == "ok"){
+                                $(subPanel).find(".message-zone").html(response.message).css("display", "inline-block");
+                            }
+                        }
+                    });
+                });
+                break;
             case "rename-skill-panel":
                 $("#rename-skill-form").on("submit", function(e){
                     e.preventDefault();
@@ -119,6 +140,21 @@ var Panel = function(node, initParams) {
                         data: $("#translate-skill-form").serialize(),
                         success: function(response){
                             console.log(response);
+                        }
+                    });
+                });
+                break;
+            case "discuss-skill-panel":
+                $("#discuss-skill-form").on("submit", function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        url: $("#discuss-skill-form").attr("action"),
+                        type: $("#discuss-skill-form").attr("method"),
+                        data: $("#discuss-skill-form").serialize(),
+                        success: function(response){
+                            if (response.status == "ok"){
+                                
+                            }
                         }
                     });
                 });

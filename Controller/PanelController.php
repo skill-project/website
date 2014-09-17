@@ -6,6 +6,7 @@
     use \Model\SkillManager;
     use \Model\TranslationManager;
     use \Model\Skill;
+    use \Model\DiscussionManager;
 
     class PanelController {
 
@@ -35,6 +36,13 @@
                         $params['previousNames'][] = $rev['previousName'];
                     }
                 }
+
+            //get discussion topics
+            $discussionManager = new DiscussionManager();
+            $params["topics"] = $discussionManager->getTopics();
+
+            //get previous messages
+            $params['messages'] = $discussionManager->getSkillMessages($skill->getUuid());
 
             //get all Languages (for the translation <select>)
             $lc = new \Model\LanguageCode();

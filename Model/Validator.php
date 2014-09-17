@@ -124,6 +124,22 @@
             }
         }
 
+
+        public function validateMessageTopic($topic){
+            $discussionManager = new \Model\DiscussionManager();
+            $topics = $discussionManager->getTopics();
+            //allow empty topic
+            if (!empty($topic) && !in_array($topic, $topics)){
+                $this->addError("topic-select", _("Please select a valid topic for your message."));
+            }
+        }
+
+        public function validateMessage($message){
+            if (empty($message)){
+                $this->addError("discuss-message", _("Please provide a message."));
+            }
+        }
+
         protected function addError($fieldName, $message){
             $this->isValid = false;
             $this->errors[$fieldName] = $message;

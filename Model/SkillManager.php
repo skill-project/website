@@ -124,7 +124,7 @@
          * @param string Skill new parent uuid
          * @return bool true on success, false otherwise
          */
-        public function duplicate($skillUuid, $newParentUuid){
+        public function copy($skillUuid, $newParentUuid){
             
         }
 

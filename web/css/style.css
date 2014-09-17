@@ -126,6 +126,7 @@ a.panel-btn.last {
     margin: -2px 0 7px 0;
 }
 
+
 a.panel-btn .arrow-btn {
     display: inline-block;
     font-size: 22px;
@@ -163,16 +164,40 @@ a.panel-btn .arrow-btn-l {
     margin: 30px 0 7px 0;
 }
 
-#panel input[type=text] {
+#panel textarea, #panel input[type=text]{
     border: 1px solid #FFF;
     color: #FFF;
     background: none;
     width: 100%;
+    font-family: "Avenir-Book";
+    font-size: 15px;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+}
+
+#panel input[type=text] {
+
     height: 36px;
     line-height: 36px;
-    font-size: 15px;
-    box-sizing:border-box;
+}
+
+#discuss-skill-panel textarea {
+    height: 125px;
+}
+
+#discuss-skill-panel select {
+    font-family: "Avenir-Book";
+    width: 100%;
+    -webkit-box-sizing:border-box;
     -moz-box-sizing:border-box;
+    box-sizing:border-box;
+}
+
+#discuss-skill-panel .message {
+    font-size: 15px;
+    line-height: 15px;
+    margin-top: 10px;
 }
 
 .img-btn {
@@ -295,3 +320,7 @@ ul {
 	visibility: hidden;
 }
 
+.clearfix {
+    margin-top: 10px;
+    clear: both;
+}

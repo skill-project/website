@@ -4,6 +4,7 @@
 
     use \Model\SkillManager;
     use \Model\TranslationManager;
+    use \Model\DiscussionManager;
     use \Model\Skill;
     use \Utils\SecurityHelper;
 
@@ -146,16 +147,55 @@
 
 
         /**
-         * Move or duplicate a skill
-         * @param string $type of move ("move" or "duplicate")
+         * Add a comment on a skill
          */
-        public function moveSkillAction($type){
+        public function discussSkillAction(){
+            SecurityHelper::lock();
+
+            if (!empty($_POST)){
+                $skillUuid = $_POST['skillUuid'];
+                $message = $_POST['message'];
+                $topic = $_POST['topic'];
+
+                $validator = new \Model\Validator();
+                $validator->validateSkillUuid($skillUuid);
+                $validator->validateMessage($message);
+                $validator->validateMessageTopic($topic);
+
+                if ($validator->isValid()){
+
+                    $discussionMananager = new DiscussionManager();
+                    $result = $discussionMananager->saveNewMessage($skillUuid, $topic, $message);      
+                    if ($result){
+                        $json = new \Model\JsonResponse("ok", _("Message posted !"));
+                    }
+                    else {
+                        $json = new \Model\JsonResponse("error", _("Error posting message."));
+                    }
+                    
+                }
+                else {
+                    $json = new \Model\JsonResponse("error", _("An error occured."));
+                    $json->setData($validator->getErrors());
+                }      
+
+            }
+            $json->send();
+
+        }
+
+
+        /**
+         * Move or duplicate a skill
+         */
+        public function moveSkillAction(){
             SecurityHelper::lock();
 
             if (!empty($_POST)){
 
                 $skillUuid = $_POST['skillUuid'];
                 $newParentUuid = $_POST['newParentUuid'];
+                $type = $_POST['moveType'];
 
                 $validator = new \Model\Validator();
                 $validator->validateSkillUuid($skillUuid);
@@ -168,8 +208,8 @@
                     if ($type == "move"){
                         $skillManager->move($skillUuid, $newParentUuid);
                     }
-                    elseif ($type == "duplicate"){
-                        $skillManager->duplicate($skillUuid, $newParentUuid);
+                    elseif ($type == "copy"){
+                        $skillManager->copy($skillUuid, $newParentUuid);
                     }
                 }
             }            

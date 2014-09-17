@@ -21,4 +21,6 @@
 <?php include("create-skill-panel.php"); ?>
 <?php include("rename-skill-panel.php"); ?> 
 <?php include("translate-skill-panel.php"); ?> 
+<?php include("move-skill-panel.php"); ?> 
 <?php include("delete-skill-panel.php"); ?> 
+<?php include("discuss-skill-panel.php"); ?> 
