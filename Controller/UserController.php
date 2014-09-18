@@ -119,8 +119,8 @@
                     
                     $user->setPassword( $hashedPassword );
                     $user->setIpAtRegistration( $_SERVER['REMOTE_ADDR'] );
-                    $user->setDateCreated( date("Y-m-d H:i:s") );
-                    $user->setDateModified( date("Y-m-d H:i:s") );
+                    $user->setDateCreated( time() );
+                    $user->setDateModified( time() );
 
                     //save it
                     $userManager = new \Model\UserManager();
@@ -154,7 +154,7 @@
 
             $params = array();
             $params['user'] = $user;
-            $params['title'] = $username . _("'s profile | Skill Project");
+            $params['title'] = \Utils\SecurityHelper::encode($username) . _("'s profile | Skill Project");
             $view = new View("profile.php", $params);
             $view->setLayout("../View/layouts/debug.php");
             $view->send();

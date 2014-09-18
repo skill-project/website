@@ -35,7 +35,7 @@
         }
 
         public static function userIsLogged(){
-            if (!empty($_SESSION['user']['id'])){
+            if (!empty($_SESSION['user']['uuid'])){
                 return true;
             }
             return false;
@@ -56,7 +56,6 @@
 
         public static function putUserDataInSession(User $user){
             $sessionUser = array(
-                "id" => $user->getId(),
                 "uuid" => $user->getUuid(),
                 "role" => $user->getRole(),
                 "username" => $user->getUsername(),
@@ -65,5 +64,18 @@
             $_SESSION['user'] = $sessionUser;
         }
 
+        /**
+         * Before save to db
+         */
+        public static function safe($string){
+            return strip_tags($string);
+        }
+
+        /**
+         * Before outputing
+         */
+        public static function encode($string){
+            return htmlspecialchars($string);
+        }
 
     }

@@ -3,6 +3,7 @@
 	namespace Model;
 
 	use \Everyman\Neo4j\Node;
+	use \Utils\SecurityHelper as SH;
 
 	class User extends Entity {
 	
@@ -80,7 +81,7 @@
 		}
 
 		public function setUsername($username){
-			$this->username = $username;
+			$this->username = SH::safe($username);
 		}
 
 		public function getEmail(){
@@ -88,7 +89,7 @@
 		}
 
 		public function setEmail($email){
-			$this->email = $email;
+			$this->email = SH::safe($email);
 		}
 
 		public function getPassword(){

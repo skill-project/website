@@ -1,3 +1,3 @@
 <h1><?php echo $title; ?></h1>
 
-<?php echo $user->getUsername(); ?>
+<?php echo \Utils\SecurityHelper::encode($user->getUsername()); ?>
