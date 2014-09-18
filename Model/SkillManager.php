@@ -21,8 +21,8 @@
          * @return mixed
          */
         public function findRootNode(){
-            $cypher = 'MATCH (skill:Skill {name: "Skills"}) RETURN skill LIMIT 1';
-            $query = new Query($this->client, $cypher);
+            $cyp = 'MATCH (skill:Skill {name: "Skills"}) RETURN skill LIMIT 1';
+            $query = new Query($this->client, $cyp);
             $resultSet = $query->getResultSet();
             
             if ($resultSet->count() == 1){
@@ -41,10 +41,10 @@
          * @return mixed Array if success, false otherwise
          */
         public function findChildren($uuid){
-            $cypher = "MATCH (parent:Skill)-[:HAS]->(s:Skill) 
+            $cyp = "MATCH (parent:Skill)-[:HAS]->(s:Skill) 
                         WHERE parent.uuid = {uuid}
                         RETURN s ORDER BY s.created ASC LIMIT 40";
-            $query = new Query($this->client, $cypher, array(
+            $query = new Query($this->client, $cyp, array(
                 "uuid" => $uuid)
             );
             $resultSet = $query->getResultSet();
@@ -66,10 +66,10 @@
          * @return array
          */
         public function findAtDepth($depth){
-            $cypher = "MATCH (s:Skill)
+            $cyp = "MATCH (s:Skill)
                         WHERE s.depth = {depth}
                         RETURN s";
-            $query = new Query($this->client, $cypher, array("depth" => $depth));
+            $query = new Query($this->client, $cyp, array("depth" => $depth));
             $resultSet = $query->getResultSet();
 
             return $resultSet;
@@ -81,9 +81,9 @@
          * @return array
          */
         public function findRevisionHistory(Skill $skill){
-            $cypher = "MATCH (s:Skill {uuid:{uuid}})<-[r]-(u:User) 
+            $cyp = "MATCH (s:Skill {uuid:{uuid}})<-[r]-(u:User) 
                         RETURN r,u ORDER BY r.timestamp DESC";
-            $query = new Query($this->client, $cypher, array("uuid" => $skill->getUuid()));
+            $query = new Query($this->client, $cyp, array("uuid" => $skill->getUuid()));
             $resultSet = $query->getResultSet();
 
             $revisions = array();
@@ -123,8 +123,8 @@
          * @return mixed 
          */
         public function findByUuid($uuid){
-            $cypher = "MATCH (skill:Skill { uuid: {uuid} }) RETURN skill LIMIT 1";
-            $query = new Query($this->client, $cypher, array(
+            $cyp = "MATCH (skill:Skill { uuid: {uuid} }) RETURN skill LIMIT 1";
+            $query = new Query($this->client, $cyp, array(
                 "uuid" => $uuid)
             );
             $resultSet = $query->getResultSet();
@@ -145,10 +145,10 @@
          */
         public function findNodePathToRoot($slug){
 
-            $cypher = "MATCH (child:Skill)<-[:HAS*0..1]-(parents:Skill)-[:HAS*]->(s:Skill) 
+            $cyp = "MATCH (child:Skill)<-[:HAS*0..1]-(parents:Skill)-[:HAS*]->(s:Skill) 
                         WHERE s.slug = {slug}
                         RETURN parents,s,child ORDER BY child.created ASC";
-            $query = new Query($this->client, $cypher, array(
+            $query = new Query($this->client, $cyp, array(
                 "slug" => $slug)
             );
             $resultSet = $query->getResultSet();
@@ -204,8 +204,8 @@
          * @return mixed 
          */
         public function findBySlug($slug){
-            $cypher = "MATCH (skill:Skill { slug: {slug} }) RETURN skill LIMIT 1";
-            $query = new Query($this->client, $cypher, array(
+            $cyp = "MATCH (skill:Skill { slug: {slug} }) RETURN skill LIMIT 1";
+            $query = new Query($this->client, $cyp, array(
                 "slug" => $slug)
             );
             $resultSet = $query->getResultSet();
@@ -225,8 +225,8 @@
          * @return mixed Skill parent if found, else false
          */
         public function findParent(Skill $skill){
-            $cypher = 'MATCH (parent:Skill)-[:HAS]->(child:Skill {uuid: {uuid}}) RETURN parent LIMIT 1';
-            $query = new Query($this->client, $cypher, array("uuid" => $skill->getUuid()));
+            $cyp = 'MATCH (parent:Skill)-[:HAS]->(child:Skill {uuid: {uuid}}) RETURN parent LIMIT 1';
+            $query = new Query($this->client, $cyp, array("uuid" => $skill->getUuid()));
             $resultSet = $query->getResultSet();
             
             if ($resultSet->count() == 1){
@@ -260,10 +260,10 @@
          */
         public function findParentAndGrandParent($uuid){
             //fetch grand pa at same time to get to parent's parent id
-            $cypher = "MATCH (parents:Skill)-[:HAS*1..2]->(child:Skill) 
+            $cyp = "MATCH (parents:Skill)-[:HAS*1..2]->(child:Skill) 
                         WHERE child.uuid = {uuid}
                         RETURN parents";
-            $query = new Query($this->client, $cypher, array(
+            $query = new Query($this->client, $cyp, array(
                 "uuid" => $uuid)
             );
             $resultSet = $query->getResultSet();
@@ -388,8 +388,11 @@
             if ($nodeExists){
                 $childrenNumber = $this->countChildren($uuid);
                 if($childrenNumber == 0){
-                    $cypher = "MATCH (n)-[r]-() WHERE n.uuid = {uuid} DELETE n, r";
-                    $query = new Query($this->client, $cypher, array(
+
+                    $cyp = "MATCH (parent:Skill)-[:HAS]->(s:Skill)-[r]-() WHERE s.uuid = {uuid} 
+                            SET s.previousParentUuid = parent.uuid 
+                            REMOVE s:Skill SET s :DeletedSkill";
+                    $query = new Query($this->client, $cyp, array(
                         "uuid" => $uuid)
                     );
                     $resultSet = $query->getResultSet();
@@ -458,10 +461,10 @@
          * 
          */
         public function countChildren($uuid){
-            $cypher = "MATCH (n:Skill)-[:HAS]->(:Skill) 
+            $cyp = "MATCH (n:Skill)-[:HAS]->(:Skill) 
                         WHERE n.uuid = {uuid} 
                         RETURN count(*) as childrenNumber";
-            $query = new Query($this->client, $cypher, array(
+            $query = new Query($this->client, $cyp, array(
                 "uuid" => $uuid)
             );
             $resultSet = $query->getResultSet();

@@ -371,25 +371,19 @@
                     $skill->setDepth( $parentSkill->getDepth() + 1 );
                     $skillManager->save($skill, $skillParentUuid, $userUuid);
 
-                    switch ($creationType) {
-                        case 'child':
+                    if($creationType == "parent") {
+                        //right now, the new skill was added on the same level as the selected skill
+                        //the new skill has a correct depth
 
-                            break;
+                        //move the selected skill as child of newly created one
+                        $skillManager->move($selectedSkillUuid, $skill->getUuid(), $userUuid);
+
+                        //find the selected skill
+                        $selectedSkill = $skillManager->findByUuid($selectedSkillUuid);
                         
-                        case 'parent':
-                            //right now, the new skill was added on the same level as the selected skill
-                            //the new skill has a correct depth
-
-                            //move the selected skill as child of newly created one
-                            $skillManager->move($selectedSkillUuid, $skill->getUuid(), $userUuid);
-
-                            //find the selected skill
-                            $selectedSkill = $skillManager->findByUuid($selectedSkillUuid);
-                            
-                            //correct all depth with a hack...
-                            $skillManager->updateDepthOnSkillAndChildren($selectedSkill);
-                            $skillManager->updateDepth($selectedSkill);
-                            break;
+                        //correct all depth with a hack...
+                        $skillManager->updateDepthOnSkillAndChildren($selectedSkill);
+                        $skillManager->updateDepth($selectedSkill);
                     }
                     
 
