@@ -67,7 +67,7 @@
             $panelFile = ($user && $user->isAdmin()) ? "panel_admin" : "panel_user";
 
             //is not an admin, determine if can rename or move the skill
-            if (!$user->isAdmin()){
+            if ($user && !$user->isAdmin()){
                 //@todo guill
             }
 

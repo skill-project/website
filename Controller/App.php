@@ -24,6 +24,10 @@
         }
 
         private function useSession(){
+            session_set_cookie_params(31536000,"/"); //will expire in 1 year
+            
+            //see also in SecurityHelper//
+
             //we use sessions
             session_start();
         }

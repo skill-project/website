@@ -73,6 +73,7 @@
                 "email" => $user->getEmail()
             );
             $_SESSION['user'] = $sessionUser;
+            setcookie(session_name(),session_id(),time()+31536000,"/"); //1 year
         }
 
         /**

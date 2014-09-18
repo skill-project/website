@@ -43,7 +43,7 @@
         public function findChildren($uuid){
             $cypher = "MATCH (parent:Skill)-[:HAS]->(s:Skill) 
                         WHERE parent.uuid = {uuid}
-                        RETURN s LIMIT 40";
+                        RETURN s ORDER BY s.created ASC LIMIT 40";
             $query = new Query($this->client, $cypher, array(
                 "uuid" => $uuid)
             );
@@ -147,7 +147,7 @@
 
             $cypher = "MATCH (child:Skill)<-[:HAS*0..1]-(parents:Skill)-[:HAS*]->(s:Skill) 
                         WHERE s.slug = {slug}
-                        RETURN parents,s,child";
+                        RETURN parents,s,child ORDER BY child.created ASC";
             $query = new Query($this->client, $cypher, array(
                 "slug" => $slug)
             );
@@ -344,17 +344,23 @@
          * @param string Skill new parent uuid
          * @return bool true on success, false otherwise
          */
-        public function move($skillUuid, $newParentUuid){
+        public function move($skillUuid, $newParentUuid, $userUuid){
             $cyp = "MATCH 
                     (oldParent:Skill)-[r:HAS]->(skill:Skill {uuid: {skillUuid}}),
-                    (newParent:Skill {uuid: {newParentUuid}}) 
+                    (newParent:Skill {uuid: {newParentUuid}}),
+                    (user:User {uuid: {userUuid}})
                     CREATE 
-                    (newParent)-[newR:HAS {since: timestamp()}]->(skill),
-                    (oldParent)-[historyR:HAD {since: timestamp()}]->(skill) 
+                    (newParent)-[newR:HAS {since: {timestamp}}]->
+                    (skill)
+                    <-[:MOVED {timestamp: {timestamp}, fromParent: oldParent.uuid, toParent: {newParentUuid}}]-(user)
                     DELETE r
                     RETURN newParent,oldParent,skill,newR";
             $query = new Query($this->client, $cyp, array(
-                "skillUuid" => $skillUuid, "newParentUuid" => $newParentUuid)
+                    "skillUuid" => $skillUuid, 
+                    "newParentUuid" => $newParentUuid,
+                    "timestamp" => time(),
+                    "userUuid" => $userUuid
+                )
             );
             $resultSet = $query->getResultSet();
 

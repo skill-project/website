@@ -381,7 +381,7 @@
                             //the new skill has a correct depth
 
                             //move the selected skill as child of newly created one
-                            $skillManager->move($selectedSkillUuid, $skill->getUuid());
+                            $skillManager->move($selectedSkillUuid, $skill->getUuid(), $userUuid);
 
                             //find the selected skill
                             $selectedSkill = $skillManager->findByUuid($selectedSkillUuid);
