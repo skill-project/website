@@ -111,9 +111,10 @@
                     $user->setNewUuid();
                     $user->setUsername( $username );
                     $user->setEmail( $email );
+                    $user->setEmailValidated(false);
                     $user->setRole( "user" );
-                    $user->setSalt( $securityHelper->randomString() );
-                    $user->setToken( $securityHelper->randomString() );
+                    $user->setSalt( \Utils\SecurityHelper::randomString() );
+                    $user->setToken( \Utils\SecurityHelper::randomString() );
 
                     $hashedPassword = $securityHelper->hashPassword( $password, $user->getSalt() );
                     
@@ -126,6 +127,9 @@
                     $userManager = new \Model\UserManager();
                     $userManager->save($user); 
             
+                    $mailer = new Mailer();
+                    $mailer->sendConfirmation($user);
+
                     //header("Location: ");
                 }
                 //not valid
@@ -140,6 +144,23 @@
             $view->send();
         }
 
+
+        /**
+         * Confirms an email adress after registration
+        */
+        public function emailConfirmationAction($email, $token){
+            $userManager = new UserManager();
+            $user = $userManager->findByEmail($email);
+            if ($user){
+                if ($user->getToken() === $token){
+                    $user->setEmailValidated(true);
+                    //change the token 
+                    $user->setToken( \Utils\SecurityHelper::randomString() );
+                    $userManager->update($user);
+                }
+            }
+        }
+    
         /**
          * 
          */

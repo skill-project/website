@@ -71,6 +71,11 @@
             array('controller' => 'User', 'action' => 'profile'))
     );
 
+    $routes->add(
+        'emailConfirmation',
+        new Route('/confirm/{email}/{token}/',
+            array('controller' => 'User', 'action' => 'emailConfirmation'))
+    );
 //api
 
     $routes->add(

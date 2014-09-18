@@ -4,10 +4,20 @@
 
     class Router {
 
-        public static function url($name, $params = array()){
+        public static function url($name, $params = array(), $absolute = false){
             global $context, $routes;
             $urlGen = new \Symfony\Component\Routing\Generator\UrlGenerator($routes, $context);
-            return $urlGen->generate($name, $params);
+            $url = $urlGen->generate($name, $params);
+
+            if ($absolute){
+                $base = \Config\Config::BASE_URL;
+                if(substr($base, -1) == '/') {
+                    $base = substr($base, 0, -1);
+                }
+                $url = $base.$url;
+            }
+
+            return $url;
         }
 
         public static function redirect($url){

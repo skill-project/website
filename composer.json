@@ -11,6 +11,7 @@
         "symfony/routing":"dev-master",
         "symfony/http-foundation":"dev-master",
         "fzaninotto/faker": "@stable",
-        "cocur/slugify": "@stable"
+        "cocur/slugify": "@stable",
+        "mandrill/mandrill": "1.0.*"
     }
 }

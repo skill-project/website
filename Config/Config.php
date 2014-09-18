@@ -12,5 +12,7 @@
         const DEBUG         = _DEBUG;
 
         const MAX_CHILD     = 10;
+
+        const MANDRILL_KEY  = 'glIy6VMjJB5qi32A1a5qSg';
         
     }

@@ -28,7 +28,28 @@
         }
 
         public function update(User $user){
+            $cyp = "MATCH (u:User {uuid: {uuid}}) 
+                    SET u.username = {username},
+                        u.email = {email},
+                        u.emailValidated = {emailValidated},
+                        u.role = {role},
+                        u.password = {password},
+                        u.token = {token},
+                        u.dateModified = {dateModified}";
 
+            $query = new Query($this->client, $cyp, array(
+                    "uuid" => $user->getUuid(),
+                    "username" => $user->getUsername(),
+                    "email" => $user->getEmail(),
+                    "emailValidated" => $user->getEmailValidated(),
+                    "role" => $user->getRole(),
+                    "password" => $user->getPassword(),
+                    "token" => $user->getToken(),
+                    "dateModified" => time()
+                )
+            );
+            $result = $query->getResultSet();
+            return $result;
         }
 
         public function findById($id){

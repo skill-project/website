@@ -14,6 +14,7 @@
 		protected $salt;
 		protected $token;
 		protected $ipAtRegistration;
+		protected $emailValidated;
 		protected $dateCreated;
 		protected $dateModified;
 
@@ -54,6 +55,7 @@
 			$this->node->setProperty("uuid", $this->uuid);
 			$this->node->setProperty("username", $this->username);
 			$this->node->setProperty("email", $this->email);
+			$this->node->setProperty("emailValidated", $this->emailValidated);
 			$this->node->setProperty("role", $this->role);
 			$this->node->setProperty("password", $this->password);
 			$this->node->setProperty("salt", $this->salt);
@@ -90,6 +92,15 @@
 
 		public function setEmail($email){
 			$this->email = SH::safe($email);
+		}
+
+
+		public function getEmailValidated(){
+			return $this->emailValidated;
+		}
+
+		public function setEmailValidated($emailValidated){
+			$this->emailValidated = $emailValidated;
 		}
 
 		public function getPassword(){

@@ -8,7 +8,7 @@
 
         private $pepper = "biq0e923kfjw93Fwe90T#gr09w0fdfj9dfw23r2390QGGdjsgiadjob()fasdjk*";
 
-        public function randomString($length = 50){
+        public static function randomString($length = 50){
             $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             $string = "";
             for($i=0; $i<$length; $i++){
