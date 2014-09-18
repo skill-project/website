@@ -304,9 +304,27 @@
             }
         }
 
-        /**
-         * Search by keywords
-         */
+
+        public function skillSearchAction(){
+            $keywords = urldecode($_GET['q']);
+            $keywords = addslashes($keywords);
+            $cyp = "MATCH (p:Skill)-[r:HAS*0..2]->(s:Skill) WHERE s.name =~ '(?i).*$keywords.*' return s,p";
+            
+            $query = new Query($this->client, $cyp);
+            $matches = $query->getResultSet();
+
+            $data = array();
+            foreach ($matches as $node) {
+                die("todo");
+                print_r($node['s']);
+            }
+
+            $json = new \Model\JsonResponse();
+            $json->setData($data);
+            $json->send();
+        }
+
+/*
         public function skillSearchAction(){
             $keywords = urldecode($_GET['q']);
             $searchIndex = new \Everyman\Neo4j\Index\NodeIndex($this->client, 'searches');
@@ -331,6 +349,7 @@
             $json->send();
         }
 
+*/
 
         /**
          * Add a new skill

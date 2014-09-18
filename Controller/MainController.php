@@ -55,4 +55,14 @@
         }
 
 
+        /**
+         * The project page
+         */
+        public function projectAction(){
+            $view = new View("project.php", array("title" => "The Skill Project"));
+            $view->setLayout("../View/layouts/page.php");
+            $view->send();
+        }
+
+
     }

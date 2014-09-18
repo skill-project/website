@@ -12,6 +12,18 @@
     );
 
     $routes->add(
+        'skillwalk',
+        new Route('/skillwalk/', 
+            array('controller' => 'Main', 'action' => 'home'))
+    );
+
+    $routes->add(
+        'project',
+        new Route('/the-project/', 
+            array('controller' => 'Main', 'action' => 'project'))
+    );
+
+    $routes->add(
         'goTo',
         new Route('/skill/{slug}/', 
             array('controller' => 'Main', 'action' => 'goTo'))
@@ -76,6 +88,13 @@
         new Route('/confirm/{email}/{token}/',
             array('controller' => 'User', 'action' => 'emailConfirmation'))
     );
+
+    $routes->add(
+        'apply',
+        new Route('/apply/', 
+            array('controller' => 'User', 'action' => 'apply'))
+    );
+
 //api
 
     $routes->add(

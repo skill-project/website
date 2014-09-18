@@ -162,7 +162,7 @@
         }
     
         /**
-         * 
+         * Show the profile
          */
         public function profileAction($username){
 

@@ -7,22 +7,11 @@
 	<img src="img/glow-nochildren.png" id="glow-nochildren" />
 	<p id="avenir-book">Skill Project</p>
 </div>
-<div id="header">
+<header id="header">
 	<div id="header-container">
-		<a href="<?= \Controller\Router::url("home"); ?>" title="Skill Project | Home"><img src="img/logo-small.png" /></a>
-		<nav id="top-user-nav">
-			<ul>
-				<?php if (Utils\SecurityHelper::userIsLogged()): ?>
-					<li><a href="<?= \Controller\Router::url("profile", array("username" => Utils\SecurityHelper::getUser()->getUsername())); ?>" title="Profile"><?= Utils\SecurityHelper::getUser()->getUsername(); ?></a></li>
-					<li><a href="<?= \Controller\Router::url("logout"); ?>" title="Logout">Logout</a></li>
-				<?php else: ?>
-					<li><a href="<?= \Controller\Router::url("login"); ?>" title="Login">Login</a></li>
-					<li><a href="<?= \Controller\Router::url("register"); ?>" title="Register">Register</a></li>
-				<?php endif; ?>
-			</ul>
-		</nav>
+		<?php include("../View/inc/header.php"); ?>
 	</div>
-</div>
+</header>
 <div id="backdrop"></div>
 <div id="kinetic"></div>
 <div id="panel"></div>
