@@ -310,10 +310,6 @@ ul {
 }
 
 #footer {
-    display:none;
-
-    
-
     height: 82px;
     position:fixed;
     bottom:0px;

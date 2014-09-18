@@ -373,6 +373,7 @@
                     if ($creationType == "parent"){
                         $selectedSkill = $skillManager->findByUuid($selectedSkillUuid);
                         $skillManager->move($selectedSkillUuid, $skill->getUuid());
+                        $skillManager->updateDepthOnSkillAndChildren($selectedSkill);
                         $skillManager->updateDepth($selectedSkill);
 
                         //add move skill relationship

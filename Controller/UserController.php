@@ -110,7 +110,6 @@
                     
                     $user->setNewUuid();
                     $user->setUsername( $username );
-                    $user->generateSlug();
                     $user->setEmail( $email );
                     $user->setRole( "user" );
                     $user->setSalt( $securityHelper->randomString() );

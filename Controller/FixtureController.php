@@ -136,7 +136,7 @@
             $minNumChild = 1;
             $maxNumChild = 4;
 
-            for($i=3;$i<$depth;$i++){
+            for($i=3;$i<=$depth;$i++){
                 $this->addDummyChildAtDepth($i, $minNumChild, $maxNumChild);
                 echo "<br /> after depth $i " . (microtime(true) - $time_start) . "<br />";
             }
@@ -144,6 +144,28 @@
             echo "<br />done";
             echo "<br />" . (microtime(true) - $time_start) . "<br />";
         }
+
+
+        public function emptyDatabaseAction(){
+            $searchIndex = new \Everyman\Neo4j\Index\NodeIndex($this->client, 'searches');
+            $searchIndex->delete();
+
+            //delete all
+            $query = new Query($this->client, "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r");
+            $resultSet = $query->getResultSet();
+
+            $skillManager = new SkillManager();
+            //create root node
+            $rootSkill = new Skill();
+            $rootSkill->setNewUuid();
+            $rootSkill->setName("Skills");
+            $rootSkill->setDepth(1);
+
+            $rootSkill->generateNode();
+
+            $skillManager->save( $rootSkill );
+        }
+
 
         private function addDummyUser($username, $role = "user"){
 

@@ -142,6 +142,21 @@
 
 
         /**
+         * Update skill and all children's depth in db 
+         */
+        public function updateDepthOnSkillAndChildren($skill){
+            $cyp = "MATCH (parent)-[:HAS*]->(c:Skill) 
+                    WHERE parent.uuid = {uuid}
+                    SET c.depth = c.depth+1,parent.depth = parent.depth+1
+                    RETURN c";
+            $query = new Query($this->client, $cyp, array(
+                "uuid" => $skill->getUuid())
+            );
+            $resultSet = $query->getResultSet();
+        }
+
+
+        /**
          * Update skill depth in db (usefull after a move) 
          */
         public function updateDepth($skill){

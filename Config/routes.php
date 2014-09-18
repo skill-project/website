@@ -163,3 +163,9 @@
         new Route('/benchmark/', 
             array('controller' => 'Fixture', 'action' => 'benchmark'))
     );  
+
+    $routes->add(
+        'emptyDatabase',
+        new Route('/emptyDatabase/', 
+            array('controller' => 'Fixture', 'action' => 'emptyDatabase'))
+    );  
