@@ -94,8 +94,8 @@
             if (empty($skillName)){
                 $this->addError("skillName", _("Please provide a skill name."));
             }
-            elseif (strlen($skillName) < 3 || strlen($skillName) > 40){
-                $this->addError("skillName", _("The skill name must be between 3 and 40 caracters long."));
+            elseif (strlen($skillName) < 3 || strlen($skillName) > 45){
+                $this->addError("skillName", _("The skill name must be between 3 and 45 caracters long."));
             }
         }
 
@@ -108,10 +108,30 @@
             }
         }
 
+        public function validateUniqueChild($skillParentUuid, $skillName){
+            $skillManager = new SkillManager();
+            $children = $skillManager->findChildren($skillParentUuid);
+            if (!empty($children)){
+                foreach($children as $child){
+                    if ($child['name'] == $skillName){
+                        $this->addError("create-skillName", _("This skill already exists here !"));
+                    }
+                }
+            }
+        }
+
         public function validateSkillUuid($uuid){
             //5414554b1592f9f36155801
             if (empty($uuid) || !preg_match("#^[a-f0-9]{14}f[a-f0-9]{8}$#", $uuid)){
                 $this->addError("skillUuid", _("Invalid skill id."));
+            }
+        }
+
+        public function validateNumChild($parentSkillUuid){
+            $skillManager = new \Model\SkillManager();
+            $numChild = $skillManager->countChildren($parentSkillUuid);
+            if ($numChild >= \Config\Config::MAX_CHILD){
+                $this->addError("create-skillName", _("Too many children !"));
             }
         }
 

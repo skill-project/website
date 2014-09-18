@@ -27,12 +27,12 @@
 	<script type="text/javascript" src="js/Camera.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
 	<script type="text/javascript" src="js/script.js"></script>
-<style>
-@font-face {
-    font-family: 'Avenir-Book';
-    src: url('<?= \Config\Config::BASE_URL ?>fonts/Avenir-Book.ttf');
-}
-</style>
+	<style>
+	@font-face {
+	    font-family: 'Avenir-Book';
+	    src: url('<?= \Config\Config::BASE_URL ?>fonts/Avenir-Book.ttf');
+	}
+	</style>
 </head>
 <body>
 	<?php include("../View/pages/" . $page); ?>

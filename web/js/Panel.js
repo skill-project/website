@@ -214,8 +214,9 @@ var Panel = function(node, initParams) {
                         data: $("#discuss-skill-form").serialize(),
                         success: function(response){
                             if (response.status == "ok"){
+                                $("#discuss-message").val("");
                                 $.ajax({
-                                    url: baseUrl + "panel/reloadDiscussionMessages/" + node.id,
+                                    url: baseUrl + "panel/reloadDiscussionMessages/" + node.id + "/",
                                     success: function(messagesHtml){
                                         $(".discuss-prev-messages").html(messagesHtml);
                                     }

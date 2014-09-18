@@ -10,5 +10,7 @@
         const NEO_PORT      = _NEO_PORT;
         
         const DEBUG         = _DEBUG;
+
+        const MAX_CHILD     = 10;
         
     }

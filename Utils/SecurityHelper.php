@@ -27,8 +27,19 @@
             return $hashedPassword;
         }
 
-        public static function lock(){
+        public static function lock($role = ""){
+            $forbid = false;
+            
+            //if no user is connected, forbid
             if (!self::userIsLogged()){
+                $forbid = true;
+            }
+            //if role required is admin and current user is not admin, forbid
+            elseif ($role == "admin" && self::getUser()->getRole != "admin"){
+                $forbid = true;
+            }
+
+            if ($forbid){
                 header('HTTP/1.0 403 Forbidden');
                 die("Forbidden");
             }

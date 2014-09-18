@@ -90,7 +90,7 @@
             $searchIndex->delete();
 
             //delete all
-            $query = new Query($this->client, "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r");
+            $query = new Query($this->client, "MATCH (n:Skill) OPTIONAL MATCH (n)-[r]-() DELETE n,r");
             $resultSet = $query->getResultSet();
 
             echo "<br />after delete " . (microtime(true) - $time_start) . "<br />";
@@ -107,10 +107,25 @@
             $rootSkill->setNewUuid();
             $rootSkill->setName("Skills");
             $rootSkill->setDepth(1);
-
-            $rootSkill->generateNode();
-
-            $skillManager->save( $rootSkill );
+            
+            $cyp = "CREATE (skill:Skill {
+                        uuid: {skillUuid},
+                        name: {name},
+                        slug: {slug},
+                        depth: {depth},
+                        created: {now},
+                        modified: {now}
+                    })";
+            $query = new Query($this->client, $cyp, array(
+                    "skillUuid" => $rootSkill->getUuid(),
+                    "name" => $rootSkill->getName(),
+                    "slug" => $rootSkill->getSlug(),
+                    "depth" => $rootSkill->getDepth(), 
+                    "now" => time()     
+                )
+            );
+            $query->getResultSet();
+            die();
             
             //top children
             $topChildren = array("Sciences", "Sports", "Arts", "Technologies", "Social Sciences", "Technicals");

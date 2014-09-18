@@ -28,6 +28,29 @@
 
         }
 
+
+
+        /**
+         * get first level children of a node, by its uuid
+         * @param string Parent uuid
+         */
+        public function getNodeChildrenAction($uuid){
+
+            $skillManager = new SkillManager();
+            $data = $skillManager->findChildren($uuid);
+
+            if ($data){
+                $json = new \Model\JsonResponse();
+                $json->setData($data);
+            }
+            else {
+                $json = new \Model\JsonResponse("ok", "No more children");
+            }
+
+            $json->send();
+
+        }
+
         /**
          * Returns node parent
          * 
@@ -52,24 +75,7 @@
             $json->send();
         }
 
-        /**
-         * get first level children of a node, by its id
-         */
-        public function getNodeChildrenAction($uuid){
 
-            $skillManager = new SkillManager();
-            $resultSet = $skillManager->findChildren($uuid);
-            
-            $data = array();
-            foreach ($resultSet as $row) {
-                $skill = new Skill( $row['c'] );
-                $data[] = $skill->getJsonData();
-            }
-
-            $json = new \Model\JsonResponse();
-            $json->setData($data);
-            $json->send();
-        }
 
         /**
          * get one node by uuid
@@ -137,6 +143,8 @@
          * Add a comment on a skill
          */
         public function discussSkillAction(){
+
+            //lock 
             SecurityHelper::lock();
 
             if (!empty($_POST)){
@@ -265,30 +273,24 @@
                 $skillName = $_POST['skillName'];
                 $skillUuid = $_POST['skillUuid'];
 
+                $skillManager = new SkillManager();
+                $skill = $skillManager->findByUuid($skillUuid);
+                $parentSkill = $skillManager->findParent($skill);
+
                 $validator = new \Model\Validator();
                 $validator->validateSkillName($skillName);
                 $validator->validateSkillUuid($skillUuid);
+                $validator->validateUniqueChild($parentSkill->getUuid(), $skillName);
 
                 if ($validator->isValid()){
 
-                    $skillManager = new SkillManager();
-                    $skill = $skillManager->findByUuid($skillUuid);
 
                     $previousName = $skill->getName();
                     $skill->setName( $skillName );
 
-                    $skillManager->update($skill);
+                    $user = SecurityHelper::getUser();
 
-                    //add modifier skill relationship
-                    $user = \Utils\SecurityHelper::getUser();
-                    $userNode = $user->getNode();
-                    $rel = $this->client->makeRelationship();
-                    $rel->setStartNode($userNode)
-                        ->setEndNode($skill->getNode())
-                        ->setType('MODIFIED')
-                        ->setProperty('date', date("Y-m-d H:i:s"))
-                        ->setProperty('previousName', $previousName)
-                        ->save();
+                    $skillManager->update($skill, $user->getUuid(), $previousName);
 
                     $json = new \Model\JsonResponse("ok", _("Skill saved !"));
                     $json->setData($skill->getJsonData());
@@ -339,52 +341,57 @@
 
             if (!empty($_POST)){
                 
+                //post data
                 $selectedSkillUuid = $_POST['selectedSkillUuid'];
                 $skillName = $_POST['skillName'];
                 $skillParentUuid = $_POST['skillParentUuid'];
                 $creationType = $_POST['creationType'];
 
+                //retrieve parent skill
+                $skillManager = new SkillManager();
+                $parentSkill = $skillManager->findByUuid( $skillParentUuid );
+
+                //validation
                 $validator = new \Model\Validator();
                 $validator->validateSkillName($skillName);
                 $validator->validateSkillUuid($selectedSkillUuid);
                 $validator->validateSkillParentUuid($skillParentUuid);
-
-                $skillManager = new SkillManager();
-                $parentNode = $skillManager->findByUuid( $skillParentUuid );
+                $validator->validateUniqueChild($skillParentUuid, $skillName);
+                $validator->validateNumChild($skillParentUuid);
                 
-                if ($validator->isValid() && $parentNode){
+                if ($validator->isValid() && $parentSkill){
+
+                    //retrieve current user uuid
+                    $userUuid = \Utils\SecurityHelper::getUser()->getUuid();
+                    
+                    //create the skill object
                     $skill = new Skill();
                     $skill->setNewUuid();
                     $skill->setName($skillName);
-                    $skill->setDepth( $parentNode->getDepth() + 1 );
+                    $skill->setDepth( $parentSkill->getDepth() + 1 );
+                    $skillManager->save($skill, $skillParentUuid, $userUuid);
 
-                    $skillManager->save($skill, $skillParentUuid);
+                    switch ($creationType) {
+                        case 'child':
 
-                    //add creator skill relationship
-                    $userNode = $this->client->getNode($_SESSION['user']['id']);
-                    $rel = $this->client->makeRelationship();
-                    $rel->setStartNode($userNode)
-                        ->setEndNode($skill->getNode())
-                        ->setProperty("timestamp", microtime())
-                        ->setType('CREATED')->save();
+                            break;
+                        
+                        case 'parent':
+                            //right now, the new skill was added on the same level as the selected skill
+                            //the new skill has a correct depth
 
-                    //if "create as parent" was selected, move the selected skill as a child of 
-                    //the newly created one
-                    if ($creationType == "parent"){
-                        $selectedSkill = $skillManager->findByUuid($selectedSkillUuid);
-                        $skillManager->move($selectedSkillUuid, $skill->getUuid());
-                        $skillManager->updateDepthOnSkillAndChildren($selectedSkill);
-                        $skillManager->updateDepth($selectedSkill);
+                            //move the selected skill as child of newly created one
+                            $skillManager->move($selectedSkillUuid, $skill->getUuid());
 
-                        //add move skill relationship
-                        $rel = $this->client->makeRelationship();
-                        $rel->setStartNode($userNode)
-                            ->setEndNode($skill->getNode())
-                            ->setProperty("timestamp", microtime())
-                            ->setProperty("fromParent", $skillParentUuid)
-                            ->setProperty("toParent", $skill->getUuid())
-                            ->setType('MOVED')->save();
+                            //find the selected skill
+                            $selectedSkill = $skillManager->findByUuid($selectedSkillUuid);
+                            
+                            //correct all depth with a hack...
+                            $skillManager->updateDepthOnSkillAndChildren($selectedSkill);
+                            $skillManager->updateDepth($selectedSkill);
+                            break;
                     }
+                    
 
                     $json = new \Model\JsonResponse("ok", _("Skill saved !"));
                     $json->setData($skill->getJsonData());

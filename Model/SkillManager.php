@@ -6,7 +6,6 @@
     use \Everyman\Neo4j\Traversal;
     use \Everyman\Neo4j\Relationship;
     use \Everyman\Neo4j\Cypher\Query;
-    use \Cocur\Slugify\Slugify;
 
     class SkillManager extends Manager {
 
@@ -15,6 +14,260 @@
         public function __construct(){
             parent::__construct();
             $this->createSearchIndex();
+        }
+
+        /**
+         * Find and return the top skill node
+         * @return mixed
+         */
+        public function findRootNode(){
+            $cypher = 'MATCH (skill:Skill {name: "Skills"}) RETURN skill LIMIT 1';
+            $query = new Query($this->client, $cypher);
+            $resultSet = $query->getResultSet();
+            
+            if ($resultSet->count() == 1){
+                $rootNode = $resultSet[0]['skill'];
+                $skill = new Skill( $rootNode );
+                return $skill;
+            }
+            return false;
+        }
+
+
+
+        /**
+         * Find skill children
+         * @param string Parent uuid
+         * @return mixed Array if success, false otherwise
+         */
+        public function findChildren($uuid){
+            $cypher = "MATCH (parent:Skill)-[:HAS]->(s:Skill) 
+                        WHERE parent.uuid = {uuid}
+                        RETURN s LIMIT 40";
+            $query = new Query($this->client, $cypher, array(
+                "uuid" => $uuid)
+            );
+            $resultSet = $query->getResultSet();
+            if ($resultSet->count() > 0){
+                $data = array();
+                foreach ($resultSet as $row) {
+                    $skill = new Skill( $row['s'] );
+                    $data[] = $skill->getJsonData();
+                }
+                return $data;
+            }
+            return false;
+        }
+
+
+        /**
+         * Retrieve all nodes at a specified depth
+         * @param int depth
+         * @return array
+         */
+        public function findAtDepth($depth){
+            $cypher = "MATCH (s:Skill)
+                        WHERE s.depth = {depth}
+                        RETURN s";
+            $query = new Query($this->client, $cypher, array("depth" => $depth));
+            $resultSet = $query->getResultSet();
+
+            return $resultSet;
+        }
+
+        /**
+         * Retrieve all modifications on a skill (including creation)
+         * @param Skill the skill
+         * @return array
+         */
+        public function findRevisionHistory(Skill $skill){
+            $cypher = "MATCH (s:Skill {uuid:{uuid}})<-[r]-(u:User) 
+                        RETURN r,u ORDER BY r.timestamp DESC";
+            $query = new Query($this->client, $cypher, array("uuid" => $skill->getUuid()));
+            $resultSet = $query->getResultSet();
+
+            $revisions = array();
+            foreach($resultSet as $row){
+                $revision = array();
+                $revision['date'] = $row['r']->getProperty('timestamp');
+                if ($row['r']->getProperty('fromName')){
+                    $revision['previousName'] = $row['r']->getProperty('fromName');
+                }
+                $revision['username'] = $row['u']->getProperty('username');
+                $revisions[] = $revision;
+            }
+
+            return $revisions;
+        }
+
+        /**
+         * WARNING: should not be trusted
+         * Return a Skill object based on his id, false on failure
+         * @param int $id
+         * @return mixed 
+         */
+        public function findById($id){
+            $node = $this->client->getNode($id);
+            if ($node){
+                $skill = new Skill( $node );
+                return $skill;
+            }
+
+            return false;
+        }
+
+
+        /**
+         * Return a Skill object based on his uuid, false on failure
+         * @param string $id
+         * @return mixed 
+         */
+        public function findByUuid($uuid){
+            $cypher = "MATCH (skill:Skill { uuid: {uuid} }) RETURN skill LIMIT 1";
+            $query = new Query($this->client, $cypher, array(
+                "uuid" => $uuid)
+            );
+            $resultSet = $query->getResultSet();
+            if ($resultSet->count() == 1){
+                $skill = new Skill();
+                $skill->setNode($resultSet[0]['skill']);
+                $skill->hydrateFromNode();
+                return $skill;
+            }
+
+            return false;
+        }
+
+        /**
+         * Return all parents up to the root, and all parent's siblings, false on failure
+         * @param string Slug
+         * @return mixed 
+         */
+        public function findNodePathToRoot($slug){
+
+            $cypher = "MATCH (child:Skill)<-[:HAS*0..1]-(parents:Skill)-[:HAS*]->(s:Skill) 
+                        WHERE s.slug = {slug}
+                        RETURN parents,s,child";
+            $query = new Query($this->client, $cypher, array(
+                "slug" => $slug)
+            );
+            $resultSet = $query->getResultSet();
+
+            if ($resultSet->count() >= 1){
+                $path = array();
+                $parentsAdded = array();
+                $childrenAdded = array();
+
+                
+                foreach($resultSet as $row){
+                    $parentUuid = $row['parents']->getProperty("uuid");
+
+                    //first, create first level arrays
+                    if (!in_array($parentUuid, $parentsAdded)){
+                        $level = array(
+                            "uuid" => $parentUuid,
+                            "children" => array()
+                        );
+
+                        $path[] = $level;
+                        $parentsAdded[] = $parentUuid;
+                    }
+
+                    //then add children to right level array
+                    $childUuid = $row['child']->getProperty("uuid");
+
+                    //do not add himself to array
+                    if ($parentUuid == $childUuid){ continue; }
+
+                    if (!in_array($childUuid, $childrenAdded)){
+                        for($i=0;$i<count($path);$i++){
+                            if ($path[$i]['uuid'] == $parentUuid){
+                                $skill = new Skill($row['child']);
+                                $path[$i]['children'][] = $skill->getJsonData();
+                                if ($skill->getSlug() == $slug){
+                                    $path[$i]['selectedSkill'] = $childUuid;
+                                }
+                                $childrenAdded[] = $childUuid;
+                            }
+                        }
+                    }
+                }
+                return $path;
+            }
+
+            return false;
+        }
+
+        /**
+         * Return a Skill object based on his slug, false on failure
+         * @param string $id
+         * @return mixed 
+         */
+        public function findBySlug($slug){
+            $cypher = "MATCH (skill:Skill { slug: {slug} }) RETURN skill LIMIT 1";
+            $query = new Query($this->client, $cypher, array(
+                "slug" => $slug)
+            );
+            $resultSet = $query->getResultSet();
+            if ($resultSet->count() == 1){
+                $skill = new Skill();
+                $skill->setNode($resultSet[0]['skill']);
+                $skill->hydrateFromNode();
+                return $skill;
+            }
+
+            return false;
+        }
+
+        /**
+         * Return parent uuid of a Node
+         * @param Node $node
+         * @return mixed Skill parent if found, else false
+         */
+        public function findParent(Skill $skill){
+            $cypher = 'MATCH (parent:Skill)-[:HAS]->(child:Skill {uuid: {uuid}}) RETURN parent LIMIT 1';
+            $query = new Query($this->client, $cypher, array("uuid" => $skill->getUuid()));
+            $resultSet = $query->getResultSet();
+            
+            if ($resultSet->count() == 1){
+                $node = $resultSet[0]['parent'];
+                $parent = new Skill( $node );
+                return $parent;
+            }
+            return false;
+        }
+
+
+
+        public function findAll(){
+
+            $rootNode = $this->findRootNode();
+            if (!$rootNode){return false;}
+
+            $traversal = new Traversal($this->client);
+            $traversal->addRelationship('HAS', Relationship::DirectionOut)
+                ->setPruneEvaluator(Traversal::PruneNone)
+                ->setReturnFilter(Traversal::ReturnAll)
+                ->setMaxDepth(20);
+
+            $allNodes = $traversal->getResults($rootNode->getNode(), Traversal::ReturnTypeNode);
+            return $allNodes;
+        }
+
+        /**
+         * Find parent and gp at the same time
+         * @return ResultSet
+         */
+        public function findParentAndGrandParent($uuid){
+            //fetch grand pa at same time to get to parent's parent id
+            $cypher = "MATCH (parents:Skill)-[:HAS*1..2]->(child:Skill) 
+                        WHERE child.uuid = {uuid}
+                        RETURN parents";
+            $query = new Query($this->client, $cypher, array(
+                "uuid" => $uuid)
+            );
+            $resultSet = $query->getResultSet();
+            return $resultSet;
         }
 
 
@@ -30,38 +283,45 @@
 
 
         /**
-         * Save a Skill to DB
-         * @param Skill Skill to save
+         * Save a NEW Skill to DB
+         * @param Skill Skill to create
          * @param string The uuid of his parent
+         * @param string The uuid of the current user
          * @return Skill Returns the skill
          */
-        public function save(Skill $skill, $skillParentUuid = null){
+        public function save(Skill $skill, $skillParentUuid, $userUuid){
 
-            //if new, set slug
-            if (empty($skill->getSlug())){
-                $slugify = new Slugify();
-                $slug = $slugify->slugify($skill->getName()) . "-" . substr($skill->getUuid(), 0, 14);
-                $skill->setSlug($slug);
-            }
+            $cyp = "MATCH 
+                    (parent:Skill {uuid: {parentUuid}}), 
+                    (user:User {uuid: {userUuid}})
+                    CREATE (parent)
+                    -[:HAS {
+                        since: {now}
+                    }]->
+                    (skill:Skill {
+                        uuid: {skillUuid},
+                        name: {name},
+                        slug: {slug},
+                        depth: {depth},
+                        created: {now},
+                        modified: {now}
+                    })<-[:CREATED {
+                        timestamp: {now}
+                    }]-(user)";
 
-            $skillNode = $skill->getNode();
-            $skillNode->save();
+            $query = new Query($this->client, $cyp, array(
+                    "parentUuid" => $skillParentUuid,
+                    "now" => time(),
+                    "skillUuid" => $skill->getUuid(),
+                    "name" => $skill->getName(),
+                    "slug" => $skill->getSlug(),
+                    "depth" => $skill->getDepth(),
+                    "userUuid" => $userUuid
+                )
+            );
+            $resultSet = $query->getResultSet();
 
-            //add skill label
-            $label = $this->client->makeLabel('Skill');
-            $skillNode->addLabels(array($label));
-            $skill->setNode($skillNode);
-            $skill->hydrateFromNode();
-
-            //save parent child relationship
-            if ($skillParentUuid){
-                $parent = $this->findByUuid($skillParentUuid);
-                $this->saveParentChildRelationship($parent, $skill);
-            }
-
-            //add to search index
-            $this->addToSearchIndex($skill);
-            return $skill;
+            return true;
         }
 
         /**
@@ -207,248 +467,27 @@
         /**
          * Update an existing skill
          */
-        public function update(Skill $skill){
-            $node = $skill->getNode();
-            if ($node->save()){
-                return true;
-            }
-            return false;
-        }
+        public function update(Skill $skill, $userUuid, $previousName = ""){
+            $cyp = "MATCH (skill:Skill {uuid:{skillUuid}}), (user:User {uuid: {userUuid}})
+                    SET skill.name = {name},
+                        skill.depth = {depth},
+                        skill.modified = {now}
+                    CREATE (skill)<-[:MODIFIED {
+                        timestamp: {now}, fromName: {fromName}
+                    }]-(user)";
 
-        /**
-         * Retrieve all nodes at a specified depth
-         * @param int depth
-         * @return array
-         */
-        public function findAtDepth($depth){
-            $cypher = "MATCH (s:Skill)
-                        WHERE s.depth = {depth}
-                        RETURN s";
-            $query = new Query($this->client, $cypher, array("depth" => $depth));
-            $resultSet = $query->getResultSet();
-
-            return $resultSet;
-        }
-
-        /**
-         * Retrieve all modifications on a skill
-         * @param Skill the skill
-         * @return array
-         */
-        public function findRevisionHistory(Skill $skill){
-            $cypher = "MATCH (s:Skill {id:{skillId}})<-[m:MODIFIED]-(u:User) 
-                        RETURN m,u ORDER BY m.date DESC";
-            $query = new Query($this->client, $cypher, array("skillId" => $skill->getId()));
-            $resultSet = $query->getResultSet();
-
-            $revisions = array();
-            foreach($resultSet as $row){
-                $revision = array();
-                $revision['date'] = $row['m']->getProperty('date');
-                $revision['previousName'] = $row['m']->getProperty('previousName');
-                $revision['username'] = $row['u']->getProperty('username');
-                $revisions[] = $revision;
-            }
-
-            return $revisions;
-        }
-
-        /**
-         * WARNING: should not be trusted
-         * Return a Skill object based on his id, false on failure
-         * @param int $id
-         * @return mixed 
-         */
-        public function findById($id){
-            $node = $this->client->getNode($id);
-            if ($node){
-                $skill = new Skill( $node );
-                return $skill;
-            }
-
-            return false;
-        }
-
-
-        /**
-         * Return a Skill object based on his uuid, false on failure
-         * @param string $id
-         * @return mixed 
-         */
-        public function findByUuid($uuid){
-            $cypher = "MATCH (skill:Skill { uuid: {uuid} }) RETURN skill LIMIT 1";
-            $query = new Query($this->client, $cypher, array(
-                "uuid" => $uuid)
-            );
-            $resultSet = $query->getResultSet();
-            if ($resultSet->count() == 1){
-                $skill = new Skill();
-                $skill->setNode($resultSet[0]['skill']);
-                $skill->hydrateFromNode();
-                return $skill;
-            }
-
-            return false;
-        }
-
-        /**
-         * Return all parents up to the root, and all parent's siblings, false on failure
-         * @param string Slug
-         * @return mixed 
-         */
-        public function findNodePathToRoot($slug){
-
-            $cypher = "MATCH (child:Skill)<-[:HAS*0..1]-(parents:Skill)-[:HAS*]->(s:Skill) 
-                        WHERE s.slug = {slug}
-                        RETURN parents,s,child";
-            $query = new Query($this->client, $cypher, array(
-                "slug" => $slug)
+            $query = new Query($this->client, $cyp, array(
+                    "now" => time(),
+                    "skillUuid" => $skill->getUuid(),
+                    "name" => $skill->getName(),
+                    "depth" => $skill->getDepth(),
+                    "userUuid" => $userUuid,
+                    "fromName" => $previousName
+                )
             );
             $resultSet = $query->getResultSet();
 
-            if ($resultSet->count() >= 1){
-                $path = array();
-                $parentsAdded = array();
-                $childrenAdded = array();
-
-                
-                foreach($resultSet as $row){
-                    $parentUuid = $row['parents']->getProperty("uuid");
-
-                    //first, create first level arrays
-                    if (!in_array($parentUuid, $parentsAdded)){
-                        $level = array(
-                            "uuid" => $parentUuid,
-                            "children" => array()
-                        );
-
-                        $path[] = $level;
-                        $parentsAdded[] = $parentUuid;
-                    }
-
-                    //then add children to right level array
-                    $childUuid = $row['child']->getProperty("uuid");
-
-                    //do not add himself to array
-                    if ($parentUuid == $childUuid){ continue; }
-
-                    if (!in_array($childUuid, $childrenAdded)){
-                        for($i=0;$i<count($path);$i++){
-                            if ($path[$i]['uuid'] == $parentUuid){
-                                $skill = new Skill($row['child']);
-                                $path[$i]['children'][] = $skill->getJsonData();
-                                if ($skill->getSlug() == $slug){
-                                    $path[$i]['selectedSkill'] = $childUuid;
-                                }
-                                $childrenAdded[] = $childUuid;
-                            }
-                        }
-                    }
-                }
-                return $path;
-            }
-
-            return false;
+            return true;
         }
 
-        /**
-         * Return a Skill object based on his slug, false on failure
-         * @param string $id
-         * @return mixed 
-         */
-        public function findBySlug($slug){
-            $cypher = "MATCH (skill:Skill { slug: {slug} }) RETURN skill LIMIT 1";
-            $query = new Query($this->client, $cypher, array(
-                "slug" => $slug)
-            );
-            $resultSet = $query->getResultSet();
-            if ($resultSet->count() == 1){
-                $skill = new Skill();
-                $skill->setNode($resultSet[0]['skill']);
-                $skill->hydrateFromNode();
-                return $skill;
-            }
-
-            return false;
-        }
-
-        /**
-         * Return parent uuid of a Node
-         * @param Node $node
-         * @return mixed Skill parent if found, else false
-         */
-        public function findParent(Skill $skill){
-            $cypher = 'MATCH (parent:Skill)-[:HAS]->(child:Skill {uuid: {uuid}}) RETURN parent LIMIT 1';
-            $query = new Query($this->client, $cypher, array("uuid" => $skill->getUuid()));
-            $resultSet = $query->getResultSet();
-            
-            if ($resultSet->count() == 1){
-                $node = $resultSet[0]['parent'];
-                $parent = new Skill( $node );
-                return $parent;
-            }
-            return false;
-        }
-
-        /**
-         * Find and return the top skill node
-         * @return mixed
-         */
-        public function findRootNode(){
-            $cypher = 'MATCH (n {name: "Skills"}) RETURN n LIMIT 1';
-            $query = new Query($this->client, $cypher);
-            $resultSet = $query->getResultSet();
-            
-            if ($resultSet->count() == 1){
-                $rootNode = $resultSet[0]['n'];
-                $skill = new Skill( $rootNode );
-                return $skill;
-            }
-            return false;
-        }
-
-        public function findAll(){
-
-            $rootNode = $this->findRootNode();
-            if (!$rootNode){return false;}
-
-            $traversal = new Traversal($this->client);
-            $traversal->addRelationship('HAS', Relationship::DirectionOut)
-                ->setPruneEvaluator(Traversal::PruneNone)
-                ->setReturnFilter(Traversal::ReturnAll)
-                ->setMaxDepth(20);
-
-            $allNodes = $traversal->getResults($rootNode->getNode(), Traversal::ReturnTypeNode);
-            return $allNodes;
-        }
-
-        /**
-         * Find parent and gp at the same time
-         * @return ResultSet
-         */
-        public function findParentAndGrandParent($uuid){
-            //fetch grand pa at same time to get to parent's parent id
-            $cypher = "MATCH (parents:Skill)-[:HAS*1..2]->(child:Skill) 
-                        WHERE child.uuid = {uuid}
-                        RETURN parents";
-            $query = new Query($this->client, $cypher, array(
-                "uuid" => $uuid)
-            );
-            $resultSet = $query->getResultSet();
-            return $resultSet;
-        }
-
-        /**
-         * Find skill children
-         */
-        public function findChildren($uuid){
-            $cypher = "MATCH (parent)-[:HAS]->(c:Skill) 
-                        WHERE parent.uuid = {uuid}
-                        RETURN c LIMIT 100";
-            $query = new Query($this->client, $cypher, array(
-                "uuid" => $uuid)
-            );
-            $resultSet = $query->getResultSet();
-            return $resultSet;
-        }
     }

@@ -7,7 +7,7 @@
     use \Everyman\Neo4j\Relationship;
     use \Everyman\Neo4j\Cypher\Query;
 
-
+    use \Utils\SecurityHelper as SH;
 
     class DiscussionManager extends Manager {
 
@@ -29,8 +29,8 @@
             $query = new Query($this->client, $cyp, array(
                 "userUuid" => \Utils\SecurityHelper::getUser()->getUuid(),
                 "skillUuid" => $skillUuid,
-                "topic" => $topic,
-                "message" => $message,
+                "topic" => SH::safe($topic),
+                "message" => SH::safe($message),
                 "timestamp" => time()
             ));
 
@@ -50,11 +50,11 @@
             $messages = array();
             foreach($resultSet as $row){
                 $message = array();
-                $message['message'] = $row['message']->getProperty("message");
+                $message['message'] = SH::encode($row['message']->getProperty("message"));
                 $message['timestamp'] = $row['message']->getProperty("timestamp");
                 $message['date'] = date("F jS, Y \a\\t H:i", $message['timestamp']);
-                $message['topic'] = $row['message']->getProperty("topic");
-                $message['postedBy'] = $row['user']->getProperty("username");
+                $message['topic'] = SH::encode($row['message']->getProperty("topic"));
+                $message['postedBy'] = SH::encode($row['user']->getProperty("username"));
                 $messages[] = $message;
             }
             return $messages;

@@ -11,13 +11,15 @@
     class PanelController {
 
         /**
-         * Show the first-level panel
+         * Get the panel
+         * @param string The selected skill uuid
          */
         public function getPanelAction($uuid){
 
             $params = array();
             $user = \Utils\SecurityHelper::getUser();
 
+            //retrieve the selected skill
             $skillManager = new SkillManager();
             $skill = $skillManager->findByUuid($uuid);
             $params['skill'] = $skill;
@@ -31,7 +33,11 @@
                 //distinct names only
                 $params['previousNames'] = array();
                 foreach($revisions as $rev){
-                    if (!in_array($rev['previousName'], $params['previousNames']) &&
+                    //creation name
+                    if (empty($rev['previousName'])){
+                        //$params['previousNames'][]
+                    }
+                    elseif (!in_array($rev['previousName'], $params['previousNames']) &&
                             $rev['previousName'] != $skill->getName()){
                         $params['previousNames'][] = $rev['previousName'];
                     }
@@ -59,6 +65,12 @@
             $params['translations'] = $translations;
 
             $panelFile = ($user && $user->isAdmin()) ? "panel_admin" : "panel_user";
+
+            //is not an admin, determine if can rename or move the skill
+            if (!$user->isAdmin()){
+                //@todo guill
+            }
+
             $view = new AjaxView("$panelFile.php", $params);
             $view->send();
         }

@@ -3,6 +3,7 @@
     namespace Model;
 
     use \Everyman\Neo4j\Node;
+    use \Cocur\Slugify\Slugify;
 
     class Skill extends Entity {
 
@@ -147,6 +148,12 @@
          */
         public function getSlug()
         {
+            //if new, set slug
+            if (empty($this->slug)){
+                $slugify = new Slugify();
+                $slug = $slugify->slugify($this->getName()) . "-" . substr($this->getUuid(), 0, 14);
+                $this->setSlug($slug);
+            }
             return $this->slug;
         }
 
