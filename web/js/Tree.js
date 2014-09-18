@@ -57,6 +57,178 @@ var Tree = function() {
         }
     });
 
+    //Called after creating a new skill on the panel
+    //nodeData : data about the new node as returned by the server after saving it in the database
+    //type : child or parent
+    //tree.editedNode is the node we are adding the new one to
+    //editedNode = Black Node = Parent node of the newly added node
+    this.addNewNode = function(nodeData, type) {
+        //Local function to make code more compact
+        var selectExpandNewNode = function () {
+            tree.nodes[nodeData.uuid].select();
+            tree.nodes[nodeData.uuid].expand();
+        }
+        
+        if (type == "child") {
+            //editedNode is closed, 2 options :
+            // 1. it wasn't selected (doesn't glow) 
+            // 2. it didn't have any children prior to adding the new one
+            if (tree.editedNode.open == false) {
+                //Option 1
+                if (tree.editedNode.isSelected == false) {
+                    //Ok, 2 sub-options : 
+                    // 1a. : it's editedNode's parent that is selected (glowing)
+                    // 1b. : it's some other node (outside glowing path) that is selected
+                    if (tree.editedNode.parent.isSelected == true) {
+                        //Option 1a
+                        tree.editedNode.select();
+                        tree.editedNode.expand({ onComplete: selectExpandNewNode });
+                    }else if (tree.editedNode.parent.isSelected == false) {
+                        //Option 1b
+                        //Looking for the sibling of editedNode which is open and contract it before expanding editedNode
+                        tree.editedNode.getSiblingMatch("open", true).contract();
+                        tree.editedNode.expand({ onComplete: selectExpandNewNode });
+                    }
+                }
+                //Option 2
+                else if (tree.editedNode.isSelected == true) {
+                    tree.editedNode.select();
+                    tree.editedNode.expand({ onComplete: selectExpandNewNode });
+                }
+            }else {
+                //editedNode is open and so already has children visible
+                var newSkill = new Node(nodeData, 
+                    {
+                        parent: tree.editedNode,
+                        rank: tree.editedNode.totalChildren,
+                        count: 1,
+                        isLast: true,
+                        onComplete: selectExpandNewNode
+                    });
+            }
+        }else if(type == "parent") {
+            //Contract subchildren if present : we only want one extra level after editedNode
+            var openChild = tree.editedNode.getChildrenMatch("open", true);
+            if (typeof openChild != "undefined") {
+                openChild.contract({noAnim: true});
+            }
+
+            if (tree.selectedNode.id != tree.editedNode.id && tree.selectedNode.depth >= tree.editedNode.depth) {
+                var selectedNode = tree.selectedNode;
+                selectedNode.deSelect();
+                selectedNode.contract({noAnim: true});
+            }
+
+            moveGroup = new Kinetic.Group();
+            if (Object.keys(tree.editedNode.children).length > 0) {
+                
+
+                for (var childIndex in tree.editedNode.children) {
+                    var child = tree.editedNode.children[childIndex];
+                    moveGroup.add(child.shapes, child.edge.shape);
+                }
+            }
+
+
+
+            moveGroup.add(tree.editedNode.shapes);
+
+            nodesLayer.add(moveGroup);
+
+            var tweenMoveGroup = new Kinetic.Tween({
+                node: moveGroup,
+                x: moveGroup.x() + 240 + 80,
+                y: moveGroup.y(),
+                duration: 0.30,
+                onFinish: function() {
+                    while(moveGroup.children.length > 0) {
+                        var shape = moveGroup.children[0];
+                        console.log(shape);
+                        if (shape.nodeType != "Shape") shape.move({x: 240 + 80, y: 0});
+                        shape.moveTo(nodesLayer);
+                    }
+                    moveGroup.destroy();
+                }
+            });
+
+
+            //nodeData : id, name, depth
+            var newSkill = new Node(nodeData, 
+            {
+                parent: tree.editedNode.parent,
+                takePlaceOf: tree.editedNode,
+                rank: 1,
+                count: 1,
+                isLast: true
+            });
+
+            tree.editedNode.edge.nodeFrom = newSkill;
+            tree.editedNode.parent = newSkill;
+            tree.editedNode.depth++;
+            for (var childIndex in tree.editedNode.children) {
+                tree.editedNode.children[childIndex].depth++;
+            }
+
+
+
+            if (tree.selectedNode.id != tree.editedNode.id) newSkill.select({finishEdit: false});
+
+            newSkill.setVisualState("glow-children");
+
+            newSkill.children[tree.editedNode.id] = tree.editedNode;
+            newSkill.totalChildren = 1;
+            newSkill.open = true;
+            // debugger;
+
+            newSkill.parent.totalChildren = 1;
+            newSkill.parent.children = [];
+            newSkill.parent.children[newSkill.id] = newSkill;
+
+
+
+
+            tweenMoveGroup.play();
+
+            // stage.draw();
+            // return;
+
+            //Easy temporary solution : make sure editedNode is contracted so we don't have to take care of all the children (moving right, increasing depth, caching ?, etc.)
+            // tree.editedNode.deSelect();
+            // tree.editedNode.contract({
+            //     onComplete: function() {
+            //         console.log(tree.editedNode);
+            //         console.log(tree.editedNode.parent);
+            //         var newSkill = new Node(nodeData, 
+            //             {
+            //                 parent: tree.editedNode.parent,
+            //                 takePlaceOf: tree.editedNode,
+            //                 rank: 1,
+            //                 count: 1,
+            //                 isLast: true,
+            //                 onComplete: function() {
+            //                     tree.editedNode.parent = tree.nodes[nodeData.uuid];
+            //                     tree.editedNode.depth++;
+            //                     tree.editedNode.edge.nodeFrom = tree.nodes[nodeData.uuid];
+            //                     // console.log("editedNode : ");
+            //                     // console.log(editedNode);
+            //                     // console.log(editedNode.shapes.x());
+            //                     var tween = new Kinetic.Tween({
+            //                           node: tree.editedNode.shapes, 
+            //                           x: tree.editedNode.shapes.x() + 240 + 80,
+            //                           duration: 0.80,
+            //                           onFinish: selectExpandNewNode
+            //                     });
+            //                     tween.play();
+            //                 }
+            //             });
+            //     }
+            // });
+
+
+            
+        }
+    }
+
     this.countCachedNodes = function() {
         var nodesCached = 0;
         var nodesNotCached = 0;

@@ -9,6 +9,7 @@ var Node = function(nodeData, params) {//, parent, rank, count, isLast) {
   this.rank = params.rank;
   this.count = params.count;
   this.isLast = params.isLast;
+  this.takePlaceOf = params.takePlaceOf ? params.takePlaceOf : null;
   this.visualState = "normal";
   this.glow = 0;
   this.shapes;
@@ -24,6 +25,7 @@ var Node = function(nodeData, params) {//, parent, rank, count, isLast) {
   this.appearDestY;
   this.panel;
   this.cached = false;
+  this.nodeReady = false;
   this.text;
 
   // Needed for nested functions
@@ -40,17 +42,12 @@ var Node = function(nodeData, params) {//, parent, rank, count, isLast) {
       tree.nodes[this.id] = this;             //Add current node to flat list of nodes in Tree object (for quick node retrieval)
       this.parent.children[this.id] = this;        //Add current node to list of parent's children
 
-      console.log("Setting ancestors for : " + this.name);
-      // debugger;
-
-      // this.ancestors = this.parent.ancestors;
       for (var ancestorIndex in Object.keys(this.parent.ancestors))
       {
         var ancestorId = Object.keys(this.parent.ancestors)[ancestorIndex];
         this.ancestors[ancestorId] = tree.nodes[ancestorId];
       }
-      this.ancestors[this.parent.id] = this.parent; 
-      console.log(this.ancestors);
+      this.ancestors[this.parent.id] = this.parent;
    }
 
   //Constructor
@@ -142,26 +139,43 @@ var Node = function(nodeData, params) {//, parent, rank, count, isLast) {
       var startX = that.parent.shapes.x();
       var startY = that.parent.shapes.y();
 
-      //Final coordinates = each skill in its own place
-      that.appearDestX = that.parent.shapes.x() + that.parent.shapes.getWidth() + 80;
-      that.appearDestY = (that.parent.shapes.y() + (56 / 2)) + ((((56 + 20) * that.parent.totalChildren) - 20) / -2) + ((56 + 20) * (Object.keys(that.parent.children).length - 1));
+      if (that.takePlaceOf != null) {
+        var animate = false;
+        // console.log("take place of");
+        // console.log(that.takePlaceOf.appearDestX);
+        
+        that.appearDestX = that.takePlaceOf.appearDestX;
+        that.appearDestY = that.takePlaceOf.appearDestY;
 
-      //Intermediate coordinates = when skills split up
-      that.midX = that.appearDestX;
-      that.midY = that.parent.shapes.y();
+        that.midX = that.takePlaceOf.midX;
+        that.midY = that.takePlaceOf.midY;
+      }else {
+        var animate = true;
+        //Final coordinates = each skill in its own place
+        that.appearDestX = that.parent.shapes.x() + that.parent.shapes.getWidth() + 80;
+        that.appearDestY = (that.parent.shapes.y() + (56 / 2)) + ((((56 + 20) * that.parent.totalChildren) - 20) / -2) + ((56 + 20) * (Object.keys(that.parent.children).length - 1));
+
+        //Intermediate coordinates = when skills split up
+        that.midX = that.appearDestX;
+        that.midY = that.parent.shapes.y();
+      }
     }
 
     var group = new Kinetic.Group({
       x: startX,
       y: startY,
       width:240,
-      height:56
+      height:56/*,
+      draggable:true*/
     });
     group.add(glow, backImage, editButton, labelGroup);
     that.shapes = group;
 
     //Adding the group to the layer and drawing the layer
     nodesLayer.add(group);
+
+    group.moveToBottom();
+
     nodesLayer.draw();
 
     //Chained animations of appearing nodes
@@ -178,6 +192,7 @@ var Node = function(nodeData, params) {//, parent, rank, count, isLast) {
             y: that.appearDestY,
             duration: 0.05 + 0.10 * (that.rank / that.count),
             onFinish: function() {
+              that.nodeReady = true;
               //Last child has finished appearing
               if (that.isLast == true) {
                 tree.busy = false;              //Releasing the tree-wide lock
@@ -188,14 +203,19 @@ var Node = function(nodeData, params) {//, parent, rank, count, isLast) {
               }
             }
           }); 
-          tween2.play();
+          if (animate == true) tween2.play();
+          else tween2.finish();
         }
       });
-      tween1.play();
+      if (animate == true) tween1.play();
+      else tween1.finish();
     }
 
     //Creating the edge / link with the parent node (except for the root node which has no parent)
-    if (that.parent != null) that.edge = new Edge(that.parent, that);
+    if (that.parent != null) {
+      that.edge = new Edge(that.parent, that);
+      that.edge.shape.moveToBottom();
+    }
 
     //Node events
     labelGroup.on("mouseover", function() { document.body.style.cursor = 'pointer'; });
@@ -210,7 +230,7 @@ var Node = function(nodeData, params) {//, parent, rank, count, isLast) {
       // Do we first have to contract the selectedNode before expading a new one ?
       if (
           tree.rootNode.id != that.id &&                     //Not for rootNode
-          that.id != tree.selectedNode.id &&                 //Not for contracting the selectedNode itself
+          tree.selectedNode != null && that.id != tree.selectedNode.id &&                 //Not for contracting the selectedNode itself
           that.depth <= tree.selectedNode.depth &&           //Not for a node shallower than the selectedNode
           tree.selectedNode.id != that.parent.id             //Not for parent
         ) {
@@ -219,12 +239,11 @@ var Node = function(nodeData, params) {//, parent, rank, count, isLast) {
           for (var siblingIndex in that.siblings) {
             var sibling = that.siblings[siblingIndex];
             if (sibling.open && sibling.id != that.id) {
-              sibling.contract(false);
-              tree.selectedNode.deSelect();
+              sibling.contract({releaseTreeLock: false});
             }
           }
         } else {                                            //Contract and deSelect previously selectedNode
-          tree.selectedNode.contract(false);
+          tree.selectedNode.contract({releaseTreeLock: false});
           tree.selectedNode.deSelect();
         }
       }
@@ -321,64 +340,113 @@ var Node = function(nodeData, params) {//, parent, rank, count, isLast) {
   }
 
   //Hiding and destroying the children
-  this.contract = function(releaseTreeLock) {
-    if (releaseTreeLock == null) releaseTreeLock = true;
+  this.contract = function(params) {
+    //Setting parameters and default values
+    if (typeof params != "undefined") {
+      if (params.releaseTreeLock == null) var releaseTreeLock = true;
 
-    //Getting all children, recursively
-    that.getChildrenRecursive();
-      
-    //Creating a group to animate all children together
-    group = new Kinetic.Group();
+      if (params.onComplete != null) var onComplete = params.onComplete;
+      else var onComplete = null;
 
-    //Adding all children to the group
-    recursiveChildren.forEach(function(child) {
-      group.add(child.shapes, child.edge.shape);
-    });
+      if (params.noAnim != null) var noAnim = params.noAnim;
+      else var noAnim = false;
+    }else {
+      var onComplete = null;
+      var releaseTreeLock = true;
+      var noAnim = false;
+    }
 
-    //Group is add to the layer
-    //Moving the children to this node would be any different ? moveTo()
-    nodesLayer.add(group);
+    //Node moves to top in order to cover edges contracting
+    that.shapes.moveToTop();
 
-    //Setting up animation to make group (with children nodes) disappear
-    var tween = new Kinetic.Tween({
-        node: group, 
-        duration: 0.4,
-        scaleX: 0,
-        scaleY: 0,
-        x: that.shapes.x() + that.shapes.getWidth(),
-        y: that.shapes.y() + that.shapes.getHeight() / 2,
-        onFinish: function() {
-          recursiveChildren.forEach(function(child) {
-            child.shapes.destroy();
-            child.edge.shape.destroy();
-            delete tree.nodes[child.id];
-          });
-          //Emptying the global array for future use
-          recursiveChildren = [];
-          group.destroy();
+    //Make deep children disappear without animation
+    var openChild = that.getChildrenMatch("open", true);
+    if (that.open == true && typeof openChild != "undefined") {
+      for (var childIndex in openChild.children) {
+          var child = openChild.children[childIndex];
+          child.delete();
+      }
+      stage.draw();
+    }
 
-          that.setVisualState("normal");
-          
-          //Emptying this node's list of children
-          that.children = [];
-          if (releaseTreeLock == true) tree.busy = false;
-          that.open = false;
-        }
-      });
+    //Take care of direct children
+    var countPositioned = 0;
+    var totalChildren = Object.keys(that.children).length;
 
-    //Starting the animation
-    tween.play();
+    //If no children, not much to do
+    if (totalChildren == 0) {
+      if (releaseTreeLock == true) tree.busy = false;
+      that.open = false;
+      that.setVisualState("normal");
+      if (onComplete != null) onComplete();
+
+    //If one or more children, we animate all of them to the center, delete all but one and animate the last one
+    }else {
+      for (var childIndex in that.children) {
+        //Variable to make current scope available to onFinish anonymous functions
+        var child = that.children[childIndex];
+        child.skpNode = child;
+
+        //Animation to the center of the children nodes
+        child.tween1 = new Kinetic.Tween({
+          node: child.shapes,
+          x: that.shapes.x() + 240 + 80,
+          y: that.shapes.y(),
+          duration: 0.15,
+          onFinish: function() {
+            if (countPositioned++ < totalChildren - 1) {
+              //For all children except the last one, mark for later deletion
+              this.skpNode.positionedForDeletion = true; 
+            }else {
+              //Last child, delete all children marked for deletion
+              that.deleteChildrenMatch("positionedForDeletion", true);
+
+              //Animation of the last child
+              var tween2 = new Kinetic.Tween({
+                node: this.skpNode.shapes,
+                x: that.shapes.x(),
+                y: that.shapes.y(),
+                duration: 0.15,
+                 onFinish: function() {
+                  //Last child deletion and tree cleanup
+                  this.skpNode.delete();
+                  if (releaseTreeLock == true) tree.busy = false;
+                  that.open = false;
+                  that.setVisualState("normal");
+                  if (onComplete != null) onComplete();
+                }
+              });
+              //Local scope handling
+              tween2.skpNode = this.skpNode;
+
+              //With or without animation
+              if (noAnim == false) tween2.play();
+              else child.tween2.finish();
+            }
+          }
+        });
+        //Local scope handling
+        child.tween1.skpNode = child;
+
+        //With or without animation
+        if (noAnim == false && Object.keys(that.children).length > 1) child.tween1.play();
+        else child.tween1.finish();
+      }
+    }
   }
 
   //Selection of the node
-  this.select = function() {
+  this.select = function(params) {
     if (that.isSelected) return;
+
+
+    if (params != null && params.finishEdit != false) var finishEdit = true;
 
     //deSelect previously selectedNode (only if it's not the current node itSelf)
     if (tree.selectedNode && tree.selectedNode.id != that.id) tree.selectedNode.deSelect(); 
 
     //Exiting edit mode for previous editedNode that is not the current node itself
-    if (tree.editedNode && that.id != tree.editedNode.id) {
+    if (tree.editedNode && that.id != tree.editedNode.id && finishEdit == true) {
       tree.editedNode.finishEdit();
     }
 
@@ -440,8 +508,25 @@ var Node = function(nodeData, params) {//, parent, rank, count, isLast) {
     } else that.setVisualState("normal");
   }
 
-  this.addChild = function(params) {
-    
+  this.getSiblingMatch = function(propertyName, propertyValue) {
+    for (var siblingIndex in that.siblings) {
+        var sibling = that.siblings[siblingIndex];
+        if (sibling[propertyName] == propertyValue) return sibling;
+    }
+  }
+
+  this.getChildrenMatch = function(propertyName, propertyValue) {
+    for (var childIndex in that.children) {
+        var child = that.children[childIndex];
+        if (child[propertyName] == propertyValue) return child;
+    }
+  }
+
+  this.deleteChildrenMatch = function(propertyName, propertyValue) {
+    for (var childIndex in that.children) {
+        var child = that.children[childIndex];
+        if (child[propertyName] == propertyValue) child.delete();
+    }
   }
 
   //Set visual state of the node
@@ -516,31 +601,35 @@ var Node = function(nodeData, params) {//, parent, rank, count, isLast) {
 
   //Caches the node
   this.cache = function() {
-    that.shapes.cache({
-      x: -25,
-      y: -25,
-      width: that.shapes.width() + 50,
-      height: that.shapes.height() + 50
-    });
+    //Caching in only really carried out on nodes which are ready (static, finished appearing)
+    if (that.nodeReady) {
+      that.shapes.cache({
+        x: -25,
+        y: -25,
+        width: that.shapes.width() + 50,
+        height: that.shapes.height() + 50/*,
+        drawBorder:true*/
+      });
 
-    //Glow is not negatively offseted anymore so we have to reposition the node
-    that.shapes.x(that.shapes.x() - 25);
-    that.shapes.y(that.shapes.y() - 25);
+      //Glow is not negatively offseted anymore so we have to reposition the node
+      that.shapes.x(that.shapes.x() - 25);
+      that.shapes.y(that.shapes.y() - 25);
 
-    //Stop listening for events on cached nodes (they are not visible anyway)
-    that.labelGroup.listening(false);
-    that.editButton.listening(false);
-    that.edge.shape.listening(false);
+      //Stop listening for events on cached nodes (they are not visible anyway)
+      that.labelGroup.listening(false);
+      that.editButton.listening(false);
+      if (typeof that.edge != "undefined") that.edge.shape.listening(false);
 
-    // Tough or impossible to cache custom drawn Shapes (drawFunc)
-    // var nodeBoundingBox = that.edge.getBoundingBox();
-    // that.edge.shape.cache({
-    //   x: nodeBoundingBox.x1,
-    //   y: nodeBoundingBox.x1,
-    //   width: nodeBoundingBox.x2 - nodeBoundingBox.x1,
-    //   height: nodeBoundingBox.y2 - nodeBoundingBox.y1 
-    // });
-    that.cached = true;
+      // Tough or impossible to cache custom drawn Shapes (drawFunc)
+      // var nodeBoundingBox = that.edge.getBoundingBox();
+      // that.edge.shape.cache({
+      //   x: nodeBoundingBox.x1,
+      //   y: nodeBoundingBox.x1,
+      //   width: nodeBoundingBox.x2 - nodeBoundingBox.x1,
+      //   height: nodeBoundingBox.y2 - nodeBoundingBox.y1 
+      // });
+      that.cached = true;
+    }
   }
 
   //Clears the cache on the node (when it becomes visible again)
@@ -559,4 +648,23 @@ var Node = function(nodeData, params) {//, parent, rank, count, isLast) {
   if (this.parent == null) {
     tree.rootNodeReady.fire();
   }
+
+  this.delete = function() {
+    // console.log(Object.keys(that.children).length);
+    for (var childIndex in that.children) {
+        var child = that.children[childIndex];
+        child.delete();
+    }
+
+    if (that.isEdited) that.finishEdit();
+    if (that.isSelected) that.deSelect();
+
+    that.edge.shape.destroy();
+    that.shapes.destroy();
+
+    delete that.parent.children[that.id];
+    delete tree.nodes[that.id];
+    delete that;
+  }
+
 }

@@ -70,7 +70,7 @@ $(window).load(function  () {
 
     //Fadein effect on canvas objects (sky and nodes)
     $("#kinetic, #backdrop").css("visibility", "visible").fadeIn({
-      duration: 1500
+      duration: 800
     });
 });
 
