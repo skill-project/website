@@ -24,3 +24,4 @@
         }
     ?>
 </form>
+<p><?= _("Already have an account ?"); ?> <a href="<?= \Controller\Router::url("login"); ?>" class="login-link" title="<?= _("Sign in !"); ?>"><?= _("Sign in !"); ?></a></p>

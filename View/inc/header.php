@@ -5,8 +5,8 @@
             <li><a class="blue-link" href="<?= \Controller\Router::url("profile", array("username" => Utils\SecurityHelper::getUser()->getUsername())); ?>" title="Profile"><?= Utils\SecurityHelper::getUser()->getUsername(); ?></a></li>
              | <li class="last"><a href="<?= \Controller\Router::url("logout"); ?>" title="Logout">Logout</a></li>
         <?php else: ?>
-            <li><a class="white-link" id="register-link" href="<?= \Controller\Router::url("register"); ?>" title="Register"><?= _("Sign up"); ?></a></li>
-             | <li class="last"><a id="login-link" href="<?= \Controller\Router::url("login"); ?>" title="Login"><?= _("Sign in"); ?></a></li>
+            <li><a class="white-link register-link" href="<?= \Controller\Router::url("register"); ?>" title="Register"><?= _("Sign up"); ?></a></li>
+             | <li class="last"><a class="login-link" href="<?= \Controller\Router::url("login"); ?>" title="Login"><?= _("Sign in"); ?></a></li>
         <?php endif; ?>
     </ul>
 </nav>
@@ -18,7 +18,7 @@
         <?php if (Utils\SecurityHelper::userIsLogged()): ?>
             <li><a href="<?= \Controller\Router::url("profile", array("username" => Utils\SecurityHelper::getUser()->getUsername())); ?>" title="Profile"><?= _("PROFILE"); ?></a></li>
         <?php else: ?>
-            <li><a href="<?= \Controller\Router::url("register"); ?>" title=""><?= _("PROFILE"); ?></a></li>
+            <li><a class="register-link" href="<?= \Controller\Router::url("register"); ?>" title=""><?= _("PROFILE"); ?></a></li>
         <?php endif; ?>
         <li><a href="<?= \Controller\Router::url("apply"); ?>" title=""><?= _("APPLY"); ?></a></li>
         <li class="last"><a href="VANILLA" title=""><?= _("COMMUNITY"); ?></a></li>
