@@ -414,7 +414,17 @@
 
 
         /**
-         * Update skill and all children's depth in db 
+         * Update all depths (very slow but safe)
+         */
+        public function updateAllDepths2(){
+            $cyp = "MATCH p=(c:Skill)<-[:HAS*]-(:Skill)
+                    SET c.depth = length(p)";
+            $query = new Query($this->client, $cyp);
+            $query->getResultSet();
+        }
+
+        /**
+         * Update skill and all children's depth in db (not reliable)
          */
         public function updateDepthOnSkillAndChildren($skill){
             $cyp = "MATCH (parent)-[:HAS*]->(c:Skill) 
@@ -429,7 +439,7 @@
 
 
         /**
-         * Update skill depth in db (usefull after a move) 
+         * Update skill depth in db (usefull after a move, but not reliable)
          */
         public function updateDepth($skill){
             $skillNode = $skill->getNode();

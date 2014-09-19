@@ -24,57 +24,12 @@
             $slugify = new Slugify();
 
             $time_start = microtime(true); 
-            for($i=0;$i<$num;$i++){
 
-                //create node
-                $skill = new Skill();
-                $skill->setNewUuid();
-                $skill->setName("test-skill-$i");
-                $skill->setDepth(999);
-                $slug = $slugify->slugify($skill->getName()) . "-" . substr($skill->getUuid(), 0, 14);
-                $skill->setSlug($slug);
-
-                $cyp = "CREATE (s:Skill {name:{name}, uuid:{uuid}, depth:{depth}, slug:{slug}}) return s";
-                $query = new Query($this->client, $cyp, array(
-                    "depth" => $skill->getDepth(),
-                    "name" => $skill->getName(),
-                    "uuid" => $skill->getUuid(),
-                    "slug" => $skill->getSlug()
-                ));
-                $resultSet = $query->getResultSet();
-
-                $cyp = "CREATE (s:Skill {uuid: {skillUuid}})<-[:CREATED {timestamp: {timestamp}}]-(:User {username: 'user'})";
-                $query = new Query($this->client, $cyp, array(
-                    "skillUuid" => $skill->getUuid(),
-                    "timestamp" => time()
-                ));
-                $resultSet = $query->getResultSet();
-
+            for($i=0;$i<50;$i++){
+                ini_set("max_execution_time", 30);
+                $skillManager->updateAllDepths2();
             }
-            echo "<br />" . (microtime(true) - $time_start) . "<br />";
 
-            $time_start = microtime(true); 
-            for($j=$num;$j<$num+$num;$j++){
-
-                //create node
-                $skill = new Skill();
-                $skill->setNewUuid();
-                $skill->setName("test-skill-$j");
-                $skill->setDepth(999);
-                $slug = $slugify->slugify($skill->getName()) . "-" . substr($skill->getUuid(), 0, 14);
-                $skill->setSlug($slug);
-
-                $cyp = "CREATE (s:Skill {name:{name}, uuid:{uuid}, depth:{depth}, slug:{slug}})<-[:CREATED {timestamp: {timestamp}}]-(:User {username: 'user'}) return s";
-                $query = new Query($this->client, $cyp, array(
-                    "depth" => $skill->getDepth(),
-                    "name" => $skill->getName(),
-                    "uuid" => $skill->getUuid(),
-                    "slug" => $skill->getSlug(),
-                    "timestamp" => time()
-                ));
-                $resultSet = $query->getResultSet();
-
-            }
             echo "<br />" . (microtime(true) - $time_start) . "<br />";
 
             echo "<br />done";
