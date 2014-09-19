@@ -1,4 +1,4 @@
-var Node = function(nodeData, params) {//, parent, rank, count, isLast) {
+var Node = function(nodeData, params) {
   //Initializing node properties
   this.id = nodeData.uuid;
   this.params = params;
