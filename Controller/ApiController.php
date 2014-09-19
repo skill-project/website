@@ -113,7 +113,7 @@
          */
         function deleteSkillAction(){
 
-            SecurityHelper::lock();
+            SecurityHelper::lock("admin");
 
             if (!empty($_POST)){
 
@@ -184,7 +184,8 @@
          * Move or duplicate a skill
          */
         public function moveSkillAction(){
-            SecurityHelper::lock();
+            
+            SecurityHelper::lock("admin");
 
             if (!empty($_POST)){
 
@@ -217,7 +218,7 @@
          */
         public function translateSkillAction(){
 
-            SecurityHelper::lock();
+            SecurityHelper::lock("admin");
 
             if (!empty($_POST)){
 
@@ -266,7 +267,7 @@
          */
         public function renameSkillAction(){
 
-            SecurityHelper::lock();
+            SecurityHelper::lock("admin");
 
             if (!empty($_POST)){
 
@@ -374,7 +375,7 @@
          */
         public function addSkillAction(){
 
-            SecurityHelper::lock();
+            SecurityHelper::lock("admin");
 
             if (!empty($_POST)){
                 
