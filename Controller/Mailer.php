@@ -13,9 +13,6 @@
             include '../View/mails/registration_confirmation.php';
             $content = ob_get_clean();
 
-            echo $content;
-            die();
-
             try {
                 $mandrill = new \Mandrill(\Config\Config::MANDRILL_KEY);
                 $message = array(
@@ -65,7 +62,8 @@
                 );
                 $async = false;
                 $result = $mandrill->messages->send($message, $async);
-                print_r($result);
+                return $result;
+
             } catch(\Mandrill_Error $e) {
                 // Mandrill errors are thrown as exceptions
                 echo 'A mandrill error occurred: ' . get_class($e) . ' - ' . $e->getMessage();

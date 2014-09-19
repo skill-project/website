@@ -68,7 +68,8 @@
         public function findAtDepth($depth){
             $cyp = "MATCH (s:Skill)
                         WHERE s.depth = {depth}
-                        RETURN s";
+                        RETURN s
+                        ORDER BY s.created ASC";
             $query = new Query($this->client, $cyp, array("depth" => $depth));
             $resultSet = $query->getResultSet();
 
@@ -225,7 +226,8 @@
          * @return mixed Skill parent if found, else false
          */
         public function findParent(Skill $skill){
-            $cyp = 'MATCH (parent:Skill)-[:HAS]->(child:Skill {uuid: {uuid}}) RETURN parent LIMIT 1';
+            $cyp = 'MATCH (parent:Skill)-[:HAS]->(child:Skill {uuid: {uuid}}) 
+                    RETURN parent LIMIT 1';
             $query = new Query($this->client, $cyp, array("uuid" => $skill->getUuid()));
             $resultSet = $query->getResultSet();
             
@@ -261,8 +263,9 @@
         public function findParentAndGrandParent($uuid){
             //fetch grand pa at same time to get to parent's parent id
             $cyp = "MATCH (parents:Skill)-[:HAS*1..2]->(child:Skill) 
-                        WHERE child.uuid = {uuid}
-                        RETURN parents";
+                    WHERE child.uuid = {uuid}
+                    RETURN parents
+                    ORDER BY parents.created ASC";
             $query = new Query($this->client, $cyp, array(
                 "uuid" => $uuid)
             );

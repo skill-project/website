@@ -1,21 +1,23 @@
-<form method="POST" action="<?php echo \Controller\Router::url("register"); ?>">
+<form method="POST" action="<?= \Controller\Router::url("register"); ?>">
     <div>
-        <label for="username"><?php echo _("Username") ?></label>
+        <label for="username"><?= _("USERNAME") ?></label>
         <input type="text" name="username" id="username" />
     </div>
     <div>
-        <label for="email"><?php echo _("Email") ?></label>
+        <label for="email"><?= _("EMAIL") ?> <?= _("We do not spam."); ?></label>
         <input type="email" name="email" id="email" />
     </div>
     <div>
-        <label for="password"><?php echo _("Password") ?></label>
+        <label for="password"><?= _("PASSWORD") ?></label>
         <input type="password" name="password" id="password" />
     </div>
     <div>
-        <label for="password_bis"><?php echo _("Again") ?></label>
+        <label for="password_bis"><?= _("PASSWORD AGAIN") ?></label>
         <input type="password" name="password_bis" id="password_bis" />
     </div>
-    <input type="submit" value="<?php echo _("Register") ?>" />
+    <div class="submit-container">
+        <input type="submit" value="<?= _("SIGN UP") ?>" />
+    </div>
     <?php
         foreach($errors as $name => $message){
             echo $message . "<br />";

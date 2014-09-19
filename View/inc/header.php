@@ -5,8 +5,8 @@
             <li><a class="blue-link" href="<?= \Controller\Router::url("profile", array("username" => Utils\SecurityHelper::getUser()->getUsername())); ?>" title="Profile"><?= Utils\SecurityHelper::getUser()->getUsername(); ?></a></li>
              | <li class="last"><a href="<?= \Controller\Router::url("logout"); ?>" title="Logout">Logout</a></li>
         <?php else: ?>
-            <li><a class="white-link" href="<?= \Controller\Router::url("register"); ?>" title="Register"><?= _("Sign up"); ?></a></li>
-             | <li class="last"><a href="<?= \Controller\Router::url("login"); ?>" title="Login"><?= _("Sign in"); ?></a></li>
+            <li><a class="white-link" id="register-link" href="<?= \Controller\Router::url("register"); ?>" title="Register"><?= _("Sign up"); ?></a></li>
+             | <li class="last"><a id="login-link" href="<?= \Controller\Router::url("login"); ?>" title="Login"><?= _("Sign in"); ?></a></li>
         <?php endif; ?>
     </ul>
 </nav>

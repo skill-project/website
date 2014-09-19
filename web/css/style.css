@@ -135,6 +135,13 @@ a:hover, header a.blue-link:hover, header a, header a.white-link {
 
 #panel h4 {
     font-size: 18px;
+    margin: 15px 0 3px 0;
+    font-weight: normal;
+}
+
+#panel ul {
+    margin-top: 2px;
+    font-size: 13px;
 }
 
 .close-panel-btn {
@@ -206,7 +213,7 @@ a.panel-btn .arrow-btn-l {
     margin: 30px 0 7px 0;
 }
 
-#panel textarea, input[type=text], input[type=search]{
+#panel textarea, input[type=text], input[type=email], input[type=password], input[type=search]{
     border: 1px solid #FFF;
     color: #FFF;
     background: none;
@@ -468,4 +475,62 @@ ul {
     min-height: 100%;
     width: 1000px;
     margin: auto;
+}
+
+#simplemodal-overlay {
+    background-color: #000;
+}
+
+#simplemodal-container {
+    background-color: #000;
+    opacity: 0.9;
+    width: 450px;
+}
+
+#simplemodal-container a.modalCloseImg {
+    background: url("../img/panel-icon-close.png") no-repeat;
+    width:27px;
+    height:27px;
+    display:inline;
+    z-index:3200;
+    position:absolute;
+    top:8px;
+    right:8px;
+    cursor:pointer;
+}
+
+#modal-wrapper {
+    font-size: 13px;
+}
+#modal-header {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#modal-header h2 {
+    font-weight: normal;
+    margin: 3px;
+}
+
+#modal-logo {
+    height: 55px;
+}
+
+#modal-content {
+    margin: 20px;
+}
+
+#modal-content input[type=text], #modal-content input[type=email], #modal-content input[type=password] {
+    height: 36px;
+    line-height: 36px;
+    margin: 0 0 10px 0;
+}
+
+.submit-container {
+    text-align: center;
+    width: 100%;
+}
+
+.submit-container input {
+    margin-top: 15px;
 }

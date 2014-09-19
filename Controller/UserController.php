@@ -17,7 +17,7 @@
          */
         public function loginAction(){
             //for the view
-            $params = array("title" => "Login !");
+            $params = array("title" => "Sign in");
 
             //handle login form
             if (!empty($_POST)){
@@ -62,7 +62,7 @@
             }
 
             $view = new View("login.php", $params);
-            $view->setLayout("../View/layouts/debug.php");
+            $view->setLayout("../View/layouts/modal.php");
             $view->send();
         }
 
@@ -82,7 +82,7 @@
          */
         public function registerAction(){
             //for the view
-            $params = array("title" => "Register !", "errors" => array());
+            $params = array("title" => "Sign up", "errors" => array());
 
             //handle register form
             if (!empty($_POST)){
@@ -127,10 +127,12 @@
                     $userManager = new \Model\UserManager();
                     $userManager->save($user); 
             
+                    //send email confirmation message
                     $mailer = new Mailer();
-                    $mailer->sendConfirmation($user);
+                    $mailerResult = $mailer->sendConfirmation($user);
 
-                    //header("Location: ");
+                    //log user in right now (will redirect home)
+                    $this->logUser($user);
                 }
                 //not valid
                 else {
@@ -140,7 +142,7 @@
             }
 
             $view = new View("register.php", $params);
-            $view->setLayout("../View/layouts/debug.php");
+            $view->setLayout("../View/layouts/modal.php");
             $view->send();
         }
 

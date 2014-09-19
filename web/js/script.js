@@ -17,6 +17,7 @@ var nodesLayer,
 var tree = new Tree;
 var camera = new Camera;
 var search = new Search;
+var user = new User;
 
 $(document).ready(function (){
   $("#kinetic, #backdrop")

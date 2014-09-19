@@ -10,6 +10,7 @@
 	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
 	<script type="text/javascript" src="js/jquery.highlight.js"></script>
+	<script type="text/javascript" src="js/jquery.simplemodal.1.4.4.min.js"></script>
 	<script type="text/javascript" src="js/kinetic-v5.1.0.js"></script>
 	<script type="text/javascript" src="js/compatibility.js"></script>
 	<script>
@@ -26,6 +27,7 @@
 	<script type="text/javascript" src="js/Panel.js"></script>
 	<script type="text/javascript" src="js/Camera.js"></script>
 	<script type="text/javascript" src="js/Search.js"></script>
+	<script type="text/javascript" src="js/User.js"></script>
 	<script type="text/javascript" src="js/script.js"></script>
 	<style>
 	@font-face {

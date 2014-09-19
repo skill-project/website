@@ -21,7 +21,7 @@
         
     <hr />
 
-    <p><?= _("OTHER TRANSLATIONS"); ?></p>
+    <h4><?= _("OTHER TRANSLATIONS"); ?></h4>
     <ul id="other-translations-list">
         <?php include("skill-translations.php"); ?>
     </ul>

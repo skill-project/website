@@ -17,10 +17,10 @@
     <?php if (count($previousNames) > 0): ?>
         <hr />
         <div>
-            <h4><?php _("PREVIOUS NAMES"); ?></h4>
+            <h4><?php echo _("PREVIOUS NAMES"); ?></h4>
             <ul>
                 <?php foreach($previousNames as $name): ?>
-                <li><?php echo $name; ?></li>
+                <li>"<?php echo $name; ?>"</li>
                 <?php endforeach; ?>
             </ul>
         </div>
