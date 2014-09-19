@@ -306,21 +306,39 @@
 
 
         public function skillSearchAction(){
-            $keywords = urldecode($_GET['q']);
-            $keywords = addslashes($keywords);
-            $cyp = "MATCH (p:Skill)-[r:HAS*0..2]->(s:Skill) WHERE s.name =~ '(?i).*$keywords.*' return s,p";
+            $cyp = "MATCH (gp:Skill)-[:HAS*0..1]->(p:Skill)-[:HAS]->(s:Skill)
+                    WHERE s.name =~ {keywords}
+                    RETURN s,gp,p LIMIT 10";
             
-            $query = new Query($this->client, $cyp);
+            $eachWords = explode(" ", addslashes(trim(urldecode($_GET['q']))));
+            $regexp = "(?i).*";
+            foreach($eachWords as $word){
+                $regexp .= $word . ".*";
+            }
+
+            $query = new Query($this->client, $cyp, array("keywords" => $regexp));
             $matches = $query->getResultSet();
 
-            $data = array();
-            foreach ($matches as $node) {
-                die("todo");
-                print_r($node['s']);
+            $results = array();
+            foreach ($matches as $row) {
+                $uuid = $row['s']->getProperty("uuid");
+                if (array_key_exists($uuid, $results)){
+                    continue;
+                }
+                $results[$uuid] = array(
+                    "name" => $row['s']->getProperty("name"),
+                    "uuid" => $uuid
+                );
+                if (empty($results[$uuid]['parent']) && !empty($parent = $row['p']->getProperty('name'))){
+                    $results[$uuid]['parent'] = $parent;
+                }
+                if (empty($results[$uuid]['gp']) && !empty($gp = $row['gp']->getProperty('name')) && $gp != $parent){
+                    $results[$uuid]['gp'] = $gp;
+                }
             }
 
             $json = new \Model\JsonResponse();
-            $json->setData($data);
+            $json->setData($results);
             $json->send();
         }
 

@@ -17,6 +17,10 @@
 <div id="panel"></div>
 <div id="footer">
 	<div id="footer-container">
+		<div id="search-tease">
+			<h2>SEARCH A SKILL</h2>
+			<p>If you don't find it, just add it !</p>
+		</div>
 		<form id="search-form" method="GET" action="<?= \Controller\Router::url("skillSearch"); ?>">
 			<div id="autocomplete-container">
 				<div id="search-results"></div>

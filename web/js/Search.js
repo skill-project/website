@@ -51,16 +51,23 @@ var Search = function(){
     this.showResult = function(response){
         var $list = $("<ul>");
         var $item, $link;
-        for(i in response.data){
+        for(uuid in response.data){
+            console.log(response.data[uuid]);
+            gp = (response.data[uuid].gp) ? response.data[uuid].gp + " > " : "";
             $link = $("<a>")
                         .attr("href", "#")
-                        .data("uuid", response.data[i].uuid)
-                        .html(response.data[i].name);
+                        .data("uuid", uuid)
+                        .html('<div class="search-result-name">' + response.data[uuid].name + '</div>' 
+                              + gp + response.data[uuid].parent);
             $item = $("<li>").html($link);
             $list.append($item);
         }
         $("#search-results").html($list);
-        $("#search-results").highlight(that.q);
+        //highlight each words
+        var words = that.q.split(" ");
+        for(i in words){
+            $(".search-result-name").highlight(words[i]);
+        }
         $("#search-results").slideDown(100);
     }
 

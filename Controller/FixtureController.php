@@ -125,7 +125,6 @@
                 )
             );
             $query->getResultSet();
-            die();
             
             //top children
             $topChildren = array("Sciences", "Sports", "Arts", "Technologies", "Social Sciences", "Technicals");
@@ -142,14 +141,14 @@
 
                 $firstChild->generateNode();
 
-                $skillManager->save( $firstChild, $rootSkill->getUuid() );
+                $skillManager->save( $firstChild, $rootSkill->getUuid(), $this->users[array_rand($this->users)]->getUuid() );
             }
 
             echo "<br />after depth 2 " . (microtime(true) - $time_start) . "<br />";
 
-            $depth = 4;
+            $depth = 10;
             $minNumChild = 1;
-            $maxNumChild = 4;
+            $maxNumChild = 5;
 
             for($i=3;$i<=$depth;$i++){
                 $this->addDummyChildAtDepth($i, $minNumChild, $maxNumChild);
@@ -245,7 +244,7 @@
                     $s->setDepth($depth);
 
                     $s->generateNode();
-                    $skillManager->save( $s, $sk->getUuid() );
+                    $skillManager->save( $s, $sk->getUuid(), $this->users[array_rand($this->users)]->getUuid() );
                 }
 
                 $n++;
