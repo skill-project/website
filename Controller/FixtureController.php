@@ -106,7 +106,7 @@
             $rootSkill = new Skill();
             $rootSkill->setNewUuid();
             $rootSkill->setName("Skills");
-            $rootSkill->setDepth(1);
+            $rootSkill->setDepth(0);
             
             $cyp = "CREATE (skill:Skill {
                         uuid: {skillUuid},
@@ -137,20 +137,20 @@
                 $firstChild = new Skill();
                 $firstChild->setNewUuid();
                 $firstChild->setName( $topChild );
-                $firstChild->setDepth(2);
+                $firstChild->setDepth(1);
 
                 $firstChild->generateNode();
 
                 $skillManager->save( $firstChild, $rootSkill->getUuid(), $this->users[array_rand($this->users)]->getUuid() );
             }
 
-            echo "<br />after depth 2 " . (microtime(true) - $time_start) . "<br />";
+            echo "<br />after depth 1 " . (microtime(true) - $time_start) . "<br />";
 
             $depth = 10;
             $minNumChild = 1;
             $maxNumChild = 5;
 
-            for($i=3;$i<=$depth;$i++){
+            for($i=2;$i<=$depth;$i++){
                 $this->addDummyChildAtDepth($i, $minNumChild, $maxNumChild);
                 echo "<br /> after depth $i " . (microtime(true) - $time_start) . "<br />";
             }

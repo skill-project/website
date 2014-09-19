@@ -6,9 +6,9 @@
     <form method="POST" action="<?= \Controller\Router::url("moveSkill"); ?>" id="move-skill-form">
         <input type="hidden" name="selectedSkillUuid" id="selectedSkillUuid" value="<?= $skill->getUuid(); ?>" />
         <input type="hidden" name="destinationUuid" id="destinationUuid" value="" />
+        <input type="hidden" name="moveType" id="moveType" value="copy" />
         <div>
             <label for="moveType"><?= _("1.&nbsp;CHOOSE THE WAY YOU MOVE"); ?></label>
-            <input type="hidden" name="moveType" id="moveType" value="copy" />
             <div class="img-btn img-btn-l" id="moveTypeMove" data-value="move">
                 <img src="img/panel-icon-move-noborder.png" alt="<?= _("MOVE"); ?>" />
                 <span class="legend"><?= _("MOVE"); ?></span>

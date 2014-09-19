@@ -241,21 +241,6 @@
 
 
 
-        public function findAll(){
-
-            $rootNode = $this->findRootNode();
-            if (!$rootNode){return false;}
-
-            $traversal = new Traversal($this->client);
-            $traversal->addRelationship('HAS', Relationship::DirectionOut)
-                ->setPruneEvaluator(Traversal::PruneNone)
-                ->setReturnFilter(Traversal::ReturnAll)
-                ->setMaxDepth(20);
-
-            $allNodes = $traversal->getResults($rootNode->getNode(), Traversal::ReturnTypeNode);
-            return $allNodes;
-        }
-
         /**
          * Find parent and gp at the same time
          * @return ResultSet
@@ -345,6 +330,7 @@
          * Move a skill to a new parent
          * @param string Skill uuid to move
          * @param string Skill new parent uuid
+         * @param string User uuid
          * @return bool true on success, false otherwise
          */
         public function move($skillUuid, $newParentUuid, $userUuid){
@@ -355,7 +341,8 @@
                     CREATE 
                     (newParent)-[newR:HAS {since: {timestamp}}]->
                     (skill)
-                    <-[:MOVED {timestamp: {timestamp}, fromParent: oldParent.uuid, toParent: {newParentUuid}}]-(user)
+                    <-[:MOVED {timestamp: {timestamp}, fromParent: oldParent.uuid, toParent: {newParentUuid}}]
+                    -(user)
                     DELETE r
                     RETURN newParent,oldParent,skill,newR";
             $query = new Query($this->client, $cyp, array(
@@ -374,9 +361,10 @@
          * Duplicate a skill to a new parent
          * @param string Skill uuid to move
          * @param string Skill new parent uuid
+         * @param string User uuid
          * @return bool true on success, false otherwise
          */
-        public function copy($skillUuid, $newParentUuid){
+        public function copy($skillUuid, $newParentUuid, $userUuid){
             
         }
 
@@ -410,6 +398,18 @@
             }
             return false;
 
+        }
+
+
+        /**
+         * Update all depths (very slow but safe)
+         */
+        public function updateAllDepths(){
+            $cyp = "MATCH (c:Skill)<-[r:HAS*]-(parent:Skill)
+                    WITH c, count(r) AS parentsFound
+                    SET c.depth = parentsFound";
+            $query = new Query($this->client, $cyp);
+            $query->getResultSet();
         }
 
 

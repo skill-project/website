@@ -6,7 +6,7 @@
     use \Model\TranslationManager;
     use \Model\DiscussionManager;
     use \Model\Skill;
-    use \Utils\SecurityHelper;
+    use \Utils\SecurityHelper as SH;
 
     use \Everyman\Neo4j\Cypher\Query;
     use \Everyman\Neo4j\Relationship;
@@ -113,7 +113,7 @@
          */
         function deleteSkillAction(){
 
-            SecurityHelper::lock("admin");
+            SH::lock("admin");
 
             if (!empty($_POST)){
 
@@ -145,7 +145,7 @@
         public function discussSkillAction(){
 
             //lock 
-            SecurityHelper::lock();
+            SH::lock();
 
             if (!empty($_POST)){
                 $skillUuid = $_POST['skillUuid'];
@@ -185,13 +185,15 @@
          */
         public function moveSkillAction(){
             
-            SecurityHelper::lock("admin");
+            SH::lock("admin");
 
             if (!empty($_POST)){
 
-                $skillUuid = $_POST['skillUuid'];
-                $newParentUuid = $_POST['newParentUuid'];
+                $skillUuid = $_POST['selectedSkillUuid'];
+                $newParentUuid = $_POST['destinationUuid'];
                 $type = $_POST['moveType'];
+                //retrieve current user uuid
+                $userUuid = SH::getUser()->getUuid();
 
                 $validator = new \Model\Validator();
                 $validator->validateSkillUuid($skillUuid);
@@ -201,14 +203,28 @@
 
                     $skillManager = new SkillManager();
 
-                    if ($type == "move"){
-                        $skillManager->move($skillUuid, $newParentUuid);
+                    switch($type){
+                        case "move":
+                            $result = $skillManager->move($skillUuid, $newParentUuid, $userUuid);
+
+                            //correct all depths
+                            $skillManager->updateAllDepths();
+
+                            $json = new \Model\JsonResponse("ok", _("Skill moved !"));
+                            break;
+
+                        case "copy":
+                            $result = $skillManager->copy($skillUuid, $newParentUuid, $userUuid);
+                            $json = new \Model\JsonResponse("ok", _("Skill copied !"));
+                            break;
                     }
-                    elseif ($type == "copy"){
-                        $skillManager->copy($skillUuid, $newParentUuid);
-                    }
+                        
                 }
-            }            
+                else {
+                    $json = new \Model\JsonResponse("error", _("Something went wrong."));
+                    $json->setData($validator->getErrors());
+                }
+            }        
             $json->send();
         }
 
@@ -218,7 +234,7 @@
          */
         public function translateSkillAction(){
 
-            SecurityHelper::lock("admin");
+            SH::lock("admin");
 
             if (!empty($_POST)){
 
@@ -267,7 +283,7 @@
          */
         public function renameSkillAction(){
 
-            SecurityHelper::lock("admin");
+            SH::lock("admin");
 
             if (!empty($_POST)){
 
@@ -289,7 +305,7 @@
                     $previousName = $skill->getName();
                     $skill->setName( $skillName );
 
-                    $user = SecurityHelper::getUser();
+                    $user = SH::getUser();
 
                     $skillManager->update($skill, $user->getUuid(), $previousName);
 
@@ -375,7 +391,7 @@
          */
         public function addSkillAction(){
 
-            SecurityHelper::lock("admin");
+            SH::lock("admin");
 
             if (!empty($_POST)){
                 
@@ -400,7 +416,7 @@
                 if ($validator->isValid() && $parentSkill){
 
                     //retrieve current user uuid
-                    $userUuid = \Utils\SecurityHelper::getUser()->getUuid();
+                    $userUuid = SH::getUser()->getUuid();
                     
                     //create the skill object
                     $skill = new Skill();
@@ -419,9 +435,8 @@
                         //find the selected skill
                         $selectedSkill = $skillManager->findByUuid($selectedSkillUuid);
                         
-                        //correct all depth with a hack...
-                        $skillManager->updateDepthOnSkillAndChildren($selectedSkill);
-                        $skillManager->updateDepth($selectedSkill);
+                        //correct all depths
+                        $skillManager->updateAllDepths();
                     }
                     
 
