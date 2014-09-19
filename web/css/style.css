@@ -77,7 +77,7 @@ a:hover, header a.blue-link:hover, header a, header a.white-link {
 }
 
 #kinetic {
-    position:relative;
+    position:absolute;
     /*width:1600px;*/
     /*height:600px;*/
     /*margin:auto;*/

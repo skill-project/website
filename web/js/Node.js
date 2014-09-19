@@ -259,6 +259,7 @@ var Node = function(nodeData, params) {
       that.expand();
     }else {
       //Node is open, contracting it
+      that.deSelect();
       that.contract();
     }
   });
@@ -345,6 +346,8 @@ Node.prototype.expand = function(params) {
 Node.prototype.select = function(params) {
   if (this.isSelected) return;
 
+  //Check camera position and reposition if needed
+  camera.checkCameraPosition(this);
 
   if (params != null && params.finishEdit != false) var finishEdit = true;
 
@@ -356,8 +359,7 @@ Node.prototype.select = function(params) {
     tree.editedNode.finishEdit();
   }
 
-  //Check camera position and reposition if needed
-  camera.checkCameraPosition(this);
+  
 
   this.isSelected = true;
   tree.selectedNode = this;
