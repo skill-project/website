@@ -63,7 +63,7 @@ var Tree = function() {
 //editedNode = Black Node = Parent node of the newly added node
 Tree.prototype.addNewNode = function(nodeData, type) {
     //Local function to make code more compact
-    var selectExpandNewNode = function () {
+    var selectExpandNewNode = function () {  
         tree.nodes[nodeData.uuid].select();
         tree.nodes[nodeData.uuid].expand();
     }
@@ -94,12 +94,20 @@ Tree.prototype.addNewNode = function(nodeData, type) {
                 tree.editedNode.select();
                 tree.editedNode.expand({ onComplete: selectExpandNewNode });
             }
-        }else {
-            //editedNode is open and so already has children visible
+        }else { //editedNode is open and so already has children visible
+            
+            //First, we check if another skill is selected next to the one we are going to add
+            //If yes, close it
+            if (this.selectedNode.parent.id == tree.editedNode.id) {
+                var selectedSibling = tree.selectedNode;
+                selectedSibling.deSelect();
+                selectedSibling.contract();
+            }
+
             var newSkill = new Node(nodeData, 
                 {
                     parent: tree.editedNode,
-                    rank: tree.editedNode.totalChildren,
+                    rank: 1,
                     count: 1,
                     isLast: true,
                     onComplete: selectExpandNewNode

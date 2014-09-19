@@ -140,8 +140,6 @@ var Node = function(nodeData, params) {
 
     if (this.takePlaceOf != null) {
       var animate = false;
-      // console.log("take place of");
-      // console.log(this.takePlaceOf.appearDestX);
       
       this.appearDestX = this.takePlaceOf.appearDestX;
       this.appearDestY = this.takePlaceOf.appearDestY;
@@ -238,15 +236,8 @@ var Node = function(nodeData, params) {
       ) {
       if (that.depth < tree.selectedNode.depth)           //Currently selectedNode is deeper than current node : 
       {                                                   //let's find, contract and deSelect current node's sibling which contains the selectedNode
-        console.log("ici");
         var openSibling = that.getSiblingMatch("open", true);
         openSibling.contract({releaseTreeLock: false});
-        // for (var siblingIndex in that.siblings) {
-        //   var sibling = that.siblings[siblingIndex];
-        //   if (sibling.open && sibling.id != that.id) {
-        //     sibling.contract({releaseTreeLock: false});
-        //   }
-        // }
       } else {                                            //Contract and deSelect previously selectedNode
         tree.selectedNode.contract({releaseTreeLock: false});
         tree.selectedNode.deSelect();
@@ -458,7 +449,7 @@ Node.prototype.contract = function(params) {
                 //Last child deletion and tree cleanup
                 lastChild.delete();
                 that.open = false;
-                that.setVisualState("normal");
+                that.setVisualState("auto");
                 if (releaseTreeLock == true) tree.busy = false;
                 if (onComplete != null) onComplete();
               }
@@ -552,6 +543,17 @@ Node.prototype.deleteChildrenMatch = function(propertyName, propertyValue) {
 //Set visual state of the node
 Node.prototype.setVisualState = function (state) {
   switch (state) {
+    case "auto":
+      if (this.isSelected && this.isEdited) {
+        this.setVisualState("glow-edit");
+      } else if (!this.isSelected && this.isEdited) {
+        this.setVisualState("normal-edit");
+        this.setGlow(0);
+      } else if (!this.isSelected && !this.isEdited && !this.open) {
+        this.setVisualState("normal");
+        this.setGlow(0);
+      }
+      break;
     case "normal":
       this.knGlow.setImage($("img#glow-nonotch")[0]);
       this.backImage.setImage($("img#node-normal")[0]);
