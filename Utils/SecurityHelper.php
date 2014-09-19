@@ -35,7 +35,7 @@
                 $forbid = true;
             }
             //if role required is admin and current user is not admin, forbid
-            elseif ($role == "admin" && self::getUser()->getRole != "admin"){
+            elseif ($role == "admin" && self::getUser()->getRole() != "admin"){
                 $forbid = true;
             }
 
