@@ -11,7 +11,7 @@
 	<script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
 	<script type="text/javascript" src="js/jquery.highlight.js"></script>
 	<script type="text/javascript" src="js/jquery.simplemodal.1.4.4.min.js"></script>
-	<script type="text/javascript" src="js/kinetic-v5.1.0.js"></script>
+	<script type="text/javascript" src="js/kinetic-v5.1.0.min.js"></script>
 	<script type="text/javascript" src="js/compatibility.js"></script>
 	<script>
 		var rootNodeId="<?= $rootNode->getUuid(); ?>";
