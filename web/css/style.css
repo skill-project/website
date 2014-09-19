@@ -367,6 +367,15 @@ ul {
     opacity:0.8;
 }
 
+#footer #debug {
+    position:absolute;
+    width:200px;
+    height:80px;
+    background-color:white;
+    color:black;
+    font-size:12px;
+}
+
 #footer #search-tease, #search-form {
     display: inline-block;
 }

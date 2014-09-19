@@ -16,6 +16,9 @@
 <div id="kinetic"></div>
 <div id="panel"></div>
 <div id="footer">
+	<div id="debug">
+		
+	</div>
 	<div id="footer-container">
 		<div id="search-tease">
 			<h2>SEARCH A SKILL</h2>

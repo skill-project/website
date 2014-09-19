@@ -4,7 +4,7 @@ var Node = function(nodeData, params) {
   this.params = params;
   this.parent = params.parent ? params.parent : null;
   this.name = nodeData.name;
-  this.depth = nodeData.depth ? nodeData.depth : 1;
+  this.depth = nodeData.depth ? nodeData.depth : 0;
   this.onComplete = params.onComplete;
   this.rank = params.rank;
   this.count = params.count;
@@ -15,9 +15,11 @@ var Node = function(nodeData, params) {
   this.shapes;
   this.children = [];
   this.ancestors = [];
+  this.siblings = [];
   this.open = false;
   this.isSelected = false;
   this.isEdited = false;
+  this.isInPath;
   this.knGlow;
   this.backImage;
   this.totalChildren;
@@ -34,14 +36,13 @@ var Node = function(nodeData, params) {
   //For root node : add current node to rootNode object of Tree, (for tree traversal)
   if (this.parent == null) tree.rootNode = this;
 
+  //Add current node to flat list of nodes in Tree object (for quick node retrieval)
   tree.nodes[this.id] = this;
 
   //For all nodes, except root node
   if (this.parent != null) {
-      this.siblings = this.parent.children;   //Set siblings (children of parent)
-      this.fillSiblings();
-      tree.nodes[this.id] = this;             //Add current node to flat list of nodes in Tree object (for quick node retrieval)
       this.parent.children[this.id] = this;        //Add current node to list of parent's children
+      // this.parent.totalChildren = Object.keys(this.parent.children).length;
 
       for (var ancestorIndex in Object.keys(this.parent.ancestors))
       {
@@ -135,6 +136,7 @@ var Node = function(nodeData, params) {
     var startY = (stage.getHeight() - 82) / 2 - 56 / 2 ;
   }else {
     //Starting coordinates = underneath the parent ID
+    // debugger;
     var startX = this.parent.shapes.x();
     var startY = this.parent.shapes.y();
 
@@ -195,11 +197,15 @@ var Node = function(nodeData, params) {
             newNode.nodeReady = true;
             //Last child has finished appearing
             if (newNode.isLast == true) {
+              // if (newNode.name == "siby") debugger;
+              // debugger;
+              newNode.parent.setChildrenSiblings();
               tree.busy = false;              //Releasing the tree-wide lock
               if (newNode.onComplete != null) {
                 newNode.onComplete();
               }
               tree.readyForNextLevel.fire();
+
             }
           }
         }); 
@@ -228,20 +234,11 @@ var Node = function(nodeData, params) {
     tree.busy = true;
 
     // Do we first have to contract the selectedNode before expading a new one ?
-    if (
-        tree.rootNode.id != that.id &&                     //Not for rootNode
-        tree.selectedNode != null && that.id != tree.selectedNode.id &&                 //Not for contracting the selectedNode itself
-        that.depth <= tree.selectedNode.depth &&           //Not for a node shallower than the selectedNode
-        tree.selectedNode.id != that.parent.id             //Not for parent
-      ) {
-      if (that.depth < tree.selectedNode.depth)           //Currently selectedNode is deeper than current node : 
-      {                                                   //let's find, contract and deSelect current node's sibling which contains the selectedNode
-        var openSibling = that.getSiblingMatch("open", true);
+    //TODO : rewrite conditions
+    var openSibling = that.getSiblingMatch("isInPath", true);
+    if (typeof openSibling != "undefined") {
         openSibling.contract({releaseTreeLock: false});
-      } else {                                            //Contract and deSelect previously selectedNode
-        tree.selectedNode.contract({releaseTreeLock: false});
         tree.selectedNode.deSelect();
-      }
     }
 
     //Node is closed, expanding it
@@ -255,7 +252,6 @@ var Node = function(nodeData, params) {
     }
   });
   this.labelGroup = labelGroup;
-
   
   editButton.on("mouseover", function() { document.body.style.cursor = 'pointer'; });
   editButton.on("mouseout", function() { document.body.style.cursor = 'default'; });
@@ -335,7 +331,7 @@ Node.prototype.expand = function(params) {
 
 //Selection of the node
 Node.prototype.select = function(params) {
-  if (this.isSelected) return;
+  if (this.isSelected) return this;
 
   //Check camera position and reposition if needed
   camera.checkCameraPosition(this);
@@ -351,17 +347,21 @@ Node.prototype.select = function(params) {
   }
 
   
-
   this.isSelected = true;
   tree.selectedNode = this;
+  this.isInPath = true;
 
   return this;
 }
 
-Node.prototype.fillSiblings = function() {
-  for (var siblingIndex in this.parent.children) {
-      var sibling = this.parent.children[siblingIndex];
-      if (sibling.id != this.id) this.siblings[sibling.id] = sibling;
+Node.prototype.setChildrenSiblings = function() {
+  for (var childIndex in this.children) {
+    var child = this.children[childIndex];
+
+    for (var siblingIndex in child.parent.children) {
+        var sibling = child.parent.children[siblingIndex];
+        if (sibling != child) child.siblings[sibling.id] = sibling;
+    }
   }
 }
 
@@ -419,6 +419,8 @@ Node.prototype.contract = function(params) {
 
   //If one or more children, we animate all of them to the center, delete all but one and animate the last one
   }else {
+    if (this.parent != null) this.parent.select();
+
     for (var childIndex in this.children) {
       var child = this.children[childIndex];
 
@@ -468,6 +470,7 @@ Node.prototype.contract = function(params) {
       else tween1.finish();
     }
   }
+  return this;
 }
 
 Node.prototype.deSelect = function() {
@@ -600,6 +603,8 @@ Node.prototype.setGlow = function (state) {
 
   var opacity = (state == 1) ? 1 : 0;
 
+  if (state == 0) this.isInPath = false;
+
   var tween = new Kinetic.Tween({
     node: this.knGlow, 
     duration: 0.5,
@@ -682,4 +687,68 @@ Node.prototype.delete = function() {
   delete this.parent.children[this.id];
   delete tree.nodes[this.id];
   delete this;
+}
+
+Node.prototype.inSamePathAs = function(node) {
+  if (typeof node == "undefined" || node === null) console.warn("Node.inSamePathAs : requires a Node object");
+  if (typeof this.depth != "number" || typeof node.depth != "number") console.warn("Node.inSamePathAs : depth is not set");
+
+  if (this == node) return true;
+  if (!this.isSelected || !node.isSelected) return false;
+  if (this.isSiblingWith(node)) return false;
+
+  //Which one is deeper ?
+  if (this.depth > node.depth) {
+      var deeperNode = this;
+      var shallowerNode = node;
+  }else if (this.depth < node.depth) {
+      var deeperNode = node;
+      var shallowerNode = this;
+  }else {
+    console.warn("Node.inSamePathAs : something is wrong with nodes depth, we should never enter this block.");
+  }
+  
+  if (typeof deeperNode.ancestors[shallowerNode.id] != "undefined") return true;
+  else return false;
+}
+
+Node.prototype.isSiblingWith = function(node) {
+  if (typeof node == "undefined") console.warn("Node.isSiblingWith : requires a Node object");
+  if (typeof this.siblings != "object") console.warn("Node.isSiblingWith : siblings don't seem to be set");
+  if (typeof this.siblings[this.id] != "undefined") console.warn("Node.isSiblingWith : node is listed as sibling of itself");
+
+  if (typeof this.siblings[node.id] != "undefined") return true;
+  else return false;
+}
+
+Node.prototype.calculateAncestors = function() {
+  var ancestors = [];
+  var depth = this.depth;
+  var parent = this.parent;
+  while (depth > 0) {
+    ancestors[parent.id] = parent;
+    depth = parent.depth;
+    var parent = parent.parent;
+  }
+  return ancestors;
+}
+
+function cn(node, what) {
+  if (what == "c") {
+    var nodesArray = node.children;
+    var textWhat = "chidren";
+  }
+  else if (what == "s") {
+    var nodesArray = node.siblings;
+    var textWhat = "siblings";
+  }else {
+    console.warn("cn : no parameter");
+    return;
+  }
+
+  console.log("List of " + textWhat + " for " + node.name + " (" + Object.keys(nodesArray).length + ")");
+  for (var nodeIndex in nodesArray) {
+      var subNode = nodesArray[nodeIndex];
+      console.log(subNode.name);
+  }
 }

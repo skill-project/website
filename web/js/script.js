@@ -30,6 +30,15 @@ $(document).ready(function (){
   $("#panel")
     .hide()
     .height($("#kinetic").height());
+
+  setInterval(function() {
+    $("#debug").empty();
+    if (tree.selectedNode) $("#debug").append("selectedNode : " + tree.selectedNode.name + "<br />");
+    if (tree.editedNode) $("#debug").append("editedNode : " + tree.editedNode.name + "<br />");
+
+    if (typeof tree.selectedNode == "undefined") $("#debug").css({"background-color": "red"});
+    else $("#debug").css({"background-color": "white"});
+  },200);
 });
 
 $(window).load(function  () {

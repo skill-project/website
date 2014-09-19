@@ -63,47 +63,22 @@ var Tree = function() {
 //editedNode = Black Node = Parent node of the newly added node
 Tree.prototype.addNewNode = function(nodeData, type) {
     //Local function to make code more compact
-    var selectExpandNewNode = function () {  
+    var selectExpandNewNode = function () {
+        var selectedSibling = tree.nodes[nodeData.uuid].getSiblingMatch("isSelected", true);
+        if (typeof selectedSibling != "undefined") selectedSibling.contract().deSelect();
+
         tree.nodes[nodeData.uuid].select();
         tree.nodes[nodeData.uuid].expand();
     }
     
     if (type == "child") {
-        //editedNode is closed, 2 options :
-        // 1. it wasn't selected (doesn't glow) 
-        // 2. it didn't have any children prior to adding the new one
-        if (tree.editedNode.open == false) {
-            //Option 1
-            if (tree.editedNode.isSelected == false) {
-                //Ok, 2 sub-options : 
-                // 1a. : it's editedNode's parent that is selected (glowing)
-                // 1b. : it's some other node (outside glowing path) that is selected
-                if (tree.editedNode.parent.isSelected == true) {
-                    //Option 1a
-                    tree.editedNode.select();
-                    tree.editedNode.expand({ onComplete: selectExpandNewNode });
-                }else if (tree.editedNode.parent.isSelected == false) {
-                    //Option 1b
-                    //Looking for the sibling of editedNode which is open and contract it before expanding editedNode
-                    tree.editedNode.getSiblingMatch("open", true).contract();
-                    tree.editedNode.expand({ onComplete: selectExpandNewNode });
-                }
-            }
-            //Option 2
-            else if (tree.editedNode.isSelected == true) {
-                tree.editedNode.select();
-                tree.editedNode.expand({ onComplete: selectExpandNewNode });
-            }
-        }else { //editedNode is open and so already has children visible
-            
-            //First, we check if another skill is selected next to the one we are going to add
-            //If yes, close it
-            if (this.selectedNode.parent.id == tree.editedNode.id) {
-                var selectedSibling = tree.selectedNode;
-                selectedSibling.deSelect();
-                selectedSibling.contract();
-            }
+        var openSibling = tree.editedNode.getSiblingMatch("isInPath", true);
+        if (typeof openSibling != "undefined") {
+            openSibling.contract();
+            tree.selectedNode.deSelect();
+        }
 
+        if (tree.editedNode.open) {
             var newSkill = new Node(nodeData, 
                 {
                     parent: tree.editedNode,
@@ -112,6 +87,8 @@ Tree.prototype.addNewNode = function(nodeData, type) {
                     isLast: true,
                     onComplete: selectExpandNewNode
                 });
+        } else {
+            tree.editedNode.select().expand({ onComplete: selectExpandNewNode });
         }
     }else if(type == "parent") {
         //Contract subchildren if present : we only want one extra level after editedNode
@@ -120,12 +97,20 @@ Tree.prototype.addNewNode = function(nodeData, type) {
             openChild.contract({noAnim: true});
         }
 
-        if (tree.selectedNode.id != tree.editedNode.id && tree.selectedNode.depth >= tree.editedNode.depth) {
-            var selectedNode = tree.selectedNode;
-            selectedNode.deSelect();
-            selectedNode.contract({noAnim: true});
+        if (tree.editedNode.isSelected) var selectEditedNode = true;
+        else selectEditedNode = false;
+
+        var openSibling = tree.editedNode.getSiblingMatch("isInPath", true);
+        if (typeof openSibling != "undefined") {
+            openSibling.contract({noAnim:true}).deSelect();
         }
 
+        // if (tree.selectedNode.id != tree.editedNode.id && tree.selectedNode.depth >= tree.editedNode.depth) {
+        //     var selectedNode = tree.selectedNode;
+        //     selectedNode.deSelect();
+        //     selectedNode.contract({noAnim: true});
+        // }
+        // debugger;
         moveGroup = new Kinetic.Group();
         if (Object.keys(tree.editedNode.children).length > 0) {
             
@@ -154,28 +139,52 @@ Tree.prototype.addNewNode = function(nodeData, type) {
                 moveGroup.destroy();
             }
         });
+        // debugger;
 
+        // debugger;
+        console.log("Ajout consécutif de 2 parents au même noeud : ligne droite");
+        console.log("Ajout consécutif de 2 parents au même noeud : ligne droite");
 
-        //nodeData : id, name, depth
+        // BULLSHIT : On editedNode's parent, empty the list of children. The only child will be newSkill and it will add itself
+        // tree.editedNode.parent.children = [];
+
+        //Delete entry of editedNode in editedNode's parent children list
+        delete tree.editedNode.parent.children[tree.editedNode.id];
+
+        //Here comes the new node !
         var newSkill = new Node(nodeData, 
         {
-            parent: tree.editedNode.parent,
-            takePlaceOf: tree.editedNode,
+            parent: tree.editedNode.parent,         //Set its parent to be editedNode's parent
+            takePlaceOf: tree.editedNode,           //Used for positioning
             rank: 1,
             count: 1,
             isLast: true
         });
 
+        //Operations on editedNode
+
+        //Change starting point of editedNode's edge : now it starts from the newSkill
         tree.editedNode.edge.nodeFrom = newSkill;
+
+        //editedNode now has no more siblings
+        tree.editedNode.siblings = [];
+
+        tree.editedNode.appearDestX += 240 + 80;
+        tree.editedNode.midX += 240 + 80;
+
+        //New parent of editedNode is now newSkill
         tree.editedNode.parent = newSkill;
+
+        //Traverse the tree to recalculate the ancestors list
+        tree.editedNode.ancestors = tree.editedNode.calculateAncestors();
+        
+        //Increase depth of editedNode and its children
         tree.editedNode.depth++;
         for (var childIndex in tree.editedNode.children) {
             tree.editedNode.children[childIndex].depth++;
         }
 
-
-
-        if (tree.selectedNode.id != tree.editedNode.id) newSkill.select({finishEdit: false});
+        if (tree.selectedNode && tree.selectedNode.id != tree.editedNode.id) newSkill.select({finishEdit: false});
 
         newSkill.setVisualState("glow-children");
 
@@ -183,9 +192,16 @@ Tree.prototype.addNewNode = function(nodeData, type) {
         newSkill.totalChildren = 1;
         newSkill.open = true;
 
-        newSkill.parent.totalChildren = 1;
-        newSkill.parent.children = [];
-        newSkill.parent.children[newSkill.id] = newSkill;
+        var openSibling = newSkill.getSiblingMatch("open", true);
+        if (openSibling) {
+            openSibling.deSelect();
+            openSibling.contract();
+        }
+
+        if (selectEditedNode) tree.editedNode.select();
+        else newSkill.select();
+
+
 
         tweenMoveGroup.play();           
     }
