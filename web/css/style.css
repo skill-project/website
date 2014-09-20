@@ -1,3 +1,57 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* end reset */
+
+
+
+
 html, body {
 	margin:0;
     overflow: hidden;
@@ -6,6 +60,7 @@ html, body {
     background-color:#282828;
     min-height: 100%;
 }
+
 
 #wrapper {
     min-height: 100%;
@@ -18,6 +73,26 @@ a, header a.blue-link, header a:hover, header a.white-link:hover  {
 
 a:hover, header a.blue-link:hover, header a, header a.white-link {
     color: #FFF;
+}
+
+#header ul {
+    margin: 0;
+}
+
+#header-right {
+    position: relative;
+    float: right;
+    text-align: right;
+    height: 100%;
+    min-height: 100%;
+}
+
+#header-right ul {
+    width: 750px;
+}
+
+#top-user-nav {
+    margin-top: 2px;
 }
 
 #top-user-nav li.last, #top-main-nav li.last {
@@ -34,18 +109,14 @@ a:hover, header a.blue-link:hover, header a, header a.white-link {
     margin: 0;
 }
 
-#top-main-nav {
-    float: right;
-    clear: right;
-}
-
-#top-main-nav ul {
-    margin: 18px 0 0 0;
+#top-main-nav, #main-logo {
+    position: absolute;
+    bottom: 4px;
 }
 
 #top-main-nav li {
     display: inline-block;
-    margin: 0 15px;
+    margin: 0 12px;
 }
 
 #avenir-book {
@@ -58,14 +129,18 @@ a:hover, header a.blue-link:hover, header a, header a.white-link {
     height:65px;
 }
 
-#header img {
-    margin-top: 6px;
+
+
+#main-logo img {
     height: 52px;
 }
 
 #header-container {
+    position: relative;
     width: 1000px;
     margin:0 auto;
+    height: 100%;
+    min-height: 100%;
 }
 
 #backdrop {
@@ -350,9 +425,6 @@ ul {
 
 /* END PANEL */
 
-#top-user-nav {
-    float: right;
-}
 
 #top-user-nav li {
     display: inline-block;
@@ -543,3 +615,123 @@ ul {
 .submit-container input {
     margin-top: 15px;
 }
+
+
+
+/* PAGE */
+
+html.page {
+    overflow-y: scroll;
+}
+
+body.page h1 {
+    font-weight: normal;
+    font-size: 32px;
+}
+
+body.page #header img {
+    width: 272px;
+    height: 67px;
+}
+
+body.page #header{
+    height: 128px;
+}
+
+body.page #main-logo, body.page #top-main-nav {
+    bottom: 12px;
+}
+
+body.page #main-content-container {
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+
+body.page #left-column, body.page #right-column {
+    display: inline-block;
+    vertical-align: top;
+    padding-top: 32px;
+}
+
+body.page #left-column {
+    width: 245px;
+    padding-right: 40px;
+}
+
+body.page #right-column {
+    padding-left: 40px;
+    width: 670px;
+}
+
+body.page #page-footer {
+    vertical-align: bottom;
+}
+
+body.page #footer-container {
+    text-align: left;
+    margin: 50px auto;
+}
+
+body.page #footer-container li, #footer-container span {
+    display: inline-block;
+}
+
+body.page #footer-container li {
+    margin-left: 20px;
+}
+
+body.page #footer-nav {
+    float: right;
+    text-align: right;
+    margin-top: 40px;
+}
+
+body.page #footer-container, body.page #footer-nav a {
+    font-size: 12px;
+    color: #FFF;
+}
+
+body.page #footer-nav a:hover {
+    color: #1ADAE6;
+}
+
+/* END PAGE */
+
+
+/* PAGE FORMS */
+    
+body.page input[type=text], body.page input[type=email], textarea{
+    border-color: #000;
+    color: #000;
+}
+
+body.page form {
+    width: 100%;
+}
+
+body.page label {
+    display: block;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+body.page .row input {
+    
+}
+
+body.page .row div {
+    width: 302px;
+    display: inline-block;
+}
+
+body.page .row div.r {
+    margin-left: 60px;
+}
+
+#bio-textarea {
+    width: 663px;
+    height: 80px;
+}
+
+/* END PAGE FORMS */
+
