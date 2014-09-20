@@ -20,14 +20,29 @@ var Search = function(){
     //autocomplete result clicked
     this.searchResultClicked = function(event){
         event.preventDefault();
-
         
-        //@spada's magic starts here
-        var selectedSlug = $(this).data("slug");
-        console.log(selectedSlug + " clicked !");
 
-        tree.selectedNode.deSelect();
-        tree.rootNode.contract();
+        var selectedSlug = $(this).data("slug");
+        
+        var url = baseUrl + "api/getNodePathToRoot/" + selectedSlug + "/";
+
+        var contractAnim = tree.rootNode.isNodeOnScreen() ? false : true;
+
+        $.ajax({
+            url: url,
+            success: function(response) {
+                jsonAutoLoad = response;
+                if (tree.selectedNode) tree.selectedNode.deSelect();
+                tree.rootNode.contract({
+                    noAnim: contractAnim,
+                    onComplete: function() {
+                        camera.checkCameraPosition(tree.rootNode);
+                        tree.autoLoad = true;
+                        tree.autoLoadCurrentDepth = 0;
+                        tree.readyForNextLevel.fire();
+                    }});
+            }
+        });
     }
 
     this.close = function(){
@@ -55,7 +70,7 @@ var Search = function(){
         var $list = $("<ul>");
         var $item, $link;
         for(uuid in response.data){
-            console.log(response.data[uuid]);
+            // console.log(response.data);
             gp = (response.data[uuid].gp) ? response.data[uuid].gp + " > " : "";
             $link = $("<a>")
                         .attr("href", "#")

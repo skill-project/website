@@ -344,7 +344,8 @@
                 }
                 $results[$uuid] = array(
                     "name" => $row['s']->getProperty("name"),
-                    "uuid" => $uuid
+                    "uuid" => $uuid,
+                    "slug" => $row['s']->getProperty("slug"),
                 );
                 if (empty($results[$uuid]['parent']) && !empty($parent = $row['p']->getProperty('name'))){
                     $results[$uuid]['parent'] = $parent;

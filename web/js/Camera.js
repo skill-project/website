@@ -69,13 +69,13 @@ var Camera = function() {
 
         var tweenX = new Kinetic.Tween({
           node: stage,
-          x: destX,
+          y: destY,
           duration: 0.25,
           easing: Kinetic.Easings.Linear,
           onFinish: function() {
             var tweenY = new Kinetic.Tween({
               node: stage,
-              y: destY,
+              x: destX,
               duration: 0.25,
               easing: Kinetic.Easings.Linear,
               onFinish: function() {

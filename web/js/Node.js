@@ -940,8 +940,6 @@ Node.prototype.setTarget = function() {
   this.setGlow(1);
   tree.targetNode = this;
 
-  // console.log()
-
   tree.editedNode.panel.$activeSubpanel.find("#move-step3").css("display", "block");
   tree.editedNode.panel.$activeSubpanel.find("#destinationUuid").val(this.id);
 }
@@ -955,6 +953,11 @@ Node.prototype.unsetTarget = function() {
   // node.setVisualState(node.visualState, true, true);
   if (!this.isInPath) this.setGlow(0);
   tree.targetNode = null;
+}
+
+Node.prototype.isNodeOnScreen = function() {
+  var securityZone = camera.getSecurityZone(0);
+  return camera.isBoxOnScreen(this.getBoundingBox(), securityZone, true);
 }
 
 // Node.prototype.editMouseOver = function(node, type) {

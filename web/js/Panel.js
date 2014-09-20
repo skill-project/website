@@ -7,11 +7,15 @@ var Panel = function(node, initParams) {
 
     var userRole = "user"; //editor, anonymous
 
+
+
 	$.ajax({
       url: baseUrl + "panel/getPanel/" + node.id + "/",
     }).done(function(content) {
+
     	$("#panel").empty().append(content);
     	$("#panel .panel-content").each(function (index, subPanel) {
+            // debugger;
             subPanelId = $(subPanel).attr("id");
     		that.$subPanels[subPanelId] = $(subPanel);
             that.initSubPanel(subPanel);
@@ -41,6 +45,7 @@ var Panel = function(node, initParams) {
         var subPanelId = $(subPanel).attr("id");
         switch (subPanelId) {
             case "first-panel":
+            // debugger;
                 $(subPanel).children("a.panel-btn").each(function (loadBtnIndex, loadBtn) {
                     $(loadBtn).on("tap click", function() {
                         var panelToLoad = $(loadBtn).data("panel");
@@ -48,6 +53,7 @@ var Panel = function(node, initParams) {
                         $("#" + panelToLoad).show("slide", {
                             direction: "right"
                         }, that.panelLoadEvents);
+                        return false;
                     });
                 })
                 break;
@@ -196,11 +202,13 @@ var Panel = function(node, initParams) {
             });
             that.$activeSubpanel = that.$subPanels["first-panel"];
             if (tree.targetMode = true) tree.exitTargetMode();
+            return false;
         });
 
         $(subPanel).find(".close-panel-btn").on("tap click", function() {
             if (tree.targetMode = true) tree.exitTargetMode();
             tree.editedNode.finishEdit();
+            return false;
         });	
 	}
 

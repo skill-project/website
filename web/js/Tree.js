@@ -28,17 +28,11 @@ var Tree = function() {
     //Currently, this callback function is only used for autoloading, so it stops if autoload is false
     this.readyForNextLevel.add(function () {
         if (!tree.autoLoad) return;
-        // debugger;
-
-        //jsonAutoLoad :
-
-
+        
         if (tree.autoLoadCurrentDepth != jsonAutoLoad.data.length) {
             var children = jsonAutoLoad.data[tree.autoLoadCurrentDepth].children;
             if (tree.autoLoadCurrentDepth == 0) tree.rootNode.select();
             else {
-                console.log(jsonAutoLoad.data[tree.autoLoadCurrentDepth]);
-                console.log(tree.nodes);
                 tree.nodes[jsonAutoLoad.data[tree.autoLoadCurrentDepth].uuid].select();
             }
 
