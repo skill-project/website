@@ -316,4 +316,16 @@
         
         }
 
+        
+
+        /**
+         * The apply page
+         */
+        public function applyAction(){
+            $view = new View("apply.php", array("title" => "Apply | Skill Project"));
+            $view->setLayout("../View/layouts/page.php");
+            $view->send();
+        }
+
+
     }

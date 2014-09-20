@@ -65,4 +65,15 @@
         }
 
 
+
+        /**
+         * The legal page
+         */
+        public function legalAction(){
+            $view = new View("legal.php", array("title" => "Boring | Skill Project"));
+            $view->setLayout("../View/layouts/page.php");
+            $view->send();
+        }
+
+
     }
