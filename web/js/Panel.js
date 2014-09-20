@@ -44,10 +44,10 @@ var Panel = function(node, initParams) {
                 $(subPanel).children("a.panel-btn").each(function (loadBtnIndex, loadBtn) {
                     $(loadBtn).on("tap click", function() {
                         var panelToLoad = $(loadBtn).data("panel");
+                        that.$activeSubpanel = $("#" + panelToLoad);
                         $("#" + panelToLoad).show("slide", {
                             direction: "right"
-                        });
-                        that.$activeSubpanel = $("#" + panelToLoad);
+                        }, that.panelLoadEvents);
                     });
                 })
                 break;
@@ -86,7 +86,10 @@ var Panel = function(node, initParams) {
                 $(subPanel).find(".img-btn").on("tap click", function() {
                     $(subPanel).find("#moveType").val($(this).data("value"));
                     $(subPanel).find("#move-form-submit").val($(this).data("value").toUpperCase());
-                    $(subPanel).find(".img-btn").toggleClass("selected");
+                    $(subPanel).find(".selected").toggleClass("selected");
+                    $(this).toggleClass("selected");
+
+                    $(subPanel).find("#move-step2").css("display", "block");
                 });
 
                 $("#move-skill-form").on("submit", function(e){
@@ -98,6 +101,7 @@ var Panel = function(node, initParams) {
                         success: function(response){
                             if (response.status == "ok"){
                                 $(subPanel).find(".message-zone").html(response.message).css("display", "inline-block");
+                                tree.executeMoveCopy();
                             }
                         }
                     });
@@ -191,9 +195,11 @@ var Panel = function(node, initParams) {
                 direction:"right"
             });
             that.$activeSubpanel = that.$subPanels["first-panel"];
+            if (tree.targetMode = true) tree.exitTargetMode();
         });
 
         $(subPanel).find(".close-panel-btn").on("tap click", function() {
+            if (tree.targetMode = true) tree.exitTargetMode();
             tree.editedNode.finishEdit();
         });	
 	}
@@ -206,6 +212,16 @@ var Panel = function(node, initParams) {
                 width: $("#panel").width() 
             });
         if (subPanelId != "first-panel") $(subPanel).hide();
+    }
+}
+
+Panel.prototype.panelLoadEvents = function() {
+    var panel = tree.editedNode.panel;
+
+    switch (panel.$activeSubpanel[0].id) {
+        case "move-skill-panel":
+            tree.enterTargetMode();
+            break;
     }
 }
 

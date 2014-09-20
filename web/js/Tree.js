@@ -4,10 +4,12 @@ var Tree = function() {
     this.busy = false;
     this.selectedNode;
     this.editedNode;
+    this.targetNode;
     this.rootNodeReady = $.Callbacks("unique");
     this.readyForNextLevel = $.Callbacks("unique");
     this.autoLoad = false;
     this.autoLoadCurrentDepth;
+    this.targetMode = false;
 
     //Action is set by PHP based on URL, sort of controller/route for JS
     //this.autoload : the tree will expand itself up to the requested node
@@ -26,7 +28,7 @@ var Tree = function() {
     //Currently, this callback function is only used for autoloading, so it stops if autoload is false
     this.readyForNextLevel.add(function () {
         if (!tree.autoLoad) return;
-        debugger;
+        // debugger;
 
         //jsonAutoLoad :
 
@@ -80,4 +82,44 @@ Tree.prototype.countCachedNodes = function() {
 
     console.log("Nodes cached : " + nodesCached);
     console.log("Nodes not cached : " + nodesNotCached);
+}
+
+Tree.prototype.enterTargetMode = function() {
+    tree.targetMode = true;
+
+    for (var nodeIndex in tree.nodes) {
+        var node = tree.nodes[nodeIndex];
+        if (!node.isEdited && tree.editedNode.parent != node) node.setVisualState(node.visualState);
+        // node.backImage.setImage($("img#node-normal-t")[0]);
+    }
+    stage.draw();
+}
+
+Tree.prototype.exitTargetMode = function() {
+    tree.targetMode = false;
+
+    for (var nodeIndex in tree.nodes) {
+        var node = tree.nodes[nodeIndex];
+        node.setVisualState(node.visualState);
+    }
+    stage.draw();
+}
+
+Tree.prototype.executeMoveCopy = function() {
+    var openSibling = tree.targetNode.getSiblingMatch("isInPath", true);
+    if (typeof openSibling != "undefined") {
+        openSibling.contract({noAnim:true}).deSelect();
+    }
+
+    tree.editedNode.deleteFromDB();
+
+    if (tree.targetNode.isInPath == true && tree.targetNode.depth < tree.editedNode.depth) {
+        tree.targetNode.contract({noAnim:true}).deSelect();
+    }
+
+    tree.exitTargetMode();
+    tree.editedNode.finishEdit();
+    tree.targetNode.select().expand();
+    
+    
 }

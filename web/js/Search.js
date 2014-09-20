@@ -28,8 +28,6 @@ var Search = function(){
 
         tree.selectedNode.deSelect();
         tree.rootNode.contract();
-
-        
     }
 
     this.close = function(){

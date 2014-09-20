@@ -326,11 +326,23 @@ a.panel-btn .arrow-btn-l {
 .img-btn {
     background-color: #000;
 }
-.img-btn:hover img { border: 1px solid #FFF; }
-.img-btn:hover img { opacity: 1;}
+.img-btn:hover img { 
+    border: 1px solid #FFF; 
+    opacity: 1;
+    cursor:pointer;
+ }
 .img-btn img {
     border: 1px solid #222;
     opacity: 0.2;
+}
+
+#move-skill-panel .img-btn img {
+    /*border: 1px solid #222;*/
+    opacity: 1;
+}
+
+#move-skill-panel .img-btn:hover img {
+    border: 1px solid #FFF;
 }
 
 .img-btn.selected {
@@ -338,11 +350,22 @@ a.panel-btn .arrow-btn-l {
 }
 
 .img-btn.selected img {
-    -webkit-box-shadow: 0px 0px 5px 2px rgba(26,218,230,1);
-    -moz-box-shadow: 0px 0px 5px 2px rgba(26,218,230,1);
     box-shadow: 0px 0px 5px 2px rgba(26,218,230,1);
     border: 1px solid #1ADAE6;
     opacity: 1;
+}
+
+#move-skill-panel .img-btn.selected img {
+    box-shadow: 0px 0px 5px 2px rgba(26,218,230,1);
+    border: 1px solid #1ADAE6;
+}
+
+#move-skill-panel #move-step2 {
+    display:none;
+}
+
+#move-skill-panel #move-step3 {
+    display:none;
 }
 
 .img-btn-l {  float: left; }

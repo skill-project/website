@@ -3,6 +3,17 @@
 	<img src="img/node-glow-nochildren.png" id="node-glow-nochildren" />
 	<img src="img/node-glow-children.png" id="node-glow-children" />
 	<img src="img/node-edit.png" id="node-edit" />
+
+	<img src="img/node-normal-t.png" id="node-normal-t" />	
+	<img src="img/node-glow-nochildren-t.png" id="node-glow-nochildren-t" />
+	<img src="img/node-glow-children-t.png" id="node-glow-children-t" />
+	<img src="img/node-edit-t.png" id="node-edit-t" />
+
+	<img src="img/node-normal-t-on.png" id="node-normal-t-on" />	
+	<img src="img/node-glow-nochildren-t-on.png" id="node-glow-nochildren-t-on" />
+	<img src="img/node-glow-children-t-on.png" id="node-glow-children-t-on" />
+	<img src="img/node-edit-t-on.png" id="node-edit-t-on" />
+
 	<img src="img/glow-children.png" id="glow-children" />
 	<img src="img/glow-nochildren.png" id="glow-nochildren" />
 	<p id="avenir-book">Skill Project</p>

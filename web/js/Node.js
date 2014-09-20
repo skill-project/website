@@ -12,6 +12,7 @@ var Node = function(nodeData, params) {
   this.takePlaceOf = params.takePlaceOf ? params.takePlaceOf : null;
   this.visualState = "normal";
   this.glow = 0;
+  // this.targetModeOver = false;
   this.shapes;
   this.children = [];
   this.ancestors = [];
@@ -19,6 +20,7 @@ var Node = function(nodeData, params) {
   this.open = false;
   this.isSelected = false;
   this.isEdited = false;
+  this.isTarget = false;
   this.isInPath;
   this.knGlow;
   this.backImage;
@@ -52,12 +54,13 @@ var Node = function(nodeData, params) {
       this.ancestors[this.parent.id] = this.parent;
    }
 
+  var targetModePrefix = (tree.targetMode == true) ? "-t" : "";
   var backImage = new Kinetic.Image({
     x:0,
     y:0,
     width:236,
     height:56,
-    image: $("img#node-normal")[0]
+    image: $("img#node-normal" + targetModePrefix)[0]
   });
   this.backImage = backImage;
 
@@ -166,7 +169,7 @@ var Node = function(nodeData, params) {
             newNode.nodeReady = true;
             //Last child has finished appearing
             if (newNode.isLast == true) {
-              debugger;
+              // debugger;
               // if (newNode.name == "siby") debugger;
               // debugger;
               newNode.parent.setChildrenSiblings();
@@ -223,10 +226,15 @@ var Node = function(nodeData, params) {
   });
   this.labelGroup = labelGroup;
   
-  editButton.on("mouseover", function() { document.body.style.cursor = 'pointer'; });
-  editButton.on("mouseout", function() { document.body.style.cursor = 'default'; });
+  editButton.on("mouseover", function(e) { document.body.style.cursor = 'pointer';}); //that.editMouseOver(that, e.type)
+  editButton.on("mouseout", function(e) { document.body.style.cursor = 'default'; }); //that.editMouseOver(that, e.type)
   //Click on "+" symbol for node editing
   editButton.on("click tap", function() {
+    if (tree.targetMode == true) {
+      that.setTarget();
+      return;
+    }
+
     //Checking and setting a tree-wide lock. 
     //Will be released after panel slide in / slide out
     if (tree.busy) return;
@@ -469,7 +477,8 @@ Node.prototype.startEdit = function() {
 }
 
 //Closes the panel
-Node.prototype.finishEdit = function(onComplete) {
+Node.prototype.finishEdit = function(onComplete, force) {
+  if (tree.targetMode == true) return;
   if (!this.isEdited) return;
 
   if (this.panel) {
@@ -516,55 +525,65 @@ Node.prototype.deleteChildrenMatch = function(propertyName, propertyValue) {
 }
 
 //Set visual state of the node
-Node.prototype.setVisualState = function (state) {
+Node.prototype.setVisualState = function (state, draw, ignoreGlow) {
+  if (typeof draw == "undefined") draw = true;
+  if (typeof ignoreGlow == "undefined") ignoreGlow = false;
+
+
+  var targetModeSuffix = (tree.targetMode == true) ? "-t" : "";
+  // var targetModeOver = (this.targetModeOver == true) ? "-on" : "";
+
+  var imageSuffix = targetModeSuffix;// + targetModeOver;
+
   switch (state) {
     case "auto":
       if (this.isSelected && this.isEdited) {
         this.setVisualState("glow-edit");
       } else if (!this.isSelected && this.isEdited) {
         this.setVisualState("normal-edit");
-        this.setGlow(0);
+        if (!ignoreGlow) this.setGlow(0);
       } else if (!this.isSelected && !this.isEdited && !this.open) {
         this.setVisualState("normal");
-        this.setGlow(0);
+        if (!ignoreGlow) this.setGlow(0);
       }
       break;
     case "normal":
       this.knGlow.setImage($("img#glow-nonotch")[0]);
-      this.backImage.setImage($("img#node-normal")[0]);
+      this.backImage.setImage($("img#node-normal" + imageSuffix)[0]);
       if (this.edge != null) this.edge.selected = false;
       this.text.setFill("#333333");
-      this.setGlow(0);
+      if (!ignoreGlow) this.setGlow(0);
       break;
     case "glow-children":
       if (!this.isEdited) {
-        this.backImage.setImage($("img#node-glow-children")[0]);
+        this.backImage.setImage($("img#node-glow-children" + imageSuffix)[0]);
         this.knGlow.setImage($("img#glow-children")[0]);
         this.text.setFill("#333333");
       }
       if (this.edge != null) this.edge.selected = true;
-      this.setGlow(1);
+      if (!ignoreGlow) this.setGlow(1);
       break;
     case "glow-nochildren":
       if (!this.isEdited) {
-        this.backImage.setImage($("img#node-glow-nochildren")[0]);
+        this.backImage.setImage($("img#node-glow-nochildren" + imageSuffix)[0]);
         this.knGlow.setImage($("img#glow-nochildren")[0]);
         this.text.setFill("#333333");
       }
       if (this.edge != null) this.edge.selected = true;
-      this.setGlow(1);
+      if (!ignoreGlow) this.setGlow(1);
       break;
     case "normal-edit":
-      this.backImage.setImage($("img#node-edit")[0]);
+      this.backImage.setImage($("img#node-edit" + imageSuffix)[0]);
       this.text.setFill("#fff");
       break;
     case "glow-edit":
-      if (this.totalChildren > 0) this.backImage.setImage($("img#node-glow-children")[0]);
-      else this.backImage.setImage($("img#node-glow-nochildren")[0]);
+      if (this.totalChildren > 0) this.backImage.setImage($("img#node-glow-children" + imageSuffix)[0]);
+      else this.backImage.setImage($("img#node-glow-nochildren" + imageSuffix)[0]);
       this.text.setFill("#333333");
       break;
   }
-  nodesLayer.draw();
+
+  if (draw) nodesLayer.draw();
 
   this.visualState = state;
 }
@@ -910,3 +929,48 @@ Node.prototype.deleteFromDB = function() {
   this.delete();
   stage.draw();
 }
+
+Node.prototype.setTarget = function() {
+  if (this.isTarget) return;
+  if (this.isEdited) return;
+  if (this == tree.editedNode.parent) return;
+  if (tree.targetNode) tree.targetNode.unsetTarget();
+
+  this.isTarget = true;
+  this.setGlow(1);
+  tree.targetNode = this;
+
+  // console.log()
+
+  tree.editedNode.panel.$activeSubpanel.find("#move-step3").css("display", "block");
+  tree.editedNode.panel.$activeSubpanel.find("#destinationUuid").val(this.id);
+}
+
+Node.prototype.unsetTarget = function() {
+  if (!this.isTarget) return;
+  if (this.isEdited) return;
+
+  this.isTarget = false;
+  // node.targetModeOver = false;
+  // node.setVisualState(node.visualState, true, true);
+  if (!this.isInPath) this.setGlow(0);
+  tree.targetNode = null;
+}
+
+// Node.prototype.editMouseOver = function(node, type) {
+//   // debugger;
+//   // console.log("ici");
+//   if (type == "mouseover") {
+//     document.body.style.cursor = 'pointer';
+//     if (tree.targetMode == true) {
+//       node.targetModeOver = true;
+//       node.setVisualState(node.visualState, true, true);
+//     }
+//   }else {
+//     document.body.style.cursor = 'default'; 
+//     if (tree.targetMode == true && node.isTarget == false) {
+//       node.targetModeOver = false;
+//       node.setVisualState(node.visualState, true, true);
+//     }
+//   }
+// }
