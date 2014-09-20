@@ -1,0 +1,70 @@
+
+#header ul {
+    margin: 0;
+}
+
+#header-right {
+    position: relative;
+    float: right;
+    text-align: right;
+    height: 100%;
+    min-height: 100%;
+}
+
+#header-right ul {
+    width: 750px;
+}
+
+#top-user-nav {
+    margin-top: 2px;
+}
+
+#top-user-nav li.last, #top-main-nav li.last {
+    margin-right: 0;
+}
+
+#top-user-nav li {
+    margin: 0 10px;
+    font-size: 13px;
+    line-height: 13px;
+}
+
+#top-user-nav ul {
+    margin: 0;
+}
+
+#top-main-nav, #main-logo {
+    position: absolute;
+    bottom: 4px;
+}
+
+#top-main-nav li {
+    display: inline-block;
+    margin: 0 12px;
+}
+
+#top-user-nav li {
+    display: inline-block;
+}
+
+#avenir-book {
+    font-family: "Avenir-Book";
+}
+
+#header {
+    width:100%;
+    background-color:$gray;
+    height:65px;
+}
+
+#main-logo img {
+    height: 52px;
+}
+
+#header-container {
+    position: relative;
+    width: 1000px;
+    margin:0 auto;
+    height: 100%;
+    min-height: 100%;
+}

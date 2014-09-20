@@ -6,6 +6,7 @@
     use \Everyman\Neo4j\Node;
     use \View\View;
     use \Model\User;
+    use \Model\SkillManager;
     use \Model\UserManager;
     use \Symfony\Component\Routing\Generator\UrlGenerator;
     use \Controller\Router;
@@ -300,15 +301,89 @@
         public function profileAction($username, $withPassword = false){
 
             $userManager = new UserManager();
-            $user = $userManager->findByUsername($username);
+            $securityHelper = new SH();
 
-            if (!$user){
+            $profileUser = $userManager->findByUsername($username);
+            $loggedUser = $securityHelper->getUser();
+
+            $skillManager = new SkillManager();
+            $latestActivity = $skillManager->getLatestActivity($profileUser);
+
+            if (!$profileUser){
                 Router::fourofour(_("This user never was born, or vanished."));
             }
 
+            $uploadErrors = false;  
+            $errors = false;
+            //profile form submitted
+            if (!empty($_POST) && $loggedUser){
+
+                $newUsername = $_POST['username'];
+                $newEmail = $_POST['email'];
+                $bio = $_POST['bio'];
+                $interests = $_POST['interests'];
+                $languages = $_POST['languages'];
+                $country = $_POST['country'];
+
+                //validation
+                $validator = new \Model\Validator();
+
+                $validator->validateUsername($newUsername);
+                //changing username ?
+                if ($newUsername != $loggedUser->getUsername()){
+                    $validator->validateUniqueUsername($newUsername);
+                }
+                $validator->validateEmail($newEmail);
+                //changing email ?
+                if ($newEmail != $loggedUser->getEmail()){
+                    $validator->validateUniqueEmail($newEmail);
+                }
+
+                if ($validator->isValid()){
+
+                    //hydrate user obj
+                    $user = $securityHelper->getUser();
+
+                    $user->setUsername( $newUsername );
+                    $user->setEmail( $newEmail );
+                    $user->setInterests( $interests );
+                    $user->setLanguages( $languages );
+                    $user->setCountry( $country );
+                    $user->setBio( $bio );
+
+                    if (!empty($_FILES['picture']['tmp_name'])){
+                        //HANDLE UPLOAD
+
+                        $tmp_name = $_FILES['picture']['tmp_name'];
+                        $img = new \abeautifulsite\SimpleImage($tmp_name);
+                        if ($img->get_width() < 180 || $img->get_height() < 180){
+                            $uploadErrors[] = _("Your picture is too small !");
+                        }
+                        
+                        if (empty($uploadErrors)){
+                            $filename = $loggedUser->getUuid() . ".jpg";
+                            $img->thumbnail(180,180)->save("img/uploads/" . $filename, 100); //quality as second param
+                            $user->setPicture( $filename );
+                        }
+
+                    }
+
+                    $userManager->update($user);
+                    $securityHelper->putUserDataInSession( $user );
+                }
+                else {
+                    $errors = $validator->getErrors();
+                }
+
+            }
+
             $params = array();
+            $params['errors'] = $errors;
+            $params['uploadErrors'] = $uploadErrors;
+            $params['latestActivity'] = $latestActivity;
+
             if ($withPassword){ $params['showPasswordResetForm'] = true; }
-            $params['user'] = $user;
+            $params['profileUser'] = $profileUser;
             $params['title'] = SH::encode($username) . _("'s profile | Skill Project");
             $view = new View("profile.php", $params);
             $view->setLayout("../View/layouts/page.php");
@@ -316,7 +391,7 @@
         
         }
 
-        
+
 
         /**
          * The apply page

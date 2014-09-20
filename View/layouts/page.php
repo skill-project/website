@@ -5,6 +5,7 @@
 	<title><?php echo $title; ?></title>
 	<meta name="description" content="">
 	<base href="<?= \Config\Config::BASE_URL ?>" />
+	<link rel="shortcut icon" href="img/favicon.png">
 	<link href="css/style.css" type="text/css" rel="stylesheet" />
 		<?php if (\Config\Config::DEBUG): ?>
 	<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>

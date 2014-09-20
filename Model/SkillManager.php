@@ -512,4 +512,32 @@
             return true;
         }
 
+
+        /**
+         * Find last actions of a user
+         */
+        public function getLatestActivity(User $user){
+            $cyp = "MATCH (s:Skill)<-[r:CREATED|MODIFIED]-
+                    (u:User {uuid: {userUuid}}) 
+                    RETURN r, s
+                    ORDER BY r.timestamp DESC LIMIT 20";
+
+            $query = new Query($this->client, $cyp, array("userUuid" => $user->getUuid()));
+            $resultSet = $query->getResultSet();
+
+            $activities = array();
+            if ($resultSet->count() > 0){
+                foreach($resultSet as $row){
+                    $act = array();
+                    $act['skillName'] = $row['s']->getProperty('name');
+                    $act['action'] = $row['r']->getLabel();
+                    $act['timestamp'] = $row['r']->getTimestamp();
+                    $activities[] = $act;
+                }
+            }
+
+            return $activities;
+
+        }
+
     }

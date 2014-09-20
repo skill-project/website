@@ -5,6 +5,8 @@
 	<title><?php echo $title; ?></title>
 	<meta name="description" content="">
 	<base href="<?= \Config\Config::BASE_URL ?>" />
+	<link rel="shortcut icon" href="img/favicon.png">
+
 	<?php if (\Config\Config::DEBUG): ?>
 	<link href="css/style.css" type="text/css" rel="stylesheet" />
 	<?php else: ?>

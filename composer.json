@@ -12,6 +12,7 @@
         "symfony/http-foundation":"dev-master",
         "fzaninotto/faker": "@stable",
         "cocur/slugify": "@stable",
-        "mandrill/mandrill": "1.0.*"
+        "mandrill/mandrill": "1.0.*",
+        "abeautifulsite/simpleimage": "dev-master"
     }
 }

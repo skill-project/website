@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<title><?php echo $title; ?></title>
 	<meta name="description" content="">
+	<link rel="shortcut icon" href="img/favicon.png">
 </head>
 
 <body>

@@ -33,6 +33,11 @@
                         u.email = {email},
                         u.emailValidated = {emailValidated},
                         u.role = {role},
+                        u.bio = {bio},
+                        u.interests = {interests},
+                        u.languages = {languages},
+                        u.country = {country},
+                        u.picture = {picture},
                         u.password = {password},
                         u.token = {token},
                         u.dateModified = {dateModified}";
@@ -43,6 +48,11 @@
                     "email" => $user->getEmail(),
                     "emailValidated" => $user->getEmailValidated(),
                     "role" => $user->getRole(),
+                    "bio" => $user->getBio(),
+                    "languages" => $user->getLanguages(),
+                    "interests" => $user->getInterests(),
+                    "country" => $user->getCountry(),
+                    "picture" => $user->getPicture(),
                     "password" => $user->getPassword(),
                     "token" => $user->getToken(),
                     "dateModified" => time()

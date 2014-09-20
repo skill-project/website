@@ -1,13 +1,23 @@
 module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        sass: {                                                      // Task
+            dist: {                                                 // Target
+                options: {                                          // Target options
+                    style: 'expanded'
+                },
+                files: {                                            // Dictionary of files
+                    'web/css/all.css': 'web/css/scss/style.scss',       // 'destination': 'source'
+                }
+            }
+        },
+        cssmin : {
+            css:{
+                src: 'web/css/all.css',
+                dest: 'web/css/all.min.css'
+            }
+        },
         concat: {
-            css: {
-               src: [
-                     'web/css/*', '!web/css/all.css', '!web/css/all.min.css'
-                    ],
-                dest: 'web/css/all.css'
-            },
             js : {
                 src : [
                     'web/js/jquery.min.js', 
@@ -22,12 +32,6 @@ module.exports = function(grunt) {
                 dest : 'web/js/all.js'
             }
         },
-        cssmin : {
-            css:{
-                src: 'web/css/all.css',
-                dest: 'web/css/all.min.css'
-            }
-        },
         uglify : {
             js: {
                 files: {
@@ -36,13 +40,14 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-           files: ['web/css/*', 'web/js/*'],
-           tasks: ['concat', 'cssmin', 'uglify']
+           files: ['web/css/scss/*', 'web/js/*'],
+           tasks: ['sass', 'concat', 'cssmin', 'uglify']
         }
     });
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
-    grunt.registerTask('default', [ 'concat:css', 'cssmin:css', 'concat:js', 'uglify:js' ]);
+    grunt.registerTask('default', [ 'sass', 'cssmin:css', 'concat:js', 'uglify:js' ]);
 };

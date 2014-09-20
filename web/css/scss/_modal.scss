@@ -1,0 +1,57 @@
+#simplemodal-overlay {
+    background-color: #000;
+}
+
+#simplemodal-container {
+    background-color: #000;
+    opacity: 0.9;
+    width: 450px;
+}
+
+#simplemodal-container a.modalCloseImg {
+    background: url("../img/panel-icon-close.png") no-repeat;
+    width:27px;
+    height:27px;
+    display:inline;
+    z-index:3200;
+    position:absolute;
+    top:8px;
+    right:8px;
+    cursor:pointer;
+}
+
+#modal-wrapper {
+    font-size: 13px;
+}
+#modal-header {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#modal-header h2 {
+    font-weight: normal;
+    margin: 3px;
+}
+
+#modal-logo {
+    height: 55px;
+}
+
+#modal-content {
+    margin: 20px;
+}
+
+#modal-content input[type=text], #modal-content input[type=email], #modal-content input[type=password] {
+    height: 36px;
+    line-height: 36px;
+    margin: 0 0 10px 0;
+}
+
+.submit-container {
+    text-align: center;
+    width: 100%;
+}
+
+.submit-container input {
+    margin-top: 15px;
+}

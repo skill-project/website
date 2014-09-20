@@ -13,6 +13,11 @@
 		protected $role;		//user or admin
 		protected $salt;
 		protected $token;
+		protected $country;
+		protected $languages;
+		protected $picture;
+		protected $bio;
+		protected $interests;
 		protected $ipAtRegistration;
 		protected $emailValidated;
 		protected $dateCreated;
@@ -57,6 +62,10 @@
 			$this->node->setProperty("email", $this->email);
 			$this->node->setProperty("emailValidated", $this->emailValidated);
 			$this->node->setProperty("role", $this->role);
+			$this->node->setProperty("languages", $this->languages);
+			$this->node->setProperty("interests", $this->interests);
+			$this->node->setProperty("picture", $this->picture);
+			$this->node->setProperty("country", $this->country);
 			$this->node->setProperty("password", $this->password);
 			$this->node->setProperty("salt", $this->salt);
 			$this->node->setProperty("token", $this->token);
@@ -171,6 +180,126 @@
 	    public function setRole($role)
 	    {
 	        $this->role = $role;
+
+	        return $this;
+	    }
+		
+	    /**
+	     * Gets the value of country.
+	     *
+	     * @return mixed
+	     */
+	    public function getCountry()
+	    {
+	        return $this->country;
+	    }
+
+	    /**
+	     * Sets the value of country.
+	     *
+	     * @param mixed $country the country
+	     *
+	     * @return self
+	     */
+	    public function setCountry($country)
+	    {
+	        $this->country = SH::safe($country);
+
+	        return $this;
+	    }
+
+	    /**
+	     * Gets the value of languages.
+	     *
+	     * @return mixed
+	     */
+	    public function getLanguages()
+	    {
+	        return $this->languages;
+	    }
+
+	    /**
+	     * Sets the value of languages.
+	     *
+	     * @param mixed $languages the languages
+	     *
+	     * @return self
+	     */
+	    public function setLanguages($languages)
+	    {
+	        $this->languages = SH::safe($languages);
+
+	        return $this;
+	    }
+
+	    /**
+	     * Gets the value of picture.
+	     *
+	     * @return mixed
+	     */
+	    public function getPicture()
+	    {
+	        return $this->picture;
+	    }
+
+	    /**
+	     * Sets the value of picture.
+	     *
+	     * @param mixed $picture the picture
+	     *
+	     * @return self
+	     */
+	    public function setPicture($picture)
+	    {
+	        $this->picture = SH::safe($picture);
+
+	        return $this;
+	    }
+
+	    /**
+	     * Gets the value of interests.
+	     *
+	     * @return mixed
+	     */
+	    public function getInterests()
+	    {
+	        return $this->interests;
+	    }
+
+	    /**
+	     * Sets the value of interests.
+	     *
+	     * @param mixed $interests the interests
+	     *
+	     * @return self
+	     */
+	    public function setInterests($interests)
+	    {
+	        $this->interests = SH::safe($interests);
+
+	        return $this;
+	    }
+	
+	    /**
+	     * Gets the value of bio.
+	     *
+	     * @return mixed
+	     */
+	    public function getBio()
+	    {
+	        return $this->bio;
+	    }
+
+	    /**
+	     * Sets the value of bio.
+	     *
+	     * @param mixed $bio the bio
+	     *
+	     * @return self
+	     */
+	    public function setBio($bio)
+	    {
+	        $this->bio = SH::safe($bio);
 
 	        return $this;
 	    }
