@@ -68,13 +68,16 @@ var Panel = function(node, initParams) {
                             console.log(response);
                             if (response.status == "ok"){
                                 $("#create-skillName").val("");
-                                $("#skillParentUuid").val(response.data.uuid);
-                                $("#creationTypeParent").data("parentuuid", response.data.uuid);
                                 $(subPanel).find(".message-zone").html(response.message).css("display", "inline-block");
-
+                                
                                 var creationType = $(subPanel).find("#creationType").val();
-                                if (creationType == "child") tree.editedNode.createNewChild(response.data);
-                                else if (creationType == "parent") tree.editedNode.createNewParent(response.data);
+                                if (creationType == "child") {
+                                    tree.editedNode.createNewChild(response.data);
+                                } else if (creationType == "parent") { 
+                                    $("#creationTypeParent").data("parentuuid", response.data.uuid);
+                                    $("#skillParentUuid").val(response.data.uuid);
+                                    tree.editedNode.createNewParent(response.data)
+                                }
                             }
                         }
                     });

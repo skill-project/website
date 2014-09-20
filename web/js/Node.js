@@ -810,11 +810,6 @@ Node.prototype.createNewParent = function (nodeData) {
           moveGroup.destroy();
       }
   });
-  // debugger;
-
-  // debugger;
-  console.log("Ajout consécutif de 2 parents au même noeud : ligne droite");
-  console.log("Ajout consécutif de 2 parents au même noeud : ligne droite");
 
   // BULLSHIT : On editedNode's parent, empty the list of children. The only child will be newSkill and it will add itself
   // this.parent.children = [];
