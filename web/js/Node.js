@@ -733,22 +733,146 @@ Node.prototype.calculateAncestors = function() {
   return ancestors;
 }
 
-function cn(node, what) {
-  if (what == "c") {
-    var nodesArray = node.children;
-    var textWhat = "chidren";
-  }
-  else if (what == "s") {
-    var nodesArray = node.siblings;
-    var textWhat = "siblings";
-  }else {
-    console.warn("cn : no parameter");
-    return;
+//Called after creating a new skill (as a child) on the panel
+//nodeData : data about the new node as returned by the server after saving it in the database
+Node.prototype.createNewChild = function (nodeData) {
+  var openSibling = this.getSiblingMatch("isInPath", true);
+  if (typeof openSibling != "undefined") {
+      openSibling.contract();
+      tree.selectedNode.deSelect();
   }
 
-  console.log("List of " + textWhat + " for " + node.name + " (" + Object.keys(nodesArray).length + ")");
-  for (var nodeIndex in nodesArray) {
-      var subNode = nodesArray[nodeIndex];
-      console.log(subNode.name);
+  if (this.open) {
+      var newSkill = new Node(nodeData, 
+          {
+              parent: this,
+              rank: 1,
+              count: 1,
+              isLast: true,
+              onComplete: selectExpandNewNode
+          });
+  } else {
+      this.select().expand({ onComplete: selectExpandNewNode });
   }
+
+  //Local function to make code more compact
+  var selectExpandNewNode = function () {
+      var selectedSibling = tree.nodes[nodeData.uuid].getSiblingMatch("isSelected", true);
+      if (typeof selectedSibling != "undefined") selectedSibling.contract().deSelect();
+
+      tree.nodes[nodeData.uuid].select();
+      tree.nodes[nodeData.uuid].expand();
+  }
+}
+
+//Called after creating a new skill (as a parent) on the panel
+//nodeData : data about the new node as returned by the server after saving it in the database
+Node.prototype.createNewParent = function (nodeData) {
+  //Contract subchildren if present : we only want one extra level after editedNode
+  var openChild = this.getChildrenMatch("open", true);
+  if (typeof openChild != "undefined") {
+      openChild.contract({noAnim: true});
+  }
+
+  if (this.isSelected) var selectEditedNode = true;
+  else selectEditedNode = false;
+
+  var openSibling = this.getSiblingMatch("isInPath", true);
+  if (typeof openSibling != "undefined") {
+      openSibling.contract({noAnim:true}).deSelect();
+  }
+
+  moveGroup = new Kinetic.Group();
+  if (Object.keys(this.children).length > 0) {
+      
+
+      for (var childIndex in this.children) {
+          var child = this.children[childIndex];
+          moveGroup.add(child.shapes, child.edge.shape);
+      }
+  }
+
+  moveGroup.add(this.shapes);
+
+  nodesLayer.add(moveGroup);
+
+  var tweenMoveGroup = new Kinetic.Tween({
+      node: moveGroup,
+      x: moveGroup.x() + 240 + 80,
+      y: moveGroup.y(),
+      duration: 0.30,
+      onFinish: function() {
+          while(moveGroup.children.length > 0) {
+              var shape = moveGroup.children[0];
+              if (shape.nodeType != "Shape") shape.move({x: 240 + 80, y: 0});
+              shape.moveTo(nodesLayer);
+          }
+          moveGroup.destroy();
+      }
+  });
+  // debugger;
+
+  // debugger;
+  console.log("Ajout consécutif de 2 parents au même noeud : ligne droite");
+  console.log("Ajout consécutif de 2 parents au même noeud : ligne droite");
+
+  // BULLSHIT : On editedNode's parent, empty the list of children. The only child will be newSkill and it will add itself
+  // this.parent.children = [];
+
+  //Delete entry of editedNode in editedNode's parent children list
+  delete this.parent.children[this.id];
+
+  //Here comes the new node !
+  var newSkill = new Node(nodeData, 
+  {
+      parent: this.parent,         //Set its parent to be editedNode's parent
+      takePlaceOf: this,           //Used for positioning
+      rank: 1,
+      count: 1,
+      isLast: true
+  });
+
+  //Operations on editedNode
+
+  //Change starting point of editedNode's edge : now it starts from the newSkill
+  this.edge.nodeFrom = newSkill;
+
+  //editedNode now has no more siblings
+  this.siblings = [];
+
+  this.appearDestX += 240 + 80;
+  this.midX += 240 + 80;
+
+  //New parent of editedNode is now newSkill
+  this.parent = newSkill;
+
+  //Traverse the tree to recalculate the ancestors list
+  this.ancestors = this.calculateAncestors();
+  
+  //Increase depth of editedNode and its children
+  this.depth++;
+  for (var childIndex in this.children) {
+      this.children[childIndex].depth++;
+  }
+
+  if (tree.selectedNode && tree.selectedNode.id != this.id) newSkill.select({finishEdit: false});
+
+  newSkill.setVisualState("glow-children");
+
+  newSkill.children[this.id] = this;
+  newSkill.totalChildren = 1;
+  newSkill.open = true;
+
+  var openSibling = newSkill.getSiblingMatch("open", true);
+  if (openSibling) {
+      openSibling.deSelect();
+      openSibling.contract();
+  }
+
+  if (selectEditedNode) this.select();
+  else newSkill.select();
+
+
+
+  tweenMoveGroup.play();     
 }

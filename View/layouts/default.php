@@ -26,6 +26,7 @@
 	<script type="text/javascript" src="js/kinetic-v5.1.0.min.js"></script>
 	<script type="text/javascript" src="js/compatibility.js"></script>
 	
+	<script type="text/javascript" src="js/functions.js"></script>
 	<script type="text/javascript" src="js/Node.js"></script>
 	<script type="text/javascript" src="js/Edge.js"></script>
 	<script type="text/javascript" src="js/Tree.js"></script>
