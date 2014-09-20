@@ -5,14 +5,11 @@
 	<title><?php echo $title; ?></title>
 	<meta name="description" content="">
 	<base href="<?= \Config\Config::BASE_URL ?>" />
+	<?php if (\Config\Config::DEBUG): ?>
 	<link href="css/style.css" type="text/css" rel="stylesheet" />
-	<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
-	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
-	<script type="text/javascript" src="js/jquery.highlight.js"></script>
-	<script type="text/javascript" src="js/jquery.simplemodal.1.4.4.min.js"></script>
-	<script type="text/javascript" src="js/kinetic-v5.1.0.min.js"></script>
-	<script type="text/javascript" src="js/compatibility.js"></script>
+	<?php else: ?>
+	<link href="css/all.min.css" type="text/css" rel="stylesheet" />
+	<?php endif; ?>
 	<script>
 		var rootNodeId="<?= $rootNode->getUuid(); ?>";
 		var baseUrl="<?= \Config\Config::BASE_URL ?>";	
@@ -20,6 +17,14 @@
 		<?php if (!empty($jsonTest)){ echo "var jsonTest = " . $jsonTest; } ?>
 		<?php if (!empty($jsonAutoLoad)) echo "var jsonAutoLoad = " . $jsonAutoLoad; ?>
 	</script>
+	<?php if (\Config\Config::DEBUG): ?>
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
+	<script type="text/javascript" src="js/jquery.highlight.js"></script>
+	<script type="text/javascript" src="js/jquery.simplemodal.1.4.4.min.js"></script>
+	<script type="text/javascript" src="js/kinetic-v5.1.0.min.js"></script>
+	<script type="text/javascript" src="js/compatibility.js"></script>
 	
 	<script type="text/javascript" src="js/Node.js"></script>
 	<script type="text/javascript" src="js/Edge.js"></script>
@@ -29,6 +34,9 @@
 	<script type="text/javascript" src="js/Search.js"></script>
 	<script type="text/javascript" src="js/User.js"></script>
 	<script type="text/javascript" src="js/script.js"></script>
+	<?php else: ?>
+	<script type="text/javascript" src="js/all.min.js"></script>
+	<?php endif; ?>
 	<style>
 	@font-face {
 	    font-family: 'Avenir-Book';
