@@ -148,7 +148,7 @@
 
             $cyp = "MATCH (child:Skill)<-[:HAS*0..1]-(parents:Skill)-[:HAS*]->(s:Skill) 
                         WHERE s.slug = {slug}
-                        RETURN parents,s,child ORDER BY child.created ASC";
+                        RETURN parents,s,child ORDER BY parents.depth ASC, child.created ASC";
             $query = new Query($this->client, $cyp, array(
                 "slug" => $slug)
             );
