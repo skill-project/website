@@ -21,10 +21,15 @@ var Search = function(){
     this.searchResultClicked = function(event){
         event.preventDefault();
 
+        
         //@spada's magic starts here
-        var selectedUuid = $(this).data("uuid");
-        console.log(selectedUuid + " clicked !");
-    
+        var selectedSlug = $(this).data("slug");
+        console.log(selectedSlug + " clicked !");
+
+        tree.selectedNode.deSelect();
+        tree.rootNode.contract();
+
+        
     }
 
     this.close = function(){
@@ -57,6 +62,7 @@ var Search = function(){
             $link = $("<a>")
                         .attr("href", "#")
                         .data("uuid", uuid)
+                        .data("slug", response.data[uuid].slug)
                         .html('<div class="search-result-name">' + response.data[uuid].name + '</div>' 
                               + gp + response.data[uuid].parent);
             $item = $("<li>").html($link);

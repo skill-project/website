@@ -16,6 +16,7 @@
 		<?php if (!empty($action)){ ?>var action="<?= $action; ?>";<?php } ?>
 		<?php if (!empty($jsonTest)){ echo "var jsonTest = " . $jsonTest; } ?>
 		<?php if (!empty($jsonAutoLoad)) echo "var jsonAutoLoad = " . $jsonAutoLoad; ?>
+
 	</script>
 	<?php if (\Config\Config::DEBUG): ?>
 	<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>

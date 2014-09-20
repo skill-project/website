@@ -26,11 +26,19 @@ var Tree = function() {
     //Currently, this callback function is only used for autoloading, so it stops if autoload is false
     this.readyForNextLevel.add(function () {
         if (!tree.autoLoad) return;
+        debugger;
+
+        //jsonAutoLoad :
+
 
         if (tree.autoLoadCurrentDepth != jsonAutoLoad.data.length) {
             var children = jsonAutoLoad.data[tree.autoLoadCurrentDepth].children;
             if (tree.autoLoadCurrentDepth == 0) tree.rootNode.select();
-            else tree.nodes[jsonAutoLoad.data[tree.autoLoadCurrentDepth].uuid].select();
+            else {
+                console.log(jsonAutoLoad.data[tree.autoLoadCurrentDepth]);
+                console.log(tree.nodes);
+                tree.nodes[jsonAutoLoad.data[tree.autoLoadCurrentDepth].uuid].select();
+            }
 
             //Same logic as in Node:labelGroup.on("click")
             tree.selectedNode.totalChildren = children.length;            
@@ -42,7 +50,12 @@ var Tree = function() {
 
             children.forEach(function(child) {
               if (++i == children.length) isLast = true;
-              new Node(child, tree.selectedNode, i, children.length, isLast);
+              new Node(child, {
+                      parent: tree.selectedNode,
+                      rank: i,
+                      count: children.length,
+                      isLast: isLast
+                  });
             });
 
             //Increment autoLoadCurrentDepth to be ready to handle next depth in json when the last node has finished appearing

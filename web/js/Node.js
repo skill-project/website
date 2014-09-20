@@ -166,6 +166,7 @@ var Node = function(nodeData, params) {
             newNode.nodeReady = true;
             //Last child has finished appearing
             if (newNode.isLast == true) {
+              debugger;
               // if (newNode.name == "siby") debugger;
               // debugger;
               newNode.parent.setChildrenSiblings();
@@ -443,10 +444,12 @@ Node.prototype.contract = function(params) {
 }
 
 Node.prototype.deSelect = function() {
-  if (!this.isSelected) return;
+  if (!this.isSelected) return this;
 
   this.isSelected = false;
   tree.selectedNode = null;
+
+  return this;
 }
 
 //Loads the panel
@@ -905,5 +908,5 @@ Node.prototype.setName = function (newName, twoLines, textObject) {
 Node.prototype.deleteFromDB = function() {
   this.parent.select();
   this.delete();
-
+  stage.draw();
 }
