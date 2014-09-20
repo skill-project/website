@@ -3,7 +3,7 @@ var Node = function(nodeData, params) {
   this.id = nodeData.uuid;
   this.params = params;
   this.parent = params.parent ? params.parent : null;
-  this.name = nodeData.name;
+  this.name;
   this.depth = nodeData.depth ? nodeData.depth : 0;
   this.onComplete = params.onComplete;
   this.rank = params.rank;
@@ -79,45 +79,14 @@ var Node = function(nodeData, params) {
     opacity: 0
   });
 
-  //Writing the text of the skill
-  //First attempt
-  var text = new Kinetic.Text({
-    text: this.name,
-    fontSize: 14,
-    fontFamily: 'Avenir-Book',
-    fill: '#333333',
-    align: 'center'
-  });
-
-  //Does it fit on a single line?
-  var textWidth = text.getWidth();
-  
-  //No it doesn't, so we make another Text with a width restriction for automatic wordwrap
-  if (textWidth > 160) {
-    text = new Kinetic.Text({
-      x: 67,
-      y: 12,
-      width:160,
-      height:56 - 12,
-      lineHeight:1.3,
-      text: this.name,
-      fontSize: 14,
-      fontFamily: 'Avenir-Book',
-      fill: '#333333',
-      align: 'center'
-    });
-  } else {
-    //Yes it does, so just position the Text
-    text.setX(67).setY(22).setWidth(160);
-  }
-  this.text = text;
+  this.setName(nodeData.name);
 
   //Creating a group that will listen for events
   var labelGroup = new Kinetic.Group({
     height:56,
     width:182
   });
-  labelGroup.add(label, text);
+  labelGroup.add(label, this.text);
 
   //Creating the glow, off by default (opacity: 0)
   var glow = new Kinetic.Image({
@@ -767,6 +736,7 @@ Node.prototype.createNewChild = function (nodeData) {
 
 //Called after creating a new skill (as a parent) on the panel
 //nodeData : data about the new node as returned by the server after saving it in the database
+//this = editedNode
 Node.prototype.createNewParent = function (nodeData) {
   //Contract subchildren if present : we only want one extra level after editedNode
   var openChild = this.getChildrenMatch("open", true);
@@ -774,6 +744,7 @@ Node.prototype.createNewParent = function (nodeData) {
       openChild.contract({noAnim: true});
   }
 
+  //Used to reselect editedNode after newSkill creation
   if (this.isSelected) var selectEditedNode = true;
   else selectEditedNode = false;
 
@@ -811,9 +782,6 @@ Node.prototype.createNewParent = function (nodeData) {
       }
   });
 
-  // BULLSHIT : On editedNode's parent, empty the list of children. The only child will be newSkill and it will add itself
-  // this.parent.children = [];
-
   //Delete entry of editedNode in editedNode's parent children list
   delete this.parent.children[this.id];
 
@@ -827,7 +795,9 @@ Node.prototype.createNewParent = function (nodeData) {
       isLast: true
   });
 
-  //Operations on editedNode
+  //*****************************
+  //Operations on editedNode/this
+  //*****************************
 
   //Change starting point of editedNode's edge : now it starts from the newSkill
   this.edge.nodeFrom = newSkill;
@@ -835,6 +805,7 @@ Node.prototype.createNewParent = function (nodeData) {
   //editedNode now has no more siblings
   this.siblings = [];
 
+  //Set X position where the newSkill must appear (it will appear without animation so midX is not really useful)
   this.appearDestX += 240 + 80;
   this.midX += 240 + 80;
 
@@ -850,24 +821,83 @@ Node.prototype.createNewParent = function (nodeData) {
       this.children[childIndex].depth++;
   }
 
-  if (tree.selectedNode && tree.selectedNode.id != this.id) newSkill.select({finishEdit: false});
+  //**********************
+  //Operations on newSkill
+  //**********************
 
+  //Make new Skill the new selectedNode and make it glow
+  //TODO : Condition doesn't seem appropriate
+  if (tree.selectedNode && tree.selectedNode.id != this.id) newSkill.select({finishEdit: false});
   newSkill.setVisualState("glow-children");
 
+  //Add editedNode (this) to newSkill's children list
   newSkill.children[this.id] = this;
+
+  //newSkill always only has one child
   newSkill.totalChildren = 1;
+
+  //newSkill is always in an open state
   newSkill.open = true;
 
+  //close eventually open/selected sibling
   var openSibling = newSkill.getSiblingMatch("open", true);
   if (openSibling) {
       openSibling.deSelect();
       openSibling.contract();
   }
 
+  //Reselect previously selected editedNode
   if (selectEditedNode) this.select();
   else newSkill.select();
 
-
-
+  //animate new parent
   tweenMoveGroup.play();     
+}
+
+Node.prototype.setName = function (newName, twoLines, textObject) {
+  this.name = newName;
+  // debugger;
+
+  if (typeof twoLines == "undefined") {
+    //Writing the text of the skill
+    //First attempt
+    var text = new Kinetic.Text({
+      text: this.name,
+      fontSize: 14,
+      fontFamily: 'Avenir-Book',
+      fill: '#333333',
+      align: 'center',
+      x: 67
+    });
+
+    //Does it fit on a single line?
+    var textWidth = text.getWidth();
+    if (textWidth <= 160) {
+      //It fits, position it accordingly
+      text.width(160).setY(22);
+
+      //If node is being created
+      if (typeof this.text == "undefined") this.text = text;
+      
+      //If node is being renamed
+      else {
+        this.text.setY(22);
+        this.text.text(newName);
+        stage.draw();
+      }
+    }else {
+      //It doesn't fit on a single line, make it a two-lines text
+      this.setName(newName, true, text);
+    }
+  }else if (twoLines == true) {
+    if (typeof this.text == "undefined") this.text = textObject;
+
+    this.text
+      .y(12)
+      .width(160).height(56 - 12)
+      .lineHeight(1.3);
+
+    this.text.text(newName);
+    stage.draw();
+  }
 }

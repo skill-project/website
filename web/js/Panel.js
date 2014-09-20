@@ -65,7 +65,6 @@ var Panel = function(node, initParams) {
                         type: $("#create-skill-form").attr("method"),
                         data: $("#create-skill-form").serialize(),
                         success: function(response){
-                            console.log(response);
                             if (response.status == "ok"){
                                 $("#create-skillName").val("");
                                 $(subPanel).find(".message-zone").html(response.message).css("display", "inline-block");
@@ -116,6 +115,7 @@ var Panel = function(node, initParams) {
                                 $("#rename-skillName").val("");
                                 $("#panel .skillName").html('"'+response.data.name+'"'); //change the skillname at top of panel
                                 $(subPanel).find(".message-zone").html(response.message).css("display", "inline-block");
+                                tree.editedNode.setName(response.data.name);
                             }
                         }
                     });
