@@ -133,8 +133,10 @@ var Panel = function(node, initParams) {
                         type: $("#delete-skill-form").attr("method"),
                         data: $("#delete-skill-form").serialize(),
                         success: function(response){
-                            if (response.status == "ok"){
-                                tree.editedNode.finishEdit(); //close the panel, nothing to do here anymore    
+                            if (response.status == "ok") {
+                                var nodeToDelete = tree.editedNode;
+                                nodeToDelete.finishEdit(); //close the panel, nothing to do here anymore    
+                                nodeToDelete.deleteFromDB();
                             }
                         }
                     });

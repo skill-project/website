@@ -901,3 +901,9 @@ Node.prototype.setName = function (newName, twoLines, textObject) {
     stage.draw();
   }
 }
+
+Node.prototype.deleteFromDB = function() {
+  this.parent.select();
+  this.delete();
+
+}
