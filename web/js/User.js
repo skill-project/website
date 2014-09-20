@@ -11,6 +11,16 @@ var User = function(){
             user.clickedHref = $(this).attr("href");
             user.showForm();
         });
+        $("body").on("click", ".forgot-passowrd-link", function(e){
+            e.preventDefault();
+            user.clickedHref = $(this).attr("href");
+            user.showForm();
+        });
+        $("a.password-link").on("click", function(e){
+            e.preventDefault();
+            user.clickedHref = $(this).attr("href");
+            user.showForm();
+        });
     });
 
 }

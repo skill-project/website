@@ -9,6 +9,7 @@
     use \Model\UserManager;
     use \Symfony\Component\Routing\Generator\UrlGenerator;
     use \Controller\Router;
+    use \Utils\SecurityHelper as SH;
 
     class UserController extends Controller {
 
@@ -44,7 +45,7 @@
                     if($user){
 
                         //hash password
-                        $securityHelper = new \Utils\SecurityHelper();
+                        $securityHelper = new SH();
                         $hashedPassword = $securityHelper->hashPassword( $password, $user->getSalt() );
                         
                         //compare hashed passwords
@@ -52,6 +53,8 @@
                             //login
                             $error = false;
                             $this->logUser($user);
+                            Router::redirect(Router::url('home'));
+
                         }
                     }
                 }
@@ -67,8 +70,7 @@
         }
 
         private function logUser(User $user){
-            \Utils\SecurityHelper::putUserDataInSession($user);
-            Router::redirect(Router::url('home'));
+            SH::putUserDataInSession($user);
         }
 
         public function logoutAction(){
@@ -105,7 +107,7 @@
                 if ($validator->isValid()){
 
                     //hydrate user obj
-                    $securityHelper = new \Utils\SecurityHelper();
+                    $securityHelper = new SH();
                     $user = new User();
                     
                     $user->setNewUuid();
@@ -113,8 +115,8 @@
                     $user->setEmail( $email );
                     $user->setEmailValidated(false);
                     $user->setRole( "user" );
-                    $user->setSalt( \Utils\SecurityHelper::randomString() );
-                    $user->setToken( \Utils\SecurityHelper::randomString() );
+                    $user->setSalt( SH::randomString() );
+                    $user->setToken( SH::randomString() );
 
                     $hashedPassword = $securityHelper->hashPassword( $password, $user->getSalt() );
                     
@@ -133,6 +135,8 @@
 
                     //log user in right now (will redirect home)
                     $this->logUser($user);
+                    Router::redirect(Router::url('home'));
+
                 }
                 //not valid
                 else {
@@ -142,6 +146,125 @@
             }
 
             $view = new View("register.php", $params);
+            $view->setLayout("../View/layouts/modal.php");
+            $view->send();
+        }
+
+        /**
+         * Show the first forgot password form, handle it, and send a message
+         */
+        public function forgotPassword1Action(){
+
+            $params = array();
+            $params['title'] = _("Forgot your password ?");
+
+            //handle forgot 1 form
+            if (!empty($_POST)){
+
+                $error = true;
+
+                $loginUsername = $_POST['loginUsername'];
+
+                //validation
+                $validator = new \Model\Validator();
+
+                $validator->validateLoginUsername($loginUsername);
+
+                //if valid
+                if ($validator->isValid()){
+
+                    //find user from db
+                    $userManager = new UserManager();
+                    $user = $userManager->findByEmailOrUsername($loginUsername);
+
+                    //if user found
+                    if($user){
+                        
+                        //send a message
+                        $mailer = new Mailer();
+                        $mailerResult = $mailer->sendPasswordRecovery($user);
+
+                    }
+                }
+
+                if($error){
+                    $params['error']['global'] = _("This email or username is not valid.");
+                }
+            }
+
+            $view = new View("forgot_password.php", $params);
+            $view->setLayout("../View/layouts/modal.php");
+            $view->send();
+        }
+
+        /**
+         * Validates the token and email, then redirect to profile page with a modal new password form
+         */
+        public function forgotPassword2Action($email, $token){
+            $userManager = new UserManager();
+            $user = $userManager->findByEmail($email);
+            if ($user){
+                if ($user->getToken() === $token){
+                    $user->setEmailValidated(true);
+                    //change the token 
+                    $user->setToken( SH::randomString() );
+                    $userManager->update($user);
+                    $this->logUser($user);
+                    Router::redirect(Router::url("profileWithPassword", array("username" => $user->getUsername())));
+                }
+            }
+            Router::fourofour();
+        }
+
+
+
+        /**
+         * Show the first forgot password form, handle it, and send a message
+         */
+        public function changePasswordAction(){
+
+            $params['title'] = _("CHANGE PASSWORD");
+
+            //handle forgot 1 form
+            if (!empty($_POST)){
+
+                $error = true;
+                $password = $_POST['password'];
+                $password_bis = $_POST['password_bis'];
+
+                //validation
+                $validator = new \Model\Validator();
+
+                $validator->validatePassword($password);
+                $validator->validatePasswordBis($password_bis, $password);
+
+                //if valid
+                if ($validator->isValid()){
+                    $securityHelper = new SH();
+
+                    //find user from db
+                    $user = $securityHelper->getUser();
+
+                    //if user found
+                    if($user){
+
+                        $hashedPassword = $securityHelper->hashPassword( $password, $user->getSalt() );
+                        $user->setPassword( $hashedPassword );
+
+                        $userManager = new UserManager();
+                        $userManager->update($user);
+
+                        Router::redirect(Router::url('profile', array('username' => $user->getUsername())));
+
+                    }
+                }
+
+                if($error){
+                    $params['error']['global'] = _("This email or username is not valid.");
+                }
+            }
+
+            $view = new View("change_password.php", $params);
             $view->setLayout("../View/layouts/modal.php");
             $view->send();
         }
@@ -157,16 +280,24 @@
                 if ($user->getToken() === $token){
                     $user->setEmailValidated(true);
                     //change the token 
-                    $user->setToken( \Utils\SecurityHelper::randomString() );
+                    $user->setToken( SH::randomString() );
                     $userManager->update($user);
                 }
             }
         }
     
+
+        /**
+         * Show the profile, but with the password modal opened
+         */
+        public function profileWithPasswordAction($username){
+            $this->profileAction($username, true);
+        }
+
         /**
          * Show the profile
          */
-        public function profileAction($username){
+        public function profileAction($username, $withPassword = false){
 
             $userManager = new UserManager();
             $user = $userManager->findByUsername($username);
@@ -176,10 +307,11 @@
             }
 
             $params = array();
+            if ($withPassword){ $params['showPasswordResetForm'] = true; }
             $params['user'] = $user;
-            $params['title'] = \Utils\SecurityHelper::encode($username) . _("'s profile | Skill Project");
+            $params['title'] = SH::encode($username) . _("'s profile | Skill Project");
             $view = new View("profile.php", $params);
-            $view->setLayout("../View/layouts/debug.php");
+            $view->setLayout("../View/layouts/page.php");
             $view->send();
         
         }

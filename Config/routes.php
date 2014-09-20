@@ -24,6 +24,12 @@
     );
 
     $routes->add(
+        'legal',
+        new Route('/legal/', 
+            array('controller' => 'Main', 'action' => 'legal'))
+    );
+
+    $routes->add(
         'goTo',
         new Route('/skill/{slug}/', 
             array('controller' => 'Main', 'action' => 'goTo'))
@@ -84,11 +90,37 @@
     );
 
     $routes->add(
+        'profileWithPassword',
+        new Route('/profile/{username}/edit-password/',
+            array('controller' => 'User', 'action' => 'profileWithPassword'))
+    );
+
+    $routes->add(
         'emailConfirmation',
         new Route('/confirm/{email}/{token}/',
             array('controller' => 'User', 'action' => 'emailConfirmation'))
     );
 
+    $routes->add(
+        'forgotPassword1',
+        new Route('/forgot-password-1/',
+            array('controller' => 'User', 'action' => 'forgotPassword1'))
+    );
+    
+    $routes->add(
+        'forgotPassword2',
+        new Route('/forgot-password-recovery/{email}/{token}/',
+            array('controller' => 'User', 'action' => 'forgotPassword2'))
+    );
+
+    
+
+    $routes->add(
+        'changePassword',
+        new Route('/change-password/',
+            array('controller' => 'User', 'action' => 'changePassword'))
+    );
+    
     $routes->add(
         'apply',
         new Route('/apply/', 

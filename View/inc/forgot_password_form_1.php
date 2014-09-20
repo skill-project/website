@@ -1,15 +1,10 @@
-<form method="POST" action="<?php echo \Controller\Router::url("login"); ?>">
+<form method="POST" action="<?php echo \Controller\Router::url("forgotPassword1"); ?>">
     <div>
         <label for="loginUsername"><?php echo _("USERNAME OR EMAIL") ?></label>
         <input type="text" name="loginUsername" id="loginUsername" />
     </div>
-    <div>
-        <label for="password"><?php echo _("PASSWORD") ?></label>
-        <input type="password" name="password" id="password" />
-        <a class="forgot-passowrd-link" href="<?= \Controller\Router::url("forgotPassword1"); ?>" title="<?= _("Forgot your password ?"); ?>"><?= _("Forgot your password ?"); ?></a>
-    </div>
     <div class="submit-container">
-        <input type="submit" value="<?php echo _("SIGN IN") ?>" />
+        <input type="submit" value="<?php echo _("SEND RECOVERY MESSAGE") ?>" />
     </div>
     <?php
         if (!empty($error['global'])){

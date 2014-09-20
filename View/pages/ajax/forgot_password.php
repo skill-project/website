@@ -1,0 +1,1 @@
+<?php include("../View/inc/forgot_password_form_1.php"); ?>

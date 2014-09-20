@@ -60,6 +60,9 @@
                     self::putUserDataInSession($user);
                     return $user;
                 }
+                else {
+                    \Controller\Router::redirect(\Controller\Router::url('logout'));
+                }
             }
             return false;
         }
