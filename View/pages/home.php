@@ -1,4 +1,6 @@
 <div id="preload">
+	<img src="img/node-sun.png" id="node-sun" />	
+
 	<img src="img/node-normal.png" id="node-normal" />	
 	<img src="img/node-glow-nochildren.png" id="node-glow-nochildren" />
 	<img src="img/node-glow-children.png" id="node-glow-children" />

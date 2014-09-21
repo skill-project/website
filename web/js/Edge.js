@@ -16,8 +16,8 @@ var Edge = function(nodeFrom, nodeTo) {
     if (that.nodeTo.cached == true) nodeToCachedOffset = 25;
     if (that.nodeFrom.cached == true) nodeFromCachedOffset = 25;
 
-    edgeStartX = that.nodeFrom.shapes.x() + that.nodeFrom.shapes.getWidth();
-    edgeStartY = that.nodeFrom.shapes.y() + that.nodeFrom.shapes.getHeight() / 2;
+    edgeStartX = that.nodeFrom.shapes.x() + that.nodeFrom.sizes.edgeStartXOffset;
+    edgeStartY = that.nodeFrom.shapes.y() + that.nodeFrom.sizes.edgeStartYOffset;
     edgeEndX = that.nodeTo.shapes.x()
     edgeEndY = that.nodeTo.shapes.y() + that.nodeTo.shapes.getHeight() / 2;
 

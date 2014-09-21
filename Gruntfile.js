@@ -20,14 +20,23 @@ module.exports = function(grunt) {
         concat: {
             js : {
                 src : [
-                    'web/js/jquery.min.js', 
-                    'web/js/*.js', 
-                    '!web/js/script.js',
-                    '!web/js/kinetic-v5.1.0.js', 
-                    '!web/js/kinetic-v5.1.0.custom.min.js',
-                    'web/js/script.js',
-                    '!web/js/all.js',
-                    '!web/js/all.min.js'
+                    'web/js/jquery-2.1.1.min.js', 
+                    'web/js/jquery-ui.min.js', 
+                    'web/jquery.mousewheel.min.js',
+                    'web/js/jquery.highlight.js',
+                    'web/js/jquery.simplemodal.1.4.4.min.js',
+                    'web/js/kinetic-v5.1.0.custom.min.js',
+                    'web/js/compatibility.js',
+                    'web/js/functions.js',
+                    'web/js/Node.js',
+                    'web/js/Node.prototypes.js',
+                    'web/js/Edge.js',
+                    'web/js/Tree.js',
+                    'web/js/Panel.js',
+                    'web/js/Camera.js',
+                    'web/js/Search.js',
+                    'web/js/User.js',
+                    'web/js/js/script.js'
                 ],
                 dest : 'web/js/all.js'
             }
@@ -40,8 +49,8 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-           files: ['web/css/scss/*', 'web/js/*'],
-           tasks: ['sass', 'concat', 'cssmin']
+           files: ['web/css/scss/*'],
+           tasks: ['sass']
         }
     });
     grunt.loadNpmTasks('grunt-contrib-concat');

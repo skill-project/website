@@ -26,11 +26,12 @@
 	<script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
 	<script type="text/javascript" src="js/jquery.highlight.js"></script>
 	<script type="text/javascript" src="js/jquery.simplemodal.1.4.4.min.js"></script>
-	<script type="text/javascript" src="js/kinetic-v5.1.0.min.js"></script>
+	<script type="text/javascript" src="js/kinetic-v5.1.0.custom.min.js"></script>
 	<script type="text/javascript" src="js/compatibility.js"></script>
 	
 	<script type="text/javascript" src="js/functions.js"></script>
 	<script type="text/javascript" src="js/Node.js"></script>
+	<script type="text/javascript" src="js/Node.prototypes.js"></script>
 	<script type="text/javascript" src="js/Edge.js"></script>
 	<script type="text/javascript" src="js/Tree.js"></script>
 	<script type="text/javascript" src="js/Panel.js"></script>

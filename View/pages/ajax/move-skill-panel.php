@@ -21,9 +21,10 @@
         </div>
         <div id="move-step2">
             <p class="clearfix"><?= _("2.&nbsp;CHOOSE A DESTINATION"); ?><br />
-            Select a skill as a new parent, then click the button.</p>
+            <?=_("Select a skill as a new parent, then click the button."); ?></p>
         </div>
         <div id="move-step3">
+            <p><?=_("Destination :"); ?><span id="destination-skill-name"></span></p>
             <input type="submit" id="move-form-submit" value="<?= _("COPY") ?>" />
             <span class="message-zone"></span>
         </div>

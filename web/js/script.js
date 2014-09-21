@@ -14,6 +14,10 @@ var nodesLayer,
     distToBottom,
     distToTop;
 
+var globalSizes = {
+  footerHeight: 82,
+}
+
 var tree = new Tree;
 var camera = new Camera;
 var search = new Search;
@@ -31,6 +35,7 @@ $(document).ready(function (){
     .hide()
     .height($("#kinetic").height());
 
+    $("#debug").hide();
   // setInterval(function() {
   //   $("#debug").empty();
   //   if (tree.selectedNode) $("#debug").append("selectedNode : " + tree.selectedNode.name + "<br />");

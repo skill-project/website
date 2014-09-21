@@ -46,6 +46,8 @@ var Camera = function() {
     //If not, animates the stage to the point where the node is centered on the screen
     this.checkCameraPosition = function(node)
     {
+        return;
+
         var securityZone = camera.getSecurityZone(camera.defaultSecurityZoneFactor);
         var boundingBox = node.getBoundingBox();
         var onScreen = camera.isBoxOnScreen(boundingBox, securityZone, false);
