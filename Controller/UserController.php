@@ -353,11 +353,19 @@
 
                     if (!empty($_FILES['picture']['tmp_name'])){
                         //HANDLE UPLOAD
-
                         $tmp_name = $_FILES['picture']['tmp_name'];
-                        $img = new \abeautifulsite\SimpleImage($tmp_name);
-                        if ($img->get_width() < 180 || $img->get_height() < 180){
-                            $uploadErrors[] = _("Your picture is too small !");
+
+                        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                        $mime = finfo_file($finfo, $tmp_name);
+                    
+                        if (substr($mime, 0, 5) != "image"){
+                            $uploadErrors[] = _("Your picture is invalid !");
+                        }
+                        else {
+                            $img = new \abeautifulsite\SimpleImage($tmp_name);
+                            if ($img->get_width() < 180 || $img->get_height() < 180){
+                                $uploadErrors[] = _("Your picture is too small !");
+                            }
                         }
                         
                         if (empty($uploadErrors)){

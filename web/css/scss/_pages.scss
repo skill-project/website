@@ -151,3 +151,9 @@ html.page {
         text-align: right;
     }
 }
+
+input[type="submit"].pink-submit {
+    background-color: $pink;
+    border-radius: 0;
+    color: #FFF;
+}

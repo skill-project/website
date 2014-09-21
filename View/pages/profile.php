@@ -7,8 +7,10 @@
         <div id="avatar-inside">
             <?php if ($profileUser->getPicture()): ?>
             <img class="avatar" src="img/uploads/<?= $profileUser->getPicture(); ?>" />
-            <?php else : ?>
-            
+            <?php elseif ($profileUser->isAdmin()) : ?>
+            <img class="avatar" src="img/SKP-profile-avatar-defaut-admin.png" />
+            <?php else: ?>
+            <img class="avatar" src="img/SKP-profile-avatar-defaut-logged.png" />
             <?php endif; ?>
             <p>
                 <?= strtoupper(\Utils\SecurityHelper::encode($profileUser->getUsername())); ?>

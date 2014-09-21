@@ -41,7 +41,7 @@ module.exports = function(grunt) {
         },
         watch: {
            files: ['web/css/scss/*', 'web/js/*'],
-           tasks: ['sass', 'concat', 'cssmin', 'uglify']
+           tasks: ['sass', 'concat', 'cssmin']
         }
     });
     grunt.loadNpmTasks('grunt-contrib-concat');

@@ -25,16 +25,23 @@
             <label for="picture-input"><?= _("Upload a picture of you"); ?></label>
             <input type="file" name="picture" id="picture-input" />
             <p class="hint">Minimum size: 180px x 180px</p>
+            <?php 
+            if (!empty($uploadErrors)) {
+                foreach($uploadErrors as $ue){
+                    echo $ue;
+                }
+            }
+            ?>
         </div>
         <div class="row">
             <div>
-                <label for="interests"><?= _("Interests") ?></label>
+                <label for="interests"><?= _("CATEGORIES OF INTEREST") ?></label>
                 <input type="text" name="interests" id="interests" value="<?= $loggedUser->getInterests() ?>" />
             </div>
         </div>
     </div>
     <div class="profile-section">
-        <label for="bio-textarea"><?= _("Say something about yourself"); ?></label>
+        <label for="bio-textarea"><?= _("SAY SOMETHING ABOUT YOURSELF"); ?></label>
         <textarea name="bio" id="bio-textarea"><?= $loggedUser->getBio(); ?></textarea>
     </div>
     <div class="submit-container">
@@ -49,7 +56,7 @@
     </div>
 </form>
 <br />
-<a class="password-link" href="<?= \Controller\Router::url('changePassword'); ?>"><?= _("Edit password"); ?></a>
+<a class="password-link" href="<?= \Controller\Router::url('changePassword'); ?>"><?= _("Change my password"); ?></a>
 <?php if (!empty($showPasswordResetForm)): ?>
 <script> $(document).ready(function(){ $(".password-link").click(); }); </script>
 <?php endif; ?>
