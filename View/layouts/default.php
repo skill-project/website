@@ -20,27 +20,38 @@
 		<?php if (!empty($jsonAutoLoad)) echo "var jsonAutoLoad = " . $jsonAutoLoad; ?>
 
 	</script>
+	<script>
+		var ie = (function(){
+		    var undef, v = 3, div = document.createElement('div'), all = div.getElementsByTagName('i');
+		    while ( div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->', all[0] );
+		    return v > 4 ? v : undef;
+		}());
+		if (ie < 9){
+			alert("<?= _("Your browser is too old for this modern app. Please use a recent one !"); ?>");
+			window.location.href = "/";
+		}
+	</script>
 	<?php if (\Config\Config::DEBUG): ?>
-	<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
-	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
-	<script type="text/javascript" src="js/jquery.highlight.js"></script>
-	<script type="text/javascript" src="js/jquery.simplemodal.1.4.4.min.js"></script>
-	<script type="text/javascript" src="js/kinetic-v5.1.0.custom.min.js"></script>
-	<script type="text/javascript" src="js/compatibility.js"></script>
-	
-	<script type="text/javascript" src="js/functions.js"></script>
-	<script type="text/javascript" src="js/Node.js"></script>
-	<script type="text/javascript" src="js/Node.prototypes.js"></script>
-	<script type="text/javascript" src="js/Edge.js"></script>
-	<script type="text/javascript" src="js/Tree.js"></script>
-	<script type="text/javascript" src="js/Panel.js"></script>
-	<script type="text/javascript" src="js/Camera.js"></script>
-	<script type="text/javascript" src="js/Search.js"></script>
-	<script type="text/javascript" src="js/User.js"></script>
-	<script type="text/javascript" src="js/script.js"></script>
+	<script src="js/jquery-2.1.1.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+	<script src="js/jquery.mousewheel.min.js"></script>
+	<script src="js/jquery.highlight.js"></script>
+	<script src="js/jquery.simplemodal.1.4.4.min.js"></script>
+	<script src="js/kinetic-v5.1.0.custom.min.js"></script>
+	<script src="js/compatibility.js"></script>
+
+	<script src="js/functions.js"></script>
+	<script src="js/Node.js"></script>
+	<script src="js/Node.prototypes.js"></script>
+	<script src="js/Edge.js"></script>
+	<script src="js/Tree.js"></script>
+	<script src="js/Panel.js"></script>
+	<script src="js/Camera.js"></script>
+	<script src="js/Search.js"></script>
+	<script src="js/User.js"></script>
+	<script src="js/script.js"></script>
 	<?php else: ?>
-	<script type="text/javascript" src="js/all.min.js"></script>
+	<script src="js/all.min.js"></script>
 	<?php endif; ?>
 	<style>
 	@font-face {
