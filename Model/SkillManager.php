@@ -530,8 +530,8 @@
                 foreach($resultSet as $row){
                     $act = array();
                     $act['skillName'] = $row['s']->getProperty('name');
-                    $act['action'] = $row['r']->getLabel();
-                    $act['timestamp'] = $row['r']->getTimestamp();
+                    //$act['action'] = $row['r']->getLabel();
+                    $act['timestamp'] = $row['r']->getProperty('timestamp');
                     $activities[] = $act;
                 }
             }
