@@ -13,7 +13,7 @@
 
     $routes->add(
         'graph',
-        new Route('/graph/', 
+        new Route('/skills/', 
             array('controller' => 'Main', 'action' => 'graph'))
     );
 
