@@ -29,7 +29,6 @@
         }
 
 
-
         /**
          * get first level children of a node, by its uuid
          * @param string Parent uuid

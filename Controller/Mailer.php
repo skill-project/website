@@ -8,9 +8,9 @@
 
         private $defaultConfig = 
             array(
-                'from_email' => 'accounts@skill-project.com',
+                'from_email' => 'helpdesk@skill-project.org',
                 'from_name' => 'Skill Project',
-                'headers' => array('Reply-To' => 'accounts@skill-project.com'),
+                'headers' => array('Reply-To' => 'helpdesk@skill-project.org'),
                 'important' => false,
                 'track_opens' => null,
                 'track_clicks' => null,

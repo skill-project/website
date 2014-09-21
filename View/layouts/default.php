@@ -8,7 +8,7 @@
 	<link rel="shortcut icon" href="img/favicon.png">
 
 	<?php if (\Config\Config::DEBUG): ?>
-	<link href="css/style.css" type="text/css" rel="stylesheet" />
+	<link href="css/all.css" type="text/css" rel="stylesheet" />
 	<?php else: ?>
 	<link href="css/all.min.css" type="text/css" rel="stylesheet" />
 	<?php endif; ?>

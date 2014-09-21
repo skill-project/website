@@ -24,7 +24,6 @@
     #search-tease {
         text-align: left;
         font-size: 14px;
-        margin-top: 7px;
         margin-right: 10px;
     }
 
@@ -39,14 +38,15 @@
     }
 
     h2 {
-        margin-top: 10px;
+        margin: 2px 0 5px 0;
+        font-size: 20px;
     }
 
 }
 
 #footer-container {
     width:1000px;
-    margin:0 auto;
+    margin:21px auto 0 auto;
     text-align: center;
 }
 
@@ -99,6 +99,8 @@
     padding-left: 5px;
     font-size: 18px;
     line-height: 18px;
+    background: none;
+    color: #FFF;
 }
 
 #search-form-submit {

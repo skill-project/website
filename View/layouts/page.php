@@ -71,7 +71,7 @@
 		            <?php endif; ?>
 		            <li><a href="<?= \Controller\Router::url("apply"); ?>" title=""><?= _("Apply"); ?></a></li>
 		            <li><a href="VANILLA" title=""><?= _("Community"); ?></a></li>
-		            <li><a href="mailto:contact@skill-project.org" title=""><?= _("Contact"); ?></a></li>
+		            <li><a href="mailto:team@skill-project.org" title=""><?= _("Contact"); ?></a></li>
 		            <li class="last"><a href="<?= \Controller\Router::url("legal"); ?>" title=""><?= _("Legal terms"); ?></a></li>
 
 			</nav>

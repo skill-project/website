@@ -5,7 +5,7 @@
 <div id="left-column">
     <div id="avatar-rect">
         <div id="avatar-inside">
-            <?php if ($profileUser->getPicture()): ?>
+            <?php if ($profileUser->getPicture() && file_exists("img/uploads/".$profileUser->getPicture())): ?>
             <img class="avatar" src="img/uploads/<?= $profileUser->getPicture(); ?>" />
             <?php elseif ($profileUser->isAdmin()) : ?>
             <img class="avatar" src="img/SKP-profile-avatar-defaut-admin.png" />

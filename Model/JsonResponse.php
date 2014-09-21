@@ -41,7 +41,9 @@
          */
         public function send(){
             $json = $this->getJson();
-            header('Access-Control-Allow-Origin: *');  
+            if (\Config\Config::DEBUG){
+                header('Access-Control-Allow-Origin: *');  
+            }
             header('Content-Type: application/json');   
             die($json);
         }
