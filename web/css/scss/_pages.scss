@@ -157,3 +157,65 @@ input[type="submit"].pink-submit {
     border-radius: 0;
     color: #FFF;
 }
+
+
+/* project */
+
+
+.page p {
+    text-align: justify;
+}
+
+section {
+    padding: 65px 0;
+    line-height: 20px;
+
+    h2 {
+        font-size: 28px;
+        margin-bottom: 50px;
+
+        .first {
+            margin-top: 0;
+        }
+    }
+
+    h4 {
+        font-size: 16px;
+        margin: 20px 0 15px 0;
+        text-transform: uppercase;
+    }
+}
+
+section.first {
+    padding-top: 0;
+}
+
+#project-illus {
+    float: right;
+    margin-left: 30px;
+    margin-bottom: 30px;
+}
+
+.project-col{
+    display: inline-block;
+    width: 250px;
+    margin-left: 62px;
+    text-align: center;
+    font-size: 12px;
+
+    img {
+        margin: auto 22px;
+    }
+
+}
+
+.faq-q h4 {
+    margin: 10px 0 0 0;
+    cursor: pointer;
+}
+
+.faq-q h4.selected {
+    color: $blue;
+}
+
+/* end project */
