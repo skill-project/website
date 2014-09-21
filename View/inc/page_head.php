@@ -16,7 +16,7 @@
     <?php if (!empty($jsonTest)){ echo "var jsonTest = " . $jsonTest; } ?>
     <?php if (!empty($jsonAutoLoad)) echo "var jsonAutoLoad = " . $jsonAutoLoad; ?>
     <?php
-        if (!empty($_SESSION["tourDone"])) {
+        if (empty($_SESSION["tourDone"]) or true) {
             $_SESSION["tourDone"] = true;
             echo "var doTour = true";
         }
