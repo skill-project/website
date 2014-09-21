@@ -18,7 +18,23 @@
                 "rootNode" => $rootNode,
                 "title" => "Home !")
             );
+            
+            $view->send();
+        }
 
+        /**
+         * The graph
+         */
+        public function graphAction(){
+
+            $skillManager = new SkillManager();
+            $rootNode = $skillManager->findRootNode();
+            
+            $view = new View("graph.php", array(
+                "rootNode" => $rootNode,
+                "title" => "Home !")
+            );
+            $view->setLayout("../View/layouts/graph.php");
             $view->send();
         }
 
@@ -41,16 +57,7 @@
                 "jsonAutoLoad"  => $json->getJson($path, false),
                 "slug"      => $slug)
             );
-
-            $view->send();
-        }
-
-        /**
-         * Debug page
-         */
-        public function debugAction(){
-            $view = new View("debug.php", array("title" => "Debug Station"));
-            $view->setLayout("../View/layouts/debug.php");
+            $view->setLayout("../View/layouts/graph.php");
             $view->send();
         }
 
@@ -60,7 +67,7 @@
          */
         public function projectAction(){
             $view = new View("project.php", array("title" => "The Skill Project"));
-            $view->setLayout("../View/layouts/page.php");
+            
             $view->send();
         }
 
@@ -71,7 +78,7 @@
          */
         public function legalAction(){
             $view = new View("legal.php", array("title" => "Boring | Skill Project"));
-            $view->setLayout("../View/layouts/page.php");
+            
             $view->send();
         }
 

@@ -12,9 +12,9 @@
     );
 
     $routes->add(
-        'skillwalk',
-        new Route('/skillwalk/', 
-            array('controller' => 'Main', 'action' => 'home'))
+        'graph',
+        new Route('/graph/', 
+            array('controller' => 'Main', 'action' => 'graph'))
     );
 
     $routes->add(

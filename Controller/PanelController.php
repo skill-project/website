@@ -71,7 +71,7 @@
                 //@todo guill
             }
 
-            $view = new AjaxView("$panelFile.php", $params);
+            $view = new AjaxView("panels/$panelFile.php", $params);
             $view->send();
         }
 
@@ -82,7 +82,7 @@
             $params = array();
             $discussionManager = new DiscussionManager();
             $params['messages'] = $discussionManager->getSkillMessages($uuid);
-            $view = new AjaxView("discussion-messages.php", $params);
+            $view = new AjaxView("panels/discussion-messages.php", $params);
             $view->send();
         }
 
@@ -99,7 +99,7 @@
             }
 
             $params['translations'] = $translations;
-            $view = new AjaxView("skill-translations.php", $params);
+            $view = new AjaxView("panels/skill-translations.php", $params);
             $view->send();
         }
 

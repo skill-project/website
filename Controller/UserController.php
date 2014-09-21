@@ -394,7 +394,7 @@
             $params['profileUser'] = $profileUser;
             $params['title'] = SH::encode($username) . _("'s profile | Skill Project");
             $view = new View("profile.php", $params);
-            $view->setLayout("../View/layouts/page.php");
+            
             $view->send();
         
         }
@@ -406,7 +406,7 @@
          */
         public function applyAction(){
             $view = new View("apply.php", array("title" => "Apply | Skill Project"));
-            $view->setLayout("../View/layouts/page.php");
+            
             $view->send();
         }
 

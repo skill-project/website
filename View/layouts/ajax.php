@@ -1,1 +1,1 @@
-<?php include("../View/pages/ajax/" . $page); ?>
+<?php include("../View/" . $page); ?>

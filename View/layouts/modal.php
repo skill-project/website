@@ -4,6 +4,6 @@
         <h2><?= $title ?></h2>
     </header>
     <div id="modal-content">
-        <?php include("../View/pages/ajax/" . $page); ?>
+        <?php include("../View/modals/" . $page); ?>
     </div>
 </div>
