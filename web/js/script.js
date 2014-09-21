@@ -22,6 +22,7 @@ var tree = new Tree;
 var camera = new Camera;
 var search = new Search;
 var user = new User;
+var tour = new Tour;
 
 $(document).ready(function (){
   $("#kinetic, #backdrop")
@@ -44,6 +45,8 @@ $(document).ready(function (){
   //   if (typeof tree.selectedNode == "undefined") $("#debug").css({"background-color": "red"});
   //   else $("#debug").css({"background-color": "white"});
   // },200);
+
+  
 });
 
 $(window).load(function  () {

@@ -247,6 +247,8 @@ var Node = function(nodeData, params) {
       return;
     }
 
+    if (tour.isActive == true) tour.actionOnTree("label-click", that);
+
     //Checking and setting a tree-wide lock. 
     //Will be released after last retrieved node has finished appearing (that.expand) or after last node has finished hiding (that.contract)
     if (tree.busy) return;
@@ -282,6 +284,8 @@ var Node = function(nodeData, params) {
         return;
       }
 
+      if (tour.isActive == true) tour.actionOnTree("plus-click", that);
+
       //Checking and setting a tree-wide lock. 
       //Will be released after panel slide in / slide out
       if (tree.busy) return;
@@ -309,6 +313,13 @@ var Node = function(nodeData, params) {
 
   //Fire the rootNodeReady callback when the rootNode is ready
   if (this.parent == null) {
-    tree.rootNodeReady.fire();
+    setTimeout(function() {
+      tree.rootNode.select().expand({
+        onComplete: function() {
+          if (typeof doTour != "undefined" && doTour == true) tour.start();
+        }
+      });
+      tree.rootNodeReady.fire();
+    }, 700);
   }
 }

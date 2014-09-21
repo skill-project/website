@@ -206,10 +206,18 @@ var Panel = function(node, initParams) {
         });
 
         $(subPanel).find(".close-panel-btn").on("tap click", function() {
+            if (tour.isActive == true) tour.actionOnTree("close-panel");
+
             if (tree.targetMode = true) tree.exitTargetMode();
             tree.editedNode.finishEdit();
             return false;
-        });	
+        });
+
+        // Click/tap on the stage only fires on nodes, not on empty space (TODO)
+        // stage.on("click tap", function(e) {
+        //     tree.editedNode.finishEdit();
+        //     stage.off("click tap");
+        // });
 	}
 
     this.initSubPanel = function(subPanel) {

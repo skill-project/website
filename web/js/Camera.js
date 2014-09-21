@@ -10,6 +10,8 @@ var Camera = function() {
 
     //Zoom event
     $(document).on("wheel", function (event) {
+        if (tour.isActive == true) tour.actionOnTree("zoom");
+
         event.preventDefault();
         var evt = event.originalEvent;
         var mx = evt.clientX;
@@ -46,8 +48,6 @@ var Camera = function() {
     //If not, animates the stage to the point where the node is centered on the screen
     this.checkCameraPosition = function(node)
     {
-        return;
-
         var securityZone = camera.getSecurityZone(camera.defaultSecurityZoneFactor);
         var boundingBox = node.getBoundingBox();
         var onScreen = camera.isBoxOnScreen(boundingBox, securityZone, false);
@@ -267,9 +267,11 @@ var Camera = function() {
     //Sets up drag and move events for stage
     this.initDragEvents = function() {
         stage.on("dragstart", function(e) {
-          panStartCoords = stage.getPointerPosition();
-          panLayerStartCoords = { x: backLayer.x(), y: backLayer.y() }
-          panBackImageStartCoords = { x: 0, y: backgroundImage.y() }
+            if (tour.isActive == true) tour.actionOnTree("drag");
+
+            panStartCoords = stage.getPointerPosition();
+            panLayerStartCoords = { x: backLayer.x(), y: backLayer.y() }
+            panBackImageStartCoords = { x: 0, y: backgroundImage.y() }
         });
 
         stage.on("dragmove", function(e) {

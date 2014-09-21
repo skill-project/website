@@ -25,6 +25,7 @@ module.exports = function(grunt) {
                     'web/jquery.mousewheel.min.js',
                     'web/js/jquery.highlight.js',
                     'web/js/jquery.simplemodal.1.4.4.min.js',
+                    'web/js/jquery.tourbus.js',
                     'web/js/kinetic-v5.1.0.custom.min.js',
                     'web/js/compatibility.js',
                     'web/js/functions.js',
@@ -36,6 +37,7 @@ module.exports = function(grunt) {
                     'web/js/Camera.js',
                     'web/js/Search.js',
                     'web/js/User.js',
+                    'web/js/Tour.js',
                     'web/js/js/script.js'
                 ],
                 dest : 'web/js/all.js'

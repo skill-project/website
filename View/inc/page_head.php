@@ -15,7 +15,12 @@
     <?php if (!empty($action)){ ?>var action="<?= $action; ?>";<?php } ?>
     <?php if (!empty($jsonTest)){ echo "var jsonTest = " . $jsonTest; } ?>
     <?php if (!empty($jsonAutoLoad)) echo "var jsonAutoLoad = " . $jsonAutoLoad; ?>
-
+    <?php
+        if (!empty($_SESSION["tourDone"])) {
+            $_SESSION["tourDone"] = true;
+            echo "var doTour = true";
+        }
+    ?>
 </script>
 <script>
     var ie = (function(){
@@ -34,6 +39,7 @@
 <script src="js/jquery.mousewheel.min.js"></script>
 <script src="js/jquery.highlight.js"></script>
 <script src="js/jquery.simplemodal.1.4.4.min.js"></script>
+<script src="js/jquery.tourbus.js"></script>
 <script src="js/kinetic-v5.1.0.custom.min.js"></script>
 <script src="js/compatibility.js"></script>
 
@@ -46,6 +52,7 @@
 <script src="js/Camera.js"></script>
 <script src="js/Search.js"></script>
 <script src="js/User.js"></script>
+<script src="js/Tour.js"></script>
 <script src="js/script.js"></script>
 <?php else: ?>
 <script src="js/all.min.js"></script>

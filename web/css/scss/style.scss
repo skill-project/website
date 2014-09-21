@@ -65,6 +65,50 @@ a:hover, header a.blue-link:hover, header a, header a.white-link {
     margin: auto;
 }
 
+/* jquery tourbus */
+@import 'jquery-tourbus';
+.tourbus-container {
+    .tourbus-arrow-bottom:after {
+        border-bottom-color:black;
+    }
+
+    .tourbus-arrow-left:before { border-left:none; }
+    .tourbus-arrow-left:after { border-left-color:black; }
+    .tourbus-arrow-bottom:before { border-bottom:none; }
+    .tourbus-arrow-bottom:after { border-bottom-color:black; }
+    .tourbus-arrow-right:before { border-right:none; }
+    .tourbus-arrow-right:after { border-right-color:black; }
+    .tourbus-arrow-top:before { border-top:none; }
+    .tourbus-arrow-top:after { border-top-color:black; }
+
+    .tourbus-leg {
+        background-color:black;
+        border:none;
+
+        .tourbus-leg-inner {
+            padding:10px;
+            font-size: 14px;
+
+            h2,p {
+                color:white;
+            }
+
+            a:hover {
+                color: $blue;
+            }
+
+            p {
+                margin-bottom: 10px;
+            }
+
+            .tourbus-stop {
+                float:right;
+            }
+        }
+    }
+}
+/* end of jquery tourbus */
+
 /* panel */
 @import 'panel';
 /* end panel */

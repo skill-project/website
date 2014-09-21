@@ -34,8 +34,8 @@
 	</div>
 	<div id="footer-container">
 		<div id="search-tease">
-			<h2>SEARCH A SKILL</h2>
-			<p>If you don't find it, just add it !</p>
+			<h2><?=_("SEARCH A SKILL"); ?></h2>
+			<p><?=_("If you don't find it, just add it !");?></p>
 		</div>
 		<form id="search-form" method="GET" action="<?= \Controller\Router::url("skillSearch"); ?>">
 			<div id="autocomplete-container">
@@ -46,3 +46,30 @@
 
 	</div>
 </div>
+<ol class='tourbus-legs' id='my-tour-id'>
+  <li id="tour-leg1" data-orientation="left">
+    <p>The skills ! First-level skills contain every other skill<br>Your walk among the skills starts here.</p>
+    <a href='javascript:void(0);' class='tourbus-next'>Next...</a>
+    <a href='javascript:void(0);' class='tourbus-stop'>Skip</a>
+  </li>
+
+  <li id="tour-leg2">
+    <p>You can expand a skill to see<br>by clicking on its name</p>
+    <a href='javascript:void(0);' class='tourbus-next'>Next...</a>
+    <a href='javascript:void(0);' class='tourbus-stop'>Skip</a>
+  </li>
+
+  <li id="tour-leg3">
+    <p>If you want to add a new skill as a child<br >or as a parent, you can just click<br>on the "+" button.</p>
+    <a href='javascript:void(0);' class='tourbus-next'>Next...</a>
+    <a href='javascript:void(0);' class='tourbus-stop'>Skip</a>
+  </li>
+
+  <li id="tour-leg4">
+    <p>This is where you edit all the skills.<br>
+    	You need to create an account in order to perfom these actions.<br>
+    	Have fun!
+  	</p>
+    <a href='javascript:void(0);' class='tourbus-next'>Finish</a>
+  </li>
+</ol>
