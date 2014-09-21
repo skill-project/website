@@ -18,11 +18,14 @@ var globalSizes = {
   footerHeight: 82,
 }
 
-var tree = new Tree;
-var camera = new Camera;
-var search = new Search;
-var user = new User;
-var tour = new Tour;
+if (typeof rootNodeId != "undefined") {
+  var tree = new Tree;
+  var camera = new Camera;
+  var search = new Search;
+  var user = new User;
+  var tour = new Tour;  
+}
+
 
 $(document).ready(function (){
   $("#kinetic, #backdrop")
@@ -50,6 +53,8 @@ $(document).ready(function (){
 });
 
 $(window).load(function  () {
+    if (typeof rootNodeId == "undefined") return;
+
     stage = new Kinetic.Stage({
       container: 'kinetic',
       width: $("#kinetic").width(),
