@@ -206,7 +206,7 @@ var Panel = function(node, initParams) {
         });
 
         $(subPanel).find(".close-panel-btn").on("tap click", function() {
-            if (tour.isActive == true) tour.actionOnTree("close-panel");
+            if (tour.isActive == true || doTour == true) tour.actionOnTree("close-panel");
 
             if (tree.targetMode = true) tree.exitTargetMode();
             tree.editedNode.finishEdit();

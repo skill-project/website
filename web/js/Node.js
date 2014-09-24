@@ -247,7 +247,7 @@ var Node = function(nodeData, params) {
       return;
     }
 
-    if (tour.isActive == true) tour.actionOnTree("label-click", that);
+    if (tour.isActive == true || doTour == true) tour.actionOnTree("label-click", that);
 
     //Checking and setting a tree-wide lock. 
     //Will be released after last retrieved node has finished appearing (that.expand) or after last node has finished hiding (that.contract)
@@ -284,7 +284,7 @@ var Node = function(nodeData, params) {
         return;
       }
 
-      if (tour.isActive == true) tour.actionOnTree("plus-click", that);
+      if (tour.isActive == true || doTour == true) tour.actionOnTree("plus-click", that);
 
       //Checking and setting a tree-wide lock. 
       //Will be released after panel slide in / slide out

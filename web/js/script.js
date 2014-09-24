@@ -20,7 +20,7 @@ var globalSizes = {
 
 if (typeof rootNodeId != "undefined") {
   var tree = new Tree;
-  var camera = new Camera;
+  var camera;
   var search = new Search;
   var user = new User;
   var tour = new Tour;  
@@ -40,6 +40,8 @@ $(document).ready(function (){
     .height($("#kinetic").height());
 
     $("#debug").hide();
+
+    camera = new Camera;
   // setInterval(function() {
   //   $("#debug").empty();
   //   if (tree.selectedNode) $("#debug").append("selectedNode : " + tree.selectedNode.name + "<br />");
@@ -48,7 +50,7 @@ $(document).ready(function (){
   //   if (typeof tree.selectedNode == "undefined") $("#debug").css({"background-color": "red"});
   //   else $("#debug").css({"background-color": "white"});
   // },200);
-
+  
   
 });
 

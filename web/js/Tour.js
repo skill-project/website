@@ -72,7 +72,8 @@ Tour.prototype.actionOnTree = function(type, node) {
             }else tour.endTour();
             break;
         default:
-            tour.endTour();
+            doTour = false;
+            if (tour.isActive) tour.endTour();
             break;
 	}
 }

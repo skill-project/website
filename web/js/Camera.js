@@ -5,19 +5,33 @@ var Camera = function() {
     this.scale = 1;
     this.zoomFactor = 1;
     this.origin = {x: 0, y: 0};
+    this.zoomTween;
+    this.lastZoom = (new Date()).getTime();
 
     var that = this;
 
     //Zoom event
-    $(document).on("wheel", function (event) {
-        if (tour.isActive == true) tour.actionOnTree("zoom");
-
+    $("#kinetic").on("mousewheel", function (event) {
+    // stage.on("wheel", function (event) {
         event.preventDefault();
+        
+        if (tour.isActive == true || doTour == true) tour.actionOnTree("zoom");
+
+        if ((that.scale <= 0.15 && event.deltaY < 0) || (that.scale >= 1.6 && event.deltaY > 0)) return;
+
+        var timeFromLastZoom = (new Date()).getTime() - camera.lastZoom;
+
+        if (timeFromLastZoom > 100) var zoomAcceleration = 1;
+        else if (timeFromLastZoom > 60 && timeFromLastZoom <= 100) var zoomAcceleration = 1.2;
+        else if (timeFromLastZoom > 50 && timeFromLastZoom <= 60) var zoomAcceleration = 2.5;
+        else if (timeFromLastZoom > 40 && timeFromLastZoom <= 50) var zoomAcceleration = 5;
+        else if (timeFromLastZoom > 30 && timeFromLastZoom <= 40) var zoomAcceleration = 8;
+        else if (timeFromLastZoom <= 30) var zoomAcceleration = 10;
+
         var evt = event.originalEvent;
-        var mx = evt.clientX;
-        var my = evt.clientY;
-        var wheel = evt.wheelDelta / 120;
-        var zoom = (that.zoomFactor - (evt.wheelDelta < 0 ? 0.1 : -0.1));
+        var mx = evt.clientX - stage.x();
+        var my = evt.clientY - stage.y() - $("#header").height();
+        var zoom = (that.zoomFactor - (event.deltaY < 0 ? 0.02 : -0.02) * zoomAcceleration);
         var newscale = that.scale * zoom;
 
         that.origin.x = mx / that.scale + that.origin.x - mx / newscale;
@@ -26,22 +40,44 @@ var Camera = function() {
         that.scale *= zoom;
 
         //Fluid zoom
-        var tween = new Kinetic.Tween({
-            node: nodesLayer, 
-            duration: 0.2,
-            offsetX: that.origin.x,
-            offsetY: that.origin.y,
-            scaleX: newscale,
-            scaleY: newscale
-        });
-        tween.play();
+        // var diffOffsetX = that.origin.x - nodesLayer.offsetX();
+        // var diffOffsetY = that.origin.y - nodesLayer.offsetY();
+
+        // var prevScale = nodesLayer.scaleX();
+        // var newScaleMid = (newscale - nodesLayer.scaleX()) / 2 + nodesLayer.scaleX();
+    
+        // camera.zoomTween = new Kinetic.Tween({
+        //     node: nodesLayer, 
+        //     duration: 0.2,
+        //     offsetX: that.origin.x - diffOffsetX / 2.3,
+        //     offsetY: that.origin.y - diffOffsetY / 2.3,
+        //     scaleX: newScaleMid,
+        //     scaleY: newScaleMid,
+        //     easing: Kinetic.Easings.Linear,
+        //     onFinish: function() {
+        //         var finishOffsetTween = new Kinetic.Tween({
+        //             node: nodesLayer, 
+        //             duration: 0.2,
+        //             offsetX: that.origin.x,
+        //             offsetY: that.origin.y,
+        //             scaleX: newscale,
+        //             scaleY: newscale,
+        //             easing: Kinetic.Easings.Linear
+        //         });
+        //         finishOffsetTween.play();
+        //         console.log("play");
+        //     }
+        // });
+        // camera.zoomTween.play();
 
         //Static zoom
-        // nodesLayer.offsetX(that.origin.x);
-        // nodesLayer.offsetY(that.origin.y);
-        // nodesLayer.scaleX(newscale);
-        // nodesLayer.scaleY(newscale);
-        // nodesLayer.draw();
+        nodesLayer.offsetX(that.origin.x);
+        nodesLayer.offsetY(that.origin.y);
+        nodesLayer.scaleX(newscale);
+        nodesLayer.scaleY(newscale);
+        nodesLayer.batchDraw();
+
+        camera.lastZoom = (new Date()).getTime();
     });
 
     //Checks if node is safely inside viewport (securityZone)
@@ -267,7 +303,7 @@ var Camera = function() {
     //Sets up drag and move events for stage
     this.initDragEvents = function() {
         stage.on("dragstart", function(e) {
-            if (tour.isActive == true) tour.actionOnTree("drag");
+            if (tour.isActive == true || doTour == true) tour.actionOnTree("drag");
 
             panStartCoords = stage.getPointerPosition();
             panLayerStartCoords = { x: backLayer.x(), y: backLayer.y() }
