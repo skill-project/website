@@ -16,6 +16,9 @@ Node.prototype.expand = function(params) {
       that.open = true;
       that.setVisualState("glow-children");
 
+      //Check camera position and reposition if needed
+      camera.checkCameraPosition(that, json.data.length);
+
       //Iterate through children to add them
       //isLast parameter is needed to release the tree lock after adding the last node
       var i = 0;
@@ -36,6 +39,7 @@ Node.prototype.expand = function(params) {
       //No children, releasing tree lock now
       tree.busy = false;
       that.setVisualState("glow-nochildren");
+      camera.checkCameraPosition(that);
     }
   });
 }
@@ -43,9 +47,6 @@ Node.prototype.expand = function(params) {
 //Selection of the node
 Node.prototype.select = function(params) {
   if (this.isSelected) return this;
-
-  //Check camera position and reposition if needed
-  camera.checkCameraPosition(this);
 
   if (params != null && params.finishEdit != false) var finishEdit = true;
 
@@ -233,7 +234,7 @@ Node.prototype.finishEdit = function(onComplete, force) {
   }
 
   this.isEdited = false;
-  tree.editedNode = null;
+  delete tree.editedNode;
 
   if (this.open == true) {
     this.setVisualState("glow-children");
@@ -346,12 +347,21 @@ Node.prototype.setGlow = function (state) {
 }
 
 //Returns the bouding box of the node (glow excluded)
-Node.prototype.getBoundingBox = function() {
-  return {
-    x1: this.shapes.x(),
-    y1: this.shapes.y(),
-    x2: this.shapes.x() + this.shapes.width(),
-    y2: this.shapes.y() + this.shapes.height()
+Node.prototype.getBoundingBox = function(childrenCount) {
+  if (typeof childrenCount == "undefined" || tree.rootNode == this) {
+    return {
+      x1: this.shapes.x(),
+      y1: this.shapes.y(),
+      x2: this.shapes.x() + this.shapes.width(),
+      y2: this.shapes.y() + this.shapes.height()
+    }
+  }else {
+    return {
+      x1: this.shapes.x(),
+      y1: this.shapes.y() + (this.sizes.labelHeight / 2) - (childrenCount * (this.sizes.labelHeight + this.sizes.verticalGap) - this.sizes.verticalGap) / 2,
+      x2: this.shapes.x() + this.shapes.width() + this.sizes.horizontalGap + this.sizes.totalWidth,
+      y2: this.shapes.y() + (this.sizes.labelHeight / 2) + (childrenCount * (this.sizes.labelHeight + this.sizes.verticalGap) - this.sizes.verticalGap) / 2
+    }
   }
 }
 
@@ -766,7 +776,6 @@ Node.prototype.setSizes = function() {
     }
 
     sizes.totalWidth = sizes.labelWidth + sizes.editButtonWidth;
-    sizes.totalHeight = sizes.labelHeight + sizes.editButtonHeight;
 
     sizes.startXOffset = sizes.labelWidth * 0.25;
     sizes.startYOffset = sizes.labelHeight / 2;
@@ -776,7 +785,7 @@ Node.prototype.setSizes = function() {
 
     sizes.edgeStartXOffset = sizes.totalWidth + 4;
     sizes.edgeStartYOffset = sizes.labelHeight / 2;
-    sizes.horizontalGap = sizes.totalWidth + 80;
+    // sizes.horizontalGap = sizes.totalWidth + 80;
 
     sizes.slotHeight = sizes.labelHeight + sizes.verticalGap;
   }

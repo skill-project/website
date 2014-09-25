@@ -22,6 +22,8 @@ var Panel = function(node, initParams) {
             that.loadSubPanelEvents(subPanel, userRole);
     	});
 
+        camera.panelOffset = $("#panel").width();
+
     	$("#panel").show("slide", {
     		direction: "right",
     		complete: function () {
@@ -37,6 +39,7 @@ var Panel = function(node, initParams) {
 			complete: function() {
                 that.$activeSubpanel.hide();
                 params.onComplete();
+                camera.panelOffset = 0;
             }
 		});
 	}

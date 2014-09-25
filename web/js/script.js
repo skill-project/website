@@ -12,7 +12,8 @@ var nodesLayer,
     backgroundImage,
     panBackImageStartCoords,
     distToBottom,
-    distToTop;
+    distToTop,
+    doResize;   //sort of resizeEnd event : http://stackoverflow.com/questions/5489946/jquery-how-to-wait-for-the-end-of-resize-event-and-only-then-perform-an-ac
 
 var globalSizes = {
   footerHeight: 82,
@@ -42,14 +43,23 @@ $(document).ready(function (){
     $("#debug").hide();
 
     camera = new Camera;
-  // setInterval(function() {
-  //   $("#debug").empty();
-  //   if (tree.selectedNode) $("#debug").append("selectedNode : " + tree.selectedNode.name + "<br />");
-  //   if (tree.editedNode) $("#debug").append("editedNode : " + tree.editedNode.name + "<br />");
 
-  //   if (typeof tree.selectedNode == "undefined") $("#debug").css({"background-color": "red"});
-  //   else $("#debug").css({"background-color": "white"});
-  // },200);
+    camera.footerOffset = $("#footer").height();
+
+    $(window).resize(function() {
+      clearTimeout(doResize);
+      doResize = setTimeout(camera.resizeElements, 300);
+    });
+
+  setInterval(function() {
+    // $("#debug").empty();
+    // if (tree.selectedNode) $("#debug").append("selectedNode : " + tree.selectedNode.name + "<br />");
+    // if (tree.editedNode) $("#debug").append("editedNode : " + tree.editedNode.name + "<br />");
+
+    // if (typeof tree.selectedNode == "undefined") $("#debug").css({"background-color": "red"});
+    // else $("#debug").css({"background-color": "white"});
+    // camera.drawZone(camera.getSecurityZone(camera.defaultSecurityZoneFactor));
+  },200);
   
   
 });

@@ -7,6 +7,12 @@ var Camera = function() {
     this.origin = {x: 0, y: 0};
     this.zoomTween;
     this.lastZoom = (new Date()).getTime();
+    this.panelOffset = 0;
+    this.footerOffset = 0;
+    this.backgroundImage;
+    this.backStars;
+    this.backStage;
+    this.backLayer;
 
     var that = this;
 
@@ -82,10 +88,16 @@ var Camera = function() {
 
     //Checks if node is safely inside viewport (securityZone)
     //If not, animates the stage to the point where the node is centered on the screen
-    this.checkCameraPosition = function(node)
+    this.checkCameraPosition = function(node, childrenCount)
     {
         var securityZone = camera.getSecurityZone(camera.defaultSecurityZoneFactor);
-        var boundingBox = node.getBoundingBox();
+
+        if (typeof childrenCount == "undefined") {
+            var boundingBox = node.getBoundingBox();
+        } else {
+            var boundingBox = node.getBoundingBox(childrenCount);
+        }
+
         var onScreen = camera.isBoxOnScreen(boundingBox, securityZone, false);
 
         if (onScreen.x == false && onScreen.y == false) var moveDirection = "xy";
@@ -102,7 +114,7 @@ var Camera = function() {
     }
 
     this.goToCoords = function(params, moveDirection) {
-        var destX = (moveDirection == "x" || moveDirection == "xy") ? stage.width() / 2 - (params.x - nodesLayer.offsetX()) * that.scale : stage.x();
+        var destX = (moveDirection == "x" || moveDirection == "xy") ? stage.width() / 2 - (params.x - nodesLayer.offsetX() + camera.panelOffset / 2) * that.scale : stage.x();
         var destY = (moveDirection == "y" || moveDirection == "xy") ? stage.height() / 2 - (params.y - nodesLayer.offsetY()) * that.scale : stage.y();
 
         var tweenX = new Kinetic.Tween({
@@ -147,9 +159,9 @@ var Camera = function() {
 
         var securityZone = {
             minX: Math.round(-stage.x() + (stage.width() / 2) * securityZoneFactor) / that.scale + nodesLayer.offsetX(),
-            maxX: Math.round(-stage.x() + stage.width() - (stage.width() / 2 * securityZoneFactor)) / that.scale + nodesLayer.offsetX(),
+            maxX: Math.round(-stage.x() + stage.width() - (stage.width() / 2 * securityZoneFactor) - camera.panelOffset) / that.scale + nodesLayer.offsetX(),
             minY: Math.round(-stage.y() + (stage.height() / 2) * securityZoneFactor) / that.scale + nodesLayer.offsetY(),
-            maxY: Math.round(-stage.y() + stage.height() - (stage.height() / 2 * securityZoneFactor)) / that.scale + nodesLayer.offsetY()
+            maxY: Math.round(-stage.y() + stage.height() - (stage.height() / 2 * securityZoneFactor) - camera.footerOffset) / that.scale + nodesLayer.offsetY()
         }
         return securityZone;
     }
@@ -231,7 +243,7 @@ var Camera = function() {
     // }
 
     // this.drawZone = function(zone) {
-    //     camera.updateSecurityZone();
+    //     // camera.updateSecurityZone();
 
     //     if (that.rectZone != null)
     //     {
@@ -280,7 +292,7 @@ var Camera = function() {
     //     pointBR.listening(false);
 
 
-    //     var centerX = (stage.width() / 2 - stage.x()) / that.scale + nodesLayer.offsetX();
+    //     var centerX = (stage.width() / 2 - stage.x() - camera.panelOffset / 2) / that.scale + nodesLayer.offsetX();
     //     var centerY = (stage.height() / 2 - stage.y()) / that.scale + nodesLayer.offsetY();
 
     //     var pointCenter = new Kinetic.Circle({
@@ -300,14 +312,29 @@ var Camera = function() {
     //     nodesLayer.draw();
     // }
 
+    // this.drawBoundingBox = function(boundingBox) {
+    //     var rect = new Kinetic.Rect({
+    //         x:boundingBox.x1,
+    //         y:boundingBox.y1,
+    //         width: boundingBox.x2 - boundingBox.x1,
+    //         height: boundingBox.y2 - boundingBox.y1,
+    //         stroke: 'white',
+    //         fill:'white',
+    //         strokeWidth: 1,
+    //         opacity: 0.2
+    //     });
+    //     nodesLayer.add(rect);
+    //     nodesLayer.draw();
+    // }
+
     //Sets up drag and move events for stage
     this.initDragEvents = function() {
         stage.on("dragstart", function(e) {
             if (tour.isActive == true || doTour == true) tour.actionOnTree("drag");
 
             panStartCoords = stage.getPointerPosition();
-            panLayerStartCoords = { x: backLayer.x(), y: backLayer.y() }
-            panBackImageStartCoords = { x: 0, y: backgroundImage.y() }
+            panLayerStartCoords = { x: camera.backLayer.x(), y: camera.backLayer.y() }
+            panBackImageStartCoords = { x: 0, y: camera.backgroundImage.y() }
         });
 
         stage.on("dragmove", function(e) {
@@ -315,11 +342,11 @@ var Camera = function() {
           panDistanceX = panCurCoords.x - panStartCoords.x;
           panDistanceY = panCurCoords.y - panStartCoords.y;
 
-          distToTop = -backgroundImage.y();
-          distToBottom = backgroundImage.height() + backgroundImage.y() - stage.getHeight();
+          distToTop = -camera.backgroundImage.y();
+          distToBottom = camera.backgroundImage.height() + camera.backgroundImage.y() - stage.getHeight();
           var smaller = distToTop < distToBottom ? distToTop : distToBottom;
 
-          backgroundImage.y(panBackImageStartCoords.y + (panDistanceY / (2000 / smaller)));
+          camera.backgroundImage.y(panBackImageStartCoords.y + (panDistanceY / (2000 / smaller)));
 
           //If stars are not cached, we can animate their opacity based on "virtual altitude"
           // if (distToBottom < 480 && distToBottom > 384) {
@@ -331,7 +358,7 @@ var Camera = function() {
           // backStars.batchDraw();
 
 
-          backLayer.batchDraw();
+          camera.backLayer.batchDraw();
         });
 
         stage.on("dragend", function(e) {
@@ -361,26 +388,25 @@ var Camera = function() {
         });
 
         $("#kinetic").mousemove(function (e) {
-            backStars.x(Math.round((stage.getPointerPosition().x + backStars.x()) /60));
-            backStars.y(Math.round((stage.getPointerPosition().y + backStars.y()) /60));
-            backStars.batchDraw();
-            backStage.batchDraw();
+            camera.backStars.x(Math.round((stage.getPointerPosition().x + camera.backStars.x()) /60));
+            camera.backStars.y(Math.round((stage.getPointerPosition().y + camera.backStars.y()) /60));
+            camera.backStars.batchDraw();
         });
     }
 
     this.skySetup = function () {
-        backStage = new Kinetic.Stage({
+        camera.backStage = new Kinetic.Stage({
           container: 'backdrop',
           width: $("#kinetic").width(),
           height: $("#kinetic").height(),
         });
 
-        backLayer = new Kinetic.Layer();
+        camera.backLayer = new Kinetic.Layer();
 
-        backgroundWidth = stage.getWidth();
-        backgroundHeight = stage.getHeight() + 500;
+        var backgroundWidth = stage.getWidth();
+        var backgroundHeight = stage.getHeight() + 500;
 
-        backgroundImage = new Kinetic.Rect({
+        var backgroundImage = new Kinetic.Rect({
           x: 0,
           y: -500,
           width: backgroundWidth,
@@ -390,20 +416,11 @@ var Camera = function() {
           fillLinearGradientColorStops: [0, '#4a2f52', 0.7, '#e67b88', 1, '#b66fb0']
         });
 
-        backLayer.add(backgroundImage);
+        camera.backgroundImage = backgroundImage;
 
-        backStars = new Kinetic.Layer();
+        camera.backLayer.add(backgroundImage);
 
-        for (i = 0; i < 150; i++)
-        {
-          var star = new Kinetic.Circle({
-            radius: Math.random()*1.6,
-            fill: "white",
-            x: Math.round(Math.random()*backgroundWidth),
-            y: Math.round(Math.random()*(backgroundHeight-500) / 2),
-          })
-          backStars.add(star);
-        }
+        camera.drawStars(backgroundWidth, backgroundHeight);
 
         // backStars.cache({
         //   x:0,
@@ -430,8 +447,47 @@ var Camera = function() {
         //   height: stage.height()
         // });
 
-        backStage.listening(false);
-        backStage.add(backLayer, backStars);
-        backStage.draw();
+        camera.backStage.listening(false);
+        camera.backStage.add(camera.backLayer, camera.backStars);
+        camera.backStage.draw();
     }
+}
+
+Camera.prototype.drawStars = function(backgroundWidth, backgroundHeight) {
+    if (typeof camera.backStars == "undefined") camera.backStars = new Kinetic.Layer();
+    else camera.backStars.destroyChildren();
+
+    console.log(backgroundHeight);
+
+    for (i = 0; i < 150; i++)
+    {
+      var star = new Kinetic.Circle({
+        radius: Math.random()*1.6,
+        fill: "white",
+        x: Math.round(Math.random()*backgroundWidth),
+        y: Math.round(Math.random()*(backgroundHeight-500) / 2),
+      })
+      camera.backStars.add(star);
+    }
+}
+
+Camera.prototype.resizeElements = function() {
+    $("#kinetic, #backdrop")
+        .width($(window).width())
+        .height($(window).height() - $("#header").height());
+
+    var newWidth = $(window).width();
+    var newHeight = $(window).height();
+    
+    camera.backStage.width(newWidth);
+    camera.backStage.height(newHeight);
+
+    stage.width(newWidth);
+    stage.height(newHeight);
+
+    camera.backgroundImage.width(newWidth);
+    camera.backgroundImage.height(newHeight + 500);
+
+    camera.drawStars(newWidth, newHeight + 500);
+    camera.backStage.draw();
 }
