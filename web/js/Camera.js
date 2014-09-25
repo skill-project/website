@@ -457,8 +457,6 @@ Camera.prototype.drawStars = function(backgroundWidth, backgroundHeight) {
     if (typeof camera.backStars == "undefined") camera.backStars = new Kinetic.Layer();
     else camera.backStars.destroyChildren();
 
-    console.log(backgroundHeight);
-
     for (i = 0; i < 150; i++)
     {
       var star = new Kinetic.Circle({
