@@ -488,4 +488,6 @@ Camera.prototype.resizeElements = function() {
 
     camera.drawStars(newWidth, newHeight + 500);
     camera.backStage.draw();
+
+    camera.checkCameraPosition(tree.selectedNode);
 }
