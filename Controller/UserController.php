@@ -396,7 +396,7 @@
 
             if ($withPassword){ $params['showPasswordResetForm'] = true; }
             $params['profileUser'] = $profileUser;
-            $params['title'] = SH::encode($username) . _("'s profile | Skill Project");
+            $params['title'] = SH::encode($username) . _("'s Profile");
             $view = new View("profile.php", $params);
             
             $view->send();
@@ -409,7 +409,7 @@
          * The apply page
          */
         public function applyAction(){
-            $view = new View("apply.php", array("title" => "Apply | Skill Project"));
+            $view = new View("apply.php", array("title" => "Apply"));
             
             $view->send();
         }

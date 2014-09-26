@@ -16,7 +16,7 @@
             $rootNode = $skillManager->findRootNode();
             $view = new View("home.php", array(
                 "rootNode" => $rootNode,
-                "title" => "Home !")
+                "title" => _("The Universal Skills Map"))
             );
             
             $view->send();
@@ -32,7 +32,7 @@
             
             $view = new View("graph.php", array(
                 "rootNode" => $rootNode,
-                "title" => "Home !")
+                "title" => "Explore")
             );
             $view->setLayout("../View/layouts/graph.php");
             $view->send();
@@ -48,15 +48,17 @@
 
             $uuid = $skillManager->getUuidFromSlug($slug);
             $path = $skillManager->findNodePathToRoot($uuid);
+            $skill = $skillManager->findByUuid($uuid);
             $json = new \Model\JsonResponse();
             $json->setData($path);
             
             $view = new View("graph.php", array(
                 "rootNode"  => $rootNode,
-                "title"     => "Home !",
+                "title"     => $skill->getName(),
                 "action"    => "goto",
                 "jsonAutoLoad"  => $json->getJson($path, false),
-                "slug"      => $slug)
+                "slug"      => $slug
+                )
             );
             $view->setLayout("../View/layouts/graph.php");
             $view->send();
@@ -67,7 +69,7 @@
          * The project page
          */
         public function projectAction(){
-            $view = new View("project.php", array("title" => "The Skill Project"));
+            $view = new View("project.php", array("title" => "The Project"));
             
             $view->send();
         }
@@ -78,7 +80,7 @@
          * The legal page
          */
         public function legalAction(){
-            $view = new View("legal.php", array("title" => "Boring | Skill Project"));
+            $view = new View("legal.php", array("title" => "Legal Stuff"));
             
             $view->send();
         }
