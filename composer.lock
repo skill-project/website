@@ -442,6 +442,7 @@
         "abeautifulsite/simpleimage": 20,
         "gabrielbull/browser": 20
     },
+    "prefer-stable": false,
     "platform": [
 
     ],
