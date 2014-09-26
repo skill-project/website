@@ -27,35 +27,15 @@
 
 
         protected $codes = array (
-          'de' => 
-          array (
-            'name' => 'German',
-            'nativeName' => 'Deutsch',
-          ),
           'en' => 
           array (
             'name' => 'English',
             'nativeName' => 'English',
-          ),
-          'es' => 
-          array (
-            'name' => 'Spanish; Castilian',
-            'nativeName' => 'Español, castellano',
           ),
           'fr' => 
           array (
             'name' => 'French',
             'nativeName' => 'Français',
           ),
-          'it' => 
-          array (
-            'name' => 'Italian',
-            'nativeName' => 'Italiano',
-          ),
-          'pt' => 
-          array (
-            'name' => 'Portuguese',
-            'nativeName' => 'Português',
-          )
         );
     }

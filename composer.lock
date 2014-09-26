@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8007a69117e0afeaf38db9321de45054",
+    "hash": "b24567ea12e48566b02b37e7996fdf17",
     "packages": [
         {
             "name": "abeautifulsite/simpleimage",
@@ -211,6 +211,58 @@
             "time": "2014-06-04 14:43:02"
         },
         {
+            "name": "gabrielbull/browser",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gabrielbull/php-browser.git",
+                "reference": "d4e948162f8d84c54d80ea143d703b704e8bcb87"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gabrielbull/php-browser/zipball/d4e948162f8d84c54d80ea143d703b704e8bcb87",
+                "reference": "d4e948162f8d84c54d80ea143d703b704e8bcb87",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Browser\\": "src/Browser"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Schuld",
+                    "email": "chris@chrisschuld.com",
+                    "homepage": "http://chrisschuld.com"
+                },
+                {
+                    "name": "Gabriel Bull",
+                    "email": "me@gabrielbull.com"
+                }
+            ],
+            "description": "Detecting the user's browser, operating system and language.",
+            "homepage": "https://github.com/gabrielbull/php-browser",
+            "keywords": [
+                "browser",
+                "detection",
+                "language",
+                "operating system",
+                "os"
+            ],
+            "time": "2014-08-29 17:55:27"
+        },
+        {
             "name": "mandrill/mandrill",
             "version": "1.0.53",
             "source": {
@@ -260,12 +312,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "d17938f07e168c4e5bb35c209d3c289ccff15d80"
+                "reference": "7a48358fb3521cb3a5a56af08bc7968aa44f66ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/d17938f07e168c4e5bb35c209d3c289ccff15d80",
-                "reference": "d17938f07e168c4e5bb35c209d3c289ccff15d80",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/7a48358fb3521cb3a5a56af08bc7968aa44f66ed",
+                "reference": "7a48358fb3521cb3a5a56af08bc7968aa44f66ed",
                 "shasum": ""
             },
             "require": {
@@ -294,19 +346,17 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
                     "name": "Symfony Community",
                     "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-26 19:02:51"
+            "time": "2014-09-25 19:49:28"
         },
         {
             "name": "symfony/routing",
@@ -315,12 +365,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing.git",
-                "reference": "32f45bba9165492e731d87915df024f59e60f28c"
+                "reference": "92f9e98884ab3c4c129644659055167b1b19689d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Routing/zipball/32f45bba9165492e731d87915df024f59e60f28c",
-                "reference": "32f45bba9165492e731d87915df024f59e60f28c",
+                "url": "https://api.github.com/repos/symfony/Routing/zipball/92f9e98884ab3c4c129644659055167b1b19689d",
+                "reference": "92f9e98884ab3c4c129644659055167b1b19689d",
                 "shasum": ""
             },
             "require": {
@@ -331,6 +381,7 @@
                 "psr/log": "~1.0",
                 "symfony/config": "~2.2",
                 "symfony/expression-language": "~2.4",
+                "symfony/http-foundation": "~2.3",
                 "symfony/yaml": "~2.0"
             },
             "suggest": {
@@ -372,7 +423,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2014-08-27 08:36:12"
+            "time": "2014-09-22 15:29:07"
         }
     ],
     "packages-dev": [
@@ -388,7 +439,8 @@
         "symfony/http-foundation": 20,
         "fzaninotto/faker": 0,
         "cocur/slugify": 0,
-        "abeautifulsite/simpleimage": 20
+        "abeautifulsite/simpleimage": 20,
+        "gabrielbull/browser": 20
     },
     "platform": [
 

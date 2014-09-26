@@ -6,12 +6,50 @@
     use Symfony\Component\Routing\Matcher\UrlMatcher;
     use Symfony\Component\HttpFoundation\Request;
 
+
     class App {
 
         public function run(){
             $this->createGlobals();
             $this->useSession();
+            $this->detectLanguage();
             $this->handleRouting();
+        }
+
+        public function detectLanguage(){
+
+            //retrieves all our accepted languages
+            $languageCodes = new \Model\LanguageCode();
+            $allCodes = $languageCodes->getAllCodes();
+
+            //desired lang, first one being preferred
+            $wantedLangs = array();
+
+            //first, the subdomain
+            $subdomain = strtolower(explode(".",$_SERVER['HTTP_HOST'])[0]);
+            if (preg_match("#[a-z]{2}#", $subdomain)){
+                $wantedLangs[] = $subdomain;
+            }
+
+            //then, get client browser language
+            $language = new \Browser\Language();
+            $browserLang = $language->getLanguage();
+            $wantedLangs[] = $browserLang;
+
+            //then, default
+            $wantedLangs[] = "en";
+
+            foreach($wantedLangs as $wantedLang){
+                if (isset($currentLanguage)){ break; }
+                foreach($allCodes as $code => $infos){
+                    if ($wantedLang === $code){
+                        $currentLanguage = $code;
+                        break;
+                    }
+                }
+            }
+           
+            $GLOBALS['lang'] = $currentLanguage;
         }
 
         private function createGlobals(){

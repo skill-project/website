@@ -13,6 +13,7 @@
         "fzaninotto/faker": "@stable",
         "cocur/slugify": "@stable",
         "mandrill/mandrill": "1.0.*",
-        "abeautifulsite/simpleimage": "dev-master"
+        "abeautifulsite/simpleimage": "dev-master",
+        "gabrielbull/browser": "dev-master"
     }
 }
