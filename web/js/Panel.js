@@ -44,6 +44,43 @@ var Panel = function(node, initParams) {
 		});
 	}
 
+    this.showErrors = function(response){
+        var content = "<h3>Oops !</h3><br />";
+        if (response.data.length > 0){
+            for (var key in response.data) {
+                if (response.data.hasOwnProperty(key)) {
+                    content += response.data[key] + '<br />';
+                }
+            }
+        }
+        else {
+            content += response.message + "<br />";
+        }
+        that.addPanelModal(content);        
+    }
+
+    this.showMessage = function(content){
+        this.$activeSubpanel.find(".message-zone").html(content).css("display", "inline-block");
+        window.setTimeout(function(){
+            $(".message-zone").fadeOut("fast");
+        }, 3000);
+    }
+
+    this.addPanelModal = function(html){
+        var panelModal = $('<div class="panelModal">');
+        panelModal.html(html);
+        panelModal.css({
+            width: $("#panel").width(),
+            height: $("#panel").height()
+        });
+        panelModal.append('<button class="panelModalRemoveBtn">OK</button>');
+        $("#panel").append(panelModal);
+        $(".panelModalRemoveBtn").on("click", function(e){
+            e.preventDefault();
+            $(".panelModal").remove();
+        });
+    }
+
 	this.loadSubPanelEvents = function(subPanel, userRole) {
         var subPanelId = $(subPanel).attr("id");
         switch (subPanelId) {
@@ -76,7 +113,7 @@ var Panel = function(node, initParams) {
                         success: function(response){
                             if (response.status == "ok"){
                                 $("#create-skillName").val("");
-                                $(subPanel).find(".message-zone").html(response.message).css("display", "inline-block");
+                                that.showMessage(response.message);
                                 
                                 var creationType = $(subPanel).find("#creationType").val();
                                 if (creationType == "child") {
@@ -86,6 +123,9 @@ var Panel = function(node, initParams) {
                                     $("#skillParentUuid").val(response.data.uuid);
                                     tree.editedNode.createNewParent(response.data)
                                 }
+                            }
+                            else {
+                                that.showErrors(response);
                             }
                         }
                     });
@@ -109,8 +149,11 @@ var Panel = function(node, initParams) {
                         data: $("#move-skill-form").serialize(),
                         success: function(response){
                             if (response.status == "ok"){
-                                $(subPanel).find(".message-zone").html(response.message).css("display", "inline-block");
+                                that.showMessage(response.message);
                                 tree.executeMoveCopy();
+                            }
+                            else {
+                                that.showErrors(response);
                             }
                         }
                     });
@@ -127,8 +170,11 @@ var Panel = function(node, initParams) {
                             if (response.status == "ok"){
                                 $("#rename-skillName").val("");
                                 $("#panel .skillName").html('"'+response.data.name+'"'); //change the skillname at top of panel
-                                $(subPanel).find(".message-zone").html(response.message).css("display", "inline-block");
+                                that.showMessage(response.message);
                                 tree.editedNode.setName(response.data.name);
+                            }
+                            else {
+                                that.showErrors(response);
                             }
                         }
                     });
@@ -150,6 +196,10 @@ var Panel = function(node, initParams) {
                                 var nodeToDelete = tree.editedNode;
                                 nodeToDelete.finishEdit(); //close the panel, nothing to do here anymore    
                                 nodeToDelete.deleteFromDB();
+                                that.showMessage(response.message);
+                            }
+                            else {
+                                that.showErrors(response);
                             }
                         }
                     });
@@ -167,9 +217,13 @@ var Panel = function(node, initParams) {
                                 $.ajax({
                                     url: baseUrl + "panel/reloadTranslations/" + node.id,
                                     success: function(messagesHtml){
+                                        that.showMessage(response.message);
                                         $("#other-translations-list").html(messagesHtml);
                                     }
                                 });
+                            }
+                            else {
+                                that.showErrors(response);
                             }
                         }
                     });
@@ -191,6 +245,9 @@ var Panel = function(node, initParams) {
                                         $(".discuss-prev-messages").html(messagesHtml);
                                     }
                                 });
+                            }
+                            else {
+                                that.showErrors(response);
                             }
                         }
                     });

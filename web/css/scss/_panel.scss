@@ -208,7 +208,7 @@ a.panel-btn .arrow-btn-l {
 .img-btn-l {  float: left; }
 .img-btn-r {  float: right; }
 
-input[type=submit] {
+input[type=submit], .panelModalRemoveBtn {
     border: none;
     background-color: #FFF;
     color: #222;
@@ -217,6 +217,11 @@ input[type=submit] {
     cursor: pointer;
     margin-top: 30px;
 }
+
+#panel .panelModal h3 { 
+    margin: 20px 0;
+}
+
 
 #panel #trans-form-submit {
     margin-top: 10px;
@@ -258,6 +263,15 @@ ul {
 #panel .hint {
     font-size: 12px;
     margin-top: 7px;
+}
+
+#panel .panelModal {
+    background: rgba(0,0,0,0.9);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    padding: 15px 20px;
 }
 
 #panel::-webkit-scrollbar{

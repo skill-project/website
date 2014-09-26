@@ -10,11 +10,20 @@
     </div>
     <div class="submit-container">
         <input type="submit" value="<?php echo _("SIGN IN") ?>" />
+        <div class="modal-errors">
+            <?php
+                if (!empty($error['global'])){
+                    echo $error['global'] . "<br />";
+                }
+            ?>
+            <?php
+                if (!empty($errors)):
+                foreach($errors as $name => $message){
+                    echo $message . "<br />";
+                }
+                endif;
+            ?>
+        </div>
     </div>
-    <?php
-        if (!empty($error['global'])){
-            echo $error['global'];
-        }
-    ?>
 </form>
 <p><?= _("You don't have an account yet ?"); ?> <a href="<?= \Controller\Router::url("register"); ?>" class="register-link" title="<?= _("Sign up !"); ?>"><?= _("You can create one !"); ?></a></p>

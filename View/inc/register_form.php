@@ -17,11 +17,20 @@
     </div>
     <div class="submit-container">
         <input type="submit" value="<?= _("SIGN UP") ?>" />
+        <div class="modal-errors">
+            <?php
+                if (!empty($error['global'])){
+                    echo $error['global'] . "<br />";
+                }
+            ?>
+            <?php
+                if (!empty($errors)):
+                foreach($errors as $name => $message){
+                    echo $message . "<br />";
+                }
+                endif;
+            ?>
+        </div>
     </div>
-    <?php
-        foreach($errors as $name => $message){
-            echo $message . "<br />";
-        }
-    ?>
 </form>
 <p><?= _("Already have an account ?"); ?> <a href="<?= \Controller\Router::url("login"); ?>" class="login-link" title="<?= _("Sign in !"); ?>"><?= _("Sign in !"); ?></a></p>

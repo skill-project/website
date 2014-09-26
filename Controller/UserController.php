@@ -54,8 +54,9 @@
                             //login
                             $error = false;
                             $this->logUser($user);
-                            Router::redirect(Router::url('home'));
-
+                            $json = new \Model\JsonResponse();
+                            $json->setData(array("redirectTo" => Router::url('graph', array(), true)));
+                            $json->send();
                         }
                     }
                 }
@@ -136,7 +137,10 @@
 
                     //log user in right now (will redirect home)
                     $this->logUser($user);
-                    Router::redirect(Router::url('home'));
+                    $this->logUser($user);
+                    $json = new \Model\JsonResponse();
+                    $json->setData(array("redirectTo" => Router::url('profile', array("username" => $user->getUsername()), true)));
+                    $json->send();
 
                 }
                 //not valid

@@ -56,7 +56,7 @@
     </div>
 </form>
 <br />
-<a class="password-link" href="<?= \Controller\Router::url('changePassword'); ?>"><?= _("Change my password"); ?></a>
+<a class="change-password-link" href="<?= \Controller\Router::url('changePassword'); ?>"><?= _("Change my password"); ?></a>
 <?php if (!empty($showPasswordResetForm)): ?>
-<script> $(document).ready(function(){ $(".password-link").click(); }); </script>
+<script> $(document).ready(function(){ $(".change-password-link").click(); }); </script>
 <?php endif; ?>
