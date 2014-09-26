@@ -284,6 +284,15 @@ Node.prototype.setVisualState = function (state, draw, ignoreGlow) {
       } else if (!this.isSelected && !this.isEdited && !this.open) {
         this.setVisualState("normal");
         if (!ignoreGlow) this.setGlow(0);
+      } else if (this.isSelected && !this.isEdited && !this.open) {
+        this.setVisualState("glow-nochildren");
+        if (!ignoreGlow) this.setGlow(1);
+      } else if (this.isSelected && !this.isEdited && this.open) {
+        this.setVisualState("glow-children");
+        if (!ignoreGlow) this.setGlow(1);
+      }else {
+        console.warn("Impossible to automatically determine state for this node : " + this.name);
+        console.warn(this);
       }
       break;
     case "normal":

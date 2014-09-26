@@ -94,7 +94,7 @@ var Panel = function(node, initParams) {
                         $("#" + panelToLoad).show("slide", {
                             direction: "right",
                         }, function(){
-                            that.panelLoadEvents;
+                            that.panelLoadEvents();
                             if ($("body").hasClass("anonymous") && panelToLoad != "share-skill-panel"){
                                 that.addPanelModal(
                                     '<div class="please-sign-in">You have to be signed in to do that !<br /><br />' + 

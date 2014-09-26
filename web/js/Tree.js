@@ -106,14 +106,15 @@ Tree.prototype.executeMoveCopy = function() {
     }
 
     tree.editedNode.deleteFromDB();
-
+    
     if (tree.targetNode.isInPath == true && tree.targetNode.depth < tree.editedNode.depth) {
         tree.targetNode.contract({noAnim:true}).deSelect();
     }
 
+    //selectedNode = previous parent of the moved node.
+    tree.selectedNode.deSelect();
+
     tree.exitTargetMode();
     tree.editedNode.finishEdit();
     tree.targetNode.select().expand();
-    
-    
 }

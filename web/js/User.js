@@ -1,7 +1,6 @@
 var User = function(){
 
     $(document).ready(function(){
-        console.log("yo");
         $("body").on("click", ".register-link", function(e){
             e.preventDefault();
             user.clickedHref = $(this).attr("href");
