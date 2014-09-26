@@ -19,6 +19,8 @@
          */
         public function getRootNodeAction(){
 
+            SH::checkUsage(10);
+
             $skillManager = new SkillManager();
             $skill = $skillManager->findRootNode();
             
@@ -34,6 +36,8 @@
          * @param string Parent uuid
          */
         public function getNodeChildrenAction($uuid){
+
+            SH::checkUsage(30);
 
             $skillManager = new SkillManager();
             $data = $skillManager->findChildren($uuid);
@@ -56,6 +60,9 @@
          * @param int $id
          */
         public function getNodeParentAction($uuid){
+
+            SH::checkUsage(30);
+
             $skillManager = new SkillManager();
             $resultSet = $skillManager->findParentAndGrandParent($uuid);
             
@@ -80,6 +87,8 @@
          * get one node by uuid
          */
         public function getNodeAction($uuid){
+
+            SH::checkUsage(50);
             
             $skillManager = new SkillManager();
             $skill = $skillManager->findByUuid($uuid);
@@ -95,6 +104,8 @@
          * get all nodes up to the root
          */
         public function getNodePathToRootAction($slug){
+
+            SH::checkUsage(5);
             
             $skillManager = new SkillManager();
             $uuid = $skillManager->getUuidFromSlug($slug);
@@ -113,7 +124,10 @@
          */
         function deleteSkillAction(){
 
+            SH::checkUsage(5);
             SH::lock("admin");
+
+            $deletionResult = false;
 
             if (!empty($_POST)){
 
@@ -145,6 +159,7 @@
         public function discussSkillAction(){
 
             //lock 
+            SH::checkUsage(60);
             SH::lock();
 
             if (!empty($_POST)){
@@ -185,6 +200,7 @@
          */
         public function moveSkillAction(){
             
+            SH::checkUsage(10);
             SH::lock("admin");
 
             if (!empty($_POST)){
@@ -237,6 +253,7 @@
          */
         public function translateSkillAction(){
 
+            SH::checkUsage(50);
             SH::lock("admin");
 
             if (!empty($_POST)){
@@ -286,6 +303,7 @@
          */
         public function renameSkillAction(){
 
+            SH::checkUsage(10);
             SH::lock("admin");
 
             if (!empty($_POST)){
@@ -325,7 +343,13 @@
         }
 
 
+        /**
+         * Search by keywords
+         */
         public function skillSearchAction(){
+
+            SH::checkUsage(120); //set high for autocomplete
+
             $cyp = "MATCH (gp:Skill)-[:HAS*0..1]->(p:Skill)-[:HAS]->(s:Skill)
                     WHERE s.name =~ {keywords}
                     RETURN s,gp,p LIMIT 10";
@@ -363,38 +387,12 @@
             $json->send();
         }
 
-/*
-        public function skillSearchAction(){
-            $keywords = urldecode($_GET['q']);
-            $searchIndex = new \Everyman\Neo4j\Index\NodeIndex($this->client, 'searches');
-            $matches = $searchIndex->query('name:*'.strtolower($keywords).'*~');
-
-            $data = array();
-            foreach ($matches as $node) {
-                $nodeParentRelationship = $node->getRelationships(
-                    array('HAS'), Relationship::DirectionIn
-                );
-
-                $parentId = null;
-                if (count($nodeParentRelationship) == 1){
-                    $parentId = $nodeParentRelationship[0]->getStartNode()->getId();
-                }
-                $skill = new Skill( $node );
-                $data[] = $skill->getJsonData();
-            }
-
-            $json = new \Model\JsonResponse();
-            $json->setData($data);
-            $json->send();
-        }
-
-*/
-
         /**
          * Add a new skill
          */
         public function addSkillAction(){
 
+            SH::checkUsage(20);
             SH::lock();
 
             if (!empty($_POST)){

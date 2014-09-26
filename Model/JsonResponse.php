@@ -41,6 +41,11 @@
          */
         public function send(){
             $json = $this->getJson();
+
+            //only allow request made by ajax
+            if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
+                \Utils\SecurityHelper::forbid();
+            }
             if (\Config\Config::DEBUG){
                 header('Access-Control-Allow-Origin: *');  
             }

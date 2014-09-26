@@ -43,10 +43,48 @@
             }
 
             if ($forbid){
-                header('HTTP/1.0 403 Forbidden');
-                die("Forbidden : $reason");
+                self::forbid($reason);
             }
         }
+
+
+        public static function checkUsage($maxUsage = 10, $inHowManySeconds = 60){
+
+            //retrieve the api method being called
+            $callers=debug_backtrace();
+            if (!empty($callers[1]['function'])){
+                $call = $callers[1]['function'];
+            }
+
+            if (!$call){
+                self::forbid("irregular usage");
+            }
+
+            $now = time();
+
+            //add the time of this call to session
+            $_SESSION['usage'][$call][] = $now;
+
+            //count the number of calls in the last x seconds
+            $count = 0;
+            foreach($_SESSION['usage'][$call] as $t){
+                $since = $now-$inHowManySeconds;
+                if ($t > $since){
+                    $count++;
+                }
+            }
+
+            //remove old ones
+            while ($_SESSION['usage'][$call][0] < $since){
+                array_shift($_SESSION['usage'][$call]);
+            }
+
+            //above limits for this call ?
+            if ($count > $maxUsage){
+                self::forbid("irregular usage");
+            }
+        }
+
 
         public static function userIsLogged(){
             if (!empty($_SESSION['user']['uuid'])){
@@ -79,6 +117,12 @@
                 "email" => $user->getEmail()
             );
             $_SESSION['user'] = $sessionUser;
+        }
+
+        public static function forbid($reason = ""){
+            header('HTTP/1.0 403 Forbidden');
+            $message = ($reason) ? "Forbidden : $reason" : "Forbidden";
+            die($message);
         }
 
         /**
