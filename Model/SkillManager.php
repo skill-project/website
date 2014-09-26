@@ -368,8 +368,22 @@
          * @return bool true on success, false otherwise
          */
         public function copy($skillUuid, $newParentUuid, $userUuid){
-            
+
+            $firstSkill = $this->findByUuid($skillUuid);
+
+            $cyp = "MATCH 
+                    (p:Skill {uuid: {skillUuid}})-[:HAS*1..4]->(s:Skill)<-[:HAS]-(directParent:Skill) 
+                    RETURN s, directParent.uuid AS parentUuid
+                    ORDER BY s.depth ASC
+                    ";
+            $query = new Query($this->client, $cyp, array(
+                    "skillUuid" => $skillUuid
+                )
+            );
+            $resultSet = $query->getResultSet();
+
         }
+
 
 
         /**

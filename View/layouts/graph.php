@@ -3,7 +3,7 @@
 <head>
 	<?php include("../View/inc/page_head.php"); ?>
 </head>
-<body>
+<body class="<?= $userClass ?>">
 	<?php include("../View/pages/" . $page); ?>
 </body>
 </html>

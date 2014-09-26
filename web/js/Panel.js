@@ -4,10 +4,7 @@ var Panel = function(node, initParams) {
 	this.$activeSubpanel;
 
 	var that = this;
-
     var userRole = "user"; //editor, anonymous
-
-
 
 	$.ajax({
       url: baseUrl + "panel/getPanel/" + node.id + "/",
@@ -53,6 +50,7 @@ var Panel = function(node, initParams) {
                 content += response.data[key] + '<br />';
             }
         }
+        content += '<button class="panelModalRemoveBtn">OK</button>';
 
         that.addPanelModal(content);        
     }
@@ -66,14 +64,14 @@ var Panel = function(node, initParams) {
 
     this.addPanelModal = function(html){
         var panelModal = $('<div class="panelModal">');
-        panelModal.html(html);
+        panelModal.html(html).hide();
         panelModal.css({
             width: $("#panel").width(),
             height: $("#panel").height()
         });
-        panelModal.append('<button class="panelModalRemoveBtn">OK</button>');
         $("#panel").append(panelModal);
-        $(".panelModalRemoveBtn").on("click", function(e){
+        panelModal.fadeIn(200);
+        $(".panelModalRemoveBtn").on("tap click", function(e){
             e.preventDefault();
             that.closePanelModal();
         });
@@ -91,10 +89,21 @@ var Panel = function(node, initParams) {
                 $(subPanel).children("a.panel-btn").each(function (loadBtnIndex, loadBtn) {
                     $(loadBtn).on("tap click", function() {
                         var panelToLoad = $(loadBtn).data("panel");
+
                         that.$activeSubpanel = $("#" + panelToLoad);
                         $("#" + panelToLoad).show("slide", {
-                            direction: "right"
-                        }, that.panelLoadEvents);
+                            direction: "right",
+                        }, function(){
+                            that.panelLoadEvents;
+                            if ($("body").hasClass("anonymous") && panelToLoad != "share-skill-panel"){
+                                that.addPanelModal(
+                                    '<div class="please-sign-in">You have to be signed in to do that !<br /><br />' + 
+                                    '<a class="login-link" href="../login/">Sign in !</a><br />or<br /> ' + 
+                                    '<a class="register-link" href="../register/">Create an account !</a>' + '</div>'
+                                );
+                            }
+                        });
+
                         return false;
                     });
                 })
@@ -256,7 +265,7 @@ var Panel = function(node, initParams) {
                 });
                 break;
             case "share-skill-panel":
-                $("#skill-permalink-input").on("click", function () {
+                $("#skill-permalink-input").on("tap click", function () {
                    $(this).select();
                 });
                 break;

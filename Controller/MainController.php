@@ -29,10 +29,19 @@
 
             $skillManager = new SkillManager();
             $rootNode = $skillManager->findRootNode();
+
+            $user = \Utils\SecurityHelper::getUser();
+            $userClass = "anonymous";
+            if ($user){
+                $userClass = $user->getRole();
+            }
             
             $view = new View("graph.php", array(
-                "rootNode" => $rootNode,
-                "title" => "Explore")
+                    "rootNode"  => $rootNode,
+                    "title"     => "Explore",
+                    "userClass" => $userClass
+
+                )
             );
             $view->setLayout("../View/layouts/graph.php");
             $view->send();

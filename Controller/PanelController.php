@@ -66,11 +66,6 @@
 
             $panelFile = ($user && $user->isAdmin()) ? "panel_admin" : "panel_user";
 
-            //is not an admin, determine if can rename or move the skill
-            if ($user && !$user->isAdmin()){
-                //@todo guill
-            }
-
             $view = new AjaxView("panels/$panelFile.php", $params);
             $view->send();
         }
