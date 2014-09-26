@@ -253,6 +253,11 @@ var Panel = function(node, initParams) {
                     });
                 });
                 break;
+            case "share-skill-panel":
+                $("#skill-permalink-input").on("click", function () {
+                   $(this).select();
+                });
+                break;
         }
 
         //Common events

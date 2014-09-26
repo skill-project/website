@@ -150,9 +150,7 @@
         {
             //if new, set slug
             if (empty($this->slug)){
-                $slugify = new Slugify();
-                $slug = $slugify->slugify($this->getName()) . "-" . substr($this->getUuid(), 0, 14);
-                $this->setSlug($slug);
+                $this->regenerateSlug();
             }
             return $this->slug;
         }
@@ -173,4 +171,21 @@
 
             return $this;
         }
+
+        /**
+         * Sets new slug based on name and uuid
+         */
+        public function regenerateSlug(){
+            if (!empty($this->getName()) && !empty($this->getUuid())){
+                $slugify = new Slugify();
+                $slug = $slugify->slugify($this->getName()) . "-" . $this->getUuid();
+                $this->setSlug($slug);
+                if (!empty($this->getNode())){
+                    $this->getNode()->setProperty('slug', $this->getSlug());
+                }
+                return $this->getSlug();
+            }
+            return false;
+        }
+        
     }

@@ -27,21 +27,24 @@
             return $hashedPassword;
         }
 
-        public static function lock($role = ""){
+        public static function lock($requiredRole = ""){
             $forbid = false;
-            
+            $reason = "";
+
             //if no user is connected, forbid
             if (!self::userIsLogged()){
                 $forbid = true;
+                $reason = _("You must be signed in to do that !");
             }
             //if role required is admin and current user is not admin, forbid
-            elseif ($role == "admin" && self::getUser()->getRole() != "admin"){
+            elseif ($requiredRole == "admin" && self::getUser()->getRole() != "admin"){
                 $forbid = true;
+                $reason = _("You do have the required role to do that !");
             }
 
             if ($forbid){
                 header('HTTP/1.0 403 Forbidden');
-                die("Forbidden");
+                die("Forbidden : $reason");
             }
         }
 

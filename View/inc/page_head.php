@@ -13,12 +13,12 @@
     <?php if (!empty($rootNode)){ ?>var rootNodeId="<?= $rootNode->getUuid(); ?>";<?php } ?>
     var baseUrl="<?= \Config\Config::BASE_URL ?>";  
     <?php if (!empty($action)){ ?>var action="<?= $action; ?>";<?php } ?>
-    <?php if (!empty($jsonTest)){ echo "var jsonTest = " . $jsonTest; } ?>
-    <?php if (!empty($jsonAutoLoad)) echo "var jsonAutoLoad = " . $jsonAutoLoad; ?>
+    <?php if (!empty($jsonTest)){ echo "var jsonTest = " . $jsonTest . ";"; } ?>
+    <?php if (!empty($jsonAutoLoad)) echo "var jsonAutoLoad = " . $jsonAutoLoad . ";"; ?>
     <?php
         if (empty($_SESSION["tourDone"]) or true) {
             $_SESSION["tourDone"] = true;
-            echo "var doTour = true";
+            echo "var doTour = true;";
         }
     ?>
 </script>

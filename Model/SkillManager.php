@@ -141,16 +141,16 @@
 
         /**
          * Return all parents up to the root, and all parent's siblings, false on failure
-         * @param string Slug
+         * @param string Uuid
          * @return mixed 
          */
-        public function findNodePathToRoot($slug){
+        public function findNodePathToRoot($uuid){
 
             $cyp = "MATCH (child:Skill)<-[:HAS*0..1]-(parents:Skill)-[:HAS*]->(s:Skill) 
-                        WHERE s.slug = {slug}
+                        WHERE s.uuid = {uuid}
                         RETURN parents,s,child ORDER BY parents.depth ASC, child.created ASC";
             $query = new Query($this->client, $cyp, array(
-                "slug" => $slug)
+                "uuid" => $uuid)
             );
             $resultSet = $query->getResultSet();
 
@@ -185,7 +185,7 @@
                             if ($path[$i]['uuid'] == $parentUuid){
                                 $skill = new Skill($row['child']);
                                 $path[$i]['children'][] = $skill->getJsonData();
-                                if ($skill->getSlug() == $slug){
+                                if ($skill->getUuid() == $uuid){
                                     $path[$i]['selectedSkill'] = $childUuid;
                                 }
                                 $childrenAdded[] = $childUuid;
@@ -205,9 +205,12 @@
          * @return mixed 
          */
         public function findBySlug($slug){
-            $cyp = "MATCH (skill:Skill { slug: {slug} }) RETURN skill LIMIT 1";
+
+            $uuid = $this->getUuidFromSlug($slug);
+
+            $cyp = "MATCH (skill:Skill { uuid: {uuid} }) RETURN skill LIMIT 1";
             $query = new Query($this->client, $cyp, array(
-                "slug" => $slug)
+                "uuid" => $uuid)
             );
             $resultSet = $query->getResultSet();
             if ($resultSet->count() == 1){
@@ -490,8 +493,14 @@
          * Update an existing skill
          */
         public function update(Skill $skill, $userUuid, $previousName = ""){
+
+            //first regenerate the slug if name changed
+            //we can do that since only the uuid part of the slug is used to retrieve from slug
+            $skill->regenerateSlug();
+
             $cyp = "MATCH (skill:Skill {uuid:{skillUuid}}), (user:User {uuid: {userUuid}})
                     SET skill.name = {name},
+                        skill.slug = {slug},
                         skill.depth = {depth},
                         skill.modified = {now}
                     CREATE (skill)<-[:MODIFIED {
@@ -502,6 +511,7 @@
                     "now" => time(),
                     "skillUuid" => $skill->getUuid(),
                     "name" => $skill->getName(),
+                    "slug" => $skill->getSlug(),
                     "depth" => $skill->getDepth(),
                     "userUuid" => $userUuid,
                     "fromName" => $previousName
@@ -538,6 +548,19 @@
 
             return $activities;
 
+        }
+
+        /**
+         * Return the uuid part from the slug
+         */
+        public function getUuidFromSlug($slug){
+            $parts = explode("-", $slug);
+            $uuid = end($parts);
+            $validator = new Validator();
+            if ($validator->isValidUuid($uuid)){
+                return $uuid;
+            }
+            return false;
         }
 
     }

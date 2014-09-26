@@ -46,11 +46,12 @@
 
             $rootNode = $skillManager->findRootNode();
 
-            $path = $skillManager->findNodePathToRoot($slug);
+            $uuid = $skillManager->getUuidFromSlug($slug);
+            $path = $skillManager->findNodePathToRoot($uuid);
             $json = new \Model\JsonResponse();
             $json->setData($path);
             
-            $view = new View("home.php", array(
+            $view = new View("graph.php", array(
                 "rootNode"  => $rootNode,
                 "title"     => "Home !",
                 "action"    => "goto",

@@ -97,7 +97,8 @@
         public function getNodePathToRootAction($slug){
             
             $skillManager = new SkillManager();
-            $path = $skillManager->findNodePathToRoot($slug);
+            $uuid = $skillManager->getUuidFromSlug($slug);
+            $path = $skillManager->findNodePathToRoot($uuid);
 
             $json = new \Model\JsonResponse();
             $json->setData($path);
@@ -391,7 +392,7 @@
          */
         public function addSkillAction(){
 
-            SH::lock("admin");
+            SH::lock();
 
             if (!empty($_POST)){
                 

@@ -122,9 +122,16 @@
 
         public function validateSkillUuid($uuid){
             //5414554b1592f9f36155801
-            if (empty($uuid) || !preg_match("#^[a-f0-9]{14}f[a-f0-9]{8}$#", $uuid)){
+            if (!$this->isValidUuid($uuid)){
                 $this->addError("skillUuid", _("Invalid skill id."));
             }
+        }
+
+        public function isValidUuid($uuid){
+            if (empty($uuid) || !preg_match("#^[a-f0-9]{14}f[a-f0-9]{8}$#", $uuid)){
+                return false;
+            }
+            return true;
         }
 
         public function validateNumChild($parentSkillUuid){
