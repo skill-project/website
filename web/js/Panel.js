@@ -34,6 +34,7 @@ var Panel = function(node, initParams) {
 	});
 
 	this.close = function(params) {
+        that.closePanelModal();
 		$("#panel").hide("slide", {
 			direction: "right", 
 			complete: function() {
@@ -46,16 +47,13 @@ var Panel = function(node, initParams) {
 
     this.showErrors = function(response){
         var content = "<h3>Oops !</h3><br />";
-        if (response.data.length > 0){
-            for (var key in response.data) {
-                if (response.data.hasOwnProperty(key)) {
-                    content += response.data[key] + '<br />';
-                }
+        content += response.message + "<br />";
+        for (var key in response.data) {
+            if (response.data.hasOwnProperty(key)) {
+                content += response.data[key] + '<br />';
             }
         }
-        else {
-            content += response.message + "<br />";
-        }
+
         that.addPanelModal(content);        
     }
 
@@ -77,8 +75,12 @@ var Panel = function(node, initParams) {
         $("#panel").append(panelModal);
         $(".panelModalRemoveBtn").on("click", function(e){
             e.preventDefault();
-            $(".panelModal").remove();
+            that.closePanelModal();
         });
+    }
+
+    this.closePanelModal = function(){
+        $(".panelModal").remove();
     }
 
 	this.loadSubPanelEvents = function(subPanel, userRole) {

@@ -188,20 +188,23 @@
             SH::lock("admin");
 
             if (!empty($_POST)){
+                $skillManager = new SkillManager();
 
                 $skillUuid = $_POST['selectedSkillUuid'];
                 $newParentUuid = $_POST['destinationUuid'];
                 $type = $_POST['moveType'];
+                $skill = $skillManager->findByUuid($skillUuid);
+                
                 //retrieve current user uuid
                 $userUuid = SH::getUser()->getUuid();
 
                 $validator = new \Model\Validator();
                 $validator->validateSkillUuid($skillUuid);
                 $validator->validateSkillUuid($newParentUuid);
+                $validator->validateUniqueChild($newParentUuid, $skill->getName());
+                $validator->validateNumChild($newParentUuid);
 
                 if ($validator->isValid()){
-
-                    $skillManager = new SkillManager();
 
                     switch($type){
                         case "move":
