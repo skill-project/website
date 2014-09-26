@@ -1,27 +1,18 @@
-html.home #main-content {
-    background: url("../img/SKP-page-home-bg-1px.png") repeat-x;
-}
+html.home {
+    #main-content {
+        background: url("../img/SKP-page-home-bg-1px.png") repeat-x;
+    }
+    body {
+        background-color: #FFF;
+    }
 
-html.home body {
-    background-color: #FFF;
-}
+    p {
+        text-align: center;
+    }
 
-html.home #main-content-container {
-    padding: 0;
-}
-
-#home-top-panel {
-    height: 613px;
-    width: 100%;
-    color: #fff;
-    position: relative;
-
-    h1 {
-        font-size: 40px;
-        color: #FFF;
-        font-weight: normal;
-        margin: 0 0 80px 0;
-        padding-top: 120px;
+    h2 {
+        font-size: 30px;
+        margin: 10px 0 25px 0;
     }
 
 }
@@ -36,6 +27,7 @@ html.home #main-content-container {
 
 #tagline {
     margin: 90px 0;
+    text-align: left;
 }
 
 .home-btn {
@@ -74,15 +66,33 @@ html.home #main-content-container {
     }
 }
 
+
+#home-top-panel {
+    height: 613px;
+    width: 100%;
+    color: #fff;
+    position: relative;
+    text-align: left;
+
+    h1 {
+        font-size: 40px;
+        color: #FFF;
+        font-weight: normal;
+        margin: 0 0 80px 0;
+        padding-top: 120px;
+    }
+
+}
+
 #home-main-panel {
     text-align: center;
+}
 
-    p {
-        text-align: center;
-    }
 
-    h2 {
-        font-size: 30px;
-        margin: 10px 0 25px 0;
-    }
+.green {
+    background-color: $green;
+}
+
+#home-bottom-panel {
+    text-align: center;
 }

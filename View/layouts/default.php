@@ -11,13 +11,11 @@
 			</div>
 		</header>
 		<div id="main-content">
-			<div id="main-content-container">
-				<?php include("../View/pages/" . $page); ?>
-			</div>
+			<?php include("../View/pages/" . $page); ?>
 		</div>
 	</div>
 	<div id="page-footer">
-		<div id="footer-container">
+		<div id="footer-container" class="container">
 			<a id="footer-logo" href="<?= \Controller\Router::url("home"); ?>" title="Skill Project | Home"><img src="img/logo-small.png" /></a>
 			<span class="copyright">Copyright &copy;2014</span>
 			<nav id="footer-nav">
