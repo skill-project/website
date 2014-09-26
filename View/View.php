@@ -7,12 +7,14 @@
         protected $page;
         protected $data;
         protected $title = "Skill Project";
+        protected $lang;
 
         protected $layout = "../View/layouts/default.php";
 
         public function __construct($page, $data = array()){
             $this->page = $page;
             $this->data = $data;
+            $this->lang = $GLOBALS['lang']; //global
         }
 
         public function setLayout($layout){
@@ -36,6 +38,14 @@
 
             $page = $this->page;
 
+            //localised page
+            if ($this->lang != "en"){
+                $loc_page = $this->lang . "_" . $this->page;
+                if (file_exists("../View/pages/".$loc_page)){
+                    $page = $loc_page;
+                }
+            }
+            
             require_once($this->layout);
         }
 
