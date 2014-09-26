@@ -1,11 +1,15 @@
+#page-footer {
+    background-color: $gray;
+}
+
 #footer {
     
     height: 82px;
     position:fixed;
     bottom:0px;
-    background-color:black;
     width:100%;
     opacity:0.8;
+    background-color: $gray;
 
     #debug {
         position:absolute;
@@ -48,6 +52,7 @@
     width:1000px;
     margin:21px auto 0 auto;
     text-align: center;
+    background-color: $gray;
 }
 
 #autocomplete-container {

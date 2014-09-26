@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" class="page">
+<html lang="fr" class="page <?= str_replace(".php", "", $page) ?>">
 <head>
 	<?php include("../View/inc/page_head.php"); ?>
 </head>	

@@ -1,0 +1,88 @@
+html.home #main-content {
+    background: url("../img/SKP-page-home-bg-1px.png") repeat-x;
+}
+
+html.home body {
+    background-color: #FFF;
+}
+
+html.home #main-content-container {
+    padding: 0;
+}
+
+#home-top-panel {
+    height: 613px;
+    width: 100%;
+    color: #fff;
+    position: relative;
+
+    h1 {
+        font-size: 40px;
+        color: #FFF;
+        font-weight: normal;
+        margin: 0 0 80px 0;
+        padding-top: 120px;
+    }
+
+}
+
+#home-sun {
+    float: right;
+    width: 511px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+#tagline {
+    margin: 90px 0;
+}
+
+.home-btn {
+    background: url("../img/SKP-page-home-btn-off.png") no-repeat;
+    height: 112px;
+    width: 292px;
+    display: inline-block;
+    margin-left: -27px;
+
+    a, a:hover {
+        color: #000;
+        cursor: pointer;
+        width: 237px;
+        height: 57px;
+        font-size: 14px;
+        line-height: 57px;
+        display: block;
+        margin: 28px 0 0 28px;
+        text-transform: uppercase;
+    }
+
+}
+#home-btn-go {
+    background: url("../img/SKP-page-home-btn-glow.png") no-repeat;
+
+    a {
+        padding-left: 17px;
+        width: 220px;
+    }
+
+}
+#home-btn-learn {
+    a {
+        width: 192px;
+        padding-left: 45px;
+    }
+}
+
+#home-main-panel {
+    text-align: center;
+
+    p {
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 30px;
+        margin: 10px 0 25px 0;
+    }
+}

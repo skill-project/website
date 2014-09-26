@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <title><?php echo $title; ?></title>
-<meta name="description" content="">
+<meta name="description" content="Explore all the human skills. Map them out.">
 <base href="<?= \Config\Config::BASE_URL ?>" />
 <link rel="shortcut icon" href="img/favicon.png">
 

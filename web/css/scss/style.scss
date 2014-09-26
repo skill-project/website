@@ -1,6 +1,7 @@
 $gray: #282828;
 $blue: #1ADAE6;
-$pink: #E37B98;
+$pink: #D37081;
+$green: #BDEACB;
 
 @import 'reset';
 
@@ -121,6 +122,9 @@ a:hover, header a.blue-link:hover, header a, header a.white-link {
 /* pages */
 @import 'pages';
 /* end pages */
+/* home */
+@import 'home';
+/* end home */
 /* footer */
 @import 'footer_search';
 /* end footer */
