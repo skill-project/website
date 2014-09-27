@@ -1,0 +1,597 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid   ""
+msgstr  "Project-Id-Version: PACKAGE VERSION\n"
+        "Report-Msgid-Bugs-To: \n"
+        "POT-Creation-Date: 2014-09-27 12:23+0200\n"
+        "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+        "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+        "Language-Team: LANGUAGE <LL@li.org>\n"
+        "Language: \n"
+        "MIME-Version: 1.0\n"
+        "Content-Type: text/plain; charset=UTF-8\n"
+        "Content-Transfer-Encoding: 8bit\n"
+
+#: Controller/Mailer.php:68
+msgid   "Welcome to Skill Project !"
+msgstr  ""
+
+#: Controller/Mailer.php:101
+msgid   "Skill Project: Password reset !"
+msgstr  ""
+
+#: Controller/ApiController.php:146
+msgid   "Node deleted."
+msgstr  ""
+
+#: Controller/ApiController.php:180
+msgid   "Message posted !"
+msgstr  ""
+
+#: Controller/ApiController.php:183
+msgid   "Error posting message."
+msgstr  ""
+
+#: Controller/ApiController.php:188
+msgid   "An error occured."
+msgstr  ""
+
+#: Controller/ApiController.php:232
+msgid   "Skill moved !"
+msgstr  ""
+
+#: Controller/ApiController.php:237
+msgid   "Skill copied !"
+msgstr  ""
+
+#: Controller/ApiController.php:243 Controller/ApiController.php:294
+#: Controller/ApiController.php:338 Controller/ApiController.php:450
+msgid   "Something went wrong."
+msgstr  ""
+
+#: Controller/ApiController.php:289
+msgid   "Translation saved !"
+msgstr  ""
+
+#: Controller/ApiController.php:333 Controller/ApiController.php:445
+msgid   "Skill saved !"
+msgstr  ""
+
+#: Controller/MainController.php:19
+msgid   "The Universal Skills Map"
+msgstr  ""
+
+#: Controller/UserController.php:65
+msgid   "You username/email and password do not match"
+msgstr  ""
+
+#: Controller/UserController.php:164 View/inc/login_form.php:9
+msgid   "Forgot your password ?"
+msgstr  ""
+
+#: Controller/UserController.php:196 Controller/UserController.php:268
+msgid   "This email or username is not valid."
+msgstr  ""
+
+#: Controller/UserController.php:231
+msgid   "CHANGE PASSWORD"
+msgstr  ""
+
+#: Controller/UserController.php:317
+msgid   "This user never was born, or vanished."
+msgstr  ""
+
+#: Controller/UserController.php:366
+msgid   "Your picture is invalid !"
+msgstr  ""
+
+#: Controller/UserController.php:371
+msgid   "Your picture is too small !"
+msgstr  ""
+
+#: Controller/UserController.php:399
+msgid   "'s Profile"
+msgstr  ""
+
+#: Utils/SecurityHelper.php:37
+msgid   "You must be signed in to do that !"
+msgstr  ""
+
+#: Utils/SecurityHelper.php:42
+msgid   "You do have the required role to do that !"
+msgstr  ""
+
+#: View/panels/delete-skill-panel.php:5
+msgid   "DELETE SKILL"
+msgstr  ""
+
+#: View/panels/delete-skill-panel.php:11
+msgid   "YOU ARE ABOUT TO DELETE THIS SKILL."
+msgstr  ""
+
+#: View/panels/delete-skill-panel.php:12
+msgid   "ARE YOU SURE ?"
+msgstr  ""
+
+#: View/panels/delete-skill-panel.php:14
+msgid   "YES"
+msgstr  ""
+
+#: View/panels/delete-skill-panel.php:16
+msgid   "NO"
+msgstr  ""
+
+#: View/panels/delete-skill-panel.php:20 View/panels/panel_admin.php:12
+msgid   "DELETE"
+msgstr  ""
+
+#: View/panels/delete-skill-panel.php:26
+msgid   "WARNING:"
+msgstr  ""
+
+#: View/panels/delete-skill-panel.php:27
+msgid   "You cannot delete a skill if it has children."
+msgstr  ""
+
+#: View/panels/share-skill-panel.php:5
+msgid   "SHARE"
+msgstr  ""
+
+#: View/panels/share-skill-panel.php:7
+msgid   "LINK TO THIS SKILL"
+msgstr  ""
+
+#: View/panels/panel_user.php:3 View/panels/subpanel-top.php:5
+#: View/panels/panel_admin.php:3
+msgid   "EDIT SKILL"
+msgstr  ""
+
+#: View/panels/panel_user.php:4 View/panels/subpanel-top.php:7
+#: View/panels/panel_admin.php:4
+msgid   "Close this panel"
+msgstr  ""
+
+#: View/panels/panel_user.php:8 View/panels/create-skill-panel.php:5
+#: View/panels/panel_admin.php:8
+msgid   "CREATE SKILL"
+msgstr  ""
+
+#: View/panels/panel_user.php:9 View/panels/discuss-skill-panel.php:5
+#: View/panels/panel_admin.php:13
+msgid   "DISCUSS THE SKILL"
+msgstr  ""
+
+#: View/panels/panel_user.php:10 View/panels/panel_admin.php:14
+msgid   "SHARE THE SKILL"
+msgstr  ""
+
+#: View/panels/discuss-skill-panel.php:20
+msgid   "SAY IT"
+msgstr  ""
+
+#: View/panels/rename-skill-panel.php:5 View/panels/panel_admin.php:9
+msgid   "RENAME"
+msgstr  ""
+
+#: View/panels/rename-skill-panel.php:12
+#: View/panels/translate-skill-panel.php:19
+msgid   "OK"
+msgstr  ""
+
+#: View/panels/rename-skill-panel.php:20
+msgid   "PREVIOUS NAMES"
+msgstr  ""
+
+#: View/panels/discussion-messages.php:4
+msgid   "By "
+msgstr  ""
+
+#: View/panels/panel-bottom.php:3
+msgid   "You are not logged in !"
+msgstr  ""
+
+#: View/panels/panel-bottom.php:5
+msgid   "Log in"
+msgstr  ""
+
+#: View/panels/panel-bottom.php:5
+msgid   "create an account"
+msgstr  ""
+
+#: View/panels/create-skill-panel.php:11
+msgid   "NAME YOUR SKILL"
+msgstr  ""
+
+#: View/panels/create-skill-panel.php:13
+msgid   "Hint: "
+msgstr  ""
+
+#: View/panels/create-skill-panel.php:13
+msgid   "Tell yourself \"I can\" or \"I know how to\"."
+msgstr  ""
+
+#: View/panels/create-skill-panel.php:13
+msgid   "45 characters max."
+msgstr  ""
+
+#. do not show fields for root node (always as child)
+#: View/panels/create-skill-panel.php:17
+msgid   "WHERE DOES IT GO"
+msgstr  ""
+
+#: View/panels/create-skill-panel.php:19 View/panels/create-skill-panel.php:20
+msgid   "BEFORE (as a parent)"
+msgstr  ""
+
+#: View/panels/create-skill-panel.php:23 View/panels/create-skill-panel.php:24
+msgid   "AFTER (as a child)"
+msgstr  ""
+
+#: View/panels/create-skill-panel.php:29
+msgid   "CREATE"
+msgstr  ""
+
+#: View/panels/move-skill-panel.php:5
+msgid   "MOVE SKILL"
+msgstr  ""
+
+#: View/panels/move-skill-panel.php:11
+msgid   "1.&nbsp;CHOOSE THE WAY YOU MOVE"
+msgstr  ""
+
+#: View/panels/move-skill-panel.php:13 View/panels/move-skill-panel.php:14
+msgid   "MOVE"
+msgstr  ""
+
+#: View/panels/move-skill-panel.php:17 View/panels/move-skill-panel.php:18
+#: View/panels/move-skill-panel.php:28
+msgid   "COPY"
+msgstr  ""
+
+#: View/panels/move-skill-panel.php:23
+msgid   "2.&nbsp;CHOOSE A DESTINATION"
+msgstr  ""
+
+#: View/panels/move-skill-panel.php:24
+msgid   "Select a skill as a new parent, then click the button."
+msgstr  ""
+
+#: View/panels/move-skill-panel.php:27
+msgid   "Destination :"
+msgstr  ""
+
+#: View/panels/translate-skill-panel.php:5 View/panels/panel_admin.php:10
+msgid   "TRANSLATE"
+msgstr  ""
+
+#: View/panels/translate-skill-panel.php:10
+msgid   "SELECT YOUR LANGUAGE"
+msgstr  ""
+
+#: View/panels/translate-skill-panel.php:24
+msgid   "OTHER TRANSLATIONS"
+msgstr  ""
+
+#: View/panels/panel_admin.php:11
+msgid   "MOVE / DUPLICATE"
+msgstr  ""
+
+#: View/mails/password_recovery.php:24
+msgid   "Please click on the link below to create a new password:"
+msgstr  ""
+
+#: View/inc/forgot_password_form_1.php:3 View/inc/login_form.php:3
+msgid   "USERNAME OR EMAIL"
+msgstr  ""
+
+#: View/inc/forgot_password_form_1.php:7
+msgid   "SEND RECOVERY MESSAGE"
+msgstr  ""
+
+#: View/inc/forgot_password_form_1.php:24 View/inc/login_form.php:29
+msgid   "You don't have an account yet ?"
+msgstr  ""
+
+#: View/inc/forgot_password_form_1.php:24 View/inc/login_form.php:29
+msgid   "Sign up !"
+msgstr  ""
+
+#: View/inc/forgot_password_form_1.php:24 View/inc/login_form.php:29
+msgid   "You can create one !"
+msgstr  ""
+
+#: View/inc/login_form.php:7 View/inc/register_form.php:11
+msgid   "PASSWORD"
+msgstr  ""
+
+#: View/inc/login_form.php:12
+msgid   "SIGN IN"
+msgstr  ""
+
+#: View/inc/register_form.php:3
+msgid   "USERNAME"
+msgstr  ""
+
+#: View/inc/register_form.php:7
+msgid   "EMAIL"
+msgstr  ""
+
+#: View/inc/register_form.php:7
+msgid   "We do not spam."
+msgstr  ""
+
+#: View/inc/register_form.php:15
+msgid   "PASSWORD AGAIN"
+msgstr  ""
+
+#: View/inc/register_form.php:19
+msgid   "SIGN UP"
+msgstr  ""
+
+#: View/inc/register_form.php:36
+msgid   "Already have an account ?"
+msgstr  ""
+
+#: View/inc/register_form.php:36
+msgid   "Sign in !"
+msgstr  ""
+
+#: View/inc/header.php:10
+msgid   "Sign up"
+msgstr  ""
+
+#: View/inc/header.php:11
+msgid   "Sign in"
+msgstr  ""
+
+#: View/inc/header.php:18
+msgid   "SKILLWALK"
+msgstr  "MARCHE-COMPETENCE"
+
+#: View/inc/header.php:19 View/pages/fr_project.php:3 View/pages/project.php:4
+msgid   "THE PROJECT"
+msgstr  "LE PROJET"
+
+#: View/inc/header.php:21 View/inc/header.php:23 View/pages/profile.php:2
+msgid   "PROFILE"
+msgstr  "PROFIL"
+
+#: View/inc/header.php:25 View/pages/apply.php:3
+msgid   "APPLY"
+msgstr  "POSTULER"
+
+#: View/inc/header.php:26
+msgid   "COMMUNITY"
+msgstr  "COMMUNAUTÉ"
+
+#: View/inc/page_head.php:32
+msgid   "Your browser is too old for this modern app. Please use a recent one !"
+msgstr  ""
+
+#: View/inc/profile_form.php:3 View/pages/profile.php:45
+msgid   "PERSONNAL INFORMATIONS"
+msgstr  ""
+
+#: View/inc/profile_form.php:6
+msgid   "Username"
+msgstr  ""
+
+#: View/inc/profile_form.php:10
+msgid   "Email"
+msgstr  ""
+
+#: View/inc/profile_form.php:16
+msgid   "Languages-s (Comma separated please)"
+msgstr  ""
+
+#: View/inc/profile_form.php:20
+msgid   "Country"
+msgstr  ""
+
+#: View/inc/profile_form.php:25
+msgid   "Upload a picture of you"
+msgstr  ""
+
+#: View/inc/profile_form.php:38
+msgid   "CATEGORIES OF INTEREST"
+msgstr  ""
+
+#: View/inc/profile_form.php:44
+msgid   "SAY SOMETHING ABOUT YOURSELF"
+msgstr  ""
+
+#: View/inc/profile_form.php:48
+msgid   "SAVE"
+msgstr  ""
+
+#: View/inc/profile_form.php:59
+msgid   "Change my password"
+msgstr  ""
+
+#: View/inc/change_password_form.php:3
+msgid   "NEW PASSWORD"
+msgstr  ""
+
+#: View/inc/change_password_form.php:7
+msgid   "NEW PASSWORD AGAIN"
+msgstr  ""
+
+#: View/inc/change_password_form.php:11
+msgid   "UPDATE"
+msgstr  ""
+
+#: View/pages/fr_project.php:12 View/pages/project.php:15
+msgid   "FAQ"
+msgstr  ""
+
+#: View/pages/fr_project.php:46 View/pages/project.php:50
+msgid   "MEET THE TEAM"
+msgstr  ""
+
+#: View/pages/fr_legal.php:1
+msgid   "LEGAL"
+msgstr  ""
+
+#: View/pages/graph.php:38
+msgid   "SEARCH A SKILL"
+msgstr  ""
+
+#: View/pages/graph.php:39
+msgid   "If you don't find it, just add it !"
+msgstr  ""
+
+#: View/pages/profile.php:19
+msgid   "Skillwalker since"
+msgstr  ""
+
+#: View/pages/profile.php:41
+msgid   "BIO"
+msgstr  ""
+
+#: View/pages/profile.php:52
+msgid   "RECENT ACTIVITY"
+msgstr  ""
+
+#: View/pages/legal.php:3
+msgid   "LEGAL SHIT"
+msgstr  ""
+
+#: View/pages/legal.php:21
+msgid   "MORE BORING STUFF"
+msgstr  ""
+
+#: View/pages/legal.php:32
+msgid   "AND BLAH, AND BLAH"
+msgstr  ""
+
+#: View/layouts/default.php:23
+msgid   "SkillWalk"
+msgstr  ""
+
+#: View/layouts/default.php:24
+msgid   "The project"
+msgstr  ""
+
+#: View/layouts/default.php:26 View/layouts/default.php:28
+msgid   "Profile"
+msgstr  ""
+
+#: View/layouts/default.php:30
+msgid   "Apply"
+msgstr  ""
+
+#: View/layouts/default.php:31
+msgid   "Community"
+msgstr  ""
+
+#: View/layouts/default.php:32
+msgid   "Contact"
+msgstr  ""
+
+#: View/layouts/default.php:33
+msgid   "Legal terms"
+msgstr  ""
+
+#: Model/Validator.php:13
+msgid   "Please provide an username."
+msgstr  ""
+
+#: Model/Validator.php:16
+msgid   "Your username must be between 3 and 50 caracters long."
+msgstr  ""
+
+#: Model/Validator.php:19
+msgid   "Your username must only contains letters, numbers and/or _-"
+msgstr  ""
+
+#: Model/Validator.php:27
+msgid   "This username is already taken !"
+msgstr  ""
+
+#: Model/Validator.php:34
+msgid   "Please provide an email."
+msgstr  ""
+
+#: Model/Validator.php:37
+msgid   "Your email is invalid."
+msgstr  ""
+
+#: Model/Validator.php:45
+msgid   "This email is already taken !"
+msgstr  ""
+
+#: Model/Validator.php:69
+msgid   "Invalid username or email."
+msgstr  ""
+
+#: Model/Validator.php:77
+msgid   "Please provide a password."
+msgstr  ""
+
+#: Model/Validator.php:80
+msgid   "Your password must have at least 8 caracters."
+msgstr  ""
+
+#: Model/Validator.php:86
+msgid   "Please confirm your password."
+msgstr  ""
+
+#: Model/Validator.php:89
+msgid   "Your passwords do not match."
+msgstr  ""
+
+#: Model/Validator.php:95
+msgid   "Please provide a skill name."
+msgstr  ""
+
+#: Model/Validator.php:98
+msgid   "The skill name must be between 3 and 45 caracters long."
+msgstr  ""
+
+#: Model/Validator.php:104
+msgid   "Please select a skill as parent of your node."
+msgstr  ""
+
+#: Model/Validator.php:107
+msgid   "The parent is not valid."
+msgstr  ""
+
+#: Model/Validator.php:117
+msgid   "This skill already exists here !"
+msgstr  ""
+
+#: Model/Validator.php:126
+msgid   "Invalid skill id."
+msgstr  ""
+
+#: Model/Validator.php:141
+msgid   "Too many children !"
+msgstr  ""
+
+#: Model/Validator.php:147
+msgid   "Please select a language."
+msgstr  ""
+
+#: Model/Validator.php:150
+msgid   "Invalid language code."
+msgstr  ""
+
+#: Model/Validator.php:160
+msgid   "Please select a valid topic for your message."
+msgstr  ""
+
+#: Model/Validator.php:166
+msgid   "Please provide a message."
+msgstr  ""
+
+#: Model/SkillManager.php:410
+msgid   "This skill has children."
+msgstr  ""
+
+#: Model/SkillManager.php:414
+msgid   "This skill doesn't exists."
+msgstr  ""

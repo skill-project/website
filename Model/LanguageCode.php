@@ -42,5 +42,11 @@
             'nativeName' => 'Français',
             'isoCode' => 'fr_FR.UTF-8'
           ),
+          'xl' => 
+          array (
+            'name' => 'xLang',
+            'nativeName' => 'xXxxx',
+            'isoCode' => 'fr_LU.UTF-8'
+          ),
         );
     }
