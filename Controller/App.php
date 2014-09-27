@@ -48,8 +48,11 @@
                     }
                 }
             }
-           
+
             $GLOBALS['lang'] = $currentLanguage;
+            setlocale(LC_ALL, $languageCodes->getIsoCode($GLOBALS['lang']));
+            bindtextdomain("messages", \Config\Config::BASE_PATH . "l10n");
+            textdomain("messages");
         }
 
         private function createGlobals(){

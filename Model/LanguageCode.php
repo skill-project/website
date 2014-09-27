@@ -25,17 +25,22 @@
             return false;
         }
 
+        public function getIsoCode($languageCode){
+            return $this->codes[$languageCode]["isoCode"];
+        }
 
         protected $codes = array (
           'en' => 
           array (
             'name' => 'English',
             'nativeName' => 'English',
+            'isoCode' => 'en_US.UTF-8'
           ),
           'fr' => 
           array (
             'name' => 'French',
             'nativeName' => 'Français',
+            'isoCode' => 'fr_FR.UTF-8'
           ),
         );
     }
