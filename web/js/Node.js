@@ -278,7 +278,7 @@ var Node = function(nodeData, params) {
     editButton.on("mouseover", function(e) { document.body.style.cursor = 'pointer';}); //that.editMouseOver(that, e.type)
     editButton.on("mouseout", function(e) { document.body.style.cursor = 'default'; }); //that.editMouseOver(that, e.type)
     //Click on "+" symbol for node editing
-    editButton.on("click tap", function() {
+    editButton.on("click tap", function(e) {
       if (tree.targetMode == true) {
         that.setTarget();
         return;
@@ -307,6 +307,10 @@ var Node = function(nodeData, params) {
       }else {
         that.finishEdit();
       }
+      // console.log("edit click");
+      // console.log(e.evt);
+      // e.cancelBubble = true;
+      // e.evt.bubbles = false;
     });
     this.editButton = editButton;
   }

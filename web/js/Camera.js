@@ -392,6 +392,15 @@ var Camera = function() {
             camera.backStars.y(Math.round((stage.getPointerPosition().y + camera.backStars.y()) /60));
             camera.backStars.batchDraw();
         });
+
+        // stage.on("contentClick", function(e) {
+        //     // e.cancelBubble = true;
+        //     // console.log("contentClick");
+        //     // if (tour.isActive == true || doTour == true) tour.actionOnTree("stage-click");
+
+        //     // if (typeof tree.editedNode != "undefined") tree.editedNode.finishEdit();
+
+        // });
     }
 
     this.skySetup = function () {
@@ -470,13 +479,13 @@ Camera.prototype.drawStars = function(backgroundWidth, backgroundHeight) {
 }
 
 Camera.prototype.resizeElements = function() {
-    $("#kinetic, #backdrop")
-        .width($(window).width())
-        .height($(window).height() - $("#header").height());
-
     var newWidth = $(window).width();
-    var newHeight = $(window).height();
-    
+    var newHeight = $(window).height() - $("#header").height();
+
+    $("#kinetic, #backdrop")
+        .width(newWidth)
+        .height(newHeight);
+
     camera.backStage.width(newWidth);
     camera.backStage.height(newHeight);
 
@@ -490,4 +499,13 @@ Camera.prototype.resizeElements = function() {
     camera.backStage.draw();
 
     camera.checkCameraPosition(tree.selectedNode);
+
+    if (typeof tree.editedNode != "undefined") {
+        var newPanelHeight = newHeight - $("#footer").height() - 30;
+        $("#panel").height(newPanelHeight);
+        tree.editedNode.panel.setOrUpdateScrollbar();
+    }
+
+    camera.cacheInvisibleNodes();
+
 }

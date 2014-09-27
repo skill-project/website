@@ -193,7 +193,7 @@ Node.prototype.deSelect = function() {
   if (!this.isSelected) return this;
 
   this.isSelected = false;
-  tree.selectedNode = null;
+  delete tree.selectedNode;
 
   return this;
 }

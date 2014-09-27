@@ -6,6 +6,8 @@ var Panel = function(node, initParams) {
 	var that = this;
     var userRole = "user"; //editor, anonymous
 
+    $("#panel").height($("#kinetic").height() - $("#footer").height() - 30);
+
 	$.ajax({
       url: baseUrl + "panel/getPanel/" + node.id + "/",
     }).done(function(content) {
@@ -26,6 +28,7 @@ var Panel = function(node, initParams) {
     		complete: function () {
                 that.$activeSubpanel = that.$subPanels["first-panel"];
                 that.initParams.onComplete();
+                that.setOrUpdateScrollbar();
             }
     	});
 	});
@@ -85,16 +88,21 @@ var Panel = function(node, initParams) {
         var subPanelId = $(subPanel).attr("id");
         switch (subPanelId) {
             case "first-panel":
-            // debugger;
                 $(subPanel).children("a.panel-btn").each(function (loadBtnIndex, loadBtn) {
                     $(loadBtn).on("tap click", function() {
                         var panelToLoad = $(loadBtn).data("panel");
+
+                        //Hide first-panel's scrollbar so it doesn't conflict with subPanel's scrollbar
+                        that.$activeSubpanel.find(".scrollbar").css("display", "none");
 
                         that.$activeSubpanel = $("#" + panelToLoad);
                         $("#" + panelToLoad).show("slide", {
                             direction: "right",
                         }, function(){
                             that.panelLoadEvents();
+                            
+                            that.setOrUpdateScrollbar();
+
                             if ($("body").hasClass("anonymous") && panelToLoad != "share-skill-panel"){
                                 that.addPanelModal(
                                     '<div class="please-sign-in">You have to be signed in to do that !<br /><br />' + 
@@ -150,6 +158,7 @@ var Panel = function(node, initParams) {
                     $(this).toggleClass("selected");
 
                     $(subPanel).find("#move-step2").css("display", "block");
+                    tree.enterTargetMode();
                 });
 
                 $("#move-skill-form").on("submit", function(e){
@@ -274,9 +283,14 @@ var Panel = function(node, initParams) {
         //Common events
         $(subPanel).find(".back-to-panel-btn").on("tap click", function() {
             $(subPanel).hide("slide", {
-                direction:"right"
+                direction:"right",
+                complete: function() {
+                    //Show first-panel's scrollbar
+                    that.$subPanels["first-panel"].find(".scrollbar").css("display", "block");
+                }
             });
             that.$activeSubpanel = that.$subPanels["first-panel"];
+
             if (tree.targetMode = true) tree.exitTargetMode();
             return false;
         });
@@ -312,10 +326,30 @@ Panel.prototype.panelLoadEvents = function() {
 
     switch (panel.$activeSubpanel[0].id) {
         case "move-skill-panel":
-            tree.enterTargetMode();
+            //Nothing to do for now, but who knows...
             break;
     }
 }
 
 
+Panel.prototype.setOrUpdateScrollbar = function() {
 
+    if (typeof this.$activeSubpanel[0].scrollBarLoaded == "undefined") {
+        this.$activeSubpanel.wrapInner("<div class='viewport'><div class='overview'></div></div>");
+        this.$activeSubpanel.find(".viewport").before("<div class='scrollbar'><div class='track'><div class='thumb'><div class='end'></div></div></div></div>");
+    }
+
+    this.$activeSubpanel.find(".viewport").css({
+        width: this.$activeSubpanel.width(),
+        height: $("#panel").height()
+    });
+
+    this.$activeSubpanel.find(".overview").css({ 
+        width: this.$activeSubpanel.width()
+    });
+
+    if (this.$activeSubpanel[0].scrollBarLoaded == true) this.$activeSubpanel.data("plugin_tinyscrollbar").update();
+    else this.$activeSubpanel.tinyscrollbar();
+
+    this.$activeSubpanel[0].scrollBarLoaded = true;
+}

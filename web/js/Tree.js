@@ -100,6 +100,9 @@ Tree.prototype.exitTargetMode = function() {
 }
 
 Tree.prototype.executeMoveCopy = function() {
+    //Cases refer to Dario's notes
+    
+    //Case 1
     var openSibling = tree.targetNode.getSiblingMatch("isInPath", true);
     if (typeof openSibling != "undefined") {
         openSibling.contract({noAnim:true}).deSelect();
@@ -107,12 +110,14 @@ Tree.prototype.executeMoveCopy = function() {
 
     tree.editedNode.deleteFromDB();
     
+    //Case 2
     if (tree.targetNode.isInPath == true && tree.targetNode.depth < tree.editedNode.depth) {
         tree.targetNode.contract({noAnim:true}).deSelect();
     }
 
     //selectedNode = previous parent of the moved node.
-    tree.selectedNode.deSelect();
+    //In Case 5 tree.selectedNode is undefined, so no need to deselect it
+    if (typeof tree.selectedNode != "undefined") tree.selectedNode.deSelect();
 
     tree.exitTargetMode();
     tree.editedNode.finishEdit();

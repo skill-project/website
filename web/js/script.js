@@ -34,34 +34,25 @@ $(document).ready(function (){
     .width($(window).width())
     .height($(window).height() - $("#header").height());
 
-  $("#preload").hide();
+  $("#preload, #panel, #debug").hide();
 
-  $("#panel")
-    .hide()
-    .height($("#kinetic").height());
+  camera = new Camera;
+  camera.footerOffset = $("#footer").height();
 
-    $("#debug").hide();
+  $(window).resize(function() {
+    clearTimeout(doResize);
+    doResize = setTimeout(camera.resizeElements, 300);
+  });
 
-    camera = new Camera;
+  // setInterval(function() {
+  //   // $("#debug").empty();
+  //   // if (tree.selectedNode) $("#debug").append("selectedNode : " + tree.selectedNode.name + "<br />");
+  //   // if (tree.editedNode) $("#debug").append("editedNode : " + tree.editedNode.name + "<br />");
 
-    camera.footerOffset = $("#footer").height();
-
-    $(window).resize(function() {
-      clearTimeout(doResize);
-      doResize = setTimeout(camera.resizeElements, 300);
-    });
-
-  setInterval(function() {
-    // $("#debug").empty();
-    // if (tree.selectedNode) $("#debug").append("selectedNode : " + tree.selectedNode.name + "<br />");
-    // if (tree.editedNode) $("#debug").append("editedNode : " + tree.editedNode.name + "<br />");
-
-    // if (typeof tree.selectedNode == "undefined") $("#debug").css({"background-color": "red"});
-    // else $("#debug").css({"background-color": "white"});
-    // camera.drawZone(camera.getSecurityZone(camera.defaultSecurityZoneFactor));
-  },200);
-  
-  
+  //   // if (typeof tree.selectedNode == "undefined") $("#debug").css({"background-color": "red"});
+  //   // else $("#debug").css({"background-color": "white"});
+  //   // camera.drawZone(camera.getSecurityZone(camera.defaultSecurityZoneFactor));
+  // },200);
 });
 
 $(window).load(function  () {
