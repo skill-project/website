@@ -12,7 +12,7 @@
         'home',
         new Route('/', 
             array('controller' => 'Main', 'action' => 'home'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -21,7 +21,7 @@
         'graph',
         new Route('/skills/', 
             array('controller' => 'Main', 'action' => 'graph'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
     
@@ -29,7 +29,7 @@
         'project',
         new Route('/the-project/', 
             array('controller' => 'Main', 'action' => 'project'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -37,7 +37,7 @@
         'legal',
         new Route('/legal/', 
             array('controller' => 'Main', 'action' => 'legal'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -45,7 +45,7 @@
         'goTo',
         new Route('/skill/{slug}/', 
             array('controller' => 'Main', 'action' => 'goTo'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -53,7 +53,7 @@
         'debug',
         new Route('/debug/', 
             array('controller' => 'Main', 'action' => 'debug'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -63,7 +63,7 @@
         'getPanel',
         new Route('/panel/getPanel/{uuid}/', 
             array('controller' => 'Panel', 'action' => 'getPanel'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
     
@@ -71,7 +71,7 @@
         'reloadTranslations',
         new Route('/panel/reloadTranslations/{uuid}/', 
             array('controller' => 'Panel', 'action' => 'reloadTranslations'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
     
@@ -79,7 +79,7 @@
         'reloadDiscussionMessages',
         new Route('/panel/reloadDiscussionMessages/{uuid}/', 
             array('controller' => 'Panel', 'action' => 'reloadDiscussionMessages'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -91,7 +91,7 @@
         'register',
         new Route('/register/', 
             array('controller' => 'User', 'action' => 'register'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -99,7 +99,7 @@
         'login',
         new Route('/login/', 
             array('controller' => 'User', 'action' => 'login'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -107,7 +107,7 @@
         'logout',
         new Route('/logout/', 
             array('controller' => 'User', 'action' => 'logout'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -115,7 +115,7 @@
         'profile',
         new Route('/profile/{username}/',
             array('controller' => 'User', 'action' => 'profile'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -123,7 +123,7 @@
         'profileWithPassword',
         new Route('/profile/{username}/edit-password/',
             array('controller' => 'User', 'action' => 'profileWithPassword'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -131,7 +131,7 @@
         'emailConfirmation',
         new Route('/confirm/{email}/{token}/',
             array('controller' => 'User', 'action' => 'emailConfirmation'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -139,7 +139,7 @@
         'forgotPassword1',
         new Route('/forgot-password-1/',
             array('controller' => 'User', 'action' => 'forgotPassword1'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
     
@@ -147,7 +147,7 @@
         'forgotPassword2',
         new Route('/forgot-password-recovery/{email}/{token}/',
             array('controller' => 'User', 'action' => 'forgotPassword2'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -157,7 +157,7 @@
         'changePassword',
         new Route('/change-password/',
             array('controller' => 'User', 'action' => 'changePassword'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
     
@@ -165,7 +165,7 @@
         'apply',
         new Route('/apply/', 
             array('controller' => 'User', 'action' => 'apply'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -175,7 +175,7 @@
         'getNode',
         new Route('/api/getNode/{uuid}/', 
             array('controller' => 'Api', 'action' => 'getNode'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -184,7 +184,7 @@
         'getNodePathToRoot',
         new Route('/api/getNodePathToRoot/{slug}/', 
             array('controller' => 'Api', 'action' => 'getNodePathToRoot'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -193,7 +193,7 @@
         'skillSearch',
         new Route('/api/skillSearch/',
             array('controller' => 'Api', 'action' => 'skillSearch'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -202,7 +202,7 @@
         'getNodeParent',
         new Route('/api/getNodeParent/{uuid}/', 
             array('controller' => 'Api', 'action' => 'getNodeParent'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -210,7 +210,7 @@
         'getRootNode',
         new Route('/api/getRootNode/', 
             array('controller' => 'Api', 'action' => 'getRootNode'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -218,7 +218,7 @@
         'getNodeChildren',
         new Route('/api/getNodeChildren/{uuid}/', 
             array('controller' => 'Api', 'action' => 'getNodeChildren'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -226,7 +226,7 @@
         'deleteSkill',
         new Route('/api/deleteSkill/', 
             array('controller' => 'Api', 'action' => 'deleteSkill'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -234,7 +234,7 @@
         'renameSkill',
         new Route('/api/renameSkill/', 
             array('controller' => 'Api', 'action' => 'renameSkill'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -242,7 +242,7 @@
         'moveSkill',
         new Route('/api/moveSkill/', 
             array('controller' => 'Api', 'action' => 'moveSkill'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
     
@@ -250,7 +250,7 @@
         'translateSkill',
         new Route('/api/translateSkill/', 
             array('controller' => 'Api', 'action' => 'translateSkill'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
     
@@ -258,7 +258,7 @@
         'discussSkill',
         new Route('/api/discussSkill/', 
             array('controller' => 'Api', 'action' => 'discussSkill'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -266,7 +266,7 @@
         'addSkill',
         new Route('/add-skill/', 
             array('controller' => 'Api', 'action' => 'addSkill'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );
 
@@ -277,7 +277,7 @@
         'dummyData',
         new Route('/dummyData/', 
             array('controller' => 'Fixture', 'action' => 'dummyData'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );   
 
@@ -285,7 +285,7 @@
         'benchmark',
         new Route('/benchmark/', 
             array('controller' => 'Fixture', 'action' => 'benchmark'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );  
 
@@ -293,7 +293,7 @@
         'emptyDatabase',
         new Route('/emptyDatabase/', 
             array('controller' => 'Fixture', 'action' => 'emptyDatabase'), array(), array(), 
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );  
 
@@ -302,6 +302,6 @@
         'jsTranslations',
         new Route('/scripts/js-translations.js',
             array('controller' => 'Api', 'action' => 'getJSTranslations'), array(), array(),
-            '{lang}.skill-project.dev'
+            '{lang}.'.Config::DOMAIN
         )
     );

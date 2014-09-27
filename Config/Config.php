@@ -6,6 +6,7 @@
 
         const BASE_URL		= _BASE_URL;
         const BASE_PATH     = _BASE_PATH;
+        const DOMAIN        = _DOMAIN;
         const DEFAULT_LOCALE= _DEFAULT_LOCALE;
 
         const NEO_HOST      = _NEO_HOST;
