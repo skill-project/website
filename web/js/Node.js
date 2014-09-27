@@ -264,6 +264,7 @@ var Node = function(nodeData, params) {
 
     //Node is closed, expanding it
     if (!that.open) {
+      ga("send", "event", "nodeClick", that.name);
       that.select();
       that.expand();
     }else {
@@ -303,6 +304,7 @@ var Node = function(nodeData, params) {
 
       //This takes care of the normal situation of entering / exiting edit mode for a node when no other node was being edited
       if (that.isEdited == false) {
+        ga("send", "event", "nodeEdit", that.name);
         that.startEdit();
       }else {
         that.finishEdit();

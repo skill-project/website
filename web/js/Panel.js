@@ -103,6 +103,8 @@ var Panel = function(node, initParams) {
                             
                             that.setOrUpdateScrollbar();
 
+                            ga("send", "event", "panelLoad", panelToLoad);
+
                             if ($("body").hasClass("anonymous") && panelToLoad != "share-skill-panel"){
                                 that.addPanelModal(
                                     '<div class="please-sign-in">' + jt.panel.haveToBeSigned + '<br /><br />' + 
@@ -170,6 +172,7 @@ var Panel = function(node, initParams) {
                         success: function(response){
                             if (response.status == "ok"){
                                 that.showMessage(response.message);
+                                ga("send", "event", "nodeMove", tree.editedNode.name);
                                 tree.executeMoveCopy();
                             }
                             else {
@@ -191,6 +194,7 @@ var Panel = function(node, initParams) {
                                 $("#rename-skillName").val("");
                                 $("#panel .skillName").html('"'+response.data.name+'"'); //change the skillname at top of panel
                                 that.showMessage(response.message);
+                                ga("send", "event", "nodeRename", tree.editedNode.name, response.data.name);
                                 tree.editedNode.setName(response.data.name);
                             }
                             else {
@@ -214,6 +218,7 @@ var Panel = function(node, initParams) {
                         success: function(response){
                             if (response.status == "ok") {
                                 var nodeToDelete = tree.editedNode;
+                                ga("send", "event", "nodeDelete", tree.editedNode.name);
                                 nodeToDelete.finishEdit(); //close the panel, nothing to do here anymore    
                                 nodeToDelete.deleteFromDB();
                                 that.showMessage(response.message);

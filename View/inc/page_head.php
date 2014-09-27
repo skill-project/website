@@ -65,3 +65,4 @@
     src: url('<?= $GLOBALS['base_url'] ?>/fonts/Avenir-Book.ttf');
 }
 </style>
+<?php include("../View/inc/analytics.js"); ?>
