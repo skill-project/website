@@ -17,6 +17,7 @@
 
 #top-user-nav {
     margin-top: 2px;
+    overflow: visible;
 }
 
 #top-user-nav li.last, #top-main-nav li.last {
@@ -31,6 +32,35 @@
 
 #top-user-nav ul {
     margin: 0;
+    display: inline-block;
+}
+
+#lang-nav {
+    position: relative;
+}
+
+#top-user-nav #lang-nav ul {
+    position: absolute;
+    left: 0px;
+    top: 12px;
+    text-align: left;
+    display: none;
+}
+
+#top-user-nav #lang-nav:hover ul {
+    display: block;
+}
+
+#top-user-nav #lang-nav li {
+    display: block;
+    margin: 0px;
+    background-color: #000;
+    z-index: 50;
+}
+
+#top-user-nav #lang-nav a {
+    padding: 5px;
+    display: block;
 }
 
 #top-main-nav, #main-logo {

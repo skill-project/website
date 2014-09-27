@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 <title><?php echo $title; ?></title>
 <meta name="description" content="Explore all the human skills. Map them out.">
-<base href="<?= \Config\Config::BASE_URL ?>" />
+<base href="<?= $GLOBALS['base_url'] ?>/" />
 <link rel="shortcut icon" href="img/favicon.png">
 
 <?php if (\Config\Config::DEBUG): ?>
@@ -11,7 +11,7 @@
 <?php endif; ?>
 <script>
     <?php if (!empty($rootNode)){ ?>var rootNodeId="<?= $rootNode->getUuid(); ?>";<?php } ?>
-    var baseUrl="<?= \Config\Config::BASE_URL ?>";  
+    var baseUrl="<?= $GLOBALS['base_url'] ?>/";  
     <?php if (!empty($action)){ ?>var action="<?= $action; ?>";<?php } ?>
     <?php if (!empty($jsonTest)){ echo "var jsonTest = " . $jsonTest . ";"; } ?>
     <?php if (!empty($jsonAutoLoad)) echo "var jsonAutoLoad = " . $jsonAutoLoad . ";"; ?>
@@ -61,6 +61,6 @@
 <style>
 @font-face {
     font-family: 'Avenir-Book';
-    src: url('<?= \Config\Config::BASE_URL ?>fonts/Avenir-Book.ttf');
+    src: url('<?= $GLOBALS['base_url'] ?>/fonts/Avenir-Book.ttf');
 }
 </style>

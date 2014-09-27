@@ -5,7 +5,8 @@
     class Config {
 
         const BASE_URL		= _BASE_URL;
-        const BASE_PATH 	= _BASE_PATH;
+        const BASE_PATH     = _BASE_PATH;
+        const DEFAULT_LOCALE= _DEFAULT_LOCALE;
 
         const NEO_HOST      = _NEO_HOST;
         const NEO_PORT      = _NEO_PORT;

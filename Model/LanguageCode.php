@@ -14,6 +14,9 @@
             elseif($format == "json"){
                 return json_encode($this->jsonCodes);
             }
+            elseif($format == "short"){
+                return array_keys($this->codes);
+            }
         }
 
         public function getNames($languageCode){

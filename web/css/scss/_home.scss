@@ -1,7 +1,4 @@
 html.home {
-    #main-content {
-        background: url("../img/SKP-page-home-bg-1px.png") repeat-x;
-    }
     body {
         background-color: #FFF;
     }
@@ -73,6 +70,7 @@ html.home {
     color: #fff;
     position: relative;
     text-align: left;
+    background: url("../img/SKP-page-home-bg-1px.png") repeat-x;
 
     h1 {
         font-size: 40px;

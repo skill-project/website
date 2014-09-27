@@ -6,15 +6,15 @@
 
         public static function url($name, $params = array(), $absolute = false){
             global $context, $routes;
+
+            //add locale to params if not set
+            $params['lang'] = (empty($params['lang'])) ? $GLOBALS['lang'] : $params['lang'];
+
             $urlGen = new \Symfony\Component\Routing\Generator\UrlGenerator($routes, $context);
             $url = $urlGen->generate($name, $params);
 
             if ($absolute){
-                $base = \Config\Config::BASE_URL;
-                if(substr($base, -1) == '/') {
-                    $base = substr($base, 0, -1);
-                }
-                $url = $base.$url;
+                $url = $GLOBALS['base_url'].$url;
             }
 
             return $url;

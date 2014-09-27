@@ -5,11 +5,12 @@
         <ul>
             <?php if (Utils\SecurityHelper::userIsLogged()): ?>
                 <li><a class="blue-link" href="<?= \Controller\Router::url("profile", array("username" => Utils\SecurityHelper::getUser()->getUsername())); ?>" title="Profile"><?= Utils\SecurityHelper::getUser()->getUsername(); ?></a></li>
-                 | <li class="last"><a href="<?= \Controller\Router::url("logout"); ?>" title="Logout">Logout</a></li>
+                 | <li><a href="<?= \Controller\Router::url("logout"); ?>" title="Logout">Logout</a></li>
             <?php else: ?>
                 <li><a class="white-link register-link" href="<?= \Controller\Router::url("register"); ?>" title="Register"><?= _("Sign up"); ?></a></li>
-                 | <li class="last"><a class="login-link" href="<?= \Controller\Router::url("login"); ?>" title="Login"><?= _("Sign in"); ?></a></li>
-            <?php endif; ?>
+                 | <li><a class="login-link" href="<?= \Controller\Router::url("login"); ?>" title="Login"><?= _("Sign in"); ?></a></li>
+            <?php endif; ?>  | 
+            <?php include("../View/inc/language_menu.php"); ?>
         </ul>
     </nav>
 
@@ -27,3 +28,4 @@
         </ul>
     </nav>
 </div>
+

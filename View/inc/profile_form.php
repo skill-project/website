@@ -45,6 +45,12 @@
         <textarea name="bio" id="bio-textarea"><?= $loggedUser->getBio(); ?></textarea>
     </div>
     <div class="submit-container">
+        <div class="change-pass-container">
+            <a class="change-password-link" href="<?= \Controller\Router::url('changePassword'); ?>"><?= _("Change my password"); ?></a>
+            <?php if (!empty($showPasswordResetForm)): ?>
+            <script> $(document).ready(function(){ $(".change-password-link").click(); }); </script>
+            <?php endif; ?>
+        </div>
         <input class="pink-submit" type="submit" value="<?= _("SAVE") ?>" />
         <?php
             if (!empty($errors)):
@@ -55,8 +61,3 @@
         ?>
     </div>
 </form>
-<br />
-<a class="change-password-link" href="<?= \Controller\Router::url('changePassword'); ?>"><?= _("Change my password"); ?></a>
-<?php if (!empty($showPasswordResetForm)): ?>
-<script> $(document).ready(function(){ $(".change-password-link").click(); }); </script>
-<?php endif; ?>

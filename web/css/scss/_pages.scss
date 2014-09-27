@@ -27,7 +27,6 @@ html.page {
     #left-column, #right-column {
         display: inline-block;
         vertical-align: top;
-        padding-top: 32px;
     }
 
     #left-column {
@@ -132,6 +131,10 @@ html.page {
     }
 }
 
+.change-pass-container {
+    float: left;
+}
+
 .profile-section {
     margin-bottom: 20px;
     text-align: justify;
@@ -158,6 +161,25 @@ input[type="submit"].pink-submit {
     color: #FFF;
 }
 
+h2 {
+    font-size: 28px;
+    margin-bottom: 50px;
+
+    .first {
+        margin-top: 0;
+    }
+}
+
+h4 {
+    font-size: 16px;
+    margin: 20px 0 15px 0;
+    text-transform: uppercase;
+}
+
+header h2 {
+    padding-top: 50px;
+    margin-bottom: 0;
+}
 
 /* project */
 
@@ -169,21 +191,6 @@ input[type="submit"].pink-submit {
 section {
     padding: 65px 0;
     line-height: 20px;
-
-    h2 {
-        font-size: 28px;
-        margin-bottom: 50px;
-
-        .first {
-            margin-top: 0;
-        }
-    }
-
-    h4 {
-        font-size: 16px;
-        margin: 20px 0 15px 0;
-        text-transform: uppercase;
-    }
 }
 
 section.first {
@@ -219,3 +226,11 @@ section.first {
 }
 
 /* end project */
+
+#avatar-rect {
+
+    p {
+        text-align: center;
+    }
+
+}

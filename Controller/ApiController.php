@@ -21,7 +21,7 @@
 
             SH::checkUsage(10);
 
-            $skillManager = new SkillManager();
+            $skillManager = new SkillManager();            
             $skill = $skillManager->findRootNode();
             
             $json = new \Model\JsonResponse();
