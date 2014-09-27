@@ -1,7 +1,7 @@
 <div id="home-top-panel">
 	<div class="container">
 		<div class="left-content">
-			<h1>Tell the world<br />what you can do.</h1>
+			<h1>Show the world<br />what the world can do.</h1>
 			<p id="tagline">Explore all the human skills. Map them out.</p>
 
 			<div id="home-btn-go" class="home-btn"><a href="<?= \Controller\Router::url("graph"); ?>">Start skillwalking</a></div>

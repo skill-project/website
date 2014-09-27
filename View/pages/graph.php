@@ -32,12 +32,12 @@
 	<div id="debug">
 		
 	</div>
-	<div id="footer-container">
-		<div id="search-tease">
+	<div id="footer-container" class="container">
+        <form id="search-form" method="GET" action="<?= \Controller\Router::url("skillSearch"); ?>">
+		<label id="search-tease" for="kw-input">
 			<h2><?=_("SEARCH A SKILL"); ?></h2>
 			<p><?=_("If you don't find it, just add it !");?></p>
-		</div>
-		<form id="search-form" method="GET" action="<?= \Controller\Router::url("skillSearch"); ?>">
+		</label>
 			<div id="autocomplete-container">
 				<div id="search-results"></div>
 				<input type="search" name="q" id="kw-input" value="" autocomplete="off" />

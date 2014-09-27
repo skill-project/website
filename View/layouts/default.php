@@ -28,7 +28,7 @@
 		                <li><a class="register-link" href="<?= \Controller\Router::url("register"); ?>" title=""><?= _("Profile"); ?></a></li>
 		            <?php endif; ?>
 		            <li><a href="<?= \Controller\Router::url("apply"); ?>" title=""><?= _("Apply"); ?></a></li>
-		            <li><a href="VANILLA" title=""><?= _("Community"); ?></a></li>
+		            <li><a href="http://vanilla.skill-project.org/" title="The Skill Project Community"><?= _("Community"); ?></a></li>
 		            <li><a href="mailto:team@skill-project.org" title=""><?= _("Contact"); ?></a></li>
 		            <li class="last"><a href="<?= \Controller\Router::url("legal"); ?>" title=""><?= _("Legal terms"); ?></a></li>
 				</ul>
