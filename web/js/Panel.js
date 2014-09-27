@@ -105,9 +105,9 @@ var Panel = function(node, initParams) {
 
                             if ($("body").hasClass("anonymous") && panelToLoad != "share-skill-panel"){
                                 that.addPanelModal(
-                                    '<div class="please-sign-in">You have to be signed in to do that !<br /><br />' + 
-                                    '<a class="login-link" href="../login/">Sign in !</a><br />or<br /> ' + 
-                                    '<a class="register-link" href="../register/">Create an account !</a>' + '</div>'
+                                    '<div class="please-sign-in">' + jt.panel.haveToBeSigned + '<br /><br />' + 
+                                    '<a class="login-link" href="../login/">' + jt.panel.signIn + '</a><br />' + jt.or + '<br /> ' + 
+                                    '<a class="register-link" href="../register/">' + jt.panel.createAccount + '</a>' + '</div>'
                                 );
                             }
                         });

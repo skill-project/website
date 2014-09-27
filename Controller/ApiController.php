@@ -454,4 +454,13 @@
             }
         }
 
+        /**
+         * get JSON with JS translations
+         */
+        public function getJSTranslationsAction() {
+            $jsTrans = new \l10n\JSTranslations;
+            header("Content-type: application/javascript");
+            echo "var jt = " . json_encode($jsTrans->getJSTranslations(), JSON_PRETTY_PRINT);
+        }
+
     }

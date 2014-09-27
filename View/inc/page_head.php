@@ -33,6 +33,7 @@
         window.location.href = "/";
     }
 </script>
+<script src="scripts/js-translations.js"></script>
 <?php if (\Config\Config::DEBUG): ?>
 <script src="js/jquery-2.1.1.min.js"></script>
 <script src="js/jquery-ui.min.js"></script>

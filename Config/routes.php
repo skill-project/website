@@ -271,7 +271,6 @@
     );
 
 
-
 //Fixtures
 
     $routes->add(
@@ -298,4 +297,11 @@
         )
     );  
 
-
+//JS generation
+    $routes->add(
+        'jsTranslations',
+        new Route('/scripts/js-translations.js',
+            array('controller' => 'Api', 'action' => 'getJSTranslations'), array(), array(),
+            '{lang}.skill-project.dev'
+        )
+    );
