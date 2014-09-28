@@ -289,6 +289,7 @@
                     $userManager->update($user);
                 }
             }
+            Router::redirect( Router::url("graph") );
         }
     
 
@@ -413,7 +414,7 @@
 
                     $userManager->update($user);
                     $securityHelper->putUserDataInSession( $user );
-                    Router::reload();
+                    Router::redirect( Router::url('viewProfile', array('username' => $user->getUsername())) );
                 }
                 else {
                     $errors = $validator->getErrors();
