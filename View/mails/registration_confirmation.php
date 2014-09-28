@@ -8,8 +8,8 @@
             <tr>
                 <td></td>
                 <td width="600" style="width: 600px;">
-                    <a href="<?= \Config\Config::BASE_URL; ?>" title="SKILL PROJECT">
-                        <img src="<?= \Config\Config::BASE_URL; ?>img/SKP-mail-header.png" alt="SKILL PROJECT" />
+                    <a href="<?= $GLOBALS['base_url']; ?>/" title="SKILL PROJECT">
+                        <img src="<?= $GLOBALS['base_url']; ?>/img/SKP-mail-header.png" alt="SKILL PROJECT" />
                     </a>
                     <table cellpadding="0" callmargin="0">
                         <tr>
@@ -35,9 +35,9 @@
                     <table cellpadding="0" callmargin="0" width="600" style="width: 600px;">
                         <tr>
                             <td style="background-color: #282828;">
-                                <a href="<?= \Config\Config::BASE_URL; ?>" title="SKILL PROJECT">
-                                    <img src="<?= \Config\Config::BASE_URL; ?>img/logo-header.png" alt="Skill Project" />
-                                <a href="<?= \Config\Config::BASE_URL; ?>" title="SKILL PROJECT">
+                                <a href="<?= $GLOBALS['base_url']; ?>/" title="SKILL PROJECT">
+                                    <img src="<?= $GLOBALS['base_url']; ?>/img/logo-header.png" alt="Skill Project" />
+                                <a href="<?= $GLOBALS['base_url']; ?>/" title="SKILL PROJECT">
                             </td>
                         </tr>
                     </table>

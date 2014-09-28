@@ -25,9 +25,9 @@
             $this->title = $title;
         }
 
-        public function send(){
+        public function send($leaveTitleAlone = false){
             $title = $this->title;
-            if (!empty($this->data['title'])){
+            if (!empty($this->data['title']) && !$leaveTitleAlone){
                 $title = $this->title . " | " . $this->data['title'];
                 unset($this->data['title']);
             }

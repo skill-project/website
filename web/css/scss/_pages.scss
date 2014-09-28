@@ -218,7 +218,7 @@ section.first {
     padding-top: 70px;
 }
 
-#project-illus {
+.illus {
     float: right;
     margin-left: 30px;
     margin-bottom: 30px;
@@ -247,3 +247,22 @@ section.first {
 }
 
 /* end project */
+
+
+/* apply */
+
+#apply-form {
+    width: 670px;
+    margin: auto;
+}
+
+select {
+    height: 50px;
+    width: 100%;
+}
+
+#motiv-textarea {
+    height: 210px;
+}
+
+/* end apply */

@@ -39,7 +39,7 @@
     </div>
     <div class="profile-section">
         <div>
-            <label for="interests"><?= _("CATEGORIES OF INTEREST") ?></label>
+            <label for="interests"><?= _("SKILLS OF INTEREST") ?></label>
             <input type="text" name="interests" id="interests" value="<?= $loggedUser->getInterests() ?>" />
         </div>
     </div>

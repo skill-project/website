@@ -68,7 +68,7 @@
 
             $view = new View("login.php", $params);
             $view->setLayout("../View/layouts/modal.php");
-            $view->send();
+            $view->send(true);
         }
 
         private function logUser(User $user){
@@ -152,7 +152,7 @@
 
             $view = new View("register.php", $params);
             $view->setLayout("../View/layouts/modal.php");
-            $view->send();
+            $view->send(true);
         }
 
         /**
@@ -184,6 +184,8 @@
 
                     //if user found
                     if($user){
+
+                        $error = false;
                         
                         //send a message
                         $mailer = new Mailer();
@@ -195,11 +197,17 @@
                 if($error){
                     $params['error']['global'] = _("This email or username is not valid.");
                 }
+                else {
+                    $params['message'] = _("Check you emails !");
+                    $view = new View("success.php", $params);
+                    $view->setLayout("../View/layouts/modal.php");
+                    $view->send(true);
+                }
             }
 
             $view = new View("forgot_password.php", $params);
             $view->setLayout("../View/layouts/modal.php");
-            $view->send();
+            $view->send(true);
         }
 
         /**
@@ -271,7 +279,7 @@
 
             $view = new View("change_password.php", $params);
             $view->setLayout("../View/layouts/modal.php");
-            $view->send();
+            $view->send(true);
         }
 
 
@@ -458,8 +466,22 @@
          * The apply page
          */
         public function applyAction(){
-            $view = new View("apply.php", array("title" => "Apply"));
-            
+
+            $params = array();
+            $params['title'] = _("Become part of the project !");
+
+            $userManager = new UserManager();
+            $securityHelper = new SH();
+
+            $loggedUser = $securityHelper->getUser();
+            $params['loggedUser'] = $loggedUser;
+
+            if (!empty($_POST)){
+                die("todo");
+            }
+
+
+            $view = new View("apply.php", $params); 
             $view->send();
         }
 

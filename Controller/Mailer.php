@@ -55,11 +55,18 @@
             return $content;
         }
 
+        private function outputToFile($content){
+            if (\Config\Config::DEBUG){
+                file_put_contents("mail3453454345.html", $content);
+            }
+        }
+
 
         public function sendConfirmation(User $user){
 
             $confirmUrl = Router::url("emailConfirmation", array("email" => $user->getEmail(), "token" => $user->getToken()), true);
             $content = $this->getContent('registration_confirmation.php', array("confirmUrl" => $confirmUrl));
+            $this->outputToFile($content);
 
             try {
                 $mandrill = new \Mandrill(\Config\Config::MANDRILL_KEY);
@@ -81,9 +88,7 @@
 
             } 
             catch(\Mandrill_Error $e) {
-                // Mandrill errors are thrown as exceptions
                 echo 'A mandrill error occurred: ' . get_class($e) . ' - ' . $e->getMessage();
-                // A mandrill error occurred: Mandrill_Unknown_Subaccount - No subaccount exists with the id 'customer-123'
                 throw $e;
             }
         }
@@ -93,7 +98,8 @@
 
             $recoveryUrl = Router::url("forgotPassword2", array("email" => $user->getEmail(), "token" => $user->getToken()), true);
             $content = $this->getContent('password_recovery.php', array("recoveryUrl" => $recoveryUrl));
-
+            $this->outputToFile($content);
+            
             try {
                 $mandrill = new \Mandrill(\Config\Config::MANDRILL_KEY);
                 $config = array(
@@ -114,9 +120,7 @@
 
             } 
             catch(\Mandrill_Error $e) {
-                // Mandrill errors are thrown as exceptions
                 echo 'A mandrill error occurred: ' . get_class($e) . ' - ' . $e->getMessage();
-                // A mandrill error occurred: Mandrill_Unknown_Subaccount - No subaccount exists with the id 'customer-123'
                 throw $e;
             }
         }

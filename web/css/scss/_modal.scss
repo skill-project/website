@@ -59,8 +59,16 @@
     margin-top: 15px;
 }
 
-.modal-errors {
+.modal-errors, .modal-success {
     color: $pink;
     font-size: 14px;
     margin: 10px 0 7px 0;
+}
+
+.modal-success {
+    font-size: 24px;
+    width: 100%;
+    text-align: center;
+    color: #FFF;
+    margin: 15px 0;
 }

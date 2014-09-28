@@ -8,8 +8,8 @@
             <tr>
                 <td></td>
                 <td width="600" style="width: 600px;">
-                    <a href="<?= \Config\Config::BASE_URL; ?>" title="SKILL PROJECT">
-                        <img src="<?= \Config\Config::BASE_URL; ?>img/SKP-mail-header.png" alt="SKILL PROJECT" />
+                    <a href="<?= $GLOBALS['base_url']; ?>/" title="SKILL PROJECT">
+                        <img src="<?= $GLOBALS['base_url']; ?>/img/SKP-mail-header.png" alt="SKILL PROJECT" />
                     </a>
                     <table cellpadding="0" callmargin="0">
                         <tr>
@@ -20,10 +20,8 @@
                         <tr>
                             <td width="10" style="width: 10px;"></td>
                             <td width="580" style="width: 580px; font-family: Verdana; font-size: 11px;"> 
-                                <p>jfadkl sj fdkl fjdlfkj lkd f</p>
-                                <p><?= _("Please click on the link below to create a new password:"); ?></p>
+                                <p><?= _("Please click on the link below to reset your password:"); ?></p>
                                 <a href="<?= $recoveryUrl ?>"><?= $recoveryUrl ?></a>
-                                <p>jfadkl sj fdkl jfdskl jdfkf jlq wejr ljweqlr</p>
                             </td>
                             <td width="10" style="width: 10px;"></td>
                         </tr>
@@ -36,9 +34,9 @@
                     <table cellpadding="0" callmargin="0" width="600" style="width: 600px;">
                         <tr>
                             <td style="background-color: #282828;">
-                                <a href="<?= \Config\Config::BASE_URL; ?>" title="SKILL PROJECT">
-                                    <img src="<?= \Config\Config::BASE_URL; ?>img/logo-header.png" alt="Skill Project" />
-                                <a href="<?= \Config\Config::BASE_URL; ?>" title="SKILL PROJECT">
+                                <a href="<?= $GLOBALS['base_url']; ?>/" title="SKILL PROJECT">
+                                    <img src="<?= $GLOBALS['base_url']; ?>/img/logo-header.png" alt="Skill Project" />
+                                <a href="<?= $GLOBALS['base_url']; ?>/" title="SKILL PROJECT">
                             </td>
                         </tr>
                     </table>
