@@ -169,6 +169,15 @@
         )
     );
 
+    /* for Vanilla Forum authentication */    
+    $routes->add(
+        'jsConnect',
+        new Route('/community-connect/', 
+            array('controller' => 'User', 'action' => 'jsConnectVanilla'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
 //api
 
     $routes->add(

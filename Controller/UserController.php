@@ -415,4 +415,45 @@
         }
 
 
+        /**
+         * Js connect for Vanilla
+         */
+        public function jsConnectVanillaAction(){
+            require_once '../vanilla-connect/functions.jsconnect.php';
+
+            // 1. Get your client ID and secret here. These must match those in your jsConnect settings.
+            $clientID = "874963617";
+            $secret = "47486b32d5e9eab58e1f9b2c52fd47cd";
+
+            // 2. Grab the current user from your session management system or database here.
+            $signedIn = false; // this is just a placeholder
+
+            // YOUR CODE HERE.
+            if ($user = SH::getUser()){
+                $signedIn = true;
+            }
+
+            // 3. Fill in the user information in a way that Vanilla can understand.
+            $user = array();
+
+            if ($signedIn) {
+                // CHANGE THESE FOUR LINES.
+                $user['uniqueid'] = $user->getUuid();
+                $user['name'] = $user->getUsername();
+                $user['email'] = $user->getEmail();
+                $user['photourl'] = '';
+                if ($profileUser->getPicture() && file_exists("img/uploads/".$profileUser->getPicture())){
+                    $user['photourl'] = $GLOBALS['base_url'] . '/img/uploads/'.$profileUser->getPicture();
+                }
+            }
+
+            // 4. Generate the jsConnect string.
+
+            // This should be true unless you are testing. 
+            // You can also use a hash name like md5, sha1 etc which must be the name as the connection settings in Vanilla.
+            $secure = true; 
+            WriteJsConnect($user, $_GET, $clientID, $secret, $secure);
+
+        } 
+
     }
