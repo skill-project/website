@@ -429,7 +429,8 @@
             $signedIn = false; // this is just a placeholder
 
             // YOUR CODE HERE.
-            if ($user = SH::getUser()){
+            $userObj = SH::getUser();
+            if ($userObj){
                 $signedIn = true;
             }
 
@@ -438,12 +439,12 @@
 
             if ($signedIn) {
                 // CHANGE THESE FOUR LINES.
-                $user['uniqueid'] = $user->getUuid();
-                $user['name'] = $user->getUsername();
-                $user['email'] = $user->getEmail();
+                $user['uniqueid'] = $userObj->getUuid();
+                $user['name'] = $userObj->getUsername();
+                $user['email'] = $userObj->getEmail();
                 $user['photourl'] = '';
-                if ($profileUser->getPicture() && file_exists("img/uploads/".$profileUser->getPicture())){
-                    $user['photourl'] = $GLOBALS['base_url'] . '/img/uploads/'.$profileUser->getPicture();
+                if ($userObj->getPicture() && file_exists("img/uploads/".$userObj->getPicture())){
+                    $user['photourl'] = $GLOBALS['base_url'] . '/img/uploads/'.$userObj->getPicture();
                 }
             }
 
