@@ -36,6 +36,8 @@ var Tree = function() {
                 tree.nodes[jsonAutoLoad.data[tree.autoLoadCurrentDepth].uuid].select();
             }
 
+            camera.checkCameraPosition(tree.selectedNode);
+
             //Same logic as in Node:labelGroup.on("click")
             tree.selectedNode.totalChildren = children.length;            
             tree.selectedNode.open = true;
@@ -61,6 +63,7 @@ var Tree = function() {
             tree.nodes[jsonAutoLoad.data[tree.autoLoadCurrentDepth - 1].selectedSkill].select();
             tree.selectedNode.setVisualState("glow-nochildren");
             tree.autoLoad = false;
+            camera.checkCameraPosition(tree.selectedNode);
         }
     });
 }

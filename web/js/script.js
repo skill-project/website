@@ -94,6 +94,8 @@ $(window).load(function  () {
       parent: null
     });
 
+    nodesLayer.add(camera.dummyShape);
+
     //Fadein effect on canvas objects (sky and nodes)
     $("#kinetic, #backdrop").css("visibility", "visible").fadeIn({
       duration: 800

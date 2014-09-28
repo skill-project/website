@@ -21,6 +21,7 @@ var Search = function(){
     this.searchResultClicked = function(event){
         event.preventDefault();
         
+        if (tour.isActive == true || doTour == true) tour.actionOnTree("search-click");
 
         var selectedSlug = $(this).data("slug");
         

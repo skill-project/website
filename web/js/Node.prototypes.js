@@ -205,13 +205,17 @@ Node.prototype.startEdit = function() {
   this.panel = new Panel(this, {
     onComplete: function() {
       tree.busy = false;
+      var blockedByPanel = tree.editedNode.isBlockedByPanel();
+      if (blockedByPanel != false) {
+        camera.moveStageBy({x: -blockedByPanel - 50, y:0 });
+      }
     }
   });
 
   this.setVisualState("normal-edit");
 
   this.isEdited = true;
-  tree.editedNode = this;
+  tree.editedNode = this; 
 }
 
 //Closes the panel
@@ -357,19 +361,33 @@ Node.prototype.setGlow = function (state) {
 
 //Returns the bouding box of the node (glow excluded)
 Node.prototype.getBoundingBox = function(childrenCount) {
-  if (typeof childrenCount == "undefined" || tree.rootNode == this) {
+  if (typeof childrenCount == "undefined") {
     return {
       x1: this.shapes.x(),
       y1: this.shapes.y(),
-      x2: this.shapes.x() + this.shapes.width(),
-      y2: this.shapes.y() + this.shapes.height()
+      x2: this.shapes.x() + this.sizes.totalWidth,
+      y2: this.shapes.y() + this.sizes.totalHeight
     }
   }else {
+    //Hack : values shouldn't be hard coded
+    //If node really has no children, prepare a dummy one to calculate the boudingBox
+    if (Object.keys(this.children).length == 0) {
+      var modelChild = {
+        sizes: {
+          totalHeight: 56,
+          totalWidth: 237,
+          verticalGap: 20
+        }
+      };
+    }else {
+      var modelChild = this.children[Object.keys(this.children)[0]];
+    }
+
     return {
       x1: this.shapes.x(),
-      y1: this.shapes.y() + (this.sizes.labelHeight / 2) - (childrenCount * (this.sizes.labelHeight + this.sizes.verticalGap) - this.sizes.verticalGap) / 2,
-      x2: this.shapes.x() + this.shapes.width() + this.sizes.horizontalGap + this.sizes.totalWidth,
-      y2: this.shapes.y() + (this.sizes.labelHeight / 2) + (childrenCount * (this.sizes.labelHeight + this.sizes.verticalGap) - this.sizes.verticalGap) / 2
+      y1: this.shapes.y() + (this.sizes.labelHeight / 2) - (childrenCount * (modelChild.sizes.totalHeight + modelChild.sizes.verticalGap) - modelChild.sizes.verticalGap) / 2,
+      x2: this.shapes.x() + this.sizes.totalWidth + this.sizes.horizontalGap + modelChild.sizes.totalWidth,
+      y2: this.shapes.y() + (this.sizes.labelHeight / 2) + (childrenCount * (modelChild.sizes.totalHeight + modelChild.sizes.verticalGap) - modelChild.sizes.verticalGap) / 2
     }
   }
 }
@@ -767,6 +785,9 @@ Node.prototype.setSizes = function() {
 
     sizes.edgeStartXOffset = sizes.labelWidth / 2 + sizes.sunRadius;
     sizes.edgeStartYOffset = sizes.labelHeight / 2;
+
+    sizes.totalWidth = sizes.labelWidth;
+    sizes.totalHeight = sizes.labelHeight;
   }else {
     sizes = {
       labelWidth: 179,
@@ -785,6 +806,7 @@ Node.prototype.setSizes = function() {
     }
 
     sizes.totalWidth = sizes.labelWidth + sizes.editButtonWidth;
+    sizes.totalHeight = sizes.labelHeight;
 
     sizes.startXOffset = sizes.labelWidth * 0.25;
     sizes.startYOffset = sizes.labelHeight / 2;
@@ -800,4 +822,23 @@ Node.prototype.setSizes = function() {
   }
 
   this.sizes = sizes;
+}
+
+Node.prototype.getPositionRelativeToScreen = function() {
+  var screenBoundingBox = camera.getSecurityZone(0);
+  return {
+    x: (this.shapes.x() - screenBoundingBox.minX) * camera.scale,
+    y: (this.shapes.y() - screenBoundingBox.minY) * camera.scale
+  }
+}
+
+Node.prototype.isBlockedByPanel = function() {
+  if (camera.panelOffset > 0) {
+    var positionRelativeToScreen = this.getPositionRelativeToScreen();
+
+    var endOfNode = positionRelativeToScreen.x + (this.sizes.totalWidth * camera.scale);
+    var startOfPanel = stage.width() - camera.panelOffset;
+    if (endOfNode > startOfPanel) return (endOfNode - startOfPanel);
+    else return false;
+  }else return false;
 }

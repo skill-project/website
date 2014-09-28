@@ -13,6 +13,7 @@ var Camera = function() {
     this.backStars;
     this.backStage;
     this.backLayer;
+    this.dummyShape;
 
     var that = this;
 
@@ -90,6 +91,12 @@ var Camera = function() {
     //If not, animates the stage to the point where the node is centered on the screen
     this.checkCameraPosition = function(node, childrenCount)
     {
+        //the childrenCount parameter was initially added to calculate a boundingBox with children that are not yet present (just before expanding)
+        //if childrenCount was not passed but node is open, calculate boundingBox with actual children
+        if (typeof childrenCount == "undefined" && node.open == true) {
+            childrenCount = Object.keys(node.children).length;
+        }
+
         var securityZone = camera.getSecurityZone(camera.defaultSecurityZoneFactor);
 
         if (typeof childrenCount == "undefined") {
@@ -107,15 +114,15 @@ var Camera = function() {
 
         if (moveDirection) {
             camera.goToCoords({
-                x: node.shapes.x() + node.shapes.width() / 2,
-                y: node.shapes.y() + node.shapes.height() / 2
+                x: node.shapes.x() + node.sizes.totalWidth / 2,
+                y: node.shapes.y() + node.sizes.totalHeight / 2,
             }, moveDirection);
         }
     }
 
     this.goToCoords = function(params, moveDirection) {
         var destX = (moveDirection == "x" || moveDirection == "xy") ? stage.width() / 2 - (params.x - nodesLayer.offsetX() + camera.panelOffset / 2) * that.scale : stage.x();
-        var destY = (moveDirection == "y" || moveDirection == "xy") ? stage.height() / 2 - (params.y - nodesLayer.offsetY()) * that.scale : stage.y();
+        var destY = (moveDirection == "y" || moveDirection == "xy") ? stage.height() / 2 - (params.y - nodesLayer.offsetY() + camera.footerOffset / 2) * that.scale : stage.y();
 
         var tweenX = new Kinetic.Tween({
           node: stage,
@@ -138,6 +145,21 @@ var Camera = function() {
           }
         });
         tweenX.play();
+    }
+
+    this.moveStageBy = function(params) {
+        var tween = new Kinetic.Tween({
+            node: stage,
+            x: stage.x() + params.x,
+            y: stage.y() + params.y,
+            duration: 0.25,
+            easing: Kinetic.Easings.Linear,
+            onFinish: function() {
+                camera.cacheInvisibleNodes();
+            }
+        });
+        camera.animateStage(0.25);
+        tween.play();
     }
 
     this.cacheInvisibleNodes = function() {
@@ -401,6 +423,14 @@ var Camera = function() {
         //     // if (typeof tree.editedNode != "undefined") tree.editedNode.finishEdit();
 
         // });
+
+        //Light hack to animate stage in every situation
+        this.dummyShape = new Kinetic.Rect({
+            width:100,
+            height:100,
+            x:0,
+            y:0
+        });
     }
 
     this.skySetup = function () {
@@ -498,6 +528,7 @@ Camera.prototype.resizeElements = function() {
     camera.drawStars(newWidth, newHeight + 500);
     camera.backStage.draw();
 
+    camera.animateStage(0.5);
     camera.checkCameraPosition(tree.selectedNode);
 
     if (typeof tree.editedNode != "undefined") {
@@ -507,5 +538,21 @@ Camera.prototype.resizeElements = function() {
     }
 
     camera.cacheInvisibleNodes();
+}
 
+
+//Light hack to animate stage in every situation
+//This methode must be called just before animating the stage
+//seconds: time in seconds the stage is going to be animated
+//Hack is needed because some kind of optimisation in KineticJS 
+//doesn't automatically redraw the stage when the stage is the only element being animated
+//TODO : check on SO that this behaviour is not a bug
+Camera.prototype.animateStage = function(seconds) {
+    var tween = new Kinetic.Tween({
+        node: camera.dummyShape,
+        x: camera.dummyShape.x() + 100,
+        duration: seconds,
+        opacity:0
+    });
+    tween.play();
 }

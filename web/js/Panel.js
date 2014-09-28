@@ -21,7 +21,7 @@ var Panel = function(node, initParams) {
             that.loadSubPanelEvents(subPanel, userRole);
     	});
 
-        camera.panelOffset = $("#panel").width();
+        camera.panelOffset = $("#panel").outerWidth();
 
     	$("#panel").show("slide", {
     		direction: "right",
