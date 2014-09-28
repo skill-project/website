@@ -302,13 +302,11 @@
         /**
          * Show the profile
          */
-        public function profileAction($username, $withPassword = false){
-
+        public function viewProfileAction($username){
             $userManager = new UserManager();
             $securityHelper = new SH();
 
             $profileUser = $userManager->findByUsername($username);
-            $loggedUser = $securityHelper->getUser();
 
             $skillManager = new SkillManager();
             $latestActivity = $skillManager->getLatestActivity($profileUser);
@@ -316,6 +314,39 @@
             if (!$profileUser){
                 Router::fourofour(_("This user never was born, or vanished."));
             }
+            $params = array();
+            $params['latestActivity'] = $latestActivity;
+
+            $params['profileUser'] = $profileUser;
+            $params['title'] = SH::encode($username) . _("'s Profile");
+            $view = new View("view_profile.php", $params);
+            
+            $view->send();
+        }
+
+        /**
+         * Show the profile
+         */
+        public function profileAction($username, $withPassword = false){
+
+            $userManager = new UserManager();
+            $securityHelper = new SH();
+
+            $profileUser = $userManager->findByUsername($username);
+            $loggedUser = $securityHelper->getUser();
+    
+            if (!$profileUser){
+                Router::fourofour(_("This user never was born, or vanished."));
+            }
+            elseif (!$loggedUser){
+                SH::forbid();
+            }
+            elseif($loggedUser->getUsername() != $profileUser->getUsername()){
+                SH::forbid();
+            }
+
+            $skillManager = new SkillManager();
+            $latestActivity = $skillManager->getLatestActivity($profileUser);
 
             $uploadErrors = false;  
             $errors = false;
@@ -373,7 +404,7 @@
                         }
                         
                         if (empty($uploadErrors)){
-                            $filename = $loggedUser->getUuid() . ".jpg";
+                            $filename = uniqid() . ".jpg";
                             $img->thumbnail(180,180)->save("img/uploads/" . $filename, 100); //quality as second param
                             $user->setPicture( $filename );
                         }
@@ -382,6 +413,7 @@
 
                     $userManager->update($user);
                     $securityHelper->putUserDataInSession( $user );
+                    Router::reload();
                 }
                 else {
                     $errors = $validator->getErrors();
@@ -403,6 +435,22 @@
         
         }
 
+
+        public function deletePictureAction(){
+            $userManager = new UserManager();
+            $securityHelper = new SH();
+
+            $loggedUser = $securityHelper->getUser();
+            if (!$loggedUser){
+                SH::forbid();
+            }
+            if (file_exists("img/uploads/" . $filename)){
+                unlink("img/uploads/" . $filename);
+                $loggedUser->setPicture("");
+                $userManager->update($loggedUser);
+            }
+            Router::redirect(Router::url("profile", array("username" => $loggedUser->getUsername())));
+        }
 
 
         /**

@@ -5,6 +5,10 @@ html.page {
         height: 128px;
     }
 
+    a:hover {
+        color: $blue;
+    }
+
     h1 {
         font-weight: normal;
         font-size: 32px;
@@ -37,6 +41,7 @@ html.page {
     #right-column {
         padding-left: 40px;
         width: 670px;
+        position: relative;
     }
 
     #page-footer {
@@ -72,8 +77,10 @@ html.page {
     }
 
     input[type=text], input[type=email], textarea{
-        border-color: #000;
+        outline: none;
         color: #000;
+        border: 1px solid #000;
+        padding: 0 5px;
     }
 
     form {
@@ -82,7 +89,7 @@ html.page {
 
     label {
         display: block;
-        margin-top: 15px;
+        margin: 15px 0 3px 0;
         font-size: 14px;
     }
 
@@ -101,7 +108,7 @@ html.page {
 
 #bio-textarea {
     width: 663px;
-    height: 80px;
+    height: 120px;
 }
 
 #avatar-rect {
@@ -126,14 +133,25 @@ html.page {
 
         p {
             margin-bottom: 15px;
+            text-align: center;
         }
 
     }
 }
 
-.change-pass-container {
-    float: left;
+
+
+#picture-input {
+    margin: 10px 0;
 }
+
+.change-pass-container {
+    position: absolute;
+    left: 40px;
+    bottom: 5px;
+}
+
+
 
 .profile-section {
     margin-bottom: 20px;
@@ -142,7 +160,6 @@ html.page {
     line-height: 14px;
 
     h3 {
-        margin-bottom:  20px;
         font-size: 16px;
     }
 
@@ -153,6 +170,10 @@ html.page {
         display: inline-block;
         text-align: right;
     }
+}
+
+form .profile-section:not(:first-child) {
+    margin-top: 20px;
 }
 
 input[type="submit"].pink-submit {
@@ -226,11 +247,3 @@ section.first {
 }
 
 /* end project */
-
-#avatar-rect {
-
-    p {
-        text-align: center;
-    }
-
-}

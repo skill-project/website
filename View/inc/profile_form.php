@@ -25,6 +25,9 @@
             <label for="picture-input"><?= _("Upload a picture of you"); ?></label>
             <input type="file" name="picture" id="picture-input" />
             <p class="hint">Minimum size: 180px x 180px</p>
+            <?php if ($loggedUser->getPicture()): ?>
+                <a href="<?= \Controller\Router::url('deletePicture'); ?>" title="<?= _("Delete current picture"); ?>"><?= _("Delete current picture"); ?></a>
+            <?php endif; ?>
             <?php 
             if (!empty($uploadErrors)) {
                 foreach($uploadErrors as $ue){
@@ -33,11 +36,11 @@
             }
             ?>
         </div>
-        <div class="row">
-            <div>
-                <label for="interests"><?= _("CATEGORIES OF INTEREST") ?></label>
-                <input type="text" name="interests" id="interests" value="<?= $loggedUser->getInterests() ?>" />
-            </div>
+    </div>
+    <div class="profile-section">
+        <div>
+            <label for="interests"><?= _("CATEGORIES OF INTEREST") ?></label>
+            <input type="text" name="interests" id="interests" value="<?= $loggedUser->getInterests() ?>" />
         </div>
     </div>
     <div class="profile-section">

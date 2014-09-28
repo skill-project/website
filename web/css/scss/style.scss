@@ -2,6 +2,7 @@ $gray: #282828;
 $blue: #1ADAE6;
 $pink: #D37081;
 $green: #BDEACB;
+$font: "Avenir-Book";
 
 @import 'reset';
 
@@ -9,9 +10,13 @@ html, body {
 	margin:0;
     overflow: hidden;
     color:white;
-    font-family: "Avenir-Book";
+    font-family: $font;
     background-color:$gray;
     min-height: 100%;
+}
+
+input, textarea {
+    font-family: $font;
 }
 
 #wrapper {

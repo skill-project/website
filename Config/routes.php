@@ -112,8 +112,16 @@
     );
 
     $routes->add(
-        'profile',
+        'viewProfile',
         new Route('/profile/{username}/',
+            array('controller' => 'User', 'action' => 'viewProfile'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
+    $routes->add(
+        'profile',
+        new Route('/profile/{username}/edit/',
             array('controller' => 'User', 'action' => 'profile'), array(), array(), 
             '{lang}.'.Config::DOMAIN
         )
@@ -121,7 +129,7 @@
 
     $routes->add(
         'profileWithPassword',
-        new Route('/profile/{username}/edit-password/',
+        new Route('/profile/{username}/edit/edit-password/',
             array('controller' => 'User', 'action' => 'profileWithPassword'), array(), array(), 
             '{lang}.'.Config::DOMAIN
         )
@@ -165,6 +173,14 @@
         'apply',
         new Route('/apply/', 
             array('controller' => 'User', 'action' => 'apply'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
+    $routes->add(
+        'deletePicture',
+        new Route('/delete-picture/', 
+            array('controller' => 'User', 'action' => 'deletePicture'), array(), array(), 
             '{lang}.'.Config::DOMAIN
         )
     );

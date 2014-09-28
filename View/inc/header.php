@@ -19,9 +19,9 @@
             <li><a href="<?= \Controller\Router::url("graph"); ?>" title=""><?= _("SKILLWALK"); ?></a></li>
             <li><a href="<?= \Controller\Router::url("project"); ?>" title=""><?= _("THE PROJECT"); ?></a></li>
             <?php if (Utils\SecurityHelper::userIsLogged()): ?>
-                <li><a href="<?= \Controller\Router::url("profile", array("username" => Utils\SecurityHelper::getUser()->getUsername())); ?>" title="Profile"><?= _("PROFILE"); ?></a></li>
+                <li><a href="<?= \Controller\Router::url("viewProfile", array("username" => Utils\SecurityHelper::getUser()->getUsername())); ?>" title="<?= _("View your profile"); ?>"><?= _("PROFILE"); ?></a></li>
             <?php else: ?>
-                <li><a class="register-link" href="<?= \Controller\Router::url("register"); ?>" title=""><?= _("PROFILE"); ?></a></li>
+                <li><a class="register-link" href="<?= \Controller\Router::url("register"); ?>" title="<?= _("Register !"); ?>"><?= _("PROFILE"); ?></a></li>
             <?php endif; ?>
             <li><a href="<?= \Controller\Router::url("apply"); ?>" title=""><?= _("APPLY"); ?></a></li>
             <li class="last"><a href="http://vanilla.skill-project.org/" title=""><?= _("COMMUNITY"); ?></a></li>

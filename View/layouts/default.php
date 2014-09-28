@@ -1,5 +1,10 @@
+<?php
+	$pageLangName = str_replace(".php", "", $page);
+	$pageName = preg_replace("#^[a-z]{2}_#", "", $pageLangName);
+	$htmlClasses = ($pageLangName == $pageName) ? $pageName : $pageName . " " . $pageLangName;
+?>
 <!DOCTYPE html>
-<html lang="fr" class="page <?= str_replace(".php", "", $page) ?>">
+<html lang="fr" class="page <?= $htmlClasses ?>">
 <head>
 	<?php include("../View/inc/page_head.php"); ?>
 </head>	
