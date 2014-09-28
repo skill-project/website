@@ -138,11 +138,13 @@
 
                 if ($validator->isValid()){
                     $skillManager = new SkillManager();
+                    $skill = $skillManager->findByUuid($skillUuid);
                     $deletionResult = $skillManager->delete($skillUuid);
                 }
             }
 
             if ($deletionResult === true){
+                $this->warn("deleted", $skill);
                 $json = new \Model\JsonResponse("ok", _("Node deleted."));
             }
             else {
@@ -178,6 +180,11 @@
                     $result = $discussionMananager->saveNewMessage($skillUuid, $topic, $message);      
                     if ($result){
                         $json = new \Model\JsonResponse("ok", _("Message posted !"));
+                        $skillManager = new SkillManager();
+                        $skill = $skillManager->findByUuid($skillUuid);
+                        $this->warn("discussed", $skill, array(
+                            "message" => $message
+                        ));
                     }
                     else {
                         $json = new \Model\JsonResponse("error", _("Error posting message."));
@@ -230,6 +237,11 @@
                             $skillManager->updateAllDepths();
 
                             $json = new \Model\JsonResponse("ok", _("Skill moved !"));
+
+                            $this->warn("moved", $skill, array(
+                                "newParent" => $newParentUuid
+                            ));
+
                             break;
 
                         case "copy":
@@ -286,6 +298,11 @@
                         $translationManager->updateSkillTranslation($skillTrans, $previousTranslationNode);
                     }
 
+                    $this->warn("translated", $skill, array(
+                        "translated in" => $languageCode,
+                        "translation" => $skillTrans
+                    ));
+
                     $json = new \Model\JsonResponse("ok", _("Translation saved !"));
                     $json->setData($skill->getJsonData());
                     $json->send();
@@ -322,13 +339,17 @@
 
                 if ($validator->isValid()){
 
-
                     $previousName = $skill->getName();
                     $skill->setName( $skillName );
 
                     $user = SH::getUser();
 
                     $skillManager->update($skill, $user->getUuid(), $previousName);
+
+                    $this->warn("renamed", $skill, array(
+                        "previous name" => $previousName,
+                        "new name" => $skillName
+                    ));
 
                     $json = new \Model\JsonResponse("ok", _("Skill saved !"));
                     $json->setData($skill->getJsonData());
@@ -427,6 +448,12 @@
                     $skill->setDepth( $parentSkill->getDepth() + 1 );
                     $skillManager->save($skill, $skillParentUuid, $userUuid);
 
+
+                    $this->warn("created", $skill, array(
+                        "name" => $skillName,
+                        "uuid" => $skill->getUuid()
+                    ));
+
                     if($creationType == "parent") {
                         //right now, the new skill was added on the same level as the selected skill
                         //the new skill has a correct depth
@@ -461,6 +488,24 @@
             $jsTrans = new \l10n\JSTranslations;
             header("Content-type: application/javascript");
             echo "var jt = " . json_encode($jsTrans->getJSTranslations(), JSON_PRETTY_PRINT);
+        }
+
+
+        public function warn($type, Skill $skill, array $data){
+            $content = $skill->getName() . " (". $skill->getUuid() .") " . _(" has been $type.");
+
+            foreach($data as $key => $value){
+                $content .= "<br />$key : $value";
+            }
+
+            if ($user = SH::getUser()){
+                $content .= "<br /><br />User : " . $user->getUsername();
+            }
+
+            $mailer = new Mailer();
+            $mailer->sendWarning($content, $type);
+
+
         }
 
     }

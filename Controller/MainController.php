@@ -57,6 +57,11 @@
 
             $uuid = $skillManager->getUuidFromSlug($slug);
             $path = $skillManager->findNodePathToRoot($uuid);
+
+            if (!$path){
+                Router::fourofour();
+            }
+
             $skill = $skillManager->findByUuid($uuid);
             $json = new \Model\JsonResponse();
             $json->setData($path);

@@ -124,4 +124,42 @@
                 throw $e;
             }
         }
+
+        public function sendWarning($content, $type){
+
+            try {
+                $mandrill = new \Mandrill(\Config\Config::MANDRILL_KEY);
+                $config = array(
+                    'html' => $content,
+                    'subject' => _('Skill Project Alert: ' .$type. ' !'),
+                    'to' => array(
+                        array(
+                            'email' => "guillaume@skill-project.org",
+                            'name' => "Guillaume",
+                            'type' => 'to'
+                        ),
+                        array(
+                            'email' => "raphael@skill-project.org",
+                            'name' => "Raphael",
+                            'type' => 'to'
+                        ),
+                        array(
+                            'email' => "dario@skill-project.org",
+                            'name' => "Dario",
+                            'type' => 'to'
+                        )
+                    )
+                );
+                $message = array_merge($this->defaultConfig, $config);
+                $async = false;
+                $result = $mandrill->messages->send($message, $async);
+                return $result;
+
+            } 
+            catch(\Mandrill_Error $e) {
+                echo 'A mandrill error occurred: ' . get_class($e) . ' - ' . $e->getMessage();
+                throw $e;
+            }
+
+        }
     }

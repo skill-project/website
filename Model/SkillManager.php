@@ -397,6 +397,7 @@
                 $childrenNumber = $this->countChildren($uuid);
                 if($childrenNumber == 0){
 
+                    //change the label from :Skill to :DeletedSkill
                     $cyp = "MATCH (parent:Skill)-[:HAS]->(s:Skill)-[r]-() WHERE s.uuid = {uuid} 
                             SET s.previousParentUuid = parent.uuid 
                             REMOVE s:Skill SET s :DeletedSkill";
