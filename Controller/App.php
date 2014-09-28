@@ -96,6 +96,10 @@
                 Router::fourofour($e->getMessage());
             }
 
+            if (empty($urlParameters)){
+                Router::fourofour();
+            }
+
             //instanciate the controller
             $className = "Controller" . '\\' . $urlParameters['controller'] . "Controller";
             $controller = new $className();

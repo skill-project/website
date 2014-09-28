@@ -34,10 +34,12 @@
 
         public static function fourofour($message = null){
             header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
-            echo "<h1>404 !</h1>";
+            $params = array("message" => "");
             if ($message && \Config\Config::DEBUG){
-                echo $message;
+                $params['message'] = $message;
             }
+            $view = new \View\View("404.php", array("title" => _("You 404ed")));
+            $view->send();
             die();
         }
 
