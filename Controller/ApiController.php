@@ -440,50 +440,54 @@
                     //retrieve current user uuid
                     $userUuid = SH::getUser()->getUuid();
                     
-                    //flag for later
-                    $autoTranslationMode = false;
+                    //get all Languages (for the translation <select>)
+                    $lc = new \Model\LanguageCode();
+                    $languages = $lc->getAllCodes("short");
 
+                    $translationManager = new \Model\TranslationManager();
+                    
                     //if the skill in not being created in english: 
                     if ($GLOBALS['lang'] != \Config\Config::DEFAULT_LOCALE){
-
-                        $autoTranslationMode = true;
-
                         //get the english version
-                        $translationManager = new \Model\TranslationManager();
                         $localeSkillName = $skillName;
                         $skillName = $translationManager->googleTranslate($localeSkillName, \Config\Config::DEFAULT_LOCALE, $GLOBALS['lang']);
 
                     }
 
-                    //create the skill object
+                    //create the skill object in default lang
                     $skill = new Skill();
                     $skill->setNewUuid();
-                    $skill->setName($skillName);
+                    $skill->setName( $skillName );
                     $skill->setDepth( $parentSkill->getDepth() + 1 );
                     $skillManager->save($skill, $skillParentUuid, $userUuid);
 
-                    //if we just auto translated the skill name...
-                    if ($autoTranslationMode){
-                        //save a translation
-                        $translationManager->saveSkillTranslation($GLOBALS['lang'], $localeSkillName, $skill);
+                    $translations = array();
 
-                        $this->warn("created and autotranslated", $skill, array(
-                            "name" => $localeSkillName,
-                            "lang" => $GLOBALS['lang'],
-                            "auto trans" => $skillName,
-                            "uuid" => $skill->getUuid()
-                        ));
-                        
-                    }
-                    else {
-                        $this->warn("created", $skill, array(
-                            "name" => $skillName,
-                            "uuid" => $skill->getUuid()
-                        ));
-                        
-                    }
-                    
+                    //then auto translate
+                    foreach($languages as $code){
+                        //english is done already
+                        if ($code == \Config\Config::DEFAULT_LOCALE || $code == "xl"){ continue; }
 
+                        //this is the current language, and the skill was not added in english
+                        if ($code == $GLOBALS['lang'] && isset($localeSkillName)){
+                            //use user's name
+                            $transSkillName = $localeSkillName;
+                        }
+                        //we are in english, translate from the user name, from english to code
+                        elseif ($GLOBALS['lang'] == \Config\Config::DEFAULT_LOCALE) {
+                            $transSkillName = $translationManager->googleTranslate($skillName, $code, $GLOBALS['lang']);
+                        }
+                        //we are not in english, translate from the user name, from his lang to code
+                        elseif (isset($localeSkillName)) {
+                            $transSkillName = $translationManager->googleTranslate($localeSkillName, $code, $GLOBALS['lang']);
+                        }
+
+                        if ($transSkillName){
+                            $translations[$code] = $transSkillName;
+                            $translationManager->saveSkillTranslation($code, $transSkillName, $skill);
+                        }
+                      
+                    }
 
                     if($creationType == "parent") {
                         //right now, the new skill was added on the same level as the selected skill
@@ -498,7 +502,15 @@
                         //correct all depths
                         $skillManager->updateAllDepths();
                     }
+
+                    $infos = array_merge($translations, array(
+                        "name" => $skillName,
+                        "uuid" => $skill->getUuid()
+                    ));
+
+                    $this->warn("created and autotranslated", $skill, $infos);  
                     
+                    $skill = $skillManager->findByUuid($skill->getUuid());
 
                     $json = new \Model\JsonResponse("ok", _("Skill saved !"));
                     $json->setData($skill->getJsonData());
