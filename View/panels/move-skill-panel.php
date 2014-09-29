@@ -6,7 +6,8 @@
     <form method="POST" action="<?= \Controller\Router::url("moveSkill"); ?>" id="move-skill-form">
         <input type="hidden" name="selectedSkillUuid" id="selectedSkillUuid" value="<?= $skill->getUuid(); ?>" />
         <input type="hidden" name="destinationUuid" id="destinationUuid" value="" />
-        <input type="hidden" name="moveType" id="moveType" value="copy" />
+        <input type="hidden" name="moveType" id="moveType" value="move" />
+        <?php /* ?>
         <div id="move-step1">
             <label for="moveType"><?= _("1.&nbsp;CHOOSE THE WAY YOU MOVE"); ?></label>
             <div class="img-btn img-btn-l" id="moveTypeMove" data-value="move">
@@ -19,13 +20,14 @@
             </div>
             <div class="clearfix"></div>
         </div>
+        <?php */ ?>
         <div id="move-step2">
-            <p class="clearfix"><?= _("2.&nbsp;CHOOSE A DESTINATION"); ?><br />
+            <p class="clearfix"><?= _("CHOOSE A DESTINATION"); ?><br />
             <?=_("Select a skill as a new parent, then click the button."); ?></p>
         </div>
         <div id="move-step3">
             <p><?=_("Destination :"); ?><span id="destination-skill-name"></span></p>
-            <input type="submit" id="move-form-submit" value="<?= _("COPY") ?>" />
+            <input type="submit" id="move-form-submit" value="<?= _("MOVE") ?>" />
             <span class="message-zone"></span>
         </div>
     </form>

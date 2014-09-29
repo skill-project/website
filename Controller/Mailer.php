@@ -88,8 +88,7 @@
 
             } 
             catch(\Mandrill_Error $e) {
-                echo 'A mandrill error occurred: ' . get_class($e) . ' - ' . $e->getMessage();
-                throw $e;
+                $this->handleError($e);
             }
         }
 
@@ -120,8 +119,7 @@
 
             } 
             catch(\Mandrill_Error $e) {
-                echo 'A mandrill error occurred: ' . get_class($e) . ' - ' . $e->getMessage();
-                throw $e;
+                $this->handleError($e);
             }
         }
 
@@ -160,8 +158,7 @@
 
             } 
             catch(\Mandrill_Error $e) {
-                echo 'A mandrill error occurred: ' . get_class($e) . ' - ' . $e->getMessage();
-                throw $e;
+                $this->handleError($e);
             }
         }
 
@@ -197,9 +194,15 @@
 
             } 
             catch(\Mandrill_Error $e) {
+                $this->handleError($e);
+            }
+
+        }
+
+        private function handleError($e){
+            if (\Config\Config::DEBUG){
                 echo 'A mandrill error occurred: ' . get_class($e) . ' - ' . $e->getMessage();
                 throw $e;
             }
-
         }
     }

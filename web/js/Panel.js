@@ -153,7 +153,7 @@ var Panel = function(node, initParams) {
                 });
                 break;
             case "move-skill-panel":
-                $(subPanel).find(".img-btn").on("tap click", function() {
+                /*$(subPanel).find(".img-btn").on("tap click", function() {
                     $(subPanel).find("#moveType").val($(this).data("value"));
                     $(subPanel).find("#move-form-submit").val($(this).data("value").toUpperCase());
                     $(subPanel).find(".selected").toggleClass("selected");
@@ -162,6 +162,7 @@ var Panel = function(node, initParams) {
                     $(subPanel).find("#move-step2").css("display", "block");
                     tree.enterTargetMode();
                 });
+                */
 
                 $("#move-skill-form").on("submit", function(e){
                     e.preventDefault();
@@ -332,6 +333,8 @@ Panel.prototype.panelLoadEvents = function() {
     switch (panel.$activeSubpanel[0].id) {
         case "move-skill-panel":
             //Nothing to do for now, but who knows...
+            $(panel.$activeSubpanel).find("#move-step2").css("display", "block");
+            tree.enterTargetMode();
             break;
     }
 }
