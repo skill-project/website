@@ -185,6 +185,15 @@
         )
     );
 
+    
+    $routes->add(
+        'switchLanguage',
+        new Route('/switch-lang/{code}/', 
+            array('controller' => 'User', 'action' => 'switchLanguage'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
     /* for Vanilla Forum authentication */    
     $routes->add(
         'jsConnect',

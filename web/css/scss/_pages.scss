@@ -14,6 +14,11 @@ html.page {
         font-size: 32px;
     }
 
+    .emphasis {
+        text-align: center;
+        font-size: 21px;
+    }
+
     #header img {
         width: 272px;
         height: 67px;
@@ -263,6 +268,15 @@ select {
 
 #motiv-textarea {
     height: 210px;
+}
+
+.select-border {
+    border: 1px solid #000;
+
+    select {
+        border: none;
+    }
+
 }
 
 /* end apply */

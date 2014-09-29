@@ -491,7 +491,7 @@
         }
 
 
-        public function warn($type, Skill $skill, array $data){
+        public function warn($type, Skill $skill, array $data = array()){
             $content = $skill->getName() . " (". $skill->getUuid() .") " . _(" has been $type.");
 
             foreach($data as $key => $value){
@@ -501,6 +501,8 @@
             if ($user = SH::getUser()){
                 $content .= "<br /><br />User : " . $user->getUsername();
             }
+
+            $content .= "<br />Date:" . date("Y-m-d H:i:s");
 
             $mailer = new Mailer();
             $mailer->sendWarning($content, $type);

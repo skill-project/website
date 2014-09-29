@@ -49,12 +49,21 @@
             }
             //if we are on www. on no subdomain
             else {   
-                //detect browser lang
-                $language = new \Browser\Language();
-                $langBrowser = $language->getLanguage();
+                //cookie ?
+                if (!empty($_COOKIE['lang'])){
+                    //if broswer lang is supported
+                    $lang = (in_array($_COOKIE['lang'], $allCodes)) ? $_COOKIE['lang'] : null;
+                }
 
-                //if broswer lang is supported
-                $lang = (in_array($langBrowser, $allCodes)) ? $langBrowser : $default;
+                if (empty($lang)){
+                    //detect browser lang
+                    $language = new \Browser\Language();
+                    $langBrowser = $language->getLanguage();
+
+                    //if broswer lang is supported
+                    $lang = (in_array($langBrowser, $allCodes)) ? $langBrowser : $default;
+                }
+                
 
                 //redirect, and start again 
                 header("Location: " . \Controller\Router::url("home", array("lang" => $lang)));

@@ -16,16 +16,17 @@ var nodesLayer,
     doResize;   //sort of resizeEnd event : http://stackoverflow.com/questions/5489946/jquery-how-to-wait-for-the-end-of-resize-event-and-only-then-perform-an-ac
 
 var globalSizes = {
-  footerHeight: 82,
+  footerHeight: 82
 }
 
 if (typeof rootNodeId != "undefined") {
   var tree = new Tree;
   var camera;
   var search = new Search;
-  var user = new User;
   var tour = new Tour;  
 }
+
+var user = new User;
 
 
 $(document).ready(function (){

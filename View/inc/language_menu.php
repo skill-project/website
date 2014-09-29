@@ -14,7 +14,8 @@
         echo '<ul>';
         foreach($allCodes as $code => $langInfo){
             $params['lang'] = $code;
-            echo '<li><a href="'.\Controller\Router::url($action, $params).'" 
+            echo '<li><a href="'.\Controller\Router::url("switchLanguage", array("code" => $code)) . 
+                                    "?redirectTo=".urlencode(\Controller\Router::url($action, $params)).'" 
                     title="'.$langInfo['nativeName'].'">' . $langInfo['nativeName'] . '</a></li>';
         }
         echo '</li></ul>';

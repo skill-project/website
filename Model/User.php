@@ -20,6 +20,7 @@
 		protected $interests;
 		protected $ipAtRegistration;
 		protected $emailValidated;
+		protected $applicationStatus; //0 for no application, 1 for accepted, 2 for in process
 		protected $dateCreated;
 		protected $dateModified;
 
@@ -61,6 +62,7 @@
 			$this->node->setProperty("username", $this->username);
 			$this->node->setProperty("email", $this->email);
 			$this->node->setProperty("emailValidated", $this->emailValidated);
+			$this->node->setProperty("applicationStatus", $this->applicationStatus);
 			$this->node->setProperty("role", $this->role);
 			$this->node->setProperty("languages", $this->languages);
 			$this->node->setProperty("interests", $this->interests);
@@ -300,6 +302,30 @@
 	    public function setBio($bio)
 	    {
 	        $this->bio = SH::safe($bio);
+
+	        return $this;
+	    }
+	
+	    /**
+	     * Gets the value of applicationStatus.
+	     *
+	     * @return mixed
+	     */
+	    public function getApplicationStatus()
+	    {
+	        return $this->applicationStatus;
+	    }
+
+	    /**
+	     * Sets the value of applicationStatus.
+	     *
+	     * @param mixed $applicationStatus the application status
+	     *
+	     * @return self
+	     */
+	    public function setApplicationStatus($applicationStatus)
+	    {
+	        $this->applicationStatus = $applicationStatus;
 
 	        return $this;
 	    }

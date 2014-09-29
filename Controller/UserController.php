@@ -476,13 +476,38 @@
             $loggedUser = $securityHelper->getUser();
             $params['loggedUser'] = $loggedUser;
 
-            if (!empty($_POST)){
-                die("todo");
+            if (!empty($_POST) && $loggedUser){
+
+                $loggedUser->setApplicationStatus(2); //in process
+                $userManager->update($loggedUser);
+
+                //extract post data
+                foreach($_POST as $key => $value){
+                    $params[$key] = SH::safe($value);
+                }
+
+                $mailer = new Mailer();
+                $mailer->sendAdminApplication($params);
+                Router::redirect(Router::url("apply"));
             }
 
 
             $view = new View("apply.php", $params); 
             $view->send();
+        }
+
+        /**
+         * Handle to lang switching, after selection in the lang menu
+         */
+        public function switchLanguageAction($code){
+
+            //save lang in cookie
+            setcookie("lang", $code, time()+31536000, "/", ".".\Config\Config::DOMAIN, false);
+
+            if (!empty($_GET['redirectTo'])){
+                Router::redirect( urldecode($_GET['redirectTo']) );
+            }
+            Router::redirect( Router::url("home") );
         }
 
 

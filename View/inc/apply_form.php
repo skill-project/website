@@ -18,13 +18,15 @@
             </div>
             <div class="r">
                 <label for="update_freq"><?= _("How often do you plan to edit Skill Project ?") ?></label>
-                <select id="update_freq" name="update_freq">
-                    <option value="Now and then"><?= _("Now and then"); ?></option>
-                    <option value="At least once a month"><?= _("At least once a month"); ?></option>
-                    <option value="At least once a week"><?= _("At least once a week"); ?></option>
-                    <option value="For now, every day"><?= _("For now, every day"); ?></option>
-                    <option value="Any free time i have, it's for Skill Project"><?= _("Any free time i have, it's for Skill Project"); ?></option>
-                </select>
+                <div class="select-border">
+                    <select id="update_freq" name="update_freq">
+                        <option value="Now and then"><?= _("Now and then"); ?></option>
+                        <option value="At least once a month"><?= _("At least once a month"); ?></option>
+                        <option value="At least once a week"><?= _("At least once a week"); ?></option>
+                        <option value="For now, every day"><?= _("For now, every day"); ?></option>
+                        <option value="Any free time i have, it's for Skill Project"><?= _("Any free time i have, it's for Skill Project"); ?></option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>

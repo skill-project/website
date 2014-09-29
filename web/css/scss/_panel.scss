@@ -140,6 +140,8 @@ textarea, input[type=text], input[type=email], input[type=password], input[type=
 
 textarea {
     height: 110px;
+    line-height: 18px;
+    padding-top: 3px;
 }
 
 #panel input[type=text] {
