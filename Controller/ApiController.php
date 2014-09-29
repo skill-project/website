@@ -344,16 +344,33 @@
                 if ($validator->isValid()){
 
                     $previousName = $skill->getName();
-                    $skill->setName( $skillName );
-
                     $user = SH::getUser();
 
-                    $skillManager->update($skill, $user->getUuid(), $previousName);
+                    //if the skill in not being renamed in english: 
+                    if ($GLOBALS['lang'] != \Config\Config::DEFAULT_LOCALE){
+                        $translationManager = new TranslationManager();
 
-                    $this->warn("renamed", $skill, array(
-                        "previous name" => $previousName,
-                        "new name" => $skillName
-                    ));
+                        //insert or update, the same
+                        $translationManager->saveSkillTranslation($GLOBALS['lang'], $skillName, $skill);
+
+                        $this->warn("translated by rename", $skill, array(
+                            "translated in" => $GLOBALS['lang'],
+                            "translation" => $skillName
+                        ));
+                    }
+                    //else rename the skill 
+                    else {
+                        $skill->setName( $skillName );
+                        $skillManager->update($skill, $user->getUuid(), $previousName);
+
+                        $this->warn("renamed", $skill, array(
+                            "previous name" => $previousName,
+                            "new name" => $skillName
+                        ));
+                    }
+
+                    //reload skill
+                    $skill = $skillManager->findByUuid($skill->getUuid());
 
                     $json = new \Model\JsonResponse("ok", _("Skill saved !"));
                     $json->setData($skill->getJsonData());
