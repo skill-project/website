@@ -284,24 +284,28 @@
                     $skillManager = new SkillManager();
                     $skill = $skillManager->findByUuid($skillUuid);
 
-                    $translationManager = new TranslationManager();
-
-                    //insert or update ?
-                    $previousTranslationNode = $translationManager->findSkillTranslationInLanguage($skill, $languageCode);
-                    
-                    //insert
-                    if (!$previousTranslationNode){
-                        $translationManager->insertSkillTranslation($languageCode, $skillTrans, $skill);
+                    //if the translation is being made for english, rename the skill instead
+                    if ($languageCode == \Config\Config::DEFAULT_LOCALE){
+                        $previousName = $skill->getName();
+                        $skill->setName($skillTrans);
+                        $skillManager->update($skill, SH::getUser()->getUuid(), $previousName);
+                        $this->warn("translated english version", $skill, array(
+                            "translated in" => $languageCode,
+                            "renamed to" => $skillTrans
+                        ));
                     }
-                    //update
+                    //else its a real translation
                     else {
-                        $translationManager->updateSkillTranslation($skillTrans, $previousTranslationNode);
-                    }
+                        $translationManager = new TranslationManager();
 
-                    $this->warn("translated", $skill, array(
-                        "translated in" => $languageCode,
-                        "translation" => $skillTrans
-                    ));
+                        //insert or update, the same
+                        $translationManager->saveSkillTranslation($languageCode, $skillTrans, $skill);
+
+                        $this->warn("translated", $skill, array(
+                            "translated in" => $languageCode,
+                            "translation" => $skillTrans
+                        ));
+                    }
 
                     $json = new \Model\JsonResponse("ok", _("Translation saved !"));
                     $json->setData($skill->getJsonData());
@@ -371,35 +375,30 @@
 
             SH::checkUsage(120); //set high for autocomplete
 
-            $cyp = "MATCH (gp:Skill)-[:HAS*0..1]->(p:Skill)-[:HAS]->(s:Skill)
-                    WHERE s.name =~ {keywords}
-                    RETURN s,gp,p LIMIT 10";
-            
-            $eachWords = explode(" ", addslashes(trim(urldecode($_GET['q']))));
-            $regexp = "(?i).*";
-            foreach($eachWords as $word){
-                $regexp .= $word . ".*";
-            }
-
-            $query = new Query($this->client, $cyp, array("keywords" => $regexp));
-            $matches = $query->getResultSet();
+            $skillManager = new SkillManager();
+            $matches = $skillManager->search($_GET['q']);
 
             $results = array();
             foreach ($matches as $row) {
-                $uuid = $row['s']->getProperty("uuid");
+
+                $skill = new Skill($row['s']);
+                $uuid = $skill->getUuid();
                 if (array_key_exists($uuid, $results)){
                     continue;
                 }
                 $results[$uuid] = array(
-                    "name" => $row['s']->getProperty("name"),
+                    "name" => $skill->getLocalName(),
                     "uuid" => $uuid,
-                    "slug" => $row['s']->getProperty("slug"),
+                    "slug" => $skill->getSlug(),
                 );
-                if (empty($results[$uuid]['parent']) && !empty($parent = $row['p']->getProperty('name'))){
-                    $results[$uuid]['parent'] = $parent;
+                if (empty($results[$uuid]['parent']) && !empty($row['p']->getProperty('name'))){
+                    $parentSkill = new Skill($row['p']);
+                    $results[$uuid]['parent'] = $parentSkill->getLocalName();
                 }
-                if (empty($results[$uuid]['gp']) && !empty($gp = $row['gp']->getProperty('name')) && $gp != $parent){
-                    $results[$uuid]['gp'] = $gp;
+                if (empty($results[$uuid]['gp']) && !empty($row['gp']->getProperty('name')) 
+                        && $row['gp']->getProperty('name') != $row['p']->getProperty('name')){
+                    $gpSkill = new Skill($row['gp']);
+                    $results[$uuid]['gp'] = $gpSkill->getLocalName();
                 }
             }
 
@@ -441,6 +440,21 @@
                     //retrieve current user uuid
                     $userUuid = SH::getUser()->getUuid();
                     
+                    //flag for later
+                    $autoTranslationMode = false;
+
+                    //if the skill in not being created in english: 
+                    if ($GLOBALS['lang'] != \Config\Config::DEFAULT_LOCALE){
+
+                        $autoTranslationMode = true;
+
+                        //get the english version
+                        $translationManager = new \Model\TranslationManager();
+                        $localeSkillName = $skillName;
+                        $skillName = $translationManager->googleTranslate($localeSkillName, \Config\Config::DEFAULT_LOCALE, $GLOBALS['lang']);
+
+                    }
+
                     //create the skill object
                     $skill = new Skill();
                     $skill->setNewUuid();
@@ -448,11 +462,28 @@
                     $skill->setDepth( $parentSkill->getDepth() + 1 );
                     $skillManager->save($skill, $skillParentUuid, $userUuid);
 
+                    //if we just auto translated the skill name...
+                    if ($autoTranslationMode){
+                        //save a translation
+                        $translationManager->saveSkillTranslation($GLOBALS['lang'], $localeSkillName, $skill);
 
-                    $this->warn("created", $skill, array(
-                        "name" => $skillName,
-                        "uuid" => $skill->getUuid()
-                    ));
+                        $this->warn("created and autotranslated", $skill, array(
+                            "name" => $localeSkillName,
+                            "lang" => $GLOBALS['lang'],
+                            "auto trans" => $skillName,
+                            "uuid" => $skill->getUuid()
+                        ));
+                        
+                    }
+                    else {
+                        $this->warn("created", $skill, array(
+                            "name" => $skillName,
+                            "uuid" => $skill->getUuid()
+                        ));
+                        
+                    }
+                    
+
 
                     if($creationType == "parent") {
                         //right now, the new skill was added on the same level as the selected skill

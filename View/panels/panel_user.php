@@ -2,7 +2,7 @@
     <div class="panel-top panel-btn">
         <h3><?= _("EDIT SKILL") ?></h3>
         <a href="#" title="<?= _("Close this panel"); ?>" class="close-panel-btn"><img src="img/panel-icon-close.png" alt="X" /></a>
-        <p class="skillName">"<?= $skill->getName(); ?>"</p>
+        <p class="skillName">"<?= $skill->getLocalName(); ?>"</p>
     </div>
 
     <a data-panel="create-skill-panel" class="panel-btn" href="#" title="<?= _("CREATE SKILL"); ?>"><?= _("CREATE SKILL"); ?><span class="arrow-btn arrow-btn-r"><img src="img/panel-icon-arrow-right.png" alt="" /></span></a>

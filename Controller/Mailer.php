@@ -43,6 +43,25 @@
                 )
             );
 
+        private $admins =   array(
+                                array(
+                                    'email' => "guillaume@skill-project.org",
+                                    'name' => "Guillaume",
+                                    'type' => 'to'
+                                ),
+                               /* array(
+                                    'email' => "raphael@skill-project.org",
+                                    'name' => "Raphael",
+                                    'type' => 'to'
+                                ),
+                                array(
+                                    'email' => "dario@skill-project.org",
+                                    'name' => "Dario",
+                                    'type' => 'to'
+                                ) */
+                            );
+
+
 
         /**
          * Load and return the content relative to the folder View/mails/
@@ -133,23 +152,7 @@
                 $config = array(
                     'html' => $content,
                     'subject' => _('Skill Project: New application !'),
-                    'to' => array(
-                        array(
-                            'email' => "guillaume@skill-project.org",
-                            'name' => "Guillaume",
-                            'type' => 'to'
-                        ),
-                        array(
-                            'email' => "raphael@skill-project.org",
-                            'name' => "Raphael",
-                            'type' => 'to'
-                        ),
-                        array(
-                            'email' => "dario@skill-project.org",
-                            'name' => "Dario",
-                            'type' => 'to'
-                        )
-                    )
+                    'to' => $this->admins
                 );
                 $message = array_merge($this->defaultConfig, $config);
                 $async = false;
@@ -169,23 +172,7 @@
                 $config = array(
                     'html' => $content,
                     'subject' => _('Skill Project Alert: ' .$type. ' !'),
-                    'to' => array(
-                        array(
-                            'email' => "guillaume@skill-project.org",
-                            'name' => "Guillaume",
-                            'type' => 'to'
-                        ),
-                        array(
-                            'email' => "raphael@skill-project.org",
-                            'name' => "Raphael",
-                            'type' => 'to'
-                        ),
-                        array(
-                            'email' => "dario@skill-project.org",
-                            'name' => "Dario",
-                            'type' => 'to'
-                        )
-                    )
+                    'to' => $this->admins
                 );
                 $message = array_merge($this->defaultConfig, $config);
                 $async = false;

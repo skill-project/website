@@ -241,7 +241,7 @@ var Panel = function(node, initParams) {
                         success: function(response){
                             if (response.status == "ok"){
                                 $.ajax({
-                                    url: baseUrl + "panel/reloadTranslations/" + node.id,
+                                    url: baseUrl + "panel/reloadTranslations/" + node.id + "/",
                                     success: function(messagesHtml){
                                         that.showMessage(response.message);
                                         $("#other-translations-list").html(messagesHtml);

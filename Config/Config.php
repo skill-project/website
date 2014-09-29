@@ -17,5 +17,7 @@
         const MAX_CHILD     = 10;
 
         const MANDRILL_KEY  = 'glIy6VMjJB5qi32A1a5qSg';
+
+        const GOOGLE_TRANSLATE_API_KEY = 'AIzaSyAdvTQBsgEl9JQn8FLviwsPeQvym9Te6LM';
         
     }

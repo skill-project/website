@@ -14,6 +14,13 @@
          * @return void
          */
         public static function setNewClient(){
+            
+            if (!self::quickTestConnection()){
+                $mailer = new \Controller\Mailer();
+                $mailer->sendWarning("No database connection !", "HUGE ERROR");
+                \Controller\Router::websiteDown();
+            }
+
             try{
                 self::$client = new \Everyman\Neo4j\Client(Config::NEO_HOST, Config::NEO_PORT);
             }
@@ -53,6 +60,15 @@
          */
         public static function getClient(){
             return self::getSingleClient();
+        }
+
+        private static function quickTestConnection(){
+            $waitTimeoutInSeconds = 2; 
+            if($fp = @fsockopen(Config::NEO_HOST,Config::NEO_PORT,$errCode,$errStr,$waitTimeoutInSeconds)){   
+                fclose($fp);
+                return true;
+            } 
+            return false;
         }
 
     }

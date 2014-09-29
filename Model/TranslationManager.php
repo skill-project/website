@@ -9,49 +9,35 @@
 
     class TranslationManager extends Manager {
 
-        public function insertSkillTranslation($languageCode, $name, Skill $skill){
+        /**
+         * Insert or update
+         */ 
+        public function saveSkillTranslation($languageCode, $name, Skill $skill){
             $user = \Utils\SecurityHelper::getUser();
 
-            $cypher = "MATCH (s:Skill) WHERE s.uuid = {skillUuid}
-                        CREATE (s)-[r:TRANSLATES_INTO]->(t:Translation {lang: {languageCode}, name: {name}})
-                        RETURN t";
+            $cypher = "MATCH (s:Skill {uuid: {skillUuid}}), (u:User {uuid: {userUuid}})
+                        CREATE (s)<-[ru:TRANSLATED {timestamp: {now}, to: {languageCode}, name: {name}}]-(u) 
+                        SET s.l_$languageCode = {name} 
+                        RETURN s";
+
             $query = new Query($this->client, $cypher, array(
-                                    "uuid" => \Utils\IdGenerator::getUniqueId(),
-                                    "skillUuid" => $skill->getUuid(),
-                                    "languageCode" => $languageCode,
-                                    "name" => $name
+                                    "skillUuid"     => $skill->getUuid(),
+                                    "languageCode"  => $languageCode,
+                                    "name"          => $name,
+                                    "userUuid"      => $user->getUuid(),
+                                    "now"           => time()
                                 )
                             );
+
             $resultSet = $query->getResultSet();
+
             if ($resultSet){
-                $translationNode = $resultSet[0]['t'];
+                return true;
             }
-
-            $user = \Utils\SecurityHelper::getUser();
-
-            $rel = $this->client->makeRelationship();
-            $rel->setStartNode($user->getNode())
-                ->setEndNode($translationNode)
-                ->setType('CREATED')
-                ->setProperty('timestamp', time())
-                ->save();
+            return false;
 
         }
 
-
-        public function updateSkillTranslation($name, Node $translationNode){
-            $translationNode->setProperty('name', $name)->save();
-
-            $user = \Utils\SecurityHelper::getUser();
-
-            $rel = $this->client->makeRelationship();
-            $rel->setStartNode($user->getNode())
-                ->setEndNode($translationNode)
-                ->setType('MODIFIED')
-                ->setProperty('timestamp', time())
-                ->save();
-
-        }
 
         /**
          * Return translation of a skill in specified language
@@ -92,6 +78,37 @@
             }
 
             return $translations;
+        }
+
+
+        public function googleTranslate($string, $toLang, $fromLang = ""){
+
+            //url query params
+            $params = array(
+                "q"         => $string,
+                "format"    => "text",
+                "key"       => \Config\Config::GOOGLE_TRANSLATE_API_KEY,
+                "source"    => $fromLang,
+                "target"    => $toLang
+            );
+
+            //build the url
+            $url = "https://www.googleapis.com/language/translate/v2?";
+            foreach($params as $k => $v){
+                $url .= $k . "=" . urlencode($v) . "&";
+            }
+            $url = substr($url, 0, -1);
+
+            //call it
+            $jsonResult = file_get_contents($url);
+
+            //handle result
+            $result = json_decode($jsonResult, true);
+            if (!empty($result['data']['translations']) && count($result['data']['translations']) > 0){
+                return $result['data']['translations'][0]['translatedText'];
+            }
+            return false;
+
         }
 
     }

@@ -72,6 +72,7 @@
 
             $GLOBALS['lang'] = $lang;
             setlocale(LC_ALL, $languageCodes->getIsoCode($GLOBALS['lang']));
+            putenv("LC_ALL=fr_FR");
             bindtextdomain("messages", \Config\Config::BASE_PATH . "l10n");
             textdomain("messages");
         }

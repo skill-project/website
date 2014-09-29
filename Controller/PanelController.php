@@ -55,15 +55,6 @@
             $languages = $lc->getAllCodes();
             $params['languages'] = $languages;
 
-            //get previous translations
-            $translationManager = new TranslationManager();
-            $translations = $translationManager->findSkillTranslations($skill->getUuid());
-            for($i=0;$i<count($translations);$i++){
-                $translations[$i]['languageNames'] = $lc->getNames($translations[$i]['languageCode']);
-            }
-
-            $params['translations'] = $translations;
-
             $panelFile = ($user && $user->isAdmin()) ? "panel_admin" : "panel_user";
 
             $view = new AjaxView("panels/$panelFile.php", $params);
@@ -86,14 +77,15 @@
          */
         public function reloadTranslationsAction($uuid){
             $params = array();
-            $translationManager = new TranslationManager();
-            $lc = new \Model\LanguageCode();
-            $translations = $translationManager->findSkillTranslations($uuid);
-            for($i=0;$i<count($translations);$i++){
-                $translations[$i]['languageNames'] = $lc->getNames($translations[$i]['languageCode']);
-            }
+            $skillManager = new SkillManager;
+            $skill = $skillManager->findByUuid($uuid);
 
-            $params['translations'] = $translations;
+            //get all Languages (for the translation <select>)
+            $lc = new \Model\LanguageCode();
+            $languages = $lc->getAllCodes();
+            $params['languages'] = $languages;
+            
+            $params['skill'] = $skill;
             $view = new AjaxView("panels/skill-translations.php", $params);
             $view->send();
         }

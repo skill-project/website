@@ -11,6 +11,8 @@
         protected $name;
         protected $depth;
         protected $slug;
+
+        protected $translations = array();
         
         protected $node = null;
 
@@ -31,9 +33,18 @@
             $props = $this->node->getProperties();
 
             foreach($props as $prop => $value){
-                $methodName = "set" . ucfirst($prop);
-                if (method_exists($this, $methodName)){
-                    $this->$methodName($value);
+
+                //translations
+                if (preg_match("#^l_([a-z]{2})#", $prop, $match)){
+                    $this->addTranslation($match[1], $value);
+                }
+                //the rest
+                else {
+                    $methodName = "set" . ucfirst($prop);
+
+                    if (method_exists($this, $methodName)){
+                        $this->$methodName($value);
+                    }
                 }
             }
 
@@ -55,14 +66,19 @@
         public function generateNode(){
 
             $this->node = $this->client->makeNode();
-            $this->node->setProperties(
-                array(
+            $props = array(
                     "id" => $this->id,
                     "slug" => $this->slug,
                     "uuid" => $this->uuid,
                     "name" => $this->name,
                     "depth" => $this->depth
-            ));
+            );
+
+            foreach($this->getTranslations() as $code => $name){
+                $props["l_$code"] = $name;
+            }
+
+            $this->node->setProperties($props);
 
             return $this->node;
             
@@ -80,16 +96,51 @@
 
 
         public function getJsonData(){
+
+            $translations = $this->getTranslations();
+
+            //replace the skill name by the one in current locale
+            //moves the english name to translations
+            $localeName = $this->name;
+            if ($GLOBALS['lang'] != \Config\Config::DEFAULT_LOCALE){
+                if ($this->getTranslation($GLOBALS['lang'])){
+                    $localeName = $this->getTranslation($GLOBALS['lang']);
+                    $translations[\Config\Config::DEFAULT_LOCALE] = $this->name;
+                }
+            }
+
             $data = array(
                 "uuid" => $this->uuid,
-                "name" => $this->name,
+                "name" => $localeName,
                 "slug" => $this->slug,
-                "depth" => $this->depth
+                "depth" => $this->depth,
+                "translations" => $translations
             );
             return $data;
         }
 
         
+        //setter for one translation
+        public function addTranslation($lang, $name){
+            $this->translations[$lang] = $name;
+        }
+
+        //get all translations
+        public function getTranslations(){
+            //add english to translations list
+            $translations = $this->translations;
+            $translations[\Config\Config::DEFAULT_LOCALE] = $this->getName();
+            return $translations;
+        }
+
+        //get one translation by lang code
+        public function getTranslation($lang){
+            if (!empty($this->translations[$lang])){
+                return $this->translations[$lang];
+            }
+            return false;
+        }
+
 
         /**
          * Gets the value of name.
@@ -98,6 +149,19 @@
          */
         public function getName(){
             return $this->name;
+        }
+
+        /**
+         * Try to get a localised name
+         */
+        public function getLocalName(){
+            $name = $this->getName();
+            if ($GLOBALS['lang'] != \Config\Config::DEFAULT_LOCALE){
+                if ($this->getTranslation($GLOBALS['lang'])){
+                    $name = $this->getTranslation($GLOBALS['lang']);
+                }
+            }
+            return $name;
         }
 
         /**

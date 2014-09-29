@@ -261,6 +261,34 @@
             return $resultSet;
         }
 
+        /**
+         * do a regexp search based on url encoded keywords
+         * @return array The search results
+         */
+        public function search($keywords){
+
+            $local_string = "s.name";
+            //if we are not browsing in english, search in current lang
+            if ($GLOBALS['lang'] != \Config\Config::DEFAULT_LOCALE){
+                $local_string = "s.l_".$GLOBALS['lang'];
+            }
+
+            $cyp = "MATCH (gp:Skill)-[:HAS*0..1]->(p:Skill)-[:HAS]->(s:Skill)
+                    WHERE $local_string =~ {keywords} 
+                    RETURN s,gp,p LIMIT 10";
+            
+            $keywords = trim(urldecode($keywords));
+            $eachWords = explode(" ", addslashes($keywords));
+            $regexp = "(?i).*";
+            foreach($eachWords as $word){
+                $regexp .= $word . ".*";
+            }
+
+            $query = new Query($this->client, $cyp, array("keywords" => $regexp));
+            $matches = $query->getResultSet();
+            return $matches;
+        }
+
 
         private function createSearchIndex(){
             $this->searchIndex = new \Everyman\Neo4j\Index\NodeIndex($this->client, 'searches');
@@ -278,7 +306,7 @@
          * @param Skill Skill to create
          * @param string The uuid of his parent
          * @param string The uuid of the current user
-         * @return Skill Returns the skill
+         * @return bool Return true on success
          */
         public function save(Skill $skill, $skillParentUuid, $userUuid){
 
@@ -295,25 +323,90 @@
                         slug: {slug},
                         depth: {depth},
                         created: {now},
-                        modified: {now}
+                        modified: {now} 
+                        **trans**
                     })<-[:CREATED {
                         timestamp: {now}
                     }]-(user)";
 
-            $query = new Query($this->client, $cyp, array(
-                    "parentUuid" => $skillParentUuid,
+            
+            $namedParams = array(
                     "now" => time(),
                     "skillUuid" => $skill->getUuid(),
                     "name" => $skill->getName(),
                     "slug" => $skill->getSlug(),
                     "depth" => $skill->getDepth(),
-                    "userUuid" => $userUuid
-                )
-            );
+                    "userUuid" => $userUuid,
+                    "parentUuid" => $skillParentUuid
+                );
+
+            //dynamic shit for translations
+            $transString = "";
+            foreach($skill->getTranslations() as $code => $name){
+                if ($code == "en"){continue;} //do not save english trans
+                $transString .= ", l_".$code.": {l_".$code."_name}";
+                $namedParams["l_".$code."_name"] = $name;
+            }
+            $cyp = str_replace("**trans**", $transString, $cyp);
+
+            $query = new Query($this->client, $cyp, $namedParams);
             $resultSet = $query->getResultSet();
 
             return true;
         }
+
+
+
+        /**
+         * Update an existing skill
+         */
+        public function update(Skill $skill, $userUuid, $previousName = ""){
+
+            //first regenerate the slug if name changed
+            //we can do that since only the uuid part of the slug is used to retrieve from slug
+            $skill->regenerateSlug();
+
+            $cyp = "MATCH (skill:Skill {uuid:{skillUuid}}), (user:User {uuid: {userUuid}})
+                    SET skill.name = {name},
+                        skill.slug = {slug},
+                        skill.depth = {depth},
+                        skill.modified = {now}
+                        **trans**
+                    CREATE (skill)<-[:MODIFIED {
+                        timestamp: {now}, fromName: {fromName}
+                    }]-(user)";
+
+            $namedParams = array(
+                    "now" => time(),
+                    "skillUuid" => $skill->getUuid(),
+                    "name" => $skill->getName(),
+                    "slug" => $skill->getSlug(),
+                    "depth" => $skill->getDepth(),
+                    "userUuid" => $userUuid,
+                    "fromName" => $previousName
+                );
+
+            //dynamic shit for translations
+            $transString = "";
+            foreach($skill->getTranslations() as $code => $name){
+                if ($code == "en"){continue;} //do not save english trans
+                $transString .= ", skill.l_".$code." = {l_".$code."_name}";
+                $namedParams["l_".$code."_name"] = $name;
+            }
+            $cyp = str_replace("**trans**", $transString, $cyp);
+
+/*
+            echo $cyp;
+            echo "\r\n";
+            print_r($namedParams);
+            die();
+*/
+            $query = new Query($this->client, $cyp, $namedParams);
+            $resultSet = $query->getResultSet();
+
+            return true;
+        }
+
 
         /**
          * Creates a new Parent-child relations
@@ -504,38 +597,6 @@
             }
         }
 
-        /**
-         * Update an existing skill
-         */
-        public function update(Skill $skill, $userUuid, $previousName = ""){
-
-            //first regenerate the slug if name changed
-            //we can do that since only the uuid part of the slug is used to retrieve from slug
-            $skill->regenerateSlug();
-
-            $cyp = "MATCH (skill:Skill {uuid:{skillUuid}}), (user:User {uuid: {userUuid}})
-                    SET skill.name = {name},
-                        skill.slug = {slug},
-                        skill.depth = {depth},
-                        skill.modified = {now}
-                    CREATE (skill)<-[:MODIFIED {
-                        timestamp: {now}, fromName: {fromName}
-                    }]-(user)";
-
-            $query = new Query($this->client, $cyp, array(
-                    "now" => time(),
-                    "skillUuid" => $skill->getUuid(),
-                    "name" => $skill->getName(),
-                    "slug" => $skill->getSlug(),
-                    "depth" => $skill->getDepth(),
-                    "userUuid" => $userUuid,
-                    "fromName" => $previousName
-                )
-            );
-            $resultSet = $query->getResultSet();
-
-            return true;
-        }
 
 
         /**
