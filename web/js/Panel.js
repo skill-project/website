@@ -95,6 +95,10 @@ var Panel = function(node, initParams) {
                         //Hide first-panel's scrollbar so it doesn't conflict with subPanel's scrollbar
                         that.$activeSubpanel.find(".scrollbar").css("display", "none");
 
+                        that.$activeSubpanel.hide("slide", {
+                            direction:"left"
+                        });
+
                         that.$activeSubpanel = $("#" + panelToLoad);
                         $("#" + panelToLoad).show("slide", {
                             direction: "right",
@@ -295,6 +299,11 @@ var Panel = function(node, initParams) {
                     that.$subPanels["first-panel"].find(".scrollbar").css("display", "block");
                 }
             });
+
+            $("#first-panel").show("slide", {
+                direction:"left"
+            });
+
             that.$activeSubpanel = that.$subPanels["first-panel"];
 
             if (tree.targetMode = true) tree.exitTargetMode();

@@ -5,10 +5,14 @@
     width: 323px;
     opacity: 0.8;
     height:100%;
-    background-color:black;
     display:none;
     padding: 15px 20px;
     overflow:hidden;
+    background-color:#282828;
+    background-image:url("../img/panel-bottomlight.png");
+    background-position: bottom left;
+    background-repeat: no-repeat;
+    background-size: 363px 43px;
 }
 
 #panels-container {
@@ -30,7 +34,7 @@
     /*padding:15px 20px;*/
     min-height: 100%;
     position: relative;
-    background-color:black;
+    background: transparent;
 }
 
 .panel-top {
