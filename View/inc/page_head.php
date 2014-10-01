@@ -61,10 +61,4 @@
 <?php else: ?>
 <script src="js/all.min.js"></script>
 <?php endif; ?>
-<style>
-@font-face {
-    font-family: 'Avenir-Book';
-    src: url('<?= $GLOBALS['base_url'] ?>/fonts/Avenir-Book.ttf');
-}
-</style>
 <?php include("../View/inc/analytics.js"); ?>
