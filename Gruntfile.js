@@ -24,7 +24,7 @@ module.exports = function(grunt) {
                     'web/js/jquery-ui.min.js', 
                     'web/jquery.mousewheel.min.js',
                     'web/js/jquery.highlight.js',
-                    'web/js/jquery.simplemodal.1.4.4.min.js',
+                    'web/js/jquery.simplemodal-1.4.4.js',
                     'web/js/jquery.tourbus.js',
                     'web/js/jquery.tinyscrollbar.min.js',
                     'web/js/kinetic-v5.1.0.custom.min.js',
