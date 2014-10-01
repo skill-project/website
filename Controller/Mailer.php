@@ -49,7 +49,7 @@
                                     'name' => "Guillaume",
                                     'type' => 'to'
                                 ),
-                               /* array(
+                               array(
                                     'email' => "raphael@skill-project.org",
                                     'name' => "Raphael",
                                     'type' => 'to'
@@ -58,7 +58,7 @@
                                     'email' => "dario@skill-project.org",
                                     'name' => "Dario",
                                     'type' => 'to'
-                                ) */
+                                )
                             );
 
 

@@ -93,4 +93,25 @@ html.home {
 
 #home-bottom-panel {
     text-align: center;
+
+    p {
+        margin: 40px 0;
+    }
+}
+
+.home-illus {
+    margin-top: 80px;
+}
+.brain-illus {
+    margin-top: 0px;
+}
+
+#home-btn-go-bottom {
+    background: url("../img/SKP-btn.png") no-repeat;
+    width: 236px;
+    height: 56px;
+}
+
+#home-btn-go-bottom a {
+    margin: 0;
 }

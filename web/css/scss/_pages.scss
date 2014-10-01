@@ -236,11 +236,20 @@ section.first {
     text-align: center;
     font-size: 12px;
 
-    img {
-        margin: auto 22px;
+    .team-pic {
+        width: 204px;
+        height: 204px;
+        margin: 22px auto;
     }
 
 }
+
+#dario-pic { background: url("../img/SKP-page-project-pic-italy.png"); }
+#dario-pic:hover { background: url("../img/SKP-page-project-pic-dario.png"); }
+#guillaume-pic { background: url("../img/SKP-page-project-pic-canada.png"); }
+#guillaume-pic:hover { background: url("../img/SKP-page-project-pic-guillaume.png"); }
+#raphael-pic { background: url("../img/SKP-page-project-pic-france.png"); }
+#raphael-pic:hover { background: url("../img/SKP-page-project-pic-raphael.png"); }
 
 .faq-q h4 {
     margin: 10px 0 0 0;
@@ -280,3 +289,25 @@ select {
 }
 
 /* end apply */
+
+
+/* 404 */
+html.fourofour {
+    #main-content {
+        background-color: #000;
+        text-align: center;
+    }
+    #main-content section {
+        height: 613px;
+        padding: 0;
+        background: url("../img/SKP-404-bg-illus.png") no-repeat;
+        background-position: center;
+    }
+}
+
+#fourofour-text {
+    position: relative;
+    top: 480px;
+    color: #FFF;
+    font-size: 24px;
+}

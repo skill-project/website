@@ -51,17 +51,17 @@
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
 
         <div class="project-col">
-            <img src="img/SKP-page-project-pic-dario.png" alt="Dario Spagnolo" />
+            <div id="dario-pic" class="team-pic"></div>
             <h4>DARIO SPAGNOLO</h4>
             <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
         </div>
         <div class="project-col">
-            <img src="img/SKP-page-project-pic-guillaume.png" alt="Guillaume Sylvestre" />
+            <div id="guillaume-pic" class="team-pic"></div>
             <h4>GUILLAUME SYLVESTRE</h4>
             <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
         </div>
         <div class="project-col">
-            <img src="img/SKP-page-project-pic-raphael.png" alt="Raphael Bousquet" />
+            <div id="raphael-pic" class="team-pic"></div>
             <h4>RAPHAEL BOUSQUET</h4>
             <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
         </div>

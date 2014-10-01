@@ -38,7 +38,7 @@
             if ($message && \Config\Config::DEBUG){
                 $params['message'] = $message;
             }
-            $view = new \View\View("404.php", array("title" => _("You 404ed")));
+            $view = new \View\View("fourofour.php", array("title" => _("You 404ed")));
             $view->send();
             die();
         }
