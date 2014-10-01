@@ -8,9 +8,12 @@ var Panel = function(node, initParams) {
 
     $("#panel").height($("#kinetic").height() - $("#footer").height() - 30);
 
+    loader.show();
+
 	$.ajax({
       url: baseUrl + "panel/getPanel/" + node.id + "/",
     }).done(function(content) {
+        loader.hide();
 
     	$("#panel").empty().append(content);
     	$("#panel .panel-content").each(function (index, subPanel) {
@@ -131,11 +134,13 @@ var Panel = function(node, initParams) {
 
                 $("#create-skill-form").on("submit", function(e){
                     e.preventDefault();
+                    loader.show();
                     $.ajax({
                         url: $("#create-skill-form").attr("action"),
                         type: $("#create-skill-form").attr("method"),
                         data: $("#create-skill-form").serialize(),
                         success: function(response){
+                            loader.hide();
                             if (response.status == "ok"){
                                 $("#create-skillName").val("");
                                 that.showMessage(response.message);
@@ -170,11 +175,13 @@ var Panel = function(node, initParams) {
 
                 $("#move-skill-form").on("submit", function(e){
                     e.preventDefault();
+                    loader.show();
                     $.ajax({
                         url: $("#move-skill-form").attr("action"),
                         type: $("#move-skill-form").attr("method"),
                         data: $("#move-skill-form").serialize(),
                         success: function(response){
+                            loader.hide();
                             if (response.status == "ok"){
                                 that.showMessage(response.message);
                                 ga("send", "event", "nodeMove", tree.editedNode.name);
@@ -190,11 +197,13 @@ var Panel = function(node, initParams) {
             case "rename-skill-panel":
                 $("#rename-skill-form").on("submit", function(e){
                     e.preventDefault();
+                    loader.show();
                     $.ajax({
                         url: $("#rename-skill-form").attr("action"),
                         type: $("#rename-skill-form").attr("method"),
                         data: $("#rename-skill-form").serialize(),
                         success: function(response){
+                            loader.hide();
                             if (response.status == "ok"){
                                 $("#rename-skillName").val("");
                                 $("#panel .skillName").html('"'+response.data.name+'"'); //change the skillname at top of panel
@@ -216,11 +225,13 @@ var Panel = function(node, initParams) {
                 });
                 $("#delete-skill-form").on("submit", function(e){
                     e.preventDefault();
+                    loader.show();
                     $.ajax({
                         url: $("#delete-skill-form").attr("action"),
                         type: $("#delete-skill-form").attr("method"),
                         data: $("#delete-skill-form").serialize(),
                         success: function(response){
+                            loader.hide();
                             if (response.status == "ok") {
                                 var nodeToDelete = tree.editedNode;
                                 ga("send", "event", "nodeDelete", tree.editedNode.name);
@@ -238,15 +249,19 @@ var Panel = function(node, initParams) {
             case "translate-skill-panel":                
                 $("#translate-skill-form").on("submit", function(e){
                     e.preventDefault();
+                    loader.show();
                     $.ajax({
                         url: $("#translate-skill-form").attr("action"),
                         type: $("#translate-skill-form").attr("method"),
                         data: $("#translate-skill-form").serialize(),
                         success: function(response){
+                            loader.hide();
                             if (response.status == "ok"){
+                                loader.show();
                                 $.ajax({
                                     url: baseUrl + "panel/reloadTranslations/" + node.id + "/",
                                     success: function(messagesHtml){
+                                        loader.hide();
                                         that.showMessage(response.message);
                                         $("#other-translations-list").html(messagesHtml);
                                     }
@@ -262,16 +277,20 @@ var Panel = function(node, initParams) {
             case "discuss-skill-panel":
                 $("#discuss-skill-form").on("submit", function(e){
                     e.preventDefault();
+                    loader.show();
                     $.ajax({
                         url: $("#discuss-skill-form").attr("action"),
                         type: $("#discuss-skill-form").attr("method"),
                         data: $("#discuss-skill-form").serialize(),
                         success: function(response){
+                            loader.hide();
                             if (response.status == "ok"){
                                 $("#discuss-message").val("");
+                                loader.show();
                                 $.ajax({
                                     url: baseUrl + "panel/reloadDiscussionMessages/" + node.id + "/",
                                     success: function(messagesHtml){
+                                        loader.hide();
                                         $(".discuss-prev-messages").html(messagesHtml);
                                     }
                                 });

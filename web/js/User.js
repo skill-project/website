@@ -38,20 +38,24 @@ User.prototype.showModal = function(content){
 }
 
 User.prototype.showForm = function(){
+    loader.show();
     $.ajax({
         url: user.clickedHref,
         success: function(response){
+            loader.hide();
             user.showModal(response);
         }
     });
 }
 
 User.prototype.ajaxSubmit = function(form){
+    loader.show();
     $.ajax({
         url: $(form).attr("action"),
         type: $(form).attr("method"),
         data: $(form).serialize(),
         success: function(response){
+            loader.hide();
             if (response.status == "ok"){
                 if (response.data.redirectTo){
                     window.location.href = response.data.redirectTo;

@@ -24,6 +24,7 @@ if (typeof rootNodeId != "undefined") {
   var camera;
   var search = new Search;
   var tour = new Tour;  
+  var loader = new Loader;
 }
 
 var user = new User;

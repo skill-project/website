@@ -7,9 +7,13 @@ Node.prototype.expand = function(params) {
   }
   var url = baseUrl + "api/getNodeChildren/" + this.id + "/";
 
+  loader.show();
+
   $.ajax({
     url: url,
   }).done(function(json) {
+    loader.hide();
+
     that.totalChildren = json.data.length;
 
     if (that.totalChildren > 0) {
@@ -369,7 +373,7 @@ Node.prototype.getBoundingBox = function(childrenCount) {
       y2: this.shapes.y() + this.sizes.totalHeight
     }
   }else {
-    //Hack : values shouldn't be hard coded
+    //Hack : values shouldn't be hard codedp
     //If node really has no children, prepare a dummy one to calculate the boudingBox
     if (Object.keys(this.children).length == 0) {
       var modelChild = {

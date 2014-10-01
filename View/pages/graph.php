@@ -29,6 +29,7 @@
 <div id="kinetic"></div>
 <div id="panel"></div>
 <div id="footer">
+	<div id="loader"></div>
 	<div id="debug">
 		
 	</div>

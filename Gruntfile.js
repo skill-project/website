@@ -28,6 +28,7 @@ module.exports = function(grunt) {
                     'web/js/jquery.tourbus.js',
                     'web/js/jquery.tinyscrollbar.min.js',
                     'web/js/kinetic-v5.1.0.custom.min.js',
+                    'web/js/canvas-loader.min.js',
                     'web/js/compatibility.js',
                     'web/js/functions.js',
                     'web/js/Node.js',
@@ -39,6 +40,7 @@ module.exports = function(grunt) {
                     'web/js/Search.js',
                     'web/js/User.js',
                     'web/js/Tour.js',
+                    'web/js/Loader.js',
                     'web/js/js/script.js'
                 ],
                 dest : 'web/js/all.js'

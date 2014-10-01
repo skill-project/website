@@ -29,9 +29,12 @@ var Search = function(){
 
         var contractAnim = tree.rootNode.isNodeOnScreen() ? false : true;
 
+        loader.show();
+
         $.ajax({
             url: url,
             success: function(response) {
+                loader.hide();
                 jsonAutoLoad = response;
                 if (tree.selectedNode) tree.selectedNode.deSelect();
                 tree.rootNode.contract({
@@ -58,6 +61,8 @@ var Search = function(){
             that.close();
             return false;
         }
+
+        loader.show();
         $.ajax({
             url: $("#search-form").attr("action"),
             data: $("#search-form").serialize(),
@@ -68,6 +73,7 @@ var Search = function(){
 
     //show autocomplete results
     this.showResult = function(response){
+        loader.hide();
         var $list = $("<ul>");
         var $item, $link;
         for(uuid in response.data){

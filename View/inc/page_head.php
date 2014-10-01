@@ -43,6 +43,7 @@
 <script src="js/jquery.tourbus.js"></script>
 <script src="js/jquery.tinyscrollbar.min.js"></script>
 <script src="js/kinetic-v5.1.0.custom.min.js"></script>
+<script src="js/canvas-loader.min.js"></script>
 <script src="js/compatibility.js"></script>
 
 <script src="js/functions.js"></script>
@@ -55,6 +56,7 @@
 <script src="js/Search.js"></script>
 <script src="js/User.js"></script>
 <script src="js/Tour.js"></script>
+<script src="js/Loader.js"></script>
 <script src="js/script.js"></script>
 <?php else: ?>
 <script src="js/all.min.js"></script>
