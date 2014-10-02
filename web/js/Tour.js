@@ -98,4 +98,7 @@ Tour.prototype.endTour = function() {
     tour.tourObj.trigger('stop.tourbus');
     tour.isActive = false;
     tour.legIndex = -1;
+    tour.tourObj[0].remove();
+    $("#tourbus-0").remove();
+    delete tour.tourObj;
 }
