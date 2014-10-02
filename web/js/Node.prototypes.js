@@ -451,12 +451,6 @@ Node.prototype.delete = function() {
   if (this.isEdited) this.finishEdit();
   if (this.isSelected) this.deSelect();
 
-  //Add the current node Y position to parent's free slots array
-  //This will be used if a new node is added before the parent is contracted, 
-  //so it has a "missing tooth" that will be fille with the new node
-  this.parent.freeSlots.push(this.shapes.y());
-  this.parent.freeSlots.sort();
-
   this.edge.shape.destroy();
   this.shapes.destroy();
 
@@ -711,6 +705,13 @@ Node.prototype.setName = function (newName, twoLines, textObject) {
 
 Node.prototype.deleteFromDB = function() {
   this.parent.select();
+
+  //Add the current node Y position to parent's free slots array
+  //This will be used if a new node is added before the parent is contracted, 
+  //so it has a "missing tooth" that will be fille with the new node
+  this.parent.freeSlots.push(this.shapes.y());
+  this.parent.freeSlots.sort();
+
   this.delete();
   stage.draw();
 }
