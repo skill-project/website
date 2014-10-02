@@ -47,6 +47,13 @@ module.exports = function(grunt) {
             }
         },
         uglify : {
+            options: {
+                compress: {
+                    drop_console: true,
+                    warnings: true,
+                    unused: true
+                }
+            },
             js: {
                 files: {
                     'web/js/all.min.js' : [ 'web/js/all.js' ]

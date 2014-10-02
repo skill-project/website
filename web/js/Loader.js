@@ -26,7 +26,7 @@ Loader.prototype.show = function() {
 }
 
 Loader.prototype.hide = function() {
-	if (this.isWaitingToShow == true) {
+	if (this.isWaitingToShow === true) {
 		clearTimeout(this.timer);
 		this.isVisible = false;
 	}	
