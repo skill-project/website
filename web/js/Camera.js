@@ -35,10 +35,12 @@ var Camera = function() {
         else if (timeFromLastZoom > 30 && timeFromLastZoom <= 40) var zoomAcceleration = 8;
         else if (timeFromLastZoom <= 30) var zoomAcceleration = 10;
 
+        zoomAcceleration *= 0.02;
+
         var evt = event.originalEvent;
         var mx = evt.clientX - stage.x();
         var my = evt.clientY - stage.y() - $("#header").height();
-        var zoom = (that.zoomFactor - (event.deltaY < 0 ? 0.02 : -0.02) * zoomAcceleration);
+        var zoom = (that.zoomFactor - (event.deltaY < 0 ? 0.02 : -0.02) * event.deltaFactor * zoomAcceleration);
         var newscale = that.scale * zoom;
 
         that.origin.x = mx / that.scale + that.origin.x - mx / newscale;
