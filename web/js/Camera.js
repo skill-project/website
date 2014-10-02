@@ -528,9 +528,13 @@ Camera.prototype.resizeElements = function() {
     camera.drawStars(newWidth, newHeight + 500);
     camera.backStage.draw();
 
-    camera.animateStage(0.5);
-    camera.checkCameraPosition(tree.selectedNode);
-
+    if (typeof tree.editedNode != "undefined") {
+        camera.checkIfPanelBlocksEditedNode();
+    }else {
+        camera.animateStage(0.5);
+        camera.checkCameraPosition(tree.selectedNode);    
+    }
+    
     if (typeof tree.editedNode != "undefined") {
         var newPanelHeight = newHeight - $("#footer").height() - 30;
         $("#panel").height(newPanelHeight);
@@ -555,4 +559,11 @@ Camera.prototype.animateStage = function(seconds) {
         opacity:0
     });
     tween.play();
+}
+
+Camera.prototype.checkIfPanelBlocksEditedNode = function() {
+    var blockedByPanel = tree.editedNode.isBlockedByPanel();
+    if (blockedByPanel != false) {
+      camera.moveStageBy({x: -blockedByPanel - 50, y:0 });
+    }
 }

@@ -209,10 +209,7 @@ Node.prototype.startEdit = function() {
   this.panel = new Panel(this, {
     onComplete: function() {
       tree.busy = false;
-      var blockedByPanel = tree.editedNode.isBlockedByPanel();
-      if (blockedByPanel != false) {
-        camera.moveStageBy({x: -blockedByPanel - 50, y:0 });
-      }
+      camera.checkIfPanelBlocksEditedNode();
     }
   });
 
