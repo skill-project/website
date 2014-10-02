@@ -47,8 +47,7 @@
 
         ,   isHorizontal   = this.options.axis === 'x'
         ,   hasTouchEvents = ("ontouchstart" in document.documentElement)
-        ,   wheelEvent     = ("onwheel" in document || document.documentMode >= 9) ? "wheel" :
-                             (document.onmousewheel !== undefined ? "mousewheel" : "DOMMouseScroll")
+        ,   wheelEvent     = "mousewheel"
 
         ,   sizeLabel = isHorizontal ? "width" : "height"
         ,   posiLabel = isHorizontal ? "left" : "top"
@@ -136,13 +135,8 @@
                 self.update("relative");
             });
 
-            if(self.options.wheel && window.addEventListener)
-            {
-                $container[0].addEventListener(wheelEvent, wheel, false );
-            }
-            else if(self.options.wheel)
-            {
-                $container[0].onmousewheel = wheel;
+            if (self.options.wheel) {
+                $($container[0]).on('mousewheel', wheel);
             }
         }
 
@@ -176,7 +170,7 @@
             {
                 var evntObj         = event || window.event
                 ,   deltaDir        = "delta" + self.options.axis.toUpperCase()
-                ,   wheelSpeedDelta = -(evntObj[deltaDir] || evntObj.detail || (-1 / 3 * evntObj.wheelDelta)) / 40
+                ,   wheelSpeedDelta = evntObj[deltaDir]
                 ;
 
                 self.contentPosition -= wheelSpeedDelta * self.options.wheelSpeed;
