@@ -41,7 +41,7 @@
 <script src="js/jquery.highlight.js"></script>
 <script src="js/jquery.simplemodal-1.4.4.js"></script>
 <script src="js/jquery.tourbus.js"></script>
-<script src="js/jquery.tinyscrollbar.min.js"></script>
+<script src="js/jquery.tinyscrollbar.js"></script>
 <script src="js/kinetic-v5.1.0.custom.min.js"></script>
 <script src="js/canvas-loader.min.js"></script>
 <script src="js/compatibility.js"></script>
