@@ -413,6 +413,8 @@ Node.prototype.cache = function() {
     this.shapes.x(this.shapes.x() - 25);
     this.shapes.y(this.shapes.y() - 25);
 
+    // this.shapes.offsetX(-25).offsetY(-25);
+
     //Stop listening for events on cached nodes (they are not visible anyway)
     this.labelGroup.listening(false);
     this.editButton.listening(false);
@@ -451,6 +453,12 @@ Node.prototype.delete = function() {
 
   if (this.isEdited) this.finishEdit();
   if (this.isSelected) this.deSelect();
+
+  //Add the current node Y position to parent's free slots array
+  //This will be used if a new node is added before the parent is contracted, 
+  //so it has a "missing tooth" that will be fille with the new node
+  this.parent.freeSlots.push(this.shapes.y());
+  this.parent.freeSlots.sort();
 
   this.edge.shape.destroy();
   this.shapes.destroy();

@@ -34,6 +34,7 @@ var Node = function(nodeData, params) {
   this.nodeReady = false;
   this.text;
   this.sizes;
+  this.freeSlots = [];
 
   // Needed for nested functions
   var that = this;
@@ -154,8 +155,6 @@ var Node = function(nodeData, params) {
     var startX = this.parent.shapes.x() + this.parent.sizes.startXOffset;
     var startY = this.parent.shapes.y() + this.parent.sizes.startYOffset - this.sizes.labelHeight / 2;
 
-    // console.log(this.parent.shapes.y());
-
     if (this.takePlaceOf != null) {
       var animate = false;
       
@@ -168,7 +167,14 @@ var Node = function(nodeData, params) {
       var animate = true;
       //Final coordinates = each skill in its own place
       this.appearDestX = this.parent.shapes.x() + this.parent.sizes.midXOffset// + this.parent.shapes.getWidth() + this.sizes.horizontalGap;
-      this.appearDestY = (this.parent.shapes.y() + this.parent.sizes.labelHeight / 2) + ((this.sizes.slotHeight * this.parent.totalChildren) / - 2 + this.sizes.verticalGap / 2) + (this.sizes.slotHeight * (Object.keys(this.parent.children).length - 1)) ;// + ((((this.sizes.labelHeight + this.sizes.verticalGap) * this.parent.totalChildren) - this.sizes.verticalGap)) + ((this.sizes.labelHeight + this.sizes.verticalGap) * (Object.keys(this.parent.children).length - 1));
+
+      //Reuse a free slot if the parent has any
+      //Free slots are created after a child has been removed ("missing tooth")
+      if (this.parent.freeSlots.length > 0) {
+        this.appearDestY = this.parent.freeSlots.shift();
+      }else {
+        this.appearDestY = (this.parent.shapes.y() + this.parent.sizes.labelHeight / 2) + ((this.sizes.slotHeight * this.parent.totalChildren) / - 2 + this.sizes.verticalGap / 2) + (this.sizes.slotHeight * (Object.keys(this.parent.children).length - 1));
+      }
 
       //Intermediate coordinates = when skills split up
       this.midX = this.parent.shapes.x() + this.parent.sizes.midXOffset;
