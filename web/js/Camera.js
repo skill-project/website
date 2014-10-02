@@ -30,12 +30,12 @@ var Camera = function() {
 
         if (timeFromLastZoom > 100) var zoomAcceleration = 1;
         else if (timeFromLastZoom > 60 && timeFromLastZoom <= 100) var zoomAcceleration = 1.2;
-        else if (timeFromLastZoom > 50 && timeFromLastZoom <= 60) var zoomAcceleration = 2.5;
-        else if (timeFromLastZoom > 40 && timeFromLastZoom <= 50) var zoomAcceleration = 5;
-        else if (timeFromLastZoom > 30 && timeFromLastZoom <= 40) var zoomAcceleration = 8;
-        else if (timeFromLastZoom <= 30) var zoomAcceleration = 10;
+        else if (timeFromLastZoom > 50 && timeFromLastZoom <= 60) var zoomAcceleration = 2;
+        else if (timeFromLastZoom > 40 && timeFromLastZoom <= 50) var zoomAcceleration = 3;
+        else if (timeFromLastZoom > 30 && timeFromLastZoom <= 40) var zoomAcceleration = 5;
+        else if (timeFromLastZoom <= 30) var zoomAcceleration = 6;
 
-        zoomAcceleration *= 0.02;
+        zoomAcceleration *= 0.1;
 
         var evt = event.originalEvent;
         var mx = evt.clientX - stage.x();
