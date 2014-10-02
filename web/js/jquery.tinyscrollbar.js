@@ -22,7 +22,7 @@
         {
             axis         : 'y'    // Vertical or horizontal scrollbar? ( x || y ).
         ,   wheel        : true   // Enable or disable the mousewheel;
-        ,   wheelSpeed   : 40     // How many pixels must the mouswheel scroll at a time.
+        ,   wheelSpeed   : 1     // How many pixels must the mouswheel scroll at a time.
         ,   wheelLock    : true   // Lock default scrolling window when there is no more content.
         ,   scrollInvert : false  // Enable invert style scrolling
         ,   trackSize    : false  // Set the size of the scrollbar to auto or a fixed number.
@@ -173,7 +173,7 @@
                 ,   wheelSpeedDelta = evntObj[deltaDir]
                 ;
 
-                self.contentPosition -= wheelSpeedDelta * self.options.wheelSpeed;
+                self.contentPosition -= (wheelSpeedDelta * evntObj.deltaFactor) * self.options.wheelSpeed;
                 self.contentPosition = Math.min((self.contentSize - self.viewportSize), Math.max(0, self.contentPosition));
 
                 $container.trigger("move");
