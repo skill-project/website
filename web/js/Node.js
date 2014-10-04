@@ -185,8 +185,8 @@ var Node = function(nodeData, params) {
       x: startX,
       y: startY,
       width: this.sizes.labelWidth + this.sizes.editButtonWidth,
-      height: this.sizes.labelHeight,
-      draggable:true
+      height: this.sizes.labelHeight/*,
+      draggable:true*/
     });
     group.add(glow, backImage, editButton, labelGroup);
     this.shapes = group;
