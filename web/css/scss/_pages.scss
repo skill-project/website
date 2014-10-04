@@ -196,6 +196,10 @@ h2 {
     }
 }
 
+h2.less-margin {
+    margin-bottom: 10px;
+}
+
 h4 {
     font-size: 16px;
     margin: 20px 0 15px 0;
@@ -212,6 +216,7 @@ header h2 {
 
 .page p {
     text-align: justify;
+    padding: 3px 0;
 }
 
 section {
@@ -252,12 +257,29 @@ section.first {
 #raphael-pic:hover { background: url("../img/SKP-page-project-pic-raphael.png"); }
 
 .faq-q h4 {
-    margin: 10px 0 0 0;
+    margin: 20px 0 0 0;
     cursor: pointer;
+    background-image: url("../img/SKP-page-project-arrow-down.png");
+    background-position: 100% 45%;
+    background-repeat: no-repeat;
+    padding-right: 40px;
+    display: inline-block;
+}
+
+
+.faq-q h4:hover {
+    color: $blue;
+    background-image: url("../img/SKP-page-project-arrow-down-blue.png");
 }
 
 .faq-q h4.selected {
     color: $blue;
+    background-image: url("../img/SKP-page-project-arrow-up-blue.png");
+}
+
+.faq-a {
+    margin: 20px 0;
+    font-size: 14px;
 }
 
 /* end project */
