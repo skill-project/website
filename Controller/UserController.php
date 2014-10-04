@@ -232,7 +232,7 @@
 
 
         /**
-         * Show the first forgot password form, handle it, and send a message
+         * Show the change password form in modal
          */
         public function changePasswordAction(){
 
@@ -267,15 +267,16 @@
                         $userManager = new UserManager();
                         $userManager->update($user);
 
-                        Router::redirect(Router::url('profile', array('username' => $user->getUsername())));
-
+                        $params["message"] = _("Password updated !");
+                        $view = new View("success.php", $params);
+                        $view->setLayout("../View/layouts/modal.php");
+                        $view->send(true);
                     }
                 }
-
-                if($error){
-                    $params['error']['global'] = _("This email or username is not valid.");
-                }
+                
+                $params['errors'] = $validator->getErrors();
             }
+
 
             $view = new View("change_password.php", $params);
             $view->setLayout("../View/layouts/modal.php");
@@ -396,28 +397,39 @@
                     $user->setBio( $bio );
 
                     if (!empty($_FILES['picture']['tmp_name'])){
-                        //HANDLE UPLOAD
-                        $tmp_name = $_FILES['picture']['tmp_name'];
+                        
+                        $errCode = $_FILES['picture']['error'];
+                        
+                        if ($errCode != 4){
+                            if ($errCode == 1 || $errCode == 2){
+                                $uploadErrors[] = _("Your picture is too large !");
+                            }
+                            else if ($errCode == 3){
+                                $uploadErrors[] = _("An error occured while uploading your picture !");
+                            }
 
-                        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                        $mime = finfo_file($finfo, $tmp_name);
-                    
-                        if (substr($mime, 0, 5) != "image"){
-                            $uploadErrors[] = _("Your picture is invalid !");
-                        }
-                        else {
-                            $img = new \abeautifulsite\SimpleImage($tmp_name);
-                            if ($img->get_width() < 180 || $img->get_height() < 180){
-                                $uploadErrors[] = _("Your picture is too small !");
+                            //HANDLE UPLOAD
+                            $tmp_name = $_FILES['picture']['tmp_name'];
+
+                            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                            $mime = finfo_file($finfo, $tmp_name);
+                            
+                            if (substr($mime, 0, 5) != "image"){
+                                $uploadErrors[] = _("Your picture is invalid !");
+                            }
+                            else {
+                                $img = new \abeautifulsite\SimpleImage($tmp_name);
+                                if ($img->get_width() < 180 || $img->get_height() < 180){
+                                    $uploadErrors[] = _("Your picture is too small !");
+                                }
+                            }
+                            
+                            if (empty($uploadErrors)){
+                                $filename = uniqid() . ".jpg";
+                                $img->thumbnail(180,180)->save("img/uploads/" . $filename, 100); //quality as second param
+                                $user->setPicture( $filename );
                             }
                         }
-                        
-                        if (empty($uploadErrors)){
-                            $filename = uniqid() . ".jpg";
-                            $img->thumbnail(180,180)->save("img/uploads/" . $filename, 100); //quality as second param
-                            $user->setPicture( $filename );
-                        }
-
                     }
 
                     $userManager->update($user);

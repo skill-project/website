@@ -30,9 +30,11 @@
             <?php endif; ?>
             <?php 
             if (!empty($uploadErrors)) {
+                echo '<div class="errors">';
                 foreach($uploadErrors as $ue){
                     echo $ue;
                 }
+                echo '</div>';
             }
             ?>
         </div>
@@ -57,9 +59,11 @@
         <input class="pink-submit" type="submit" value="<?= _("SAVE") ?>" />
         <?php
             if (!empty($errors)):
+            echo '<div class="errors">';
             foreach($errors as $name => $message){
                 echo $message . "<br />";
             }
+            echo '</div>';
             endif;
         ?>
     </div>
