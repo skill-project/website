@@ -14,6 +14,8 @@
             if (!empty($rootNode)) {
                 echo "var rootNodeId='" . $rootNode->getUuid() . "';\n";
                 if (!empty($action)) echo "var action='$action';\n";
+                else $action = "";
+                
                 if (!empty($jsonAutoLoad)) echo "var jsonAutoLoad=" . $jsonAutoLoad . ";\n";
                 if ((empty($_SESSION["tourDone"]) or true) and $action != "goto") {
                     $_SESSION["tourDone"] = true;
