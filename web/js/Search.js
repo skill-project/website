@@ -73,7 +73,10 @@ var Search = function(){
 
     //show autocomplete results
     this.showResult = function(response){
+
         loader.hide();
+        if (response.data.length <= 0){ return false; }
+        
         var $list = $("<ul>");
         var $item, $link;
         for(uuid in response.data){

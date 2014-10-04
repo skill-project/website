@@ -312,12 +312,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "7a48358fb3521cb3a5a56af08bc7968aa44f66ed"
+                "reference": "8f39f4c3a2903883898d1026f781f0f42672f9bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/7a48358fb3521cb3a5a56af08bc7968aa44f66ed",
-                "reference": "7a48358fb3521cb3a5a56af08bc7968aa44f66ed",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/8f39f4c3a2903883898d1026f781f0f42672f9bc",
+                "reference": "8f39f4c3a2903883898d1026f781f0f42672f9bc",
                 "shasum": ""
             },
             "require": {
@@ -356,7 +356,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2014-09-25 19:49:28"
+            "time": "2014-10-03 05:26:43"
         },
         {
             "name": "symfony/routing",
@@ -365,12 +365,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing.git",
-                "reference": "92f9e98884ab3c4c129644659055167b1b19689d"
+                "reference": "1c7785e21edd87da5570fc0182742bf66f95b52d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Routing/zipball/92f9e98884ab3c4c129644659055167b1b19689d",
-                "reference": "92f9e98884ab3c4c129644659055167b1b19689d",
+                "url": "https://api.github.com/repos/symfony/Routing/zipball/1c7785e21edd87da5570fc0182742bf66f95b52d",
+                "reference": "1c7785e21edd87da5570fc0182742bf66f95b52d",
                 "shasum": ""
             },
             "require": {
@@ -423,7 +423,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2014-09-22 15:29:07"
+            "time": "2014-10-01 05:53:11"
         }
     ],
     "packages-dev": [
@@ -442,7 +442,6 @@
         "abeautifulsite/simpleimage": 20,
         "gabrielbull/browser": 20
     },
-    "prefer-stable": false,
     "platform": [
 
     ],
