@@ -8,7 +8,7 @@
         <div>
             In english please !
             <select name="topic" id="topic-select">
-                <option value="">WHAT DO YOU WANT TO TALK ABOUT ?</option>
+                <option value=""><?= _("What do you want to talk about ?"); ?></option>
                 <?php foreach ($topics as $topic): ?>
                 <option value="<?= $topic; ?>"><?= $topic; ?></option>
                 <?php endforeach; ?>
