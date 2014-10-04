@@ -247,14 +247,15 @@ section.first {
         margin: 22px auto;
     }
 
-}
+    #dario-pic { background-image: url("../img/SKP-page-project-pic-dario-italy.png"); }
+    #guillaume-pic { background-image: url("../img/SKP-page-project-pic-guillaume-canada.png"); }
+    #raphael-pic { background-image: url("../img/SKP-page-project-pic-raphael-france.png"); }
 
-#dario-pic { background: url("../img/SKP-page-project-pic-italy.png"); }
-#dario-pic:hover { background: url("../img/SKP-page-project-pic-dario.png"); }
-#guillaume-pic { background: url("../img/SKP-page-project-pic-canada.png"); }
-#guillaume-pic:hover { background: url("../img/SKP-page-project-pic-guillaume.png"); }
-#raphael-pic { background: url("../img/SKP-page-project-pic-france.png"); }
-#raphael-pic:hover { background: url("../img/SKP-page-project-pic-raphael.png"); }
+    .team-pic:hover {
+        background-position: 0 -204px;
+    }
+
+}
 
 .faq-q h4 {
     margin: 20px 0 0 0;
