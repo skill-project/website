@@ -147,19 +147,28 @@
 		}
 
 		public function getDateCreated(){
-			return $this->dateCreated;
+			return $this->backwardCompDate($this->dateCreated);
 		}
 
 		public function setDateCreated($dateCreated){
-			$this->dateCreated = $dateCreated;
+			$this->dateCreated = $this->backwardCompDate($dateCreated);
 		}
 
 		public function getDateModified(){
-			return $this->dateModified;
+			return $this->backwardCompDate($this->dateModified);
 		}
 
 		public function setDateModified($dateModified){
-			$this->dateModified = $dateModified;
+			$this->dateModified = $this->backwardCompDate($dateModified);
+		}
+
+		//could be removed with fresh data
+		private function backwardCompDate($date){
+			return $date;
+			/*if (preg_match("#^\d*$#", $date)){
+				return $date;
+			}
+			return strtotime($date); */
 		}
 		
 	    /**

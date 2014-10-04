@@ -20,7 +20,7 @@
                     </p>
                     <p>
                         <?= _("Skillwalker since"); ?><br />
-                        <?= date("Y-m-d", $profileUser->getDateCreated()); ?>
+                        <?= date(_("Y-m-d"), $profileUser->getDateCreated()); ?>
                     </p>
                     <p>
                         <?= strtoupper(\Utils\SecurityHelper::encode($profileUser->getRole())); ?>
