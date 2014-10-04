@@ -325,7 +325,7 @@
 
     $routes->add(
         'emptyDatabase',
-        new Route('/emptyDatabase/', 
+        new Route('/emptyDatabase/awjfkw9f232cxCVCvxvr09f3j09qjg0qg3gj02gjGsdjvsvjgjqqjjr32329r0/', 
             array('controller' => 'Fixture', 'action' => 'emptyDatabase'), array(), array(), 
             '{lang}.'.Config::DOMAIN
         )

@@ -116,6 +116,12 @@
 
 
         public function emptyDatabaseAction(){
+            if (!\Config\Config::DEBUG){
+                return false;
+                die();
+                exit();
+                return "mauvaiseIdee";
+            }
             $searchIndex = new \Everyman\Neo4j\Index\NodeIndex($this->client, 'searches');
             $searchIndex->delete();
 
@@ -123,18 +129,82 @@
             $query = new Query($this->client, "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r");
             $resultSet = $query->getResultSet();
 
+            $superadmins = $this->addSuperAdmins();
+
             $skillManager = new SkillManager();
             //create root node
             $rootSkill = new Skill();
             $rootSkill->setNewUuid();
             $rootSkill->setName("Skills");
-            $rootSkill->setDepth(1);
+            $rootSkill->setDepth(0);
+            
+            $cyp = "CREATE (skill:Skill {
+                        uuid: {skillUuid},
+                        name: {name},
+                        slug: {slug},
+                        depth: {depth},
+                        created: {now},
+                        modified: {now}
+                    })";
+            $query = new Query($this->client, $cyp, array(
+                    "skillUuid" => $rootSkill->getUuid(),
+                    "name" => $rootSkill->getName(),
+                    "slug" => $rootSkill->getSlug(),
+                    "depth" => $rootSkill->getDepth(), 
+                    "now" => time()     
+                )
+            );
+            $query->getResultSet();
 
-            $rootSkill->generateNode();
+            //create first node
+            $firstSkill = new Skill();
+            $firstSkill->setNewUuid();
+            $firstSkill->setName("Sciences");
+            $firstSkill->setDepth($rootSkill->getDepth()+1);
+            
+            $skillManager->save($firstSkill, $rootSkill->getUuid(), $superadmins[0]->getUuid());
 
-            $skillManager->save( $rootSkill );
         }
 
+
+
+        private function addSuperAdmins(){
+
+            $userManager = new \Model\UserManager();
+
+            //hydrate user obj
+            $securityHelper = new \Utils\SecurityHelper();
+
+            $emails = array("raphael@skill-project.org", "dario@skill-project.org", "guillaume@skill-project.org");
+
+            $superadmins = array();
+            foreach($emails as $email){
+                $user = new User();
+                
+                $user->setNewUuid();
+                $user->setUsername( explode("@", $email)[0] );
+                $user->setEmail( $email );
+                $user->setRole( "superadmin" );
+                $user->setSalt( $securityHelper->randomString() );
+                $user->setToken( $securityHelper->randomString() );
+
+                $hashedPassword = $securityHelper->hashPassword( $email, $user->getSalt() );
+                
+                $user->setPassword( $hashedPassword );
+                $user->setIpAtRegistration( $_SERVER['REMOTE_ADDR'] );
+                $user->setDateCreated( time() );
+                $user->setDateModified( time() );
+
+                $user->setEmailValidated(1);
+                $user->setApplicationStatus(1);
+
+                //save it
+                $userManager = new \Model\UserManager();
+                $userManager->save($user); 
+                $superadmins[] = $user;
+            }
+            return $superadmins;
+        }
 
         private function addDummyUser($username, $role = "user"){
 

@@ -37,7 +37,7 @@
             
             $view = new View("graph.php", array(
                     "rootNode"  => $rootNode,
-                    "title"     => "Explore",
+                    "title"     => _("Explore"),
                     "userClass" => $userClass
 
                 )

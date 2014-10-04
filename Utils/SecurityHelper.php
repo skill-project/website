@@ -37,7 +37,14 @@
                 $reason = _("You must be signed in to do that !");
             }
             //if role required is admin and current user is not admin, forbid
-            elseif ($requiredRole == "admin" && self::getUser()->getRole() != "admin"){
+            elseif ($requiredRole == "superadmin" && self::getUser()->getRole() != "superadmin"){
+                $forbid = true;
+                $reason = _("You do have the required role to do that !");
+            }
+            //if role required is admin and current user is not admin, forbid
+            elseif ($requiredRole == "admin" && 
+                (self::getUser()->getRole() != "admin" || self::getUser()->getRole() != "superadmin")
+                ){
                 $forbid = true;
                 $reason = _("You do have the required role to do that !");
             }

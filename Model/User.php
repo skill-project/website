@@ -86,7 +86,7 @@
 		}
 
 		public function isAdmin(){
-			return ($this->getRole() == "admin");
+			return ($this->getRole() == "admin" || $this->getRole() == "superadmin");
 		}
 
 		public function getUsername(){
