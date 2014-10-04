@@ -7,7 +7,7 @@
                         case "CREATED":
                             break;
                         case "MODIFIED":
-                            $infos = $la['relProps']['fromName'];
+                            $infos = "was ". $la['relProps']['fromName'];
                             break;
                         case "DELETED":
                             $color = "#FFA5A5";
