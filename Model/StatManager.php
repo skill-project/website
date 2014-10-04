@@ -55,7 +55,7 @@
             $skip = (!empty($_GET['skip'])) ? $_GET['skip'] : 0;
 
                     //not specifying node label cause it can be different from :Skill
-            $cyp = "MATCH (s)<-[r:CREATED|MODIFIED|TRANSLATED|DELETED|MOVED]-
+            $cyp = "MATCH (s)<-[r:CREATED|MODIFIED|TRANSLATED|AUTO_TRANSLATED|DELETED|MOVED]-
                     (u:User) 
                     RETURN r,s,u
                     ORDER BY r.timestamp DESC SKIP {skip} LIMIT {limit}";
