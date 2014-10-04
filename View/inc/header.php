@@ -24,7 +24,7 @@
                 <li><a class="register-link" href="<?= \Controller\Router::url("register"); ?>" title="<?= _("Register !"); ?>"><?= _("PROFILE"); ?></a></li>
             <?php endif; ?>
             <li><a href="<?= \Controller\Router::url("apply"); ?>" title=""><?= _("APPLY"); ?></a></li>
-            <li class="last"><a href="http://vanilla.skill-project.org/" title=""><?= _("COMMUNITY"); ?></a></li>
+            <li class="last"><a href="<?= \Config\Config::VANILLA_URL?>" title=""><?= _("COMMUNITY"); ?></a></li>
         </ul>
     </nav>
 </div>
