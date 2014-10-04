@@ -21,4 +21,6 @@
         const GOOGLE_TRANSLATE_API_KEY = 'AIzaSyAdvTQBsgEl9JQn8FLviwsPeQvym9Te6LM';
         
         const VANILLA_URL	= _VANILLA_URL;
+
+        const GA_ACCOUNT = _GA_ACCOUNT;
     }

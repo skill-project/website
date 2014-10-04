@@ -9,13 +9,16 @@
     <link href="css/all.min.css" type="text/css" rel="stylesheet" />
     <?php endif; ?>
     <script>
-        var baseUrl="<?= $GLOBALS['base_url'] ?>/";  
+        var baseUrl="<?= $GLOBALS['base_url'] ?>/";
         <?php 
+            $gaAccount = \Config\Config::GA_ACCOUNT;
+            echo "var gaC = '$gaAccount'\n"; 
+
             if (!empty($rootNode)) {
                 echo "var rootNodeId='" . $rootNode->getUuid() . "';\n";
                 if (!empty($action)) echo "var action='$action';\n";
                 else $action = "";
-                
+
                 if (!empty($jsonAutoLoad)) echo "var jsonAutoLoad=" . $jsonAutoLoad . ";\n";
                 if ((empty($_SESSION["tourDone"]) or true) and $action != "goto") {
                     $_SESSION["tourDone"] = true;
@@ -66,4 +69,6 @@
     <?php else: ?>
     <script src="js/all.min.js"></script>
     <?php endif; ?>
-<?php include("../View/inc/analytics.js"); ?>
+<?php 
+    include("../View/inc/analytics.js"); 
+?>
