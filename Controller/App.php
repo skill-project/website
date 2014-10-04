@@ -89,6 +89,10 @@
 
         private function useSession(){
             //we use sessions
+            $domain = "." . \Config\Config::DOMAIN;
+            
+            session_set_cookie_params(365 * 86400, "/", $domain);
+            // phpinfo();
             session_start();
         }
 
