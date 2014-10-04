@@ -37,14 +37,21 @@
 
 #lang-nav {
     position: relative;
+    z-index: 9999;
+}
+
+#lang-nav.open #lang-title {
+    background-color: #000;
+    padding: 5px;
 }
 
 #top-user-nav #lang-nav ul {
     position: absolute;
     left: 0px;
-    top: 12px;
+    top: 18px;
     text-align: left;
-    display: none;
+    width: 80px;
+    /*display: none;*/
 }
 
 #top-user-nav #lang-nav:hover ul {
@@ -58,7 +65,7 @@
     z-index: 50;
 }
 
-#top-user-nav #lang-nav a {
+#lang-nav a {
     padding: 5px;
     display: block;
 }
@@ -85,6 +92,7 @@
     width:100%;
     background-color:$gray;
     height:65px;
+    position: relative;
 }
 
 #main-logo img {

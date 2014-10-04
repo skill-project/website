@@ -9,8 +9,8 @@
 
         ksort($allCodes);
 
-        echo '<li id="lang-nav" class="last">';
-        echo _("Language");
+        echo '<li id="lang-nav" class="last open">';
+        echo '<span id="lang-title">' . _("Language") . '</span>';
         echo '<ul>';
         foreach($allCodes as $code => $langInfo){
             $params['lang'] = $code;

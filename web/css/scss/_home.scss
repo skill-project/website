@@ -28,41 +28,39 @@ html.home {
 }
 
 .home-btn {
+
     background: url("../img/SKP-page-home-btn-off.png") no-repeat;
     height: 112px;
     width: 292px;
     display: inline-block;
-    margin-left: -27px;
+    text-align: center;
 
     a, a:hover {
         color: #000;
         cursor: pointer;
-        width: 237px;
+        width: 182px;
         height: 57px;
         font-size: 14px;
         line-height: 57px;
         display: block;
-        margin: 28px 0 0 28px;
         text-transform: uppercase;
+        padding-right: 55px;
     }
 
 }
+
 #home-btn-go {
     background: url("../img/SKP-page-home-btn-glow.png") no-repeat;
-
-    a {
-        padding-left: 17px;
-        width: 220px;
-    }
-
-}
-#home-btn-learn {
-    a {
-        width: 192px;
-        padding-left: 45px;
-    }
 }
 
+#home-btn-go, #home-btn-learn {
+    position: relative;
+    left: -28px;
+}
+
+#home-btn-go a, #home-btn-learn a{
+    margin: 28px 0 0 28px;
+}
 
 #home-top-panel {
     height: 613px;
@@ -108,10 +106,8 @@ html.home {
 
 #home-btn-go-bottom {
     background: url("../img/SKP-btn.png") no-repeat;
-    width: 236px;
-    height: 56px;
 }
 
-#home-btn-go-bottom a {
-    margin: 0;
+#home-btn-go-bottom:hover a {
+    color: #FFF;
 }

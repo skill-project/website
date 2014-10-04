@@ -1,7 +1,7 @@
 <div id="home-top-panel">
 	<div class="container">
 		<div class="left-content">
-			<h1>Français shit<br />what the world can do.</h1>
+			<h1>Show the world<br />what the world can do.</h1>
 			<p id="tagline">Explore all the human skills. Map them out.</p>
 
 			<div id="home-btn-go" class="home-btn"><a href="<?= \Controller\Router::url("graph"); ?>">Start skillwalking</a></div>
@@ -14,21 +14,15 @@
 
 <section id="home-main-panel">
 	<div class="container">
+		<img class="home-illus brain-illus" alt="" src="img/SKP-page-home-brain.png" />
 		<h2>Do you know everything you know ?</h2>
 		<p>sda fds fs fs fdfas eq wrew rew rewqr r ewr ew e </p>
 
+		<img class="home-illus network-illus" alt="" src="img/SKP-page-home-network.png" />
 		<h2>Do you know everything you know ?</h2>
 		<p>sda fds fs fs fdfas eq wrew rew rewqr r ewr ew e </p>
 
-			<h2>Do you know everything you know ?</h2>
-		<p>sda fds fs fs fdfas eq wrew rew rewqr r ewr ew e </p>
-
-		<h2>Do you know everything you know ?</h2>
-		<p>sda fds fs fs fdfas eq wrew rew rewqr r ewr ew e </p>
-
-			<h2>Do you know everything you know ?</h2>
-		<p>sda fds fs fs fdfas eq wrew rew rewqr r ewr ew e </p>
-
+		<img class="home-illus circle-illus" alt="" src="img/SKP-page-home-circle.png" />
 		<h2>Do you know everything you know ?</h2>
 		<p>sda fds fs fs fdfas eq wrew rew rewqr r ewr ew e </p>
 	</div> 
@@ -37,6 +31,6 @@
 	<div class="container">
 		<h2>Ready to go ?</h2>
 		<p>Starts now skillwalking amongst the skill and create your own !</p>
-		<div id="home-btn-go" class="home-btn"><a href="<?= \Controller\Router::url("graph"); ?>">Start skillwalking</a></div>
+		<div id="home-btn-go-bottom" class="home-btn"><a href="<?= \Controller\Router::url("graph"); ?>">Start skillwalking</a></div>
 	</div> 
 </section>

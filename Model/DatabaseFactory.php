@@ -15,7 +15,7 @@
          */
         public static function setNewClient(){
             
-            if (!self::quickTestConnection()){
+            if (!self::quickTestConnection() && !Config::DEBUG){
                 $mailer = new \Controller\Mailer();
                 $mailer->sendWarning("No database connection !", "HUGE ERROR");
                 \Controller\Router::websiteDown();
