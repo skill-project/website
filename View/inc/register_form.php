@@ -1,19 +1,19 @@
 <form method="POST" action="<?= \Controller\Router::url("register"); ?>">
     <div>
         <label for="username"><?= _("USERNAME") ?></label>
-        <input type="text" name="username" id="username" />
+        <input type="text" name="username" id="username" required />
     </div>
     <div>
         <label for="email"><?= _("EMAIL") ?> <?= _("We do not spam."); ?></label>
-        <input type="email" name="email" id="email" />
+        <input type="email" name="email" id="email" required />
     </div>
     <div>
         <label for="password"><?= _("PASSWORD") ?></label>
-        <input type="password" name="password" id="password" />
+        <input type="password" name="password" id="password" required />
     </div>
     <div>
         <label for="password_bis"><?= _("PASSWORD AGAIN") ?></label>
-        <input type="password" name="password_bis" id="password_bis" />
+        <input type="password" name="password_bis" id="password_bis" required />
     </div>
     <div class="submit-container">
         <input type="submit" value="<?= _("SIGN UP") ?>" />

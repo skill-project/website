@@ -4,11 +4,11 @@
         <div class="row">
             <div>
                 <label for="username"><?= _("Username") ?></label>
-                <input type="text" name="username" id="username" value="<?= $loggedUser->getUsername() ?>" />
+                <input type="text" name="username" id="username" value="<?= $loggedUser->getUsername() ?>" required />
             </div>
             <div class="r">
                 <label for="email"><?= _("Email") ?></label>
-                <input type="email" name="email" id="email" value="<?= $loggedUser->getEmail() ?>" />
+                <input type="email" name="email" id="email" value="<?= $loggedUser->getEmail() ?>" required />
             </div>
         </div>
         <div class="row">

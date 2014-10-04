@@ -1,11 +1,11 @@
 <form method="POST" action="<?php echo \Controller\Router::url("login"); ?>">
     <div>
         <label for="loginUsername"><?php echo _("USERNAME OR EMAIL") ?></label>
-        <input type="text" name="loginUsername" id="loginUsername" />
+        <input type="text" name="loginUsername" id="loginUsername" required />
     </div>
     <div>
         <label for="password"><?php echo _("PASSWORD") ?></label>
-        <input type="password" name="password" id="password" />
+        <input type="password" name="password" id="password" required />
         <a class="forgot-passowrd-link" href="<?= \Controller\Router::url("forgotPassword1"); ?>" title="<?= _("Forgot your password ?"); ?>"><?= _("Forgot your password ?"); ?></a>
     </div>
     <div class="submit-container">
