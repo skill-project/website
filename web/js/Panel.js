@@ -6,7 +6,7 @@ var Panel = function(node, initParams) {
 	var that = this;
     var userRole = "user"; //editor, anonymous
 
-    $("#panel").height($("#kinetic").height() - $("#footer").height() - 30);
+    $("#panel").height($("#kinetic").height() - $("#footer").height() - 15);
 
     loader.show();
 

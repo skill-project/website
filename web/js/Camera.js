@@ -538,7 +538,7 @@ Camera.prototype.resizeElements = function() {
     }
     
     if (typeof tree.editedNode != "undefined") {
-        var newPanelHeight = newHeight - $("#footer").height() - 30;
+        var newPanelHeight = newHeight - $("#footer").height() - 15;
         $("#panel").height(newPanelHeight);
         tree.editedNode.panel.setOrUpdateScrollbar();
     }
