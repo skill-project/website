@@ -34,7 +34,7 @@
                     "abeautifulsite": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -89,7 +89,7 @@
                     "Cocur\\Slugify\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -140,7 +140,7 @@
                     "Everyman\\Neo4j": "lib/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -185,7 +185,7 @@
             "extra": {
                 "branch-alias": [
 
-                ]
+    ]
             },
             "autoload": {
                 "psr-0": {
@@ -193,7 +193,7 @@
                     "Faker\\PHPUnit": "test/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -285,7 +285,7 @@
                     "Mandrill": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
             ],
