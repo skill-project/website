@@ -22,7 +22,7 @@ module.exports = function(grunt) {
                 src : [
                     'web/js/jquery-2.1.1.min.js', 
                     'web/js/jquery-ui.min.js', 
-                    'web/jquery.mousewheel.min.js',
+                    'web/js/jquery.mousewheel.min.js',
                     'web/js/jquery.highlight.js',
                     'web/js/jquery.simplemodal-1.4.4.js',
                     'web/js/jquery.tourbus.js',
@@ -41,9 +41,10 @@ module.exports = function(grunt) {
                     'web/js/User.js',
                     'web/js/Tour.js',
                     'web/js/Loader.js',
-                    'web/js/js/script.js'
+                    'web/js/script.js'
                 ],
-                dest : 'web/js/all.js'
+                dest : 'web/js/all.js',
+                nonull: true
             }
         },
         uglify : {
