@@ -603,10 +603,10 @@
          * Find last actions of a user
          */
         public function getLatestActivity(User $user){
-            $cyp = "MATCH (s:Skill)<-[r:CREATED|MODIFIED]-
+            $cyp = "MATCH (s:Skill)<-[r:CREATED|MODIFIED|TRANSLATED|DELETED|MOVED]-
                     (u:User {uuid: {userUuid}}) 
                     RETURN r, s
-                    ORDER BY r.timestamp DESC LIMIT 20";
+                    ORDER BY r.timestamp DESC LIMIT 50";
 
             $query = new Query($this->client, $cyp, array("userUuid" => $user->getUuid()));
             $resultSet = $query->getResultSet();
@@ -616,7 +616,7 @@
                 foreach($resultSet as $row){
                     $act = array();
                     $act['skillName'] = $row['s']->getProperty('name');
-                    //$act['action'] = $row['r']->getLabel();
+                    $act['action'] = $row['r']->getType();
                     $act['timestamp'] = $row['r']->getProperty('timestamp');
                     $activities[] = $act;
                 }

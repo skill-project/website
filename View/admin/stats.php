@@ -11,6 +11,5 @@
 
         <h3>Deepest skill at depth</h3>
         <?= $maxDepth ?>
-        
 
     </div>

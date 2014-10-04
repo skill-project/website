@@ -24,6 +24,7 @@
             $params['skillsCount'] = $statManager->countLabel("Skill");
             $params['usersCount'] = $statManager->countLabel("User");
             $params['maxDepth'] = $statManager->getMaxDepth();
+            //$params['meanNumber'] = $statManager->getMeanNumberOfSkillChildren();
 
             $view = new AdminView("stats.php", $params);
             

@@ -13,8 +13,7 @@
 
         /**
          * Get the depth of the deepest skill
-         * @param string uuid of the node
-         * @return int Number of children
+         * @return int Max depth
          * 
          */
         public function getMaxDepth(){
@@ -30,8 +29,8 @@
 
         /**
          * Count number of node of a label
-         * @param string uuid of the node
-         * @return int Number of children
+         * @param string the label
+         * @return int Number of nodes
          * 
          */
         public function countLabel($label){
@@ -47,5 +46,23 @@
             }
         }
 
+
+        /**
+         * Count average number of children
+         * @return int Number of mean children
+         * 
+         */
+        public function getMeanNumberOfSkillChildren(){
+            die("doesnt work");
+            $cyp = "MATCH (s:Skill)-[r:HAS]->(c:Skill)
+                        RETURN count(r) as meanNumber";
+            $query = new Query($this->client, $cyp);
+            $resultSet = $query->getResultSet();
+            foreach($resultSet as $row){
+                echo $row['meanNumber'];
+                //return $row['meanNumber'];
+            }
+            die();
+        }
 
     }

@@ -167,14 +167,32 @@ html.page {
 
     h3 {
         font-size: 16px;
+        margin: 20px 0;
+    }
+
+    h3.first {
+        margin-top: 0;
+    }
+
+    h3.special {
+        margin-bottom: 0;
     }
 
     .pale-label {
-        color: #444;
+        color: #666;
         width: 85px;
-        margin-right: 20px;
+        margin: 0 20px 10px 0;
         display: inline-block;
         text-align: right;
+    }
+
+    li {
+        color: #666;
+        margin: 15px 0;
+    }
+
+    li .skill-name {
+        color: #000;
     }
 }
 
@@ -218,6 +236,7 @@ header h2 {
 .page p {
     text-align: justify;
     padding: 3px 0;
+    line-height: 16px;
 }
 
 section {
