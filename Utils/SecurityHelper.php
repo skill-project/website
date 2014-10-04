@@ -34,29 +34,27 @@
             return $hashedPassword;
         }
 
-        public static function lock($requiredRole = ""){
-            $forbid = false;
-            $reason = "";
-
+        public static function lock($minimumRole = ""){
             //if no user is connected, forbid
             if (!self::userIsLogged()){
-                $forbid = true;
-                $reason = _("You must be signed in to do that !");
-                return false;
+                return self::forbid(_("You must be signed in to do that !"));
             }
-            
-            $userRole = self::getUser()->getRole();
-
-            $authorizedLevels = self::$rolesHierarchy[$userRole];
-
-            if (!in_array($requiredRole, $authorizedLevels)){
-                $forbid = true;
-                $reason = _("You must be signed in to do that !");
+            //if no minimum role, return true
+            else if ($minimumRole == ""){
+                return true;
             }
+            //else, with a mimimum role
+            else {
 
-            if ($forbid){
-                self::forbid($reason);
+                $userRole = self::getUser()->getRole();
+
+                $authorizedLevels = self::$rolesHierarchy[$userRole];
+                //check if user has this capability
+                if (!in_array($minimumRole, $authorizedLevels)){
+                    return self::forbid(_("You must be signed in to do that !"));
+                }
             }
+            return true;
         }
 
 
