@@ -46,6 +46,42 @@
             }
         }
 
+        /**
+         * Find last editions
+         */
+        public function getLatestChanges(){
+
+            $limit = (!empty($_GET['limit'])) ? $_GET['limit'] : 10;
+            $skip = (!empty($_GET['skip'])) ? $_GET['skip'] : 0;
+
+                    //not specifying node label cause it can be different from :Skill
+            $cyp = "MATCH (s)<-[r:CREATED|MODIFIED|TRANSLATED|DELETED|MOVED]-
+                    (u:User) 
+                    RETURN r,s,u
+                    ORDER BY r.timestamp DESC SKIP {skip} LIMIT {limit}";
+
+            $query = new Query($this->client, $cyp, array(
+                    "skip" => (int) $skip,
+                    "limit" => (int) $limit
+                ));
+            $resultSet = $query->getResultSet();
+
+            $activities = array();
+            if ($resultSet->count() > 0){
+                foreach($resultSet as $row){
+                    $act = array();
+                    $act['skillName'] = $row['s']->getProperty('name');
+                    $act['action'] = $row['r']->getType();
+                    $act['timestamp'] = $row['r']->getProperty('timestamp');
+                    $act['by']['username'] = $row['u']->getProperty('username');
+                    $act['by']['uuid'] = $row['u']->getProperty('uuid');
+                    $activities[] = $act;
+                }
+            }
+
+            return $activities;
+
+        }
 
         /**
          * Count average number of children

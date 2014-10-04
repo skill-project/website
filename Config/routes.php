@@ -314,6 +314,14 @@
         )
     );
 
+    $routes->add(
+        'latestChanges',
+        new Route('/admin/latest-changes/', 
+            array('controller' => 'Admin', 'action' => 'latestChanges'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
 
 //Fixtures
 

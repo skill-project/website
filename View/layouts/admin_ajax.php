@@ -1,0 +1,1 @@
+<?php include("../View/admin/ajax/" . $page); ?>
