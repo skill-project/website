@@ -299,7 +299,7 @@
                         $translationManager = new TranslationManager();
 
                         //insert or update, the same
-                        $translationManager->saveSkillTranslation($languageCode, $skillTrans, $skill);
+                        $translationManager->saveSkillTranslation($languageCode, $skillTrans, $skill, false);
 
                         $this->warn("translated", $skill, array(
                             "translated in" => $languageCode,
@@ -351,7 +351,7 @@
                         $translationManager = new TranslationManager();
 
                         //insert or update, the same
-                        $translationManager->saveSkillTranslation($GLOBALS['lang'], $skillName, $skill);
+                        $translationManager->saveSkillTranslation($GLOBALS['lang'], $skillName, $skill, false);
 
                         $this->warn("translated by rename", $skill, array(
                             "translated in" => $GLOBALS['lang'],
@@ -501,7 +501,7 @@
 
                         if ($transSkillName){
                             $translations[$code] = $transSkillName;
-                            $translationManager->saveSkillTranslation($code, $transSkillName, $skill);
+                            $translationManager->saveSkillTranslation($code, $transSkillName, $skill, true);
                         }
                       
                     }

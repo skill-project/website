@@ -608,6 +608,7 @@
          * Find last actions of a user
          */
         public function getLatestActivity(User $user){
+                    //not specifying node label cause it can be different from :Skill
             $cyp = "MATCH (s)<-[r:CREATED|MODIFIED|TRANSLATED|DELETED|MOVED]-
                     (u:User {uuid: {userUuid}}) 
                     RETURN r, s

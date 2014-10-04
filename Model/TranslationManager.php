@@ -12,13 +12,17 @@
         /**
          * Insert or update
          */ 
-        public function saveSkillTranslation($languageCode, $name, Skill $skill){
+        public function saveSkillTranslation($languageCode, $name, Skill $skill, $auto = false){
             $user = \Utils\SecurityHelper::getUser();
 
+
             $cypher = "MATCH (s:Skill {uuid: {skillUuid}}), (u:User {uuid: {userUuid}})
-                        CREATE (s)<-[ru:TRANSLATED {timestamp: {now}, to: {languageCode}, name: {name}}]-(u) 
+                        CREATE (s)<-[ru:**autoLabel**TRANSLATED {timestamp: {now}, to: {languageCode}, name: {name}}]-(u) 
                         SET s.l_$languageCode = {name} 
                         RETURN s";
+                        
+            $autoLabel = ($auto) ? "AUTO_" : "";
+            $cypher = str_replace("**autoLabel**", $autoLabel, $cypher);
 
             $query = new Query($this->client, $cypher, array(
                                     "skillUuid"     => $skill->getUuid(),
