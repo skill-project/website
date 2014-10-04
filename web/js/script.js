@@ -19,7 +19,10 @@ var globalSizes = {
   footerHeight: 82
 }
 
-if (typeof rootNodeId != "undefined") {
+if (typeof rootNodeId !== "undefined") var skillWalk = true;
+else var skillWalk = false;
+
+if (skillWalk === true) {
   var tree = new Tree;
   var camera;
   var search = new Search;
@@ -30,33 +33,35 @@ if (typeof rootNodeId != "undefined") {
 var user = new User;
 var site;
 
-$(document).ready(function (){
+$(document).ready(function () {
   site = new Site;
 
-  $("#kinetic, #backdrop")
-    .hide()
-    .width($(window).width())
-    .height($(window).height() - $("#header").height());
+  if (skillWalk === true) {
+    $("#kinetic, #backdrop")
+      .hide()
+      .width($(window).width())
+      .height($(window).height() - $("#header").height());
 
-  $("#preload, #panel, #debug").hide();
+    $("#preload, #panel, #debug").hide();
 
-  camera = new Camera;
-  camera.footerOffset = $("#footer").height();
+    camera = new Camera;
+    camera.footerOffset = $("#footer").height();
 
-  $(window).resize(function() {
-    clearTimeout(doResize);
-    doResize = setTimeout(camera.resizeElements, 300);
-  });
+    $(window).resize(function() {
+      clearTimeout(doResize);
+      doResize = setTimeout(camera.resizeElements, 300);
+    });
 
-  // setInterval(function() {
-  //   // $("#debug").empty();
-  //   // if (tree.selectedNode) $("#debug").append("selectedNode : " + tree.selectedNode.name + "<br />");
-  //   // if (tree.editedNode) $("#debug").append("editedNode : " + tree.editedNode.name + "<br />");
+    // setInterval(function() {
+    //   // $("#debug").empty();
+    //   // if (tree.selectedNode) $("#debug").append("selectedNode : " + tree.selectedNode.name + "<br />");
+    //   // if (tree.editedNode) $("#debug").append("editedNode : " + tree.editedNode.name + "<br />");
 
-  //   // if (typeof tree.selectedNode == "undefined") $("#debug").css({"background-color": "red"});
-  //   // else $("#debug").css({"background-color": "white"});
-  //   // camera.drawZone(camera.getSecurityZone(camera.defaultSecurityZoneFactor));
-  // },200);
+    //   // if (typeof tree.selectedNode == "undefined") $("#debug").css({"background-color": "red"});
+    //   // else $("#debug").css({"background-color": "white"});
+    //   // camera.drawZone(camera.getSecurityZone(camera.defaultSecurityZoneFactor));
+    // },200);
+  }
 });
 
 $(window).load(function  () {

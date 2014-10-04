@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="fr" class="page <?= $htmlClasses ?>">
 <head>
-	<?php include("../View/inc/page_head.php"); ?>
+<?php include("../View/inc/page_head.php"); ?>
 </head>	
 <body class="page">
 	<div id="wrapper">	

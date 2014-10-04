@@ -15,7 +15,6 @@
 
             $rootNode = $skillManager->findRootNode();
             $view = new View("home.php", array(
-                "rootNode" => $rootNode,
                 "title" => _("The Universal Skills Map"))
             );
             
