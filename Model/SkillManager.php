@@ -483,19 +483,24 @@
          * Delete a node by uuid, and its relations
          * @return mixed True on deletion, error message otherwise
          */
-        public function delete($uuid){
+        public function delete($skillUuid, $userUuid){
 
-            $nodeExists = $this->findByUuid($uuid);
+            $nodeExists = $this->findByUuid($skillUuid);
             if ($nodeExists){
-                $childrenNumber = $this->countChildren($uuid);
+                $childrenNumber = $this->countChildren($skillUuid);
                 if($childrenNumber == 0){
 
                     //change the label from :Skill to :DeletedSkill
-                    $cyp = "MATCH (parent:Skill)-[:HAS]->(s:Skill)-[r]-() WHERE s.uuid = {uuid} 
+                    $cyp = "MATCH (parent:Skill)-[:HAS]->(s:Skill {uuid:{skillUuid}}), (u:User {uuid:{userUuid}})
                             SET s.previousParentUuid = parent.uuid 
-                            REMOVE s:Skill SET s :DeletedSkill";
+                            SET s :DeletedSkill
+                            REMOVE s:Skill 
+                            CREATE (u)-[r:DELETED {timestamp:{now}}]->(s)";
                     $query = new Query($this->client, $cyp, array(
-                        "uuid" => $uuid)
+                            "skillUuid" => $skillUuid,
+                            "userUuid" => $userUuid,
+                            "now"=>time()
+                        )
                     );
                     $resultSet = $query->getResultSet();
                     return true;
@@ -603,7 +608,7 @@
          * Find last actions of a user
          */
         public function getLatestActivity(User $user){
-            $cyp = "MATCH (s:Skill)<-[r:CREATED|MODIFIED|TRANSLATED|DELETED|MOVED]-
+            $cyp = "MATCH (s)<-[r:CREATED|MODIFIED|TRANSLATED|DELETED|MOVED]-
                     (u:User {uuid: {userUuid}}) 
                     RETURN r, s
                     ORDER BY r.timestamp DESC LIMIT 50";

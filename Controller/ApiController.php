@@ -139,7 +139,7 @@
                 if ($validator->isValid()){
                     $skillManager = new SkillManager();
                     $skill = $skillManager->findByUuid($skillUuid);
-                    $deletionResult = $skillManager->delete($skillUuid);
+                    $deletionResult = $skillManager->delete($skillUuid, SH::getUser()->getUuid());
                 }
             }
 
