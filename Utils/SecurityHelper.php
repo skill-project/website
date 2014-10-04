@@ -6,6 +6,13 @@
 
     class SecurityHelper {
 
+        private static $rolesHierarchy = array(
+            "user"       => array("user"),
+            "admin"      => array("admin", "user"),
+            "superadmin" => array("superadmin", "admin", "user")
+        );
+
+
         private $pepper = "biq0e923kfjw93Fwe90T#gr09w0fdfj9dfw23r2390QGGdjsgiadjob()fasdjk*";
 
         public static function randomString($length = 50){
@@ -35,18 +42,16 @@
             if (!self::userIsLogged()){
                 $forbid = true;
                 $reason = _("You must be signed in to do that !");
+                return false;
             }
-            //if role required is admin and current user is not admin, forbid
-            elseif ($requiredRole == "superadmin" && self::getUser()->getRole() != "superadmin"){
+            
+            $userRole = self::getUser()->getRole();
+
+            $authorizedLevels = self::$rolesHierarchy[$userRole];
+
+            if (!in_array($requiredRole, $authorizedLevels)){
                 $forbid = true;
-                $reason = _("You do have the required role to do that !");
-            }
-            //if role required is admin and current user is not admin, forbid
-            elseif ($requiredRole == "admin" && 
-                (self::getUser()->getRole() != "admin" || self::getUser()->getRole() != "superadmin")
-                ){
-                $forbid = true;
-                $reason = _("You do have the required role to do that !");
+                $reason = _("You must be signed in to do that !");
             }
 
             if ($forbid){
