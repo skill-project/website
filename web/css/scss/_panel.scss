@@ -219,7 +219,7 @@ textarea {
 .img-btn-l {  float: left; margin-left: 5px; }
 .img-btn-r {  float: right; margin-right: 5px;}
 
-input[type=submit], .panelModalRemoveBtn {
+input[type=submit] {
     border: none;
     background-color: #FFF;
     color: #222;
@@ -229,8 +229,32 @@ input[type=submit], .panelModalRemoveBtn {
     margin-top: 30px;
 }
 
+.panelModalRemoveBtn {
+    background: url("../img/panel-icon-error-close.png") no-repeat;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    cursor: pointer;
+}
+
 #panel .panelModal h3 { 
     margin: 20px 0;
+}
+
+#panel .panelModal h5 {
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+#panel .modal-content {
+    margin: 100px 10px 10px 10px;
+    border: 1px solid #FFF;
+    padding: 10px 10px 10px 50px;
+    font-size: 14px;
+    background: url("../img/panel-icon-warning.png") no-repeat;
+    background-position: 15px 50%;
 }
 
 

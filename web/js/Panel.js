@@ -49,14 +49,15 @@ var Panel = function(node, initParams) {
 	}
 
     this.showErrors = function(response){
-        var content = "<h3>Oops !</h3><br />";
-        content += response.message + "<br />";
+        var content = '<div class="modal-content">';
+        content += '<a href="#" class="panelModalRemoveBtn"></a>';
+        content += '<h5>' + response.message + "</h5>";
         for (var key in response.data) {
             if (response.data.hasOwnProperty(key)) {
                 content += response.data[key] + '<br />';
             }
         }
-        content += '<button class="panelModalRemoveBtn">OK</button>';
+        content += '</div>';
 
         that.addPanelModal(content);        
     }
@@ -114,9 +115,10 @@ var Panel = function(node, initParams) {
 
                             if ($("body").hasClass("anonymous") && panelToLoad != "share-skill-panel"){
                                 that.addPanelModal(
-                                    '<div class="please-sign-in">' + jt.panel.haveToBeSigned + '<br /><br />' + 
-                                    '<a class="login-link" href="../login/">' + jt.panel.signIn + '</a><br />' + jt.or + '<br /> ' + 
-                                    '<a class="register-link" href="../register/">' + jt.panel.createAccount + '</a>' + '</div>'
+                                    '<div class="modal-content">' + 
+                                    '<h5>' + jt.panel.haveToBeSigned + '</h5>' + 
+                                    '<a class="login-link" href="../login/">' + jt.panel.signIn + '</a> ' + jt.or +
+                                    ' <a class="register-link" href="../register/">' + jt.panel.createAccount + '</a>' + '</div>'
                                 );
                             }
                         });
