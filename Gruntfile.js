@@ -31,6 +31,7 @@ module.exports = function(grunt) {
                     'web/js/canvas-loader.min.js',
                     'web/js/compatibility.js',
                     'web/js/functions.js',
+                    'web/js/Site.js',
                     'web/js/Node.js',
                     'web/js/Node.prototypes.js',
                     'web/js/Edge.js',

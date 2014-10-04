@@ -28,9 +28,11 @@ if (typeof rootNodeId != "undefined") {
 }
 
 var user = new User;
-
+var site;
 
 $(document).ready(function (){
+  site = new Site;
+
   $("#kinetic, #backdrop")
     .hide()
     .width($(window).width())
