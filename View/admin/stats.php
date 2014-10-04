@@ -15,7 +15,16 @@
     </div>
 
     <h2>Latest changes</h2>
-    <div id="latest-changes"></div>
+    <table id="latest-changes">
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Skill</th>
+            <th>Infos</th>
+            <th>User</th>
+        </tr>
+
+    </table>
 
     <a id="latest-changes-btn" href="<?= \Controller\Router::url("latestChanges"); ?>">More latest changes</a>
     <script>
@@ -24,7 +33,6 @@
         var limit = 10;
 
         function getLatestChanges(e){
-            if (typeof e != "undefined") {e.preventDefault();}
             $.ajax({
                 url: $("#latest-changes-btn").attr("href"),
                 data: {
@@ -32,12 +40,16 @@
                     limit: limit
                 },
                 success: function(response){
-                    skip += limit;
                     $("#latest-changes").append(response);
+                    skip += limit;
                 }
             });
         }
 
-        $("#latest-changes-btn").on("click", getLatestChanges);
+        $("#latest-changes-btn").on("click", function(e){
+            e.preventDefault();
+            getLatestChanges();
+        });
+        
         getLatestChanges();
     </script>

@@ -73,8 +73,16 @@
                     $act['skillName'] = $row['s']->getProperty('name');
                     $act['action'] = $row['r']->getType();
                     $act['timestamp'] = $row['r']->getProperty('timestamp');
-                    $act['by']['username'] = $row['u']->getProperty('username');
-                    $act['by']['uuid'] = $row['u']->getProperty('uuid');
+
+                    foreach($row['s']->getProperties() as $key => $value){
+                        $act['skillProps'][$key] = $value;
+                    }
+                    foreach($row['r']->getProperties() as $key => $value){
+                        $act['relProps'][$key] = $value;
+                    }
+                    foreach($row['u']->getProperties() as $key => $value){
+                        $act['userProps'][$key] = $value;
+                    }
                     $activities[] = $act;
                 }
             }
