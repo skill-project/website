@@ -42,6 +42,8 @@ $(document).ready(function () {
       .width($(window).width())
       .height($(window).height() - $("#header").height());
 
+    $("body").height($(window).height());
+
     $("#preload, #panel, #debug").hide();
 
     camera = new Camera;

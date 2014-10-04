@@ -518,6 +518,8 @@ Camera.prototype.resizeElements = function() {
         .width(newWidth)
         .height(newHeight);
 
+    $("body").height(newHeight);
+
     camera.backStage.width(newWidth);
     camera.backStage.height(newHeight);
 
