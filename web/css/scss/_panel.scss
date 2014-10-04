@@ -172,7 +172,7 @@ textarea {
 }
 
 .img-btn {
-    background-color: #000;
+    background-color: inherit;
 }
 .img-btn:hover img { 
     border: 1px solid #FFF; 
@@ -216,8 +216,8 @@ textarea {
     display:none;
 }
 
-.img-btn-l {  float: left; }
-.img-btn-r {  float: right; }
+.img-btn-l {  float: left; margin-left: 5px; }
+.img-btn-r {  float: right; margin-right: 5px;}
 
 input[type=submit], .panelModalRemoveBtn {
     border: none;
