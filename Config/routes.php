@@ -304,6 +304,16 @@
         )
     );
 
+//Back-office
+
+    $routes->add(
+        'stats',
+        new Route('/admin/stats/', 
+            array('controller' => 'Admin', 'action' => 'stats'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
 
 //Fixtures
 

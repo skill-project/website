@@ -51,7 +51,7 @@
                 $authorizedLevels = self::$rolesHierarchy[$userRole];
                 //check if user has this capability
                 if (!in_array($minimumRole, $authorizedLevels)){
-                    return self::forbid(_("You must be signed in to do that !"));
+                    return self::forbid(_("You can't do that !"));
                 }
             }
             return true;
