@@ -245,6 +245,7 @@ section.first {
         width: 204px;
         height: 204px;
         margin: 22px auto;
+        background-position: 0 204px;
     }
 
     #dario-pic { background-image: url("../img/SKP-page-project-pic-dario-italy.png"); }
@@ -252,7 +253,7 @@ section.first {
     #raphael-pic { background-image: url("../img/SKP-page-project-pic-raphael-france.png"); }
 
     .team-pic:hover {
-        background-position: 0 -204px;
+        background-position: 0 0;
     }
 
 }
