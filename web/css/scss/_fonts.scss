@@ -5,3 +5,14 @@
        url('../fonts/Avenir-Book.ttf') format('truetype'),
        url('../fonts/Avenir-Book.svg#svgAvenir-Book') format('svg');
 }
+@font-face {
+  font-family: 'Avenir-Light';
+  src: url('../fonts/Avenir-Light.eot?') format('embedded-opentype'),
+       url('../fonts/Avenir-Light.woff') format('woff'),
+       url('../fonts/Avenir-Light.ttf') format('truetype'),
+       url('../fonts/Avenir-Light.svg#svgAvenir-Light') format('svg');
+}
+
+h1, h2 {
+    font-family: 'Avenir-Light';
+}
