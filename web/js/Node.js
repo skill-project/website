@@ -185,8 +185,8 @@ var Node = function(nodeData, params) {
       x: startX,
       y: startY,
       width: this.sizes.labelWidth + this.sizes.editButtonWidth,
-      height: this.sizes.labelHeight/*,
-      draggable:true*/
+      height: this.sizes.labelHeight,
+      draggable:true
     });
     group.add(glow, backImage, editButton, labelGroup);
     this.shapes = group;
@@ -315,23 +315,24 @@ var Node = function(nodeData, params) {
       }else {
         that.finishEdit();
       }
-      // console.log("edit click");
-      // console.log(e.evt);
-      // e.cancelBubble = true;
-      // e.evt.bubbles = false;
     });
     this.editButton = editButton;
   }
 
+
   //Fire the rootNodeReady callback when the rootNode is ready
   if (this.parent == null) {
-    setTimeout(function() {
-      tree.rootNode.select().expand({
-        onComplete: function() {
-          if (typeof doTour != "undefined" && doTour == true) tour.start();
-        }
-      });
+    if (tree.autoLoad == false) {
+      setTimeout(function() {
+          tree.rootNode.select().expand({
+            onComplete: function() {
+              if (typeof doTour != "undefined" && doTour == true) tour.start();
+              tree.rootNodeReady.fire();
+            }
+          });
+        }, 700);
+    } else {
       tree.rootNodeReady.fire();
-    }, 700);
-  }
+    }
+  } 
 }
