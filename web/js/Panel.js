@@ -262,11 +262,13 @@ var Panel = function(node, initParams) {
 
                             if (response.status == "ok"){
                                 
+                                $("#skillTrans").val("");
+                                that.showMessage(response.message);
+
                                 $.ajax({
                                     url: baseUrl + "panel/reloadTranslations/" + node.id + "/"
                                 }).done(function(messagesHtml){
             
-                                        that.showMessage(response.message);
                                         $("#other-translations-list").html(messagesHtml);
                                         that.setOrUpdateScrollbar();
                                     });
@@ -296,7 +298,7 @@ var Panel = function(node, initParams) {
             
                                         $(".discuss-prev-messages").html(messagesHtml);
                                         that.setOrUpdateScrollbar();
-                                        
+
                                     });
                             }
                             else {

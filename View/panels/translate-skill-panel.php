@@ -6,7 +6,7 @@
     <form method="POST" action="<?= \Controller\Router::url("translateSkill"); ?>" id="translate-skill-form">
         <input type="hidden" name="skillUuid" id="translate-skillUuid" value="<?= $skill->getUuid(); ?>" />
         <div>
-            <select name="language" id="language-select">
+            <select name="language" id="language-select" required>
                 <option value=""><?= _("SELECT YOUR LANGUAGE"); ?></option>
                 <?php foreach($languages as $code => $names): ?>
                 <option value="<?= $code; ?>"><?= $names['nativeName']; ?></option>
@@ -14,9 +14,12 @@
             </select>
         </div>
         <div>
-            <input type="text" name="skillTrans" id="skillTrans" />
+            <input type="text" name="skillTrans" id="skillTrans" required />
         </div>
-        <input type="submit" id="trans-form-submit" value="<?= _("OK") ?>" />
+        <div>
+            <input type="submit" id="trans-form-submit" value="<?= _("OK") ?>" />
+            <span class="message-zone"></span>
+        </div>
     </form>
         
     <hr />

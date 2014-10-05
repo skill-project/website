@@ -22,11 +22,11 @@
         </div>
         <?php */ ?>
         <div id="move-step2">
-            <p class="clearfix"><?= _("CHOOSE A DESTINATION"); ?><br />
-            <?=_("Select a skill as a new parent, then click the button."); ?></p>
+            <p class="clearfix"><?= _("CHOOSE A DESTINATION"); ?></p>
+            <p><?=_("Select a skill as a new parent, by clicking on the target."); ?></p>
         </div>
         <div id="move-step3">
-            <p><?=_("Destination :"); ?><span id="destination-skill-name"></span></p>
+            <p><?=_("Destination:"); ?> <span id="destination-skill-name"></span></p>
             <input type="submit" id="move-form-submit" value="<?= _("MOVE") ?>" />
             <span class="message-zone"></span>
         </div>
