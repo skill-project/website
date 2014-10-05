@@ -6,7 +6,7 @@ var Loader = function() {
 }
 
 Loader.prototype.show = function() {
-	if (typeof this.cl == "undefined" && this.isVisible === false && this.isWaitingToShow === false) {
+	if (typeof this.cl === "undefined" && this.isVisible === false && this.isWaitingToShow === false) {
 		this.isWaitingToShow = true;
 		this.timer = setTimeout(function() {
 			loader.cl = new CanvasLoader('loader');
