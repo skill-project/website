@@ -6,7 +6,8 @@ var Loader = function() {
 }
 
 Loader.prototype.show = function() {
-	if (typeof this.cl == "undefined") {
+	if (typeof this.cl == "undefined" && this.isVisible === false && this.isWaitingToShow === false) {
+		this.isWaitingToShow = true;
 		this.timer = setTimeout(function() {
 			loader.cl = new CanvasLoader('loader');
 			loader.cl.setColor('#fef7f9');
@@ -21,7 +22,6 @@ Loader.prototype.show = function() {
 			this.isVisible = true;
 			this.isWaitingToShow = false;
 		}, 200);
-		this.isWaitingToShow = true;
 	}
 }
 
@@ -29,11 +29,12 @@ Loader.prototype.hide = function() {
 	if (this.isWaitingToShow === true) {
 		clearTimeout(this.timer);
 		this.isVisible = false;
+		this.isWaitingToShow = false;
 	}	
 	if (typeof this.cl != "undefined") {
 		this.cl.kill();
 
-		this.isVisible = true;
+		this.isVisible = false;
 		this.isWaitingToShow = false;
 
 		delete this.cl;

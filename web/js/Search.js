@@ -1,6 +1,8 @@
 var Search = function(){
 
     var that = this;
+    this.researchPending = false;
+    this.jqxhr;
 
     this.q = ""; //the search terms
 
@@ -57,17 +59,24 @@ var Search = function(){
     this.autocomplete = function(event){
         event.preventDefault();
         that.q = $('#kw-input').val();
-        if (that.q.length < 3){
+        if (that.q.length < 3 || that.researchPending){
             that.close();
             return false;
         }
 
+        if (typeof that.jqxhr != "undefined"){
+            that.jqxhr.abort();
+        }
+
         loader.show();
-        $.ajax({
+        that.jqxhr = $.ajax({
             url: $("#search-form").attr("action"),
             data: $("#search-form").serialize(),
             method: $("#search-form").attr("method"),
-            success: that.showResult
+            success: that.showResult,
+            complete: function(){
+                that.researchPending = false;
+            }
         });
     }
 
