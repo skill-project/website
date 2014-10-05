@@ -12,8 +12,6 @@ Node.prototype.expand = function(params) {
   $.ajax({
     url: url,
   }).done(function(json) {
-    loader.hide();
-
     that.totalChildren = json.data.length;
 
     if (that.totalChildren > 0) {
@@ -45,6 +43,10 @@ Node.prototype.expand = function(params) {
       that.setVisualState("glow-nochildren");
       camera.checkCameraPosition(that);
     }
+  }).always(function(json) {
+    loader.hide();
+  }).fail(function(json) {
+    tree.busy = false;
   });
 }
 
