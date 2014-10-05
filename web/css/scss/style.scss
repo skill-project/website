@@ -43,6 +43,7 @@ hr {
 a, header a.blue-link, header a:hover, header a.white-link:hover  {
     color: $blue;
     text-decoration: none;
+    outline: 0;
 }
 
 a:hover, header a.blue-link:hover, header a, header a.white-link {
