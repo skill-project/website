@@ -268,6 +268,7 @@ var Panel = function(node, initParams) {
             
                                         that.showMessage(response.message);
                                         $("#other-translations-list").html(messagesHtml);
+                                        that.setOrUpdateScrollbar();
                                     });
                             }
                             else {
@@ -294,6 +295,8 @@ var Panel = function(node, initParams) {
                                 }).done(function(messagesHtml){
             
                                         $(".discuss-prev-messages").html(messagesHtml);
+                                        that.setOrUpdateScrollbar();
+                                        
                                     });
                             }
                             else {
