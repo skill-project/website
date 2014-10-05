@@ -4,6 +4,7 @@ var Node = function(nodeData, params) {
   this.params = params;
   this.parent = params.parent ? params.parent : null;
   this.name;
+  this.slug = nodeData.slug;
   this.depth = nodeData.depth ? nodeData.depth : 0;
   this.onComplete = params.onComplete;
   this.rank = params.rank;

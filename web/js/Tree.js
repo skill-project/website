@@ -111,18 +111,24 @@ Tree.prototype.executeMoveCopy = function() {
         openSibling.contract({noAnim:true}).deSelect();
     }
 
-    tree.editedNode.deleteFromDB();
-    
     //Case 2
     if (tree.targetNode.isInPath == true && tree.targetNode.depth < tree.editedNode.depth) {
         tree.targetNode.contract({noAnim:true}).deSelect();
     }
 
-    //selectedNode = previous parent of the moved node.
-    //In Case 5 tree.selectedNode is undefined, so no need to deselect it
-    if (typeof tree.selectedNode != "undefined") tree.selectedNode.deSelect();
-
     tree.exitTargetMode();
-    tree.editedNode.finishEdit();
-    tree.targetNode.select().expand();
+
+    //This data will be used to create a new child, identical to the one we are about to remove
+    var nodeData = {
+        uuid: tree.editedNode.id,
+        name: tree.editedNode.name,
+        slug: tree.editedNode.slug,
+        depth: tree.targetNode.depth + 1
+    }
+
+    //Remove editedNode from previous location
+    tree.editedNode.deleteFromDB();
+
+    //createNewChild will add the child if targetNode is already open, or simply expand it if it's closed
+    tree.targetNode.createNewChild(nodeData);      
 }

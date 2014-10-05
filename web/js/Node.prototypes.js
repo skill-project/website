@@ -223,6 +223,7 @@ Node.prototype.startEdit = function() {
 
 //Closes the panel
 Node.prototype.finishEdit = function(onComplete, force) {
+
   if (tree.targetMode == true) return;
   if (!this.isEdited) return;
 
@@ -706,13 +707,18 @@ Node.prototype.setName = function (newName, twoLines, textObject) {
 }
 
 Node.prototype.deleteFromDB = function() {
-  this.parent.select();
+  if (this.isSelected) {
+    this.deSelect();
+    this.parent.select();
+  }
 
   //Add the current node Y position to parent's free slots array
   //This will be used if a new node is added before the parent is contracted, 
   //so it has a "missing tooth" that will be fille with the new node
   this.parent.freeSlots.push(this.shapes.y());
   this.parent.freeSlots.sort();
+
+  if (this.isEdited) this.finishEdit();
 
   this.delete();
   stage.draw();
