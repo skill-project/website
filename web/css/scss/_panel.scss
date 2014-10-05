@@ -283,6 +283,35 @@ ul {
     margin: 10px 0;
 }
 
+#delete-radio-container {
+
+    margin-top: 10px;
+
+    input[type=radio] {
+        display: none;
+    }
+    p {
+        margin: 5px 0;
+    }
+}
+
+#delete-fake-radio {
+    background-image: url("../img/panel-icon-delete.png");
+    background-repeat: no-repeat;
+    width: 48px;
+    height: 23px;
+    display: inline-block;
+    position: relative;
+    top: 7px;
+}
+
+#delete-fake-radio.no { background-position: 0 0; }
+#delete-fake-radio.yes { background-position: 0 -24px; }
+
+#delete-radio-container label {
+    display: inline-block;
+}
+
 .message-zone {
     margin-left: 15px;
     background: url("../img/panel-icon-success.png") no-repeat;

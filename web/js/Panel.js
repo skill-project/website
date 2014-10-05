@@ -218,8 +218,15 @@ var Panel = function(node, initParams) {
                 break;
             case "delete-skill-panel":
                 $("#delete-skill-form-submit").hide();
-                $(subPanel).find(".sureToDeleteRadio").on("change", function(e){
+                $('input[name=sureToDelete]').on("change", function(){
+                    $("#delete-fake-radio").toggleClass("yes no");
                     $("#delete-skill-form-submit").toggle();
+                });
+                $("#delete-fake-radio").on("tap click", function(e){
+                    var offset = $(this).offset();
+                    var x = e.clientX - offset.left;
+                    if (x < 24){ $("#yes-sureToDelete-label").click(); }
+                    else { $("#no-sureToDelete-label").click(); }
                 });
                 $("#delete-skill-form").on("submit", function(e){
                     e.preventDefault();
