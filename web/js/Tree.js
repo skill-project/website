@@ -94,6 +94,7 @@ Tree.prototype.enterTargetMode = function() {
 
 Tree.prototype.exitTargetMode = function() {
     tree.targetMode = false;
+    tree.targetNode.unsetTarget();
 
     for (var nodeIndex in tree.nodes) {
         var node = tree.nodes[nodeIndex];
@@ -116,8 +117,6 @@ Tree.prototype.executeMoveCopy = function() {
         tree.targetNode.contract({noAnim:true}).deSelect();
     }
 
-    tree.exitTargetMode();
-
     //This data will be used to create a new child, identical to the one we are about to remove
     var nodeData = {
         uuid: tree.editedNode.id,
@@ -131,4 +130,6 @@ Tree.prototype.executeMoveCopy = function() {
 
     //createNewChild will add the child if targetNode is already open, or simply expand it if it's closed
     tree.targetNode.createNewChild(nodeData);      
+
+    tree.exitTargetMode();
 }
