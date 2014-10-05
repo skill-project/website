@@ -111,6 +111,24 @@ $(window).load(function  () {
     $("#kinetic, #backdrop").css("visibility", "visible").fadeIn({
       duration: 800
     });
+
+    //global ajax handling
+    //before ajax
+    $( document ).ajaxStart(function() {
+      if (typeof loader != "undefined"){
+        loader.show();
+      }
+    });
+    //on error
+    $(document).ajaxError(function( event, jqxhr, settings, thrownError ) {
+      //if (jqxhr.status == "403"){}
+    });
+    //on complete
+    $( document ).ajaxComplete(function( event, xhr, settings ) {
+        if (typeof loader != "undefined"){
+          loader.hide();
+        }
+    });
 });
 
 

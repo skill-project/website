@@ -31,12 +31,9 @@ var Search = function(){
 
         var contractAnim = tree.rootNode.isNodeOnScreen() ? false : true;
 
-        loader.show();
-
         $.ajax({
-            url: url,
-            success: function(response) {
-                loader.hide();
+            url: url
+        }).done(function(response) {
                 jsonAutoLoad = response;
                 if (tree.selectedNode) tree.selectedNode.deSelect();
                 tree.rootNode.contract({
@@ -47,8 +44,7 @@ var Search = function(){
                         tree.autoLoadCurrentDepth = 0;
                         tree.readyForNextLevel.fire();
                     }});
-            }
-        });
+            });
     }
 
     this.close = function(){
@@ -68,22 +64,19 @@ var Search = function(){
             that.jqxhr.abort();
         }
 
-        loader.show();
         that.jqxhr = $.ajax({
             url: $("#search-form").attr("action"),
             data: $("#search-form").serialize(),
-            method: $("#search-form").attr("method"),
-            success: that.showResult,
-            complete: function(){
-                that.researchPending = false;
-            }
+            method: $("#search-form").attr("method")
+        }).done(function(response){
+            that.showResult(response);
+            that.researchPending = false;
         });
     }
 
     //show autocomplete results
     this.showResult = function(response){
 
-        loader.hide();
         if (response.data.length <= 0){ return false; }
         
         var $list = $("<ul>");
