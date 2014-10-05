@@ -141,6 +141,8 @@ var Camera = function() {
                 camera.cacheInvisibleNodes();
                 clearInterval(that.redrawStageInterval);
                 that.redrawStageInterval = null;
+
+                if (tour.isActive === true) tour.updateLegPositionsAfterCameraMove();
               }
             });
             tweenY.play();
