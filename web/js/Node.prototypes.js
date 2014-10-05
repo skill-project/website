@@ -173,6 +173,7 @@ Node.prototype.contract = function(params) {
                 //Last child deletion and tree cleanup
                 lastChild.delete();
                 that.open = false;
+                that.freeSlots = [];
                 that.setVisualState("auto");
                 if (releaseTreeLock == true) tree.busy = false;
                 if (onComplete != null) onComplete();
@@ -457,6 +458,7 @@ Node.prototype.delete = function() {
   this.edge.shape.destroy();
   this.shapes.destroy();
 
+  this.parent.totalChildren--;
   delete this.parent.children[this.id];
   delete tree.nodes[this.id];
   delete this;
