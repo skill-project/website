@@ -450,6 +450,15 @@
                 $skillParentUuid = $_POST['skillParentUuid'];
                 $creationType = $_POST['creationType'];
 
+                //check rights here for create_as_parent
+                //creating as parent...
+                if ($selectedSkillUuid != $skillParentUuid){
+                    $rights = SH::getRights(SH::getUser(), $selectedSkillUuid);
+                    if (!in_array("create_as_parent", $rights)){
+                        SH::forbid();
+                    }
+                }
+
                 //retrieve parent skill
                 $skillManager = new SkillManager();
                 $parentSkill = $skillManager->findByUuid( $skillParentUuid );

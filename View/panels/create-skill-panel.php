@@ -13,6 +13,7 @@
             <p class="hint"><?= _("Hint: "); ?><?= _('Tell yourself "I can" or "I know how to".'); ?><br /><?= _("45 characters max."); ?></p>
         </div>
         <?php if ($parent): //do not show fields for root node (always as child) ?>
+        <?php if (in_array("create_as_parent", $rights)){ //do not show either for simple users ?>
         <div>
             <label for="creationType"><?= _("WHERE DOES IT GO"); ?></label>
             <div class="img-btn img-btn-l" id="creationTypeParent" data-value="parent" data-parentuuid="<?= $parent->getUuid(); ?>">
@@ -24,6 +25,7 @@
                 <span class="legend"><?= _("AFTER (as a child)"); ?></span>
             </div>
         </div>
+        <?php } ?>
         <?php endif; ?>
         <div>
             <input type="submit" value="<?= _("CREATE") ?>" />
