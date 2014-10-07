@@ -284,4 +284,11 @@
             return $substr;
         }
 
+        public function testAction(){
+            if (\Config\Config::DEBUG){
+                phpinfo();
+                die();
+            }
+        }
+
     }

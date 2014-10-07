@@ -357,6 +357,14 @@
         )
     );  
 
+    $routes->add(
+        'test',
+        new Route('/test/awjfkw9f232cxCVCvxvr09f3j09qjg0qg3gj02gjGsdjvsvjgjeeewq2qqjjr32329r0/', 
+            array('controller' => 'Fixture', 'action' => 'test'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );  
+
 //JS generation
     $routes->add(
         'jsTranslations',
