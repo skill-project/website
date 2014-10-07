@@ -14,7 +14,7 @@
     use \Everyman\Neo4j\Traversal;
 
     class FixtureController extends Controller {
-
+/*
         private $users = array();
 
         public function benchmarkAction(){
@@ -318,5 +318,5 @@
                 return "mauvaiseIdee";
             }
         }
-
+*/
     }
