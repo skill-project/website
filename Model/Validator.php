@@ -167,13 +167,17 @@
             }
         }
 
-        protected function addError($fieldName, $message){
+        public function addError($fieldName, $message){
             $this->isValid = false;
             $this->errors[$fieldName] = $message;
         }
 
         public function isValid(){
             return $this->isValid;
+        }
+
+        public function hasErrors(){
+            return (empty($this->errors)) ? false : true;
         }
 
         public function getErrors(){

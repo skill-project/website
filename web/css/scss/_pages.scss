@@ -309,7 +309,7 @@ section.first {
 
 /* apply */
 
-#apply-form {
+#apply-form, #contact-form {
     width: 670px;
     margin: auto;
 }
@@ -319,7 +319,7 @@ select {
     width: 100%;
 }
 
-#motiv-textarea {
+#motiv-textarea, #message-textarea {
     height: 210px;
 }
 

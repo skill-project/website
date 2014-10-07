@@ -57,6 +57,14 @@
         )
     );
 
+    $routes->add(
+        'contact',
+        new Route('/contact/', 
+            array('controller' => 'Main', 'action' => 'contact'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
 //panel
 
     $routes->add(

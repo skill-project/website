@@ -133,7 +133,7 @@
             
                     //send email confirmation message
                     $mailer = new Mailer();
-                    $mailerResult = $mailer->sendConfirmation($user);
+                    $mailerResult = $mailer->sendRegistrationConfirmation($user);
 
                     //log user in right now (will redirect home)
                     $this->logUser($user);
@@ -499,7 +499,9 @@
                 }
 
                 $mailer = new Mailer();
-                $mailer->sendAdminApplication($params);
+                if ($mailer->sendAdminApplication($params)){
+                    $mailer->sendAdminApplicationConfirmation($params);
+                }
                 Router::redirect(Router::url("apply"));
             }
 

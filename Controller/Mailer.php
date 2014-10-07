@@ -69,7 +69,8 @@
         private function getContent($contentFile, array $params){
             ob_start();
             extract($params);
-            include '../View/mails/' . $contentFile;
+            include("../View/layouts/email.php");
+            //include '../View/mails/' . $contentFile;
             $content = ob_get_clean();
             return $content;
         }
@@ -81,7 +82,7 @@
         }
 
 
-        public function sendConfirmation(User $user){
+        public function sendRegistrationConfirmation(User $user){
 
             $confirmUrl = Router::url("emailConfirmation", array("email" => $user->getEmail(), "token" => $user->getToken()), true);
             $content = $this->getContent('registration_confirmation.php', array("confirmUrl" => $confirmUrl));
@@ -96,6 +97,64 @@
                         array(
                             'email' => $user->getEmail(),
                             'name' => $user->getUsername(),
+                            'type' => 'to'
+                        )
+                    )
+                );
+                $message = array_merge($this->defaultConfig, $config);
+                $async = false;
+                $result = $mandrill->messages->send($message, $async);
+                return $result;
+
+            } 
+            catch(\Mandrill_Error $e) {
+                $this->handleError($e);
+            }
+        }
+
+        public function sendContactMessageConfirmation(array $params){
+
+            $content = $this->getContent('contact_message_confirmation.php', $params);
+            $this->outputToFile($content);
+
+            try {
+                $mandrill = new \Mandrill(\Config\Config::MANDRILL_KEY);
+                $config = array(
+                    'html' => $content,
+                    'subject' => _('We received your message !'),
+                    'to' => array(
+                        array(
+                            'email' => $params['email'],
+                            'name' => $params['realName'],
+                            'type' => 'to'
+                        )
+                    )
+                );
+                $message = array_merge($this->defaultConfig, $config);
+                $async = false;
+                $result = $mandrill->messages->send($message, $async);
+                return $result;
+
+            } 
+            catch(\Mandrill_Error $e) {
+                $this->handleError($e);
+            }
+        }
+
+        public function sendAdminApplicationConfirmation(array $params){
+
+            $content = $this->getContent('admin_application_confirmation.php', $params);
+            $this->outputToFile($content);
+
+            try {
+                $mandrill = new \Mandrill(\Config\Config::MANDRILL_KEY);
+                $config = array(
+                    'html' => $content,
+                    'subject' => _('We received your application !'),
+                    'to' => array(
+                        array(
+                            'email' => $params['loggedUser']->getEmail(),
+                            'name' => $params['loggedUser']->getUsername(),
                             'type' => 'to'
                         )
                     )
@@ -142,7 +201,7 @@
             }
         }
 
-        public function sendAdminApplication($params){
+        public function sendAdminApplication(array $params){
 
             $content = $this->getContent('admin_application.php', $params);
             $this->outputToFile($content);
@@ -154,6 +213,35 @@
                     'subject' => _('Skill Project: New application !'),
                     'to' => $this->admins
                 );
+                $message = array_merge($this->defaultConfig, $config);
+                $async = false;
+                $result = $mandrill->messages->send($message, $async);
+                return $result;
+
+            } 
+            catch(\Mandrill_Error $e) {
+                $this->handleError($e);
+            }
+        }
+
+        public function sendContactMessage(array $params){
+
+            $content = $this->getContent('contact_message.php', $params);
+            $this->outputToFile($content);
+
+            try {
+                $mandrill = new \Mandrill(\Config\Config::MANDRILL_KEY);
+
+                //different config here watch out
+                $config = array(
+                    'from_email' => $params['email'],
+                    'from_name' => $params['realName'],
+                    'headers' => array('Reply-To' => $params['email']),
+                    'html' => $content,
+                    'subject' => _('Skill Project: New Contact Message !'),
+                    'to' => $this->admins
+                );
+
                 $message = array_merge($this->defaultConfig, $config);
                 $async = false;
                 $result = $mandrill->messages->send($message, $async);
