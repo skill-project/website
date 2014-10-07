@@ -285,10 +285,10 @@
         }
 
         public function testAction(){
-            if (\Config\Config::DEBUG){
+            ////if (\Config\Config::DEBUG){
                 phpinfo();
                 die();
-            }
+            //}
         }
 
     }
