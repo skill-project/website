@@ -18,7 +18,12 @@
         private $users = array();
 
         public function benchmarkAction(){
-
+            if (!\Config\Config::DEBUG){
+                return false;
+                die();
+                exit();
+                return "mauvaiseIdee";
+            }
             $num = 10;
             $skillManager = new SkillManager();
             $slugify = new Slugify();
@@ -36,6 +41,12 @@
         }
 
         public function dummyDataAction(){
+            if (!\Config\Config::DEBUG){
+                return false;
+                die();
+                exit();
+                return "mauvaiseIdee";
+            }
             $time_start = microtime(true); 
             echo "inserting dummy data";
 
@@ -169,7 +180,12 @@
 
 
         private function addSuperAdmins(){
-
+            if (!\Config\Config::DEBUG){
+                return false;
+                die();
+                exit();
+                return "mauvaiseIdee";
+            }
             $userManager = new \Model\UserManager();
 
             //hydrate user obj
@@ -207,7 +223,12 @@
         }
 
         private function addDummyUser($username, $role = "user"){
-
+            if (!\Config\Config::DEBUG){
+                return false;
+                die();
+                exit();
+                return "mauvaiseIdee";
+            }
             $userManager = new \Model\UserManager();
 
             //hydrate user obj
@@ -238,7 +259,12 @@
         }
 
         private function addDummyChildAtDepth($depth, $minNumChild, $maxNumChild){
-
+            if (!\Config\Config::DEBUG){
+                return false;
+                die();
+                exit();
+                return "mauvaiseIdee";
+            }
             $maxCharactersInSkillName = 45;
 
 
@@ -285,10 +311,12 @@
         }
 
         public function testAction(){
-            ////if (\Config\Config::DEBUG){
-                phpinfo();
+            if (!\Config\Config::DEBUG){
+                return false;
                 die();
-            //}
+                exit();
+                return "mauvaiseIdee";
+            }
         }
 
     }
