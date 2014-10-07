@@ -8,6 +8,8 @@
     use \Model\Skill;
     use \Model\DiscussionManager;
 
+    use \Utils\SecurityHelper as SH;
+
     class PanelController {
 
         /**
@@ -17,12 +19,15 @@
         public function getPanelAction($uuid){
 
             $params = array();
-            $user = \Utils\SecurityHelper::getUser();
+            $user = SH::getUser();
 
             //retrieve the selected skill
             $skillManager = new SkillManager();
             $skill = $skillManager->findByUuid($uuid);
             $params['skill'] = $skill;
+
+            //get rights 
+            $params['rights'] = SH::getRights($user, $skill);
 
             //parent, for skill creation
             $params['parent'] = $skillManager->findParent($skill);
@@ -55,9 +60,7 @@
             $languages = $lc->getAllCodes();
             $params['languages'] = $languages;
 
-            $panelFile = ($user && $user->isAdmin()) ? "panel_admin" : "panel_user";
-
-            $view = new AjaxView("panels/$panelFile.php", $params);
+            $view = new AjaxView("panels/panel.php", $params);
             $view->send();
         }
 

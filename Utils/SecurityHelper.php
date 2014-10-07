@@ -3,6 +3,7 @@
     namespace Utils;
 
     use \Model\User;
+    use \Model\Skill;
 
     class SecurityHelper {
 
@@ -147,6 +148,41 @@
          */
         public static function encode($string){
             return htmlspecialchars($string);
+        }
+
+
+        /**
+         * Get the allowable actions of a user on a skill
+         */
+        public static function getRights(User $user, Skill $skill){
+            $rights = array();
+            $role = $user->getRole();
+
+            $allRights = array("create_as_child", "create_as_parent", "move", 
+                    "copy", "translate", "discuss", "share", "rename", "delete");
+
+            $skillManager = new \Model\SkillManager();
+            $skillCreationInfo = $skillManager->findCreationInfo($skill->getUuid());
+
+            //if admin or superadmin, gives all right
+            if ($role == "admin" || $role == "superadmin"){
+                $rights = $allRights;
+            }
+
+            //if user is the skill's creator, and the skill has been recently created
+            //gives all rights also
+            else if ($skillCreationInfo['creatorUuid'] == $user->getUuid() && 
+                    $skillCreationInfo['timestamp'] > (time() - 3600)){
+                $rights = $allRights;
+            }
+
+            //default, gives create_as_child, discuss and share rights
+            else {
+                $rights = array("create_as_child", "discuss", "share");
+            }
+            
+            return $rights;
+
         }
 
     }

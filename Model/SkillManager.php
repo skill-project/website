@@ -262,6 +262,27 @@
         }
 
         /**
+         * Find the creator uuid of a skill
+         */
+        public function findCreationInfo($skillUuid){
+            //fetch grand pa at same time to get to parent's parent id
+            $cyp = "MATCH (s:Skill {uuid:{skillUuid}})<-[r:CREATED]-(u:User) 
+                    RETURN u.uuid AS creatorUuid, r.timestamp AS timestamp";
+            $query = new Query($this->client, $cyp, array(
+                "skillUuid" => $skillUuid)
+            );
+            $resultSet = $query->getResultSet();
+            foreach($resultSet as $row){
+                $resp = array(
+                    "creatorUuid" => $row['creatorUuid'],
+                    "timestamp" => $row['timestamp']
+                );
+                return $resp;
+            }
+            return false;
+        }
+
+        /**
          * do a regexp search based on url encoded keywords
          * @return array The search results
          */
@@ -576,7 +597,6 @@
         public function countParents($uuid){
             $cyp = "MATCH (s:Skill {uuid: {uuid}})<-[r:HAS*]-(:Skill) RETURN count(r) as parentsNumber";
             $query = new Query($this->client, $cyp, array("uuid" => $uuid));
-            $resultSet = $query->getResultSet();
             $resultSet = $query->getResultSet();
             foreach($resultSet as $row){
                 return $row['parentsNumber'];
