@@ -27,7 +27,7 @@
             $params['skill'] = $skill;
 
             //get rights 
-            $params['rights'] = SH::getRights($user, $skill);
+            $params['rights'] = SH::getRights($user, $skill->getUuid());
 
             //parent, for skill creation
             $params['parent'] = $skillManager->findParent($skill);

@@ -125,13 +125,15 @@
         function deleteSkillAction(){
 
             SH::checkUsage(5);
-            SH::lock("admin");
+            //lock is down there
 
             $deletionResult = false;
 
             if (!empty($_POST)){
 
                 $skillUuid = $_POST['skillUuid'];
+
+                SH::lock("creator", $skillUuid, "delete");
 
                 $validator = new \Model\Validator();
                 $validator->validateSkillUuid($skillUuid);
@@ -208,12 +210,14 @@
         public function moveSkillAction(){
             
             SH::checkUsage(10);
-            SH::lock("admin");
+            //lock is down there
 
             if (!empty($_POST)){
-                $skillManager = new SkillManager();
-
                 $skillUuid = $_POST['selectedSkillUuid'];
+
+                SH::lock("creator", $skillUuid, "move");
+
+                $skillManager = new SkillManager();
                 $newParentUuid = $_POST['destinationUuid'];
                 $type = $_POST['moveType'];
                 $skill = $skillManager->findByUuid($skillUuid);
@@ -266,13 +270,15 @@
         public function translateSkillAction(){
 
             SH::checkUsage(50);
-            SH::lock("admin");
+            //lock is down there
 
             if (!empty($_POST)){
 
                 $skillTrans = $_POST['skillTrans'];
                 $languageCode = $_POST['language'];
                 $skillUuid = $_POST['skillUuid'];
+
+                SH::lock("creator", $skillUuid, "translate");
 
                 $validator = new \Model\Validator();
                 $validator->validateSkillName($skillTrans);
@@ -325,15 +331,19 @@
         public function renameSkillAction(){
 
             SH::checkUsage(10);
-            SH::lock("admin");
+            //lock is down there
 
             if (!empty($_POST)){
 
                 $skillName = $_POST['skillName'];
                 $skillUuid = $_POST['skillUuid'];
+                
+                SH::lock("creator", $skillUuid, "rename");
 
                 $skillManager = new SkillManager();
                 $skill = $skillManager->findByUuid($skillUuid);
+
+
                 $parentSkill = $skillManager->findParent($skill);
 
                 $validator = new \Model\Validator();

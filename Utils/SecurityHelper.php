@@ -35,7 +35,7 @@
             return $hashedPassword;
         }
 
-        public static function lock($minimumRole = ""){
+        public static function lock($minimumRole = "", $skillUuid = null, $askedRight = ""){
             //if no user is connected, forbid
             if (!self::userIsLogged()){
                 return self::forbid(_("You must be signed in to do that !"));
@@ -44,6 +44,15 @@
             else if ($minimumRole == ""){
                 return true;
             }
+            //role creator is special
+            //user must have created the skill
+            else if ($minimumRole == "creator"){
+                $userRights = self::getRights(self::getUser(), $skillUuid);
+                if (in_array($askedRight, $userRights)){
+                    return true;
+                }
+            }
+
             //else, with a mimimum role
             else {
 
@@ -154,7 +163,7 @@
         /**
          * Get the allowable actions of a user on a skill
          */
-        public static function getRights(User $user, Skill $skill){
+        public static function getRights(User $user, $skillUuid){
             $rights = array();
             $role = $user->getRole();
 
@@ -162,7 +171,7 @@
                     "copy", "translate", "discuss", "share", "rename", "delete");
 
             $skillManager = new \Model\SkillManager();
-            $skillCreationInfo = $skillManager->findCreationInfo($skill->getUuid());
+            $skillCreationInfo = $skillManager->findCreationInfo( $skillUuid );
 
             //if admin or superadmin, gives all right
             if ($role == "admin" || $role == "superadmin"){
