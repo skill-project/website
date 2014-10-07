@@ -330,14 +330,14 @@ var Panel = function(node, initParams) {
 
             that.$activeSubpanel = that.$subPanels["first-panel"];
 
-            if (tree.targetMode = true) tree.exitTargetMode();
+            if (tree.targetMode == true) tree.exitTargetMode();
             return false;
         });
 
         $(subPanel).find(".close-panel-btn").on("tap click", function() {
             if (tour.isActive == true || doTour == true) tour.actionOnTree("close-panel");
 
-            if (tree.targetMode = true) tree.exitTargetMode();
+            if (tree.targetMode == true) tree.exitTargetMode();
             tree.editedNode.finishEdit();
             return false;
         });
