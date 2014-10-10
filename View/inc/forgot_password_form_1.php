@@ -1,7 +1,7 @@
 <form method="POST" action="<?php echo \Controller\Router::url("forgotPassword1"); ?>">
     <div>
         <label for="loginUsername"><?php echo _("USERNAME OR EMAIL") ?></label>
-        <input type="text" name="loginUsername" id="loginUsername" required />
+        <input type="text" name="loginUsername" id="loginUsername" value="<?= $loginUsername; ?>" required />
     </div>
     <div class="submit-container">
         <input type="submit" value="<?php echo _("SEND RECOVERY MESSAGE") ?>" />

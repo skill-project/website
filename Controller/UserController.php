@@ -21,12 +21,15 @@
             //for the view
             $params = array("title" => "Sign in");
 
+            $params['loginUsername'] = "";
+
             //handle login form
             if (!empty($_POST)){
 
                 $error = true;
 
                 $loginUsername = $_POST['loginUsername'];
+                $params['loginUsername'] = $loginUsername;
                 $password = $_POST['password'];
 
                 //validation
@@ -88,11 +91,16 @@
             //for the view
             $params = array("title" => "Sign up", "errors" => array());
 
+            $params['username'] = "";
+            $params['email'] = "";
+
             //handle register form
             if (!empty($_POST)){
 
                 $username = $_POST['username'];
+                $params['username'] = $username;
                 $email = $_POST['email'];
+                $params['email'] = $email;
                 $password = $_POST['password'];
                 $password_bis = $_POST['password_bis'];
 
@@ -162,6 +170,7 @@
 
             $params = array();
             $params['title'] = _("Forgot your password ?");
+            $params['loginUsername'] = "";
 
             //handle forgot 1 form
             if (!empty($_POST)){
@@ -169,6 +178,7 @@
                 $error = true;
 
                 $loginUsername = $_POST['loginUsername'];
+                $params['loginUsername'] = $loginUsername;
 
                 //validation
                 $validator = new \Model\Validator();
@@ -214,6 +224,7 @@
          * Validates the token and email, then redirect to profile page with a modal new password form
          */
         public function forgotPassword2Action($email, $token){
+            
             $userManager = new UserManager();
             $user = $userManager->findByEmail($email);
             if ($user){

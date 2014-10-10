@@ -1,11 +1,11 @@
 <form method="POST" action="<?= \Controller\Router::url("register"); ?>">
     <div>
         <label for="username"><?= _("USERNAME") ?></label>
-        <input type="text" name="username" id="username" required />
+        <input type="text" name="username" id="username" value="<?= $username; ?>" required />
     </div>
     <div>
         <label for="email"><?= _("EMAIL") ?> <?= _("We do not spam."); ?></label>
-        <input type="email" name="email" id="email" required />
+        <input type="email" name="email" id="email" value="<?= $email; ?>" required />
     </div>
     <div>
         <label for="password"><?= _("PASSWORD") ?></label>

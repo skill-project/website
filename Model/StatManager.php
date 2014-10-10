@@ -51,7 +51,7 @@
          */
         public function getLatestChanges(){
 
-            $limit = (!empty($_GET['limit'])) ? $_GET['limit'] : 10;
+            $limit = (!empty($_GET['limit'])) ? $_GET['limit'] : 40;
             $skip = (!empty($_GET['skip'])) ? $_GET['skip'] : 0;
 
                     //not specifying node label cause it can be different from :Skill
