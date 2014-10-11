@@ -1,11 +1,19 @@
 <section>
     <div class="container">
         <img src="img/SKP-page-apply-illus.png" id="apply-illus" class="illus" />
-        <h2><?= _("APPLY"); ?></h2>
-        <h4><?= _("JOIN SKILL PROJECT"); ?></h4>
-        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-        <h4><?= _("YOUR MISSION"); ?></h4>
-        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis rturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massparturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
+        <h2><?= _("JOIN SKILL PROJECT"); ?></h2>
+        <p>Skill Project Editors have access to restricted features. Once you become an Editor, you will be able :</p>
+        <ul>
+            <li>Add a skill as a parent of an existing skill</li>
+            <li>Rename an existing skill</li>
+            <li>Translate a skill in a language you know or fix an existing translation</li>
+            <li>Move a skill under another one</li>
+            <li>Delete an inappropriate skill</li>
+            <li>Watch recent changes made by other users</li>
+        </ul>
+        <p>With those super powers you will be in a position to help maintaining the skill database in a clean and coherent state. The Skill Project Community owes a lot to the Editors without whom it wouldn’t be easy for new members to find the right place to add new skills.</p>
+
+        <p>Every Editor application is carefully reviewed by our team, so please take a few minutes to tell us a little bit about you and your motivations to become an Editor.</p>
     </div>
 </section>
 <hr />

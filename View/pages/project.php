@@ -212,12 +212,12 @@
         <div class="project-col">
             <div id="guillaume-pic" class="team-pic"></div>
             <h4>GUILLAUME SYLVESTRE</h4>
-            <p>Guillaume was born in Quebec, Canada and is now living in France. Passionnate webdevelopper and teacher, he felt in love with PHP and sexy databases some 8 years ago, and is now transmitting this flaw through code and courses. He is known as SkillBill on Skill Project.</p>
+            <p>Guillaume was born in Quebec, Canada and is now living in France. Passionate web developper and teacher, he fell in love with PHP and sexy databases some 8 years ago, and is now padding on this flaw through code and courses. He is known as SkillBill on Skill Project.</p>
         </div>
         <div class="project-col">
             <div id="raphael-pic" class="team-pic"></div>
             <h4>RAPHAEL BOUSQUET</h4>
-            <p>Raphael loves to speak latin like that: Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>
+            <p>Raphael is french, but loves to speak latin like that: Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>
         </div>
     </div>
 </section>

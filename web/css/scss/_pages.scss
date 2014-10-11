@@ -367,11 +367,11 @@ html.fourofour {
 
 /* legal */
 
-html.legal ul, html.legal ol{
+html.legal ul, html.apply ul, html.legal ol{
     list-style: circle;
     margin-left: 25px;
 }
 
-html.legal li {
+html.legal li, html.apply li  {
     padding-left: 3px;
 }
