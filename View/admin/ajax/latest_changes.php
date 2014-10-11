@@ -24,11 +24,11 @@
                             break;
                     }
                 ?>
-                <tr style="background-color: <?= $color ?>">
+                <tr data-skilluuid="<?= $la['skillProps']['uuid'] ?>" data-skillnameen="<?= $la['skillName'] ?>" data-skillnamefr="<?= $la['skillProps']['l_fr'] ?>" class="skill_tr <?= strtolower(_($la['action'])); ?>" style="background-color: <?= $color ?>">
                     <td><?= date(_("m-d H:i"), $la['timestamp']); ?></td>
+                    <td><a href="<?= \Controller\Router::url("viewProfile", array("username" => $la['userProps']['username'])); ?>"><?= $la['userProps']['username']; ?></a></td>                
                     <td><?= ucfirst(strtolower(_($la['action']))); ?></td>
                     <td><a href="<?= \Controller\Router::url("goTo", array("slug" => $la['skillProps']['slug'])); ?>"><?= $la['skillName']; ?></a></td>
                     <td><?= $infos ?></td>
-                    <td><a href="<?= \Controller\Router::url("viewProfile", array("username" => $la['userProps']['username'])); ?>"><?= $la['userProps']['username']; ?></a></td>                
                 </tr>
             <?php endforeach; ?>

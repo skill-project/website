@@ -330,6 +330,14 @@
         )
     );
 
+    $routes->add(
+        'powerEdit',
+        new Route('/admin/power-edit/', 
+            array('controller' => 'Admin', 'action' => 'powerEdit'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
 
 //Fixtures
 
