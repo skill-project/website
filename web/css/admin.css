@@ -21,9 +21,9 @@ td {
 
 #power-edit-form-container {
     width: 200px;
-    position: absolute;
+    position: fixed;
     bottom: 60px;
-    right: 840px;
+    left: 840px;
 }
 
 label {
