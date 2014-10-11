@@ -206,13 +206,17 @@ input[type="submit"].pink-submit {
     color: #FFF;
 }
 
-h2 {
+h2, h3 {
     font-size: 28px;
     margin-bottom: 50px;
 
     .first {
         margin-top: 0;
     }
+}
+
+h3 {
+    font-size: 24px;
 }
 
 h2.less-margin {
@@ -235,8 +239,12 @@ header h2 {
 
 .page p {
     text-align: justify;
-    padding: 3px 0;
-    line-height: 16px;
+    padding: 6px 0;
+    line-height: 20px;
+}
+
+b {
+    font-weight: bold;
 }
 
 section {
@@ -256,6 +264,7 @@ section.first {
 
 .project-col{
     display: inline-block;
+    vertical-align: top;
     width: 250px;
     margin-left: 62px;
     text-align: center;
@@ -354,4 +363,15 @@ html.fourofour {
     top: 480px;
     color: #FFF;
     font-size: 24px;
+}
+
+/* legal */
+
+html.legal ul, html.legal ol{
+    list-style: circle;
+    margin-left: 25px;
+}
+
+html.legal li {
+    padding-left: 3px;
 }

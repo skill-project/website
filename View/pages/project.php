@@ -207,12 +207,12 @@
         <div class="project-col">
             <div id="dario-pic" class="team-pic"></div>
             <h4>DARIO SPAGNOLO</h4>
-            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
+            <p>Dario was born in Italy and is a self-taught computer enthusiast since he was 7. He founded and ran a website agency in Paris for 7 years before focusing on Skill Project. He is also the founder of Open du Web, a regular event in Paris where talented people can show off their web-related skills. Dario is also furiously jealous of Guillaume’s nickname.</p>
         </div>
         <div class="project-col">
             <div id="guillaume-pic" class="team-pic"></div>
             <h4>GUILLAUME SYLVESTRE</h4>
-            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
+            <p>Guillaume was born in Quebec, Canada and is now living in France. Passionnate webdevelopper and teacher, he felt in love with PHP and sexy databases some 8 years ago, and is now transmitting this flaw through code and courses. He is known as SkillBill on Skill Project.</p>
         </div>
         <div class="project-col">
             <div id="raphael-pic" class="team-pic"></div>
