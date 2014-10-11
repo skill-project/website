@@ -18,7 +18,7 @@
                             );
 
 
-        public function saveNewMessage($skillUuid, $topic, $message){
+        public function saveNewMessage($skillUuid, $topic = "", $message){
             $cyp = "MATCH (user:User {uuid:{userUuid}}), (skill:Skill {uuid:{skillUuid}}) 
                     CREATE 
                     (user)
@@ -29,7 +29,8 @@
             $query = new Query($this->client, $cyp, array(
                 "userUuid" => \Utils\SecurityHelper::getUser()->getUuid(),
                 "skillUuid" => $skillUuid,
-                "topic" => SH::safe($topic),
+                "topic" => "",
+                // "topic" => SH::safe($topic),
                 "message" => SH::safe($message),
                 "timestamp" => time()
             ));
@@ -53,7 +54,7 @@
                 $message['message'] = SH::encode($row['message']->getProperty("message"));
                 $message['timestamp'] = $row['message']->getProperty("timestamp");
                 $message['date'] = date("F jS, Y \a\\t H:i", $message['timestamp']);
-                $message['topic'] = SH::encode($row['message']->getProperty("topic"));
+                // $message['topic'] = SH::encode($row['message']->getProperty("topic"));
                 $message['postedBy'] = SH::encode($row['user']->getProperty("username"));
                 $messages[] = $message;
             }

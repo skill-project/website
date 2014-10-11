@@ -169,17 +169,17 @@
             if (!empty($_POST)){
                 $skillUuid = $_POST['skillUuid'];
                 $message = $_POST['message'];
-                $topic = $_POST['topic'];
+                // $topic = $_POST['topic'];
 
                 $validator = new \Model\Validator();
                 $validator->validateSkillUuid($skillUuid);
                 $validator->validateMessage($message);
-                $validator->validateMessageTopic($topic);
+                // $validator->validateMessageTopic($topic);
 
                 if ($validator->isValid()){
 
                     $discussionMananager = new DiscussionManager();
-                    $result = $discussionMananager->saveNewMessage($skillUuid, $topic, $message);      
+                    $result = $discussionMananager->saveNewMessage($skillUuid, null, $message);      
                     if ($result){
                         $json = new \Model\JsonResponse("ok", _("Message posted !"));
                         $skillManager = new SkillManager();

@@ -7,12 +7,16 @@
         <input type="hidden" name="skillUuid" id="discuss-skillUuid" value="<?= $skill->getUuid(); ?>" />
         <div>
             In english please !
+            <?php
+            /*
             <select name="topic" id="topic-select">
                 <option value=""><?= _("What do you want to talk about ?"); ?></option>
                 <?php foreach ($topics as $topic): ?>
                 <option value="<?= $topic; ?>"><?= $topic; ?></option>
                 <?php endforeach; ?>
             </select>
+            */
+            ?>
         </div>
         <div>
             <textarea name="message" id="discuss-message"></textarea>
