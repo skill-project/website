@@ -7,15 +7,18 @@
         /**
          * returns all ISO 639-1-alpha 2 language codes, in php array or json
          */
-        public function getAllCodes($format = "array"){
+        public function getAllCodes($format = "array", $omitXLang = false){
+            if ($omitXLang == true) $returnCodes = array_filter($this->codes, array($this, "filterOutXLang"));
+            else $returnCodes = $this->codes;
+
             if ($format == "array"){
-                return $this->codes;
+                return $returnCodes;
             }
             elseif($format == "json"){
-                return json_encode($this->jsonCodes);
+                return json_encode($returnCodes);
             }
             elseif($format == "short"){
-                return array_keys($this->codes);
+                return array_keys($returnCodes);
             }
         }
 
@@ -30,6 +33,10 @@
 
         public function getIsoCode($languageCode){
             return $this->codes[$languageCode]["isoCode"];
+        }
+
+        public function filterOutXLang($var) {
+          if ($var["name"] != "xLang") return true;
         }
 
         protected $codes = array (

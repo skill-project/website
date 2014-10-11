@@ -1,7 +1,7 @@
 <?php
 
     $languageCodes = new \Model\LanguageCode();
-    $allCodes = $languageCodes->getAllCodes();
+    $allCodes = $languageCodes->getAllCodes("array", true);
 
     if(!empty($GLOBALS['routing'])){
         $action = $GLOBALS['routing']['currentAction'];
@@ -15,12 +15,10 @@
         echo '<img src="/img/lang-menu-arrow-down.png" />';
         echo '<ul>';
         foreach($allCodes as $code => $langInfo){
-            if ($code != "xl") {
-                $params['lang'] = $code;
-                echo '<li><a href="'.\Controller\Router::url("switchLanguage", array("code" => $code)) . 
-                                        "?redirectTo=".urlencode(\Controller\Router::url($action, $params)).'" 
-                        title="'.$langInfo['nativeName'].'">' . $langInfo['nativeName'] . '</a></li>';
-            }
+            $params['lang'] = $code;
+            echo '<li><a href="'.\Controller\Router::url("switchLanguage", array("code" => $code)) . 
+                                    "?redirectTo=".urlencode(\Controller\Router::url($action, $params)).'" 
+                    title="'.$langInfo['nativeName'].'">' . $langInfo['nativeName'] . '</a></li>';
         }
         echo '</li></ul>';
     }
