@@ -20,12 +20,10 @@ td {
 }
 
 #power-edit-form-container {
-    width: 180px;
-    padding-left: 20px;
-    position: relative;
-    bottom: 210px;
-    right: -200px;
-    float: right;
+    width: 200px;
+    position: absolute;
+    bottom: 60px;
+    right: 840px;
 }
 
 label {
