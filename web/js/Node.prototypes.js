@@ -446,7 +446,6 @@ Node.prototype.clearCache = function () {
 }
 
 Node.prototype.delete = function() {
-  // console.log(Object.keys(this.children).length);
   for (var childIndex in this.children) {
       var child = this.children[childIndex];
       child.delete();
@@ -721,6 +720,11 @@ Node.prototype.deleteFromDB = function() {
   this.parent.freeSlots.sort();
 
   if (this.isEdited) this.finishEdit();
+
+  //If deleted node is last of parent's children, remove notch from parent (glow-nochildren)
+  if (Object.keys(this.parent.children).length - 1 === 0) {
+  	this.parent.setVisualState("glow-nochildren");
+  }
 
   this.delete();
   stage.draw();
