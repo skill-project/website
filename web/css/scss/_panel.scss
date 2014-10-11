@@ -374,3 +374,10 @@ ul {
     border-radius:10px;
     background-color: #000;
 } 
+
+@media screen and ( max-height: 700px ){
+    a.panel-btn {
+        height: 58px;
+        line-height: 58px;
+    }
+}

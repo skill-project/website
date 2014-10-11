@@ -315,7 +315,8 @@ var Panel = function(node, initParams) {
         }
 
         //Common events
-        $(subPanel).find(".back-to-panel-btn").on("tap click", function() {
+        $(subPanel).find(".back-to-panel-btn").on("tap click", function(e) {
+            e.preventDefault();
             $(subPanel).hide("slide", {
                 direction:"right",
                 complete: function() {
@@ -331,15 +332,14 @@ var Panel = function(node, initParams) {
             that.$activeSubpanel = that.$subPanels["first-panel"];
 
             if (tree.targetMode == true) tree.exitTargetMode();
-            return false;
         });
 
-        $(subPanel).find(".close-panel-btn").on("tap click", function() {
+        $(subPanel).find(".close-panel-btn").on("tap click", function(e) {
+            e.preventDefault();
             if (tour.isActive == true || doTour == true) tour.actionOnTree("close-panel");
 
             if (tree.targetMode == true) tree.exitTargetMode();
             tree.editedNode.finishEdit();
-            return false;
         });
 
         // Click/tap on the stage only fires on nodes, not on empty space (TODO)

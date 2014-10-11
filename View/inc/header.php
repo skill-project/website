@@ -16,7 +16,7 @@
 
     <nav id="top-main-nav">
         <ul>
-            <li><a href="<?= \Controller\Router::url("graph"); ?>" title=""><?= _("SKILLWALK"); ?></a></li>
+            <li><a href="<?= \Controller\Router::url("graph"); ?>" title=""><?= _("THE SKILLS"); ?></a></li>
             <li><a href="<?= \Controller\Router::url("project"); ?>" title=""><?= _("THE PROJECT"); ?></a></li>
             <?php if (Utils\SecurityHelper::userIsLogged()): ?>
                 <li><a href="<?= \Controller\Router::url("viewProfile", array("username" => Utils\SecurityHelper::getUser()->getUsername())); ?>" title="<?= _("View your profile"); ?>"><?= _("PROFILE"); ?></a></li>

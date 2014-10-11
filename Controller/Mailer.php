@@ -49,11 +49,11 @@
                                     'name' => "Guillaume",
                                     'type' => 'to'
                                 ),
-                            /*   array(
+                                array(
                                     'email' => "raphael@skill-project.org",
                                     'name' => "Raphael",
                                     'type' => 'to'
-                                ),*/
+                                ),
                                 array(
                                     'email' => "dario@skill-project.org",
                                     'name' => "Dario",

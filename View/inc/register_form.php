@@ -4,7 +4,7 @@
         <input type="text" name="username" id="username" value="<?= $username; ?>" required />
     </div>
     <div>
-        <label for="email"><?= _("EMAIL") ?> <?= _("We do not spam."); ?></label>
+        <label for="email"><?= _("EMAIL") ?></label>
         <input type="email" name="email" id="email" value="<?= $email; ?>" required />
     </div>
     <div>

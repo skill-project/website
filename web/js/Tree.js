@@ -93,8 +93,8 @@ Tree.prototype.enterTargetMode = function() {
 }
 
 Tree.prototype.exitTargetMode = function() {
+    if (typeof tree.targetNode != "undefined") tree.targetNode.unsetTarget();
     tree.targetMode = false;
-    tree.targetNode.unsetTarget();
 
     for (var nodeIndex in tree.nodes) {
         var node = tree.nodes[nodeIndex];
