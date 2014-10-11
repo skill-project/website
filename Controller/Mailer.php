@@ -49,11 +49,11 @@
                                     'name' => "Guillaume",
                                     'type' => 'to'
                                 ),
-                               array(
+                            /*   array(
                                     'email' => "raphael@skill-project.org",
                                     'name' => "Raphael",
                                     'type' => 'to'
-                                ),
+                                ),*/
                                 array(
                                     'email' => "dario@skill-project.org",
                                     'name' => "Dario",
@@ -92,7 +92,7 @@
                 $mandrill = new \Mandrill(\Config\Config::MANDRILL_KEY);
                 $config = array(
                     'html' => $content,
-                    'subject' => _('Welcome to Skill Project !'),
+                    'subject' => _('Welcome to Skill Project!'),
                     'to' => array(
                         array(
                             'email' => $user->getEmail(),
@@ -121,7 +121,7 @@
                 $mandrill = new \Mandrill(\Config\Config::MANDRILL_KEY);
                 $config = array(
                     'html' => $content,
-                    'subject' => _('We received your message !'),
+                    'subject' => _('We received your message on Skill Project!'),
                     'to' => array(
                         array(
                             'email' => $params['email'],
@@ -150,7 +150,7 @@
                 $mandrill = new \Mandrill(\Config\Config::MANDRILL_KEY);
                 $config = array(
                     'html' => $content,
-                    'subject' => _('We received your application !'),
+                    'subject' => _('Your application on Skill Project'),
                     'to' => array(
                         array(
                             'email' => $params['loggedUser']->getEmail(),
@@ -181,7 +181,7 @@
                 $mandrill = new \Mandrill(\Config\Config::MANDRILL_KEY);
                 $config = array(
                     'html' => $content,
-                    'subject' => _('Skill Project: Password reset !'),
+                    'subject' => _('Forgot your password on Skill Project?'),
                     'to' => array(
                         array(
                             'email' => $user->getEmail(),
@@ -210,7 +210,7 @@
                 $mandrill = new \Mandrill(\Config\Config::MANDRILL_KEY);
                 $config = array(
                     'html' => $content,
-                    'subject' => _('Skill Project: New application !'),
+                    'subject' => _('Skill Project: New application!'),
                     'to' => $this->admins
                 );
                 $message = array_merge($this->defaultConfig, $config);
@@ -228,7 +228,7 @@
 
             $content = $this->getContent('contact_message.php', $params);
             $this->outputToFile($content);
-
+            die("toremove");
             try {
                 $mandrill = new \Mandrill(\Config\Config::MANDRILL_KEY);
 
@@ -238,7 +238,7 @@
                     'from_name' => $params['realName'],
                     'headers' => array('Reply-To' => $params['email']),
                     'html' => $content,
-                    'subject' => _('Skill Project: New Contact Message !'),
+                    'subject' => _('Skill Project: New Contact Message!'),
                     'to' => $this->admins
                 );
 
@@ -259,7 +259,7 @@
                 $mandrill = new \Mandrill(\Config\Config::MANDRILL_KEY);
                 $config = array(
                     'html' => $content,
-                    'subject' => _('Skill Project Alert: ' .$type. ' !'),
+                    'subject' => _('Skill Project Alert: ' .$type. '!'),
                     'to' => $this->admins
                 );
                 $message = array_merge($this->defaultConfig, $config);

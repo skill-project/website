@@ -1,4 +1,6 @@
-<p><?= _("Welcome to Skill Project !"); ?></p>
-<p><?= _("You now have the power to create new skills and discuss them."); ?></p>
-<p><?= _("If you want to confirm your email adress, please click on the link below."); ?></p>
-<a href="<?= $confirmUrl ?>"><?= $confirmUrl ?></a>
+<?= _("Thank you for signing up for Skill Project!"); ?><br />
+<?= _("You can now create new skills and discuss them. "); ?><br />
+<?= _("Remember that right after you create a skill, you have all Editor powers on it, but only for an hour !"); ?><br />
+<br />
+<?= _("Please confirm your email address by clicking on the link below."); ?><br />
+<a style="color: #14AFB7;" href="<?= $confirmUrl ?>"><?= $confirmUrl ?></a>

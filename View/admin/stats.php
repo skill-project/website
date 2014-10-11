@@ -94,6 +94,7 @@
                 type: "post"
             }).done(function(){
                 $(".skill_tr").remove();
+                $("#skillUuid, #nameEn, #nameFr").val("");
                 skip = 0;
                 getLatestChanges();
             });
