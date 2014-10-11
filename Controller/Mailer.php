@@ -253,13 +253,15 @@
             }
         }
 
-        public function sendWarning($content, $type){
+        public function sendWarning($params){
+
+            $content = $this->getContent("warning_to_admins.php", $params);
 
             try {
                 $mandrill = new \Mandrill(\Config\Config::MANDRILL_KEY);
                 $config = array(
                     'html' => $content,
-                    'subject' => _('Skill Project Alert: ' .$type. '!'),
+                    'subject' => _('Skill Project Alert: ' .$params['type']. '!'),
                     'to' => $this->admins
                 );
                 $message = array_merge($this->defaultConfig, $config);

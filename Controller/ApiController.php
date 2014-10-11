@@ -571,23 +571,15 @@
 
 
         public function warn($type, Skill $skill, array $data = array()){
-            $content = $skill->getName() . " (". $skill->getUuid() .") " . _(" has been $type.") . '<br /><br />';
-
-            foreach($data as $key => $value){
-                $content .= "<br /><b>$key:</b> $value";
-            }
-
-            $skillUrl = Router::url('goTo', array("slug" => $skill->getSlug()), true);
-            $content .= '<br /><b>link:</b> <a href="'.$skillUrl.'">'.$skillUrl.'</a>';
-
-            if ($user = SH::getUser()){
-                $content .= "<br /><br /><b>User:</b> " . $user->getUsername();
-            }
-
-            $content .= "<br /><b>Date:</b> " . date("Y-m-d H:i:s");
+            
+            $params = array(
+                "type" => $type,
+                "skill" => $skill,
+                "data" => $data
+            );
 
             $mailer = new Mailer();
-            $mailer->sendWarning($content, $type);
+            $mailer->sendWarning($params);
 
 
         }
