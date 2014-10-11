@@ -14,45 +14,52 @@
 
     </div>
 
-    <h2>Latest changes</h2>
-    <table id="latest-changes">
-        <tr>
-            <th>Date</th>
-            <th>User</th>
-            <th>Type</th>
-            <th>Skill</th>
-            <th>Infos</th>
-        </tr>
+    <div class="col" id="latest-changes-container">
+        <h2>Latest changes</h2>
 
-    </table>
+        <a class="latest-changes-btn" href="<?= \Controller\Router::url("latestChanges"); ?>">More latest changes</a>
 
-    <a id="latest-changes-btn" href="<?= \Controller\Router::url("latestChanges"); ?>">More latest changes</a>
-    
-    <div id="power_edit_form_container">
-        <h4 id="skill_name"></h4>
-        <form id="power_edit_form" action="<?= \Controller\Router::url("powerEdit"); ?>" method="POST">
-            
-            <label for="skillUuid">Skill Uuid</label>
-            <input type="text" id="skillUuid" name="skillUuid" value="" />
+        <table id="latest-changes">
+            <tr>
+                <th>Date</th>
+                <th>User</th>
+                <th>Type</th>
+                <th>Skill</th>
+                <th>Infos</th>
+            </tr>
 
-            <label for="nameEn">Name in english</label>
-            <input type="text" id="nameEn" name="nameEn" value="" />
+        </table>
 
-            <label for="nameFr">Name in french</label>
-            <input type="text" id="nameFr" name="nameFr" value="" />
+        <a class="latest-changes-btn" href="<?= \Controller\Router::url("latestChanges"); ?>">More latest changes</a>
+        
+        <div class="col" id="power-edit-form-container">
+            <h4 id="skill_name"></h4>
+            <form id="power-edit-form" action="<?= \Controller\Router::url("powerEdit"); ?>" method="POST">
+                
+                <label for="skillUuid">Skill Uuid</label>
+                <input type="text" id="skillUuid" name="skillUuid" value="" />
 
-            <input type="submit" value="Save" />
-        </form>
+                <label for="nameEn">Name in english</label>
+                <input type="text" id="nameEn" name="nameEn" value="" />
+
+                <label for="nameFr">Name in french</label>
+                <input type="text" id="nameFr" name="nameFr" value="" />
+
+                <input type="submit" value="Save" />
+            </form>
+        </div>
     </div>
+
+        
 
     <script>
 
         var skip = 0;
-        var limit = 10;
+        var limit = 40;
 
         function getLatestChanges(e){
             $.ajax({
-                url: $("#latest-changes-btn").attr("href"),
+                url: $(".latest-changes-btn:first").attr("href"),
                 data: {
                     skip: skip,
                     limit: limit
@@ -64,7 +71,7 @@
             });
         }
 
-        $("#latest-changes-btn").on("click", function(e){
+        $(".latest-changes-btn").on("click", function(e){
             e.preventDefault();
             getLatestChanges();
         });
@@ -77,4 +84,18 @@
             $("#nameEn").val( $(this).data("skillnameen") );
             $("#nameFr").val( $(this).data("skillnamefr") );
         });
+
+        $("#power-edit-form").on("submit", function(e){
+            e.preventDefault();
+            var $that = $(this);
+            $.ajax({
+                url: $that.attr("action"),
+                data: $that.serialize(),
+                type: "post"
+            }).done(function(){
+                $(".skill_tr").remove();
+                skip = 0;
+                getLatestChanges();
+            });
+        }); 
     </script>

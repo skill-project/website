@@ -7,3 +7,33 @@ td {
     border-top: 1px solid #333;
     padding: 4px 10px;
 }
+
+.col {
+}
+
+#latest-changes-container {
+    width: 800px;
+}
+
+#latest-changes-container table {
+    width: 100%;
+}
+
+#power-edit-form-container {
+    width: 180px;
+    padding-left: 20px;
+    position: relative;
+    bottom: 210px;
+    right: -200px;
+    float: right;
+}
+
+label {
+    display: block;
+    margin-top: 5px;
+}
+
+input {
+    display: block;
+    width: 100%;
+}

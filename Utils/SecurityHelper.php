@@ -163,12 +163,18 @@
         /**
          * Get the allowable actions of a user on a skill
          */
-        public static function getRights(User $user, $skillUuid){
+        public static function getRights($user, $skillUuid){
             $rights = array();
-            $role = $user->getRole();
 
             $allRights = array("create_as_child", "create_as_parent", "move", 
                     "copy", "translate", "discuss", "share", "rename", "delete");
+            $defaultRights = array("create_as_child", "discuss", "share");
+            
+            if (!$user){
+                return $defaultRights;
+            }
+
+            $role = $user->getRole();
 
             $skillManager = new \Model\SkillManager();
             $skillCreationInfo = $skillManager->findCreationInfo( $skillUuid );
@@ -187,7 +193,7 @@
 
             //default, gives create_as_child, discuss and share rights
             else {
-                $rights = array("create_as_child", "discuss", "share");
+                $rights = $defaultRights;
             }
             
             return $rights;
