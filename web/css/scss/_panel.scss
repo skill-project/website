@@ -242,6 +242,13 @@ textarea {
 .img-btn-l {  float: left; margin-left: 5px; }
 .img-btn-r {  float: right; margin-right: 5px;}
 
+#share-skill-panel {
+    input {
+        margin-top:20px;
+    }
+
+}
+
 input[type=submit] {
     border: none;
     background-color: #FFF;
@@ -332,6 +339,10 @@ ul {
 
 #delete-radio-container label {
     display: inline-block;
+}
+
+#delete-submit-container {
+    margin-bottom: 20px;
 }
 
 .message-zone {

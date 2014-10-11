@@ -16,7 +16,7 @@
             <div id="delete-fake-radio" class="no"></div>
             <label id="no-sureToDelete-label" for="no-sureToDelete"><?= _("NO"); ?></label>
         </div>
-        <div style="height:110px">
+        <div id="delete-submit-container">
             <input type="submit" id="delete-skill-form-submit" value="<?= _("DELETE") ?>" />
             <span class="message-zone"></span>
         </div>
