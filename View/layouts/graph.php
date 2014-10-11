@@ -1,8 +1,9 @@
 <?php
 	$pageLangName = str_replace(".php", "", $page);
+    $pageName = "graph";
 ?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="graph">
 <head>
 	<?php include("../View/inc/page_head.php"); ?>
 </head>

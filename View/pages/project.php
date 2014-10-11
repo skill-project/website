@@ -3,17 +3,17 @@
         <img src="img/SKP-page-project-illus.png" id="project-illus" class="illus" />
         <h2 class="first"><?= _("THE PROJECT"); ?></h2>
         <h4>The Project</h4>
-        <p>Humanity has been learning, individually and collectively, since the dawn of time. During all those millenias, we have mastered an incredible number of skills. Yet, we still lack a comprehensive and organized database of all human skills.</p>
+        <p>Humanity has been learning, individually and collectively, since the dawn of time. During all those millenias, we have mastered an incredible number of skills. Yet, we still lack <b>a comprehensive and organized database of all human skills</b>.</p>
         <p>In this age of ambitious big data endeavours and advanced social tools, we firmly believe that it’s possible to map out all human skills. But the only smart way of doing it is by leveraging the collective knowledge and making as many people as possible part of the project.</p>
         <h4>Our Mission</h4>
-        <p>We aim at building the largest, fully translated and most accurate skill database ever made by letting a diverse and skillful community contribute their individual skills to the larger and global map.</p>
+        <p>We aim at building the largest, fully translated and most accurate skill database ever made by letting <b>a diverse and skillful community</b> contribute their individual skills to the larger and global map.</p>
         <p>The crowdsourced data is free for non-commercial use. Because the database is the result of many people voluntary efforts, we do not allow the data to be used commercially. However, we might consider licensing it for free to people or organizations who need it for socially valuable projects.</p>
         <h4>How Can You Help?</h4>
-        <p>We imagined a simple ontology where each skill can be split-up into more specific sub-skills. All you have to do is add your own skills in the most appropriate section.</p>
-        <p>You can browse the skill database right now. You don’t even need an account for that.</p>
-        <p>If you want to add your skills, you can sign up in a matter of seconds. Once you’ve signed up, you can add new skills and share your thoughts about existing ones.</p>
-        <p>For more advanced operations, like moving skills around, renaming or deleting them, you need to apply to become an Editor. Editor applications are reviewed daily so that you can quickly become a full-fledged member of our growing community!</p>
-        <p>If you want to meet the team and the first members of Skill Project, head straight for our community forum and introduce yourself!</p>    
+        <p>We imagined a simple ontology where <b>each skill can be split-up into more specific sub-skills</b>. All you have to do is add your own skills in the most appropriate section.</p>
+        <p><a href="<?= \Controller\Router::url("graph"); ?>" alt="<?= _("The skills"); ?>">You can browse the skill database</a> right now. You don’t even need an account for that.</p>
+        <p>If you want to add your skills, you can <a class="register-link" href="<?= \Controller\Router::url("register"); ?>" title="<?= _("Register!"); ?>">sign up</a> in a matter of seconds. Once you’ve signed up, you can add new skills and share your thoughts about existing ones.</p>
+        <p>For more advanced operations, like moving skills around, renaming or deleting them, you need to <a href="<?= \Controller\Router::url("apply"); ?>" title="<?= _("Become an Editor!"); ?>">apply to become an Editor</a>. Editor applications are reviewed daily so that you can quickly become a full-fledged member of our growing community!</p>
+        <p>If you want to meet the team and the first members of Skill Project, head straight for our <a href="<?= \Config\Config::VANILLA_URL?>" title="<?= _("Skill Project's Community"); ?>">community forum</a> and introduce yourself!</p>    
     </div>
 </section>
 <hr />
@@ -214,7 +214,7 @@
 <section>
     <div class="container">
         <h2><?= _("MEET THE TEAM"); ?></h2>
-        <p>Skill Project was brought to you by 3 friends living in Paris, France. We share a passion for learning, teaching and experimenting which has naturally led us to imagine Skill Project. Apart from that, we come from different cultural and gastronomical backgrounds! Come and chat with us in the community section.
+        <p>Skill Project was brought to you by 3 friends living in Paris, France. We share a passion for learning, teaching and experimenting which has naturally led us to imagine Skill Project. Apart from that, we come from different cultural and gastronomical backgrounds! Come and chat with us in the <a href="<?= \Config\Config::VANILLA_URL?>" title="<?= _("Skill Project's Community"); ?>">community section</a>.
         </p>
         <div class="project-col">
             <div id="dario-pic" class="team-pic"></div>

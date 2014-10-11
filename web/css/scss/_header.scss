@@ -15,6 +15,10 @@
     width: 750px;
 }
 
+a.active { 
+    color: $blue;
+}
+
 #top-user-nav {
     margin-top: 20px;
     overflow: visible;

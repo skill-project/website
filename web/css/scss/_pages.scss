@@ -5,9 +5,8 @@ html.page {
         height: 128px;
     }
 
-    a:hover {
-        color: $blue;
-    }
+    section a { color: $darkerBlue; }
+    a:hover { color: $blue; }
 
     h1 {
         font-weight: normal;
@@ -376,11 +375,11 @@ html.fourofour {
 
 /* legal */
 
-html.legal ul, html.apply ul, html.legal ol{
+html.legal #main-content ul, html.apply #main-content ul, html.legal #main-content ol{
     list-style: circle;
     margin-left: 25px;
 }
 
-html.legal li, html.apply li  {
+html.legal #main-content li, html.apply #main-content li  {
     padding-left: 3px;
 }
