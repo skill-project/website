@@ -8,8 +8,8 @@
          * returns all ISO 639-1-alpha 2 language codes, in php array or json
          */
         public function getAllCodes($format = "array", $omitXLang = false){
-            if ($omitXLang == true) $returnCodes = array_filter($this->codes, array($this, "filterOutXLang"));
-            else $returnCodes = $this->codes;
+            $returnCodes = $this->codes;
+            if ($omitXLang == true) unset($returnCodes["xl"]);
 
             if ($format == "array"){
                 return $returnCodes;
@@ -33,10 +33,6 @@
 
         public function getIsoCode($languageCode){
             return $this->codes[$languageCode]["isoCode"];
-        }
-
-        public function filterOutXLang($var) {
-          if ($var["name"] != "xLang") return true;
         }
 
         protected $codes = array (

@@ -57,7 +57,7 @@
 
             //get all Languages (for the translation <select>)
             $lc = new \Model\LanguageCode();
-            $languages = $lc->getAllCodes();
+            $languages = $lc->getAllCodes("array", true);
             $params['languages'] = $languages;
 
             $view = new AjaxView("panels/panel.php", $params);
