@@ -94,7 +94,7 @@ msgstr  "Carte globale des compétences"
 
 #: trunk/Controller/MainController.php:42
 msgid   "Explore"
-msgstr  "Exolorer"
+msgstr  "Explorer"
 
 #: trunk/Controller/MainController.php:87
 msgid   "The Project"
@@ -765,7 +765,7 @@ msgstr  "RECHERCHER UNE COMPÉTENCE"
 
 #: trunk/View/pages/graph.php:40
 msgid   "If you don't find it, just add it!"
-msgstr  "Si vous ne la trouvez pas, ajoutez-là&nbsp;!"
+msgstr  "Si vous ne la trouvez pas, ajoutez-la&nbsp;!"
 
 #: trunk/View/pages/legal.php:6
 msgid   "Our Services"
