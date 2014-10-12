@@ -159,26 +159,26 @@
         <div class="faq-q">
             <h4>Quel est le but réel de tout ça&nbsp;?</h4>
             <div class="faq-a">
-                <p>C'est de réaliser collectivement la plus complète et la plus précise des base de données des compétences humains. Et organiser celle-ci afin qu'elle soit simple et agréable à explorer, et à maintenir à jour.</p>
+                <p>C'est de réaliser collectivement la plus complète et la plus précise des base de données des compétences humaines. Et organiser celle-ci afin qu'elle soit simple et agréable à explorer, et à maintenir à jour.</p>
             </div>
         </div>
         <div class="faq-q">
             <h4>Quelle est la suite pour Skill Project&nbsp;?</h4>
             <div class="faq-a">
-                <p>Nous croyons que notre société du 21ème siècle devient de plus en plus centré sur les compétences, et c'est en partie pourquoi nous avons créé Skill Project. Nous croyons que les possibilités seront nombreuses de tirer tous les bénéfices d'une base de données de compétences, mais nous n'avons aucun plan pour le moment. Si vous avez une idée sur la question, parlez-en sur le forum !</p>
+                <p>Nous croyons que notre société du 21ème siècle devient de plus en plus centrée sur les compétences, et c'est en partie pourquoi nous avons créé Skill Project. Nous croyons que les possibilités seront nombreuses de tirer tous les bénéfices d'une base de données de compétences, mais nous n'avons aucun plan pour le moment. Si vous avez une idée sur la question, parlez-en sur le forum !</p>
             </div>
         </div>
         <div class="faq-q">
             <h4>Comment faites-vous de l'argent avec ceci&nbsp;?</h4>
             <div class="faq-a">
                 <p>Actuellement, nous n'en faisons pas, mais la satisfaction de travailler sur un projet à grande échelle est plus que suffisant pour nous motiver !<br />
-                Ceci dit, nous espérons qu'un plan d'affaire pourra un jour se dégager. Nous ne transformerons jamais Skill Project en un projet à but lucratif, ça n'aurait aucun sens. Mais nous pourrions consider développer des projets parrallèles, liés à Skill Project, dans un sens ou dans l'autre. Ce n'est pas notre priorité pour le moment.</p>
+                Ceci dit, nous espérons qu'un plan d'affaire pourra un jour se dégager. Nous ne transformerons jamais Skill Project en un projet à but lucratif, ça n'aurait aucun sens. Mais nous pourrions un jour développer des projets parallèles, liés à Skill Project, mais ce n'est pas notre priorité pour le moment.</p>
             </div>
         </div>
         <div class="faq-q">
             <h4>J'aimerais réaliser mon propre arbre de compétences... c'est possible&nbsp;?</h4>
             <div class="faq-a">
-                <p>Pas pour le moment, mais c'est une possibilité que nous avons fortement envisagé. Vous souhaitez en discuter sur le forum ?</p>
+                <p>Pas pour le moment, mais c'est une possibilité que nous avons fortement envisagée. Vous souhaitez en discuter sur le forum ?</p>
             </div>
         </div>
 
@@ -217,7 +217,7 @@
 <section>
     <div class="container">
         <h2><?= _("MEET THE TEAM"); ?></h2>
-        <p>Skill Project vous est présenté par 3 amis habitant Paris, France. Nous partageons une passion pour l'apprentissage, la formation et l'innovation qui nous a naturellement mené vers Skill Project. Et sinon, nous provenons de cultures et de background gastronomique différent ! Venez nous rencontrer dans la <a href="<?= \Config\Config::VANILLA_URL?>" title="<?= _("Skill Project's Community"); ?>">section communautaire</a>.
+        <p>Skill Project vous est présenté par 3 amis habitant Paris, France. Nous partageons une passion pour l'apprentissage, la formation et l'innovation qui nous a naturellement mené vers Skill Project. Et sinon, nous provenons de cultures et de backgrounds gastronomiques différents ! Venez nous rencontrer dans la <a href="<?= \Config\Config::VANILLA_URL?>" title="<?= _("Skill Project's Community"); ?>">section communautaire</a>.
         </p>
         <div class="project-col">
             <div id="dario-pic" class="team-pic"></div>
@@ -227,12 +227,12 @@
         <div class="project-col">
             <div id="guillaume-pic" class="team-pic"></div>
             <h4>GUILLAUME SYLVESTRE</h4>
-            <p>Guillaume est né au Québec, Canada. Développeur et formateur web passionné, il est tombé en amour avec PHP et les bases de données sexy il y a de ça 8 ans. Il est connu sous le nom de SkillBill sur Skill Project.</p>
+            <p>Guillaume est né au Québec, Canada. Développeur et formateur web passionné, il est tombé en amour avec PHP et les bases de données sexy, il y a de ça 8 ans. Il est connu sous le nom de SkillBill sur Skill Project.</p>
         </div>
         <div class="project-col">
             <div id="raphael-pic" class="team-pic"></div>
             <h4>RAPHAEL BOUSQUET</h4>
-            <p>Raphael is french, but loves to speak latin like that: Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>
+            <p>Raphael est français, mais il adore parler latin comme ça : Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>
         </div>
     </div>
 </section>
