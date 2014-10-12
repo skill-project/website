@@ -208,7 +208,7 @@
                     $params['error']['global'] = _("This email or username is not valid.");
                 }
                 else {
-                    $params['message'] = _("Check you emails !");
+                    $params['message'] = _("Check you emails!");
                     $view = new View("success.php", $params);
                     $view->setLayout("../View/layouts/modal.php");
                     $view->send(true);
@@ -278,7 +278,7 @@
                         $userManager = new UserManager();
                         $userManager->update($user);
 
-                        $params["message"] = _("Password updated !");
+                        $params["message"] = _("Password updated!");
                         $view = new View("success.php", $params);
                         $view->setLayout("../View/layouts/modal.php");
                         $view->send(true);
@@ -339,7 +339,9 @@
             $params['latestActivity'] = $latestActivity;
 
             $params['profileUser'] = $profileUser;
-            $params['title'] = SH::encode($username) . _("'s Profile");
+
+            $usernameEncoded = SH::encode($username);
+            $params['title'] = sprintf(_("%s's Profile"), $usernameEncoded);
             $view = new View("view_profile.php", $params);
             
             $view->send();
@@ -413,10 +415,10 @@
                         
                         if ($errCode != 4){
                             if ($errCode == 1 || $errCode == 2){
-                                $uploadErrors[] = _("Your picture is too large !");
+                                $uploadErrors[] = _("Your picture is too large!");
                             }
                             else if ($errCode == 3){
-                                $uploadErrors[] = _("An error occured while uploading your picture !");
+                                $uploadErrors[] = _("An error occured while uploading your picture!");
                             }
 
                             //HANDLE UPLOAD
@@ -426,12 +428,12 @@
                             $mime = finfo_file($finfo, $tmp_name);
                             
                             if (substr($mime, 0, 5) != "image"){
-                                $uploadErrors[] = _("Your picture is invalid !");
+                                $uploadErrors[] = _("Your picture is invalid!");
                             }
                             else {
                                 $img = new \abeautifulsite\SimpleImage($tmp_name);
                                 if ($img->get_width() < 180 || $img->get_height() < 180){
-                                    $uploadErrors[] = _("Your picture is too small !");
+                                    $uploadErrors[] = _("Your picture is too small!");
                                 }
                             }
                             
@@ -460,7 +462,9 @@
 
             if ($withPassword){ $params['showPasswordResetForm'] = true; }
             $params['profileUser'] = $profileUser;
-            $params['title'] = SH::encode($username) . _("'s Profile");
+
+            $usernameEncoded = SH::encode($username);
+            $params['title'] = sprintf(_("%s's Profile"), $usernameEncoded);
             $view = new View("profile.php", $params);
             
             $view->send();
@@ -491,7 +495,7 @@
         public function applyAction(){
 
             $params = array();
-            $params['title'] = _("Become part of the project !");
+            $params['title'] = _("Become part of the project!");
 
             $userManager = new UserManager();
             $securityHelper = new SH();

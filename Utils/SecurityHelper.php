@@ -38,7 +38,7 @@
         public static function lock($minimumRole = "", $skillUuid = null, $askedRight = ""){
             //if no user is connected, forbid
             if (!self::userIsLogged()){
-                return self::forbid(_("You must be signed in to do that !"));
+                return self::forbid(_("You must be signed in to do that!"));
             }
             //if no minimum role, return true
             else if ($minimumRole == ""){
@@ -61,7 +61,7 @@
                 $authorizedLevels = self::$rolesHierarchy[$userRole];
                 //check if user has this capability
                 if (!in_array($minimumRole, $authorizedLevels)){
-                    return self::forbid(_("You can't do that !"));
+                    return self::forbid(_("You can't do that!"));
                 }
             }
             return true;

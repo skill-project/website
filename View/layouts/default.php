@@ -32,7 +32,7 @@
 		            <?php else: ?>
 		                <li><a class="register-link" href="<?= \Controller\Router::url("register"); ?>" title="<?= _("Register !"); ?>"><?= _("Profile"); ?></a></li>
 		            <?php endif; ?>
-		            <li><a href="<?= \Controller\Router::url("apply"); ?>" title="<?= _("Become part of the project !"); ?>"><?= _("Apply"); ?></a></li>
+		            <li><a href="<?= \Controller\Router::url("apply"); ?>" title="<?= _("Become part of the project!"); ?>"><?= _("Apply"); ?></a></li>
 		            <li><a href="http://vanilla.skill-project.org/" title="The Skill Project Community"><?= _("Community"); ?></a></li>
 		            <li><a href="<?= \Controller\Router::url("contact"); ?>" title="<?= _("Contact us"); ?>"><?= _("Contact"); ?></a></li>
 		            <li class="last"><a href="<?= \Controller\Router::url("legal"); ?>" title=""><?= _("Legal terms"); ?></a></li>

@@ -181,7 +181,7 @@
                     $discussionMananager = new DiscussionManager();
                     $result = $discussionMananager->saveNewMessage($skillUuid, null, $message);      
                     if ($result){
-                        $json = new \Model\JsonResponse("ok", _("Message posted !"));
+                        $json = new \Model\JsonResponse("ok", _("Message posted!"));
                         $skillManager = new SkillManager();
                         $skill = $skillManager->findByUuid($skillUuid);
                         $this->warn("discussed", $skill, array(
@@ -240,7 +240,7 @@
                             //correct all depths
                             $skillManager->updateAllDepths();
 
-                            $json = new \Model\JsonResponse("ok", _("Skill moved !"));
+                            $json = new \Model\JsonResponse("ok", _("Skill moved!"));
 
                             $this->warn("moved", $skill, array(
                                 "newParent" => $newParentUuid
@@ -250,7 +250,7 @@
 
                         case "copy":
                             $result = $skillManager->copy($skillUuid, $newParentUuid, $userUuid);
-                            $json = new \Model\JsonResponse("ok", _("Skill copied !"));
+                            $json = new \Model\JsonResponse("ok", _("Skill copied!"));
                             break;
                     }
                         
@@ -313,7 +313,7 @@
                         ));
                     }
 
-                    $json = new \Model\JsonResponse("ok", _("Translation saved !"));
+                    $json = new \Model\JsonResponse("ok", _("Translation saved!"));
                     $json->setData($skill->getJsonData());
                     $json->send();
                 }
@@ -382,7 +382,7 @@
                     //reload skill
                     $skill = $skillManager->findByUuid($skill->getUuid());
 
-                    $json = new \Model\JsonResponse("ok", _("Skill saved !"));
+                    $json = new \Model\JsonResponse("ok", _("Skill saved!"));
                     $json->setData($skill->getJsonData());
                     $json->send();
                 }

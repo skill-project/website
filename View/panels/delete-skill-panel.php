@@ -8,7 +8,7 @@
 
         <div id="delete-radio-container">
             <p><?= _("YOU ARE ABOUT TO DELETE THIS SKILL."); ?></p>
-            <p><?= _("ARE YOU SURE ?"); ?></p>
+            <p><?= _("ARE YOU SURE?"); ?></p>
             
             <input type="radio" class="sureToDeleteRadio" name="sureToDelete" id="yes-sureToDelete" value="yes" />
             <input type="radio" class="sureToDeleteRadio" name="sureToDelete" id="no-sureToDelete" value="no" checked="checked" />

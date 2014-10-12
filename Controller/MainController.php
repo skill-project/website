@@ -95,7 +95,7 @@
          * The legal page
          */
         public function legalAction(){
-            $view = new View("legal.php", array("title" => _("Legal Stuff")));
+            $view = new View("legal.php", array("title" => _("Terms of Use")));
             
             $view->send();
         }
@@ -142,7 +142,7 @@
                         Router::reload();
                     }
                     else {
-                        $validator->addError("global", _("A problem occurred while sending your message. Please try again !"));
+                        $validator->addError("global", _("A problem occurred while sending your message. Please try again!"));
                     }
 
                 }
