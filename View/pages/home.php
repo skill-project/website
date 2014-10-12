@@ -20,7 +20,7 @@
 
 		<img class="home-illus network-illus" alt="" src="img/SKP-page-home-network.png" />
 		<h2>Every skill is connected to another one</h2>
-		<p>So you know how to program? Well, this is definitely a skill! And “C++ programming” or “PHP programming” are simply sub-skills of “Programming”. And if you also know Wordpress or Symfony, they are a sub-skills of “PHP”.
+		<p>So you know how to play music? Well, this is definitely a skill!<br />And "Play Guitar" or "Play Piano" are simply sub-skills of "Play music".<br />And if you can do some "Flamenco Guitar" or "Bottleneck Guitar", they are a sub-skills of "Play Guitar".
 			<br />You get the picture?</p>
 
 		<img class="home-illus circle-illus" alt="" src="img/SKP-page-home-circle.png" />

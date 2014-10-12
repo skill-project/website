@@ -20,7 +20,7 @@
 
 		<img class="home-illus network-illus" alt="" src="img/SKP-page-home-network.png" />
 		<h2>Les compétences sont interconnectées</h2>
-		<p>Vous savez programmer ? Alors voilà une compétence !<br />Et "Programmer en C++" ou "Programmer en PHP" sont des sous-compétences de "Prorammer".<br />Et vous connaissez également Wordpress ou Symfony ? Celles-ci sont des sous-compétences de "PHP".
+		<p>Vous savez jouer de la musique ? Alors voilà une compétence !<br />Et "Jouer de la guitare" ou "Jour du piano" sont des sous-compétences de "Jouer de la musique".<br />Et vous savez également faire de la "Guitare flamenco" ou du "Bottleneck" ?<br />Celles-ci sont des sous-compétences de "Jouer de la guitare".
 			<br />Vous comprenez l'idée ?</p>
 
 		<img class="home-illus circle-illus" alt="" src="img/SKP-page-home-circle.png" />
