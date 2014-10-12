@@ -6,7 +6,7 @@
     <div>
         <label for="password"><?php echo _("PASSWORD") ?></label>
         <input type="password" name="password" id="password" required />
-        <a class="forgot-passowrd-link" href="<?= \Controller\Router::url("forgotPassword1"); ?>" title="<?= _("Forgot your password ?"); ?>"><?= _("Forgot your password ?"); ?></a>
+        <a class="forgot-passowrd-link" href="<?= \Controller\Router::url("forgotPassword1"); ?>" title="<?= _("Forgot your password?"); ?>"><?= _("Forgot your password?"); ?></a>
     </div>
     <div class="submit-container">
         <input type="submit" value="<?php echo _("SIGN IN") ?>" />
@@ -26,4 +26,4 @@
         </div>
     </div>
 </form>
-<p><?= _("You don't have an account yet ?"); ?> <a href="<?= \Controller\Router::url("register"); ?>" class="register-link" title="<?= _("Sign up!"); ?>"><?= _("You can create one!"); ?></a></p>
+<p><?= _("You don't have an account yet?"); ?> <a href="<?= \Controller\Router::url("register"); ?>" class="register-link" title="<?= _("Sign up!"); ?>"><?= _("You can create one!"); ?></a></p>

@@ -17,7 +17,7 @@
                 <input type="text" name="languages" id="languages" value="<?=(empty($loggedUser)) ? "" : $loggedUser->getLanguages() ?>" required />
             </div>
             <div class="r">
-                <label for="update_freq"><?= _("How often do you plan to edit Skill Project ?") ?></label>
+                <label for="update_freq"><?= _("How often do you plan to edit Skill Project?") ?></label>
                 <div class="select-border">
                     <select id="update_freq" name="update_freq" required>
                         <option value="Now and then"><?= _("Now and then"); ?></option>
@@ -37,11 +37,11 @@
         </div>
     </div>
     <div class="apply-section">
-        <label for="job-textarea"><?= _("HOW WOULD YOU DESCRIBE YOUR PROFESSIONAL ACTIVITIES ?"); ?></label>
+        <label for="job-textarea"><?= _("HOW WOULD YOU DESCRIBE YOUR PROFESSIONAL ACTIVITIES?"); ?></label>
         <textarea name="job" id="job-textarea" required></textarea>
     </div>
      <div class="apply-section">
-        <label for="motiv-textarea"><?= _("WHY ARE YOU VOLUNTEERING TO BE AN EDITOR OF SKILL PROJECT ?"); ?></label>
+        <label for="motiv-textarea"><?= _("WHY ARE YOU VOLUNTEERING TO BE AN EDITOR OF SKILL PROJECT?"); ?></label>
         <textarea name="motiv" id="motiv-textarea" required></textarea>
     </div>
     <div class="submit-container">

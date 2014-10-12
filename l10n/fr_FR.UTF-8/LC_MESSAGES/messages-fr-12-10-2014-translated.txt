@@ -22,7 +22,7 @@ msgstr  "Bienvenue sur Skill Project&nbsp;!"
 
 #: trunk/Controller/Mailer.php:124
 msgid   "We received your message on Skill Project!"
-msgstr  "Nous avons bien reçu votre message sur Skill Project !"
+msgstr  "Nous avons bien reçu votre message sur Skill Project&nbsp;!"
 
 #: trunk/Controller/Mailer.php:153
 msgid   "Your application on Skill Project"
@@ -30,15 +30,15 @@ msgstr  "Votre canidature à Skill Project"
 
 #: trunk/Controller/Mailer.php:184
 msgid   "Forgot your password on Skill Project?"
-msgstr  "Vous avez oublié votre mot de passe sur Skill Project ?"
+msgstr  "Vous avez oublié votre mot de passe sur Skill Project&nbsp;?"
 
 #: trunk/Controller/Mailer.php:213
 msgid   "Skill Project: New application!"
-msgstr  "Skill Project : nouvelle candidature !"
+msgstr  "Skill Project : nouvelle candidature&nbsp;!"
 
 #: trunk/Controller/Mailer.php:241
 msgid   "Skill Project: New Contact Message!"
-msgstr  "Skill Project : nouveau message !"
+msgstr  "Skill Project : nouveau message&nbsp;!"
 
 #: trunk/Controller/Mailer.php:264
 msgid   "Skill Project Alert: "
@@ -50,7 +50,7 @@ msgstr  "Noeud effacé."
 
 #: trunk/Controller/ApiController.php:184
 msgid   "Message posted!"
-msgstr  "Message envoyé !"
+msgstr  "Message envoyé&nbsp;!"
 
 #: trunk/Controller/ApiController.php:192
 msgid   "Error posting message."
@@ -62,11 +62,11 @@ msgstr  "Une erreur est survenue."
 
 #: trunk/Controller/ApiController.php:243
 msgid   "Skill moved!"
-msgstr  "Compétence déplacée !"
+msgstr  "Compétence déplacée&nbsp;!"
 
 #: trunk/Controller/ApiController.php:253
 msgid   "Skill copied!"
-msgstr  "Compétence copiée !"
+msgstr  "Compétence copiée&nbsp;!"
 
 #: trunk/Controller/ApiController.php:259
 #: trunk/Controller/ApiController.php:321
@@ -77,12 +77,12 @@ msgstr  "Quelque chose a mal tourné."
 
 #: trunk/Controller/ApiController.php:316
 msgid   "Translation saved!"
-msgstr  "Traduction enregistrée !"
+msgstr  "Traduction enregistrée&nbsp;!"
 
 #: trunk/Controller/ApiController.php:385
 #: trunk/Controller/ApiController.php:551
 msgid   "Skill saved!"
-msgstr  "Compétence enregistrée !"
+msgstr  "Compétence enregistrée&nbsp;!"
 
 #: trunk/Controller/Router.php:41
 msgid   "You 404ed"
@@ -117,8 +117,8 @@ msgid   "You username/email and password do not match"
 msgstr  "Vos identifiants sont incorrects"
 
 #: trunk/Controller/UserController.php:172 trunk/View/inc/login_form.php:9
-msgid   "Forgot your password ?"
-msgstr  "Mot de passe oublié ?"
+msgid   "Forgot your password?"
+msgstr  "Mot de passe oublié&nbsp;?"
 
 #: trunk/Controller/UserController.php:208
 msgid   "This email or username is not valid."
@@ -126,7 +126,7 @@ msgstr  "Cette adresse e-mail ou nom d'utilisateur est invalide."
 
 #: trunk/Controller/UserController.php:211
 msgid   "Check you emails!"
-msgstr  "Vérifiez vos emails !"
+msgstr  "Vérifiez vos emails&nbsp;!"
 
 #: trunk/Controller/UserController.php:250
 msgid   "CHANGE PASSWORD"
@@ -134,7 +134,7 @@ msgstr  "MODIFIER LE MOT DE PASSE"
 
 #: trunk/Controller/UserController.php:281
 msgid   "Password updated!"
-msgstr  "Mot de passe modifié !"
+msgstr  "Mot de passe modifié&nbsp;!"
 
 #: trunk/Controller/UserController.php:336
 #: trunk/Controller/UserController.php:360
@@ -152,4 +152,4 @@ msgstr  "Votre photo est trop grande!"
 
 #: trunk/Controller/UserController.php:419
 msgid   "An error occured while uploading your picture!"
-msgstr  "Une erreur est survenue pendant l'envoi de votre photo !"
+msgstr  "Une erreur est survenue pendant l'envoi de votre photo&nbsp;!"

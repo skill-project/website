@@ -28,4 +28,4 @@
         </div>
     </div>
 </form>
-<p><?= _("You don't have an account yet ?"); ?> <a href="<?= \Controller\Router::url("register"); ?>" class="register-link" title="<?= _("Sign up!"); ?>"><?= _("You can create one!"); ?></a></p>
+<p><?= _("You don't have an account yet?"); ?> <a href="<?= \Controller\Router::url("register"); ?>" class="register-link" title="<?= _("Sign up!"); ?>"><?= _("You can create one!"); ?></a></p>

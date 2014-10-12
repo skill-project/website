@@ -10,7 +10,7 @@
             <?php
             /*
             <select name="topic" id="topic-select">
-                <option value=""><?= _("What do you want to talk about ?"); ?></option>
+                <option value=""><?= _("What do you want to talk about?"); ?></option>
                 <?php foreach ($topics as $topic): ?>
                 <option value="<?= $topic; ?>"><?= $topic; ?></option>
                 <?php endforeach; ?>

@@ -169,7 +169,7 @@
         public function forgotPassword1Action(){
 
             $params = array();
-            $params['title'] = _("Forgot your password ?");
+            $params['title'] = _("Forgot your password?");
             $params['loginUsername'] = "";
 
             //handle forgot 1 form
