@@ -24,7 +24,7 @@
             $userManager = new \Model\UserManager();
             $found = $userManager->findByUsername($username);
             if ($found){
-                $this->addError("username", _("This username is already taken !"));
+                $this->addError("username", _("This username is already taken!"));
             }
         }
 
@@ -42,7 +42,7 @@
             $userManager = new \Model\UserManager();
             $found = $userManager->findByEmail($email);
             if ($found){
-                $this->addError("email", _("This email is already taken !"));
+                $this->addError("email", _("This email is already taken!"));
             }
         }
 
@@ -114,7 +114,7 @@
             if (!empty($children)){
                 foreach($children as $child){
                     if ($child['name'] == $skillName){
-                        $this->addError("create-skillName", _("This skill already exists here !"));
+                        $this->addError("create-skillName", _("This skill already exists here!"));
                     }
                 }
             }
@@ -138,7 +138,7 @@
             $skillManager = new \Model\SkillManager();
             $numChild = $skillManager->countChildren($parentSkillUuid);
             if ($numChild >= \Config\Config::MAX_CHILD){
-                $this->addError("create-skillName", _("Too many children !"));
+                $this->addError("create-skillName", _("Too many children!"));
             }
         }
 

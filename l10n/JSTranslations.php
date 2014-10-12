@@ -12,7 +12,7 @@
                 "error" => _("An error occurred"),
                 
                 "panel" => array(
-                    "haveToBeSigned"    => _("You have to be signed in to do that !"),
+                    "haveToBeSigned"    => _("You have to be signed in to do that!"),
                     "signIn"            => _("Sign in"),
                     "createAccount"     => _("Create an account")
                 )

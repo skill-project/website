@@ -548,7 +548,7 @@
                     
                     $skill = $skillManager->findByUuid($skill->getUuid());
 
-                    $json = new \Model\JsonResponse("ok", _("Skill saved !"));
+                    $json = new \Model\JsonResponse("ok", _("Skill saved!"));
                     $json->setData($skill->getJsonData());
                     $json->send();
                 }

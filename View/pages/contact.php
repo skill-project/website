@@ -14,7 +14,7 @@
                 include("../View/inc/contact_form.php");
             }
             else {
-                echo '<p class="emphasis">' . _("Message sent ! Thanks !") . '</p>';
+                echo '<p class="emphasis">' . _("Message sent! Thanks!") . '</p>';
             }
         ?>
 

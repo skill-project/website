@@ -36,7 +36,7 @@
             return v > 4 ? v : undef;
         }());
         if (ie < 9){
-            alert("<?= _("Your browser is too old for this modern app. Please use a recent one !"); ?>");
+            alert("<?= _("Your browser is too old for this modern app. Please use a recent one!"); ?>");
             window.location.href = "/";
         }
     </script>

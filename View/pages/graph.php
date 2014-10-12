@@ -37,7 +37,7 @@
         <form id="search-form" method="GET" action="<?= \Controller\Router::url("skillSearch"); ?>">
 		<label id="search-tease" for="kw-input">
 			<h2><?=_("SEARCH A SKILL"); ?></h2>
-			<p><?=_("If you don't find it, just add it !");?></p>
+			<p><?=_("If you don't find it, just add it!");?></p>
 		</label>
 			<div id="autocomplete-container">
 				<div id="search-results"></div>

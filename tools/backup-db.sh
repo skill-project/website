@@ -57,7 +57,7 @@ if (($NEO_SIZE_B < MAX_SIZE_B && $NEO_NUM_FILES < MAX_NUM_FILES)); then
 
 	sendemail -f "i@dariospagnolo.org" $EMAIL_RECIPIENTS -u "[SKP] Neo4J backup report" -m "Total duration : $DURATION_TOTAL seconds ($DURATION_STOP + $DURATION_COPY + $DURATION_RESTART)\nNumber of files : $NEO_NUM_FILES\nFile size : $NEO_SIZE_H\nDestination directory : $BACKUP_DIR_DATED\nNeo4J PID : $NEO_PID" $EMAIL_SERVER
 else
-	echo "Too much data, will take to long !"
+	echo "Too much data, will take to long!"
 	#TODO
 	#Notify admin
 fi

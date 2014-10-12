@@ -17,7 +17,7 @@
             
             if (!self::quickTestConnection() && !Config::DEBUG){
                 $mailer = new \Controller\Mailer();
-                $mailer->sendWarning("No database connection !", "HUGE ERROR");
+                $mailer->sendWarning("No database connection!", "HUGE ERROR");
                 \Controller\Router::websiteDown();
             }
 

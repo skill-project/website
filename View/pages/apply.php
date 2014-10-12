@@ -30,14 +30,14 @@
                         case 1:
                             break;
                         case 2:
-                            echo '<p class="emphasis">' . _("Your application is beeing reviewed !") . '</p>';
+                            echo '<p class="emphasis">' . _("Your application is beeing reviewed!") . '</p>';
                     }         
                 }   
             ?>
 
         <?php else: ?>
         <p class="emphasis">
-            <?= ("Please"); ?> <a class="login-link" href="<?= \Controller\Router::url("login"); ?>" title="<?= _("Sign in!"); ?>"><?= _("sign in"); ?></a> <?= _("or"); ?> <a class="register-link" href="<?= \Controller\Router::url("register"); ?>" tile="<?= _("Create an account!"); ?>"><?= _("sign up"); ?></a> <?= _(" before applying !"); ?>
+            <?= ("Please"); ?> <a class="login-link" href="<?= \Controller\Router::url("login"); ?>" title="<?= _("Sign in!"); ?>"><?= _("sign in"); ?></a> <?= _("or"); ?> <a class="register-link" href="<?= \Controller\Router::url("register"); ?>" tile="<?= _("Create an account!"); ?>"><?= _("sign up"); ?></a> <?= _(" before applying!"); ?>
         </p>
         <?php endif; ?>
     </div>
