@@ -16,11 +16,29 @@
         )
     );
 
+    //fr route
+    $routes->add(
+        'graph_fr',
+        new Route('/competences/', 
+            array('controller' => 'Main', 'action' => 'graph'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
 
     $routes->add(
         'graph',
         new Route('/skills/', 
             array('controller' => 'Main', 'action' => 'graph'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
+
+    
+    $routes->add(
+        'project_fr',
+        new Route('/le-projet/', 
+            array('controller' => 'Main', 'action' => 'project'), array(), array(), 
             '{lang}.'.Config::DOMAIN
         )
     );
@@ -37,6 +55,15 @@
         'legal',
         new Route('/legal/', 
             array('controller' => 'Main', 'action' => 'legal'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
+
+    $routes->add(
+        'goTo_fr',
+        new Route('/competence/{slug}/', 
+            array('controller' => 'Main', 'action' => 'goTo'), array(), array(), 
             '{lang}.'.Config::DOMAIN
         )
     );
@@ -119,10 +146,28 @@
         )
     );
 
+
+    $routes->add(
+        'viewProfile_fr',
+        new Route('/profil/{username}/',
+            array('controller' => 'User', 'action' => 'viewProfile'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
     $routes->add(
         'viewProfile',
         new Route('/profile/{username}/',
             array('controller' => 'User', 'action' => 'viewProfile'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
+
+    $routes->add(
+        'profile_fr',
+        new Route('/profil/{username}/edit/',
+            array('controller' => 'User', 'action' => 'profile'), array(), array(), 
             '{lang}.'.Config::DOMAIN
         )
     );
@@ -177,6 +222,16 @@
         )
     );
     
+
+    $routes->add(
+        'apply_fr',
+        new Route('/devenir-editeur/', 
+            array('controller' => 'User', 'action' => 'apply'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
+
     $routes->add(
         'apply',
         new Route('/apply/', 

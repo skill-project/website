@@ -10,6 +10,12 @@
             //add locale to params if not set
             $params['lang'] = (empty($params['lang'])) ? $GLOBALS['lang'] : $params['lang'];
 
+            //tries to use a localised route
+            $transName = $name."_".$params['lang'];
+            if ($routes->get($transName)){
+                $name = $transName;
+            }
+
             $urlGen = new \Symfony\Component\Routing\Generator\UrlGenerator($routes, $context);
             $url = $urlGen->generate($name, $params);
 
