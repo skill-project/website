@@ -115,7 +115,7 @@
         <div class="faq-q">
             <h4>Est-ce que l'arbre est fait en Flash ou bien&nbsp;?</h4>
             <div class="faq-a">
-                <p>Non ! C'est du HTML 5 pur sang avec une touche de Canvas et un brin de magie KineticJS ! Et n'oublions pas la partie cachée de l'iceberg : la base de données est propulsée par le fantastique Neo4J, une base NOSQL de graph.</p>
+                <p>Non ! C'est du HTML 5 pur sang avec une touche de Canvas et un brin de magie <a href="http://kineticjs.com/">KineticJS</a> ! Et n'oublions pas la partie cachée de l'iceberg : la base de données est propulsée par le fantastique <a  href="http://www.neo4j.org/">Neo4J</a>, une base NOSQL de graph.</p>
             </div>
         </div>
 
