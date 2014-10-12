@@ -19,7 +19,7 @@
          */
         public function loginAction(){
             //for the view
-            $params = array("title" => "Sign in");
+            $params = array("title" => _("Sign in"));
 
             $params['loginUsername'] = "";
 
@@ -89,7 +89,7 @@
          */
         public function registerAction(){
             //for the view
-            $params = array("title" => "Sign up", "errors" => array());
+            $params = array("title" => _("Sign up"), "errors" => array());
 
             $params['username'] = "";
             $params['email'] = "";
