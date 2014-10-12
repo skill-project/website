@@ -8,11 +8,11 @@
         <h4>Notre Mission</h4>
         <p>Notre objectif est de réaliser la plus complète et la plus précise des bases de données de compétences jamais produite, entièrement traduite, en s'appuyant sur <b>une communauté variée et bourrée de savoir-faire</b>, qui contribuera en ajoutant leurs compétences indivuelles, à la carte globale.</p>
         <p>Les données produites par la communauté sont gratuites pour un usage non-commercial. Parce que la base de données est le produit d'un effort collectif, nous ne souhaitons pas en autoriser l'utilisation à des fins commerciales. Par contre, nous pouvons octroyer des licences gratuites à des invidus ou des organismes menant des projets à vocations de recherche ou utile socialement.</p>
-        <h4>Comment pouvez-vous aider ?</h4>
-        <p>Nous avons imaginé une ontologie volontairement simple où <b>chaque compétece peut être divisée en plusieurs compétences plus spécifique</b>. Tout ce qu'il vous reste à faire est d'ajouter vos propres compétences à l'endroit approprié dans l'arbre ainsi formé.</p>
-        <p><a href="<?= \Controller\Router::url("graph"); ?>" alt="<?= _("The skills"); ?>">Vous pouvez parcourir la base de données</a> dès maintenant. Vous n'avez même pas besoin de vous enregistrer pour ce faire.</p>
+        <h4>Comment pouvez-vous participer&nbsp;?</h4>
+        <p>Nous avons imaginé une ontologie volontairement simple où <b>chaque compétece peut être divisée en plusieurs compétences plus spécifiques</b>. Tout ce que vous avez à faire est d'ajouter vos propres compétences à l'endroit approprié dans l'arbre.</p>
+        <p>Vous pouvez <a href="<?= \Controller\Router::url("graph"); ?>" alt="<?= _("The skills"); ?>">parcourir la base de données</a> dès maintenant. Vous n'avez même pas besoin de vous enregistrer pour ce faire.</p>
         <p>Si vous souhaitez ajouter vos propres compétences, vous devez alors <a class="register-link" href="<?= \Controller\Router::url("register"); ?>" title="<?= _("Register!"); ?>">vous inscrire</a>. Une fois inscrit et connecté, vous pouvez commencer à ajouter de nouvelles compétences, et partager vos idées sur celles déjà existantes.</p>
-        <p>Pour les opérations plus poussées, comme déplacer les compétences, les effacer ou les renommer, vous devez <a href="<?= \Controller\Router::url("apply"); ?>" title="<?= _("Become an Editor!"); ?>">faire une demande pour devenir éditeur</a>. Les demandes pour devenir éditeur sont traitées quotidiennement afin que vous puissiez rapidement devenir un membre à part entière de notre communauté&nbsp;!</p>
+        <p>Pour les opérations plus poussées, comme déplacer les compétences, les effacer ou les renommer, vous devez <a href="<?= \Controller\Router::url("apply"); ?>" title="<?= _("Become an Editor!"); ?>">faire une demande pour devenir éditeur</a>. Ces demandes sont traitées quotidiennement afin que vous puissiez rapidement devenir un membre à part entière de notre communauté&nbsp;!</p>
         <p>Si vous souhaitez rencontrer l'équipe ou les autres membres de Skill Project, rendez-vous sur notre <a href="<?= \Config\Config::VANILLA_URL?>" title="<?= _("Skill Project's Community"); ?>">forum communautaire</a> et présentez-vous&nbsp;!</p>    
     </div>
 </section>
@@ -23,180 +23,183 @@
 
         <h3><?=_("The Skills")?></h3>
         <div class="faq-q">
-            <h4>What is a skill?</h4>
+            <h4>Qu'est-ce qu'une compétence&nbsp;?</h4>
             <div class="faq-a">
-                It’s anything you can do and is really important to you, in your daily job or in life in general. Even seemingly trivial skills can be really important for some people.</p>
+                <p>C'est tout ce que vous pouvez faire et qui est important pour vous, dans votre travail ou votre vie quotidienne. Même des compétences en apparence futile peuvent être cruciales pour quelqu'un d'autre.</p>
             </div>
         </div>
         <div class="faq-q">
-            <h4>Are there illegal skills?</h4>
+            <h4>Y a-t-il des compétences interdites&nbsp;?</h4>
             <div class="faq-a">
-                Every country has laws about what people can and cannot do. We do not consider that listing a skill which is illegal to perform in some countries should be illegal itself. However, Skill Project is not a place to promote openly illegal and/or immoral activities through skills so expect the Editors to delete or flag inappropriate skills.</p>
+                <p>Tous les pays ont des lois à propos de ce que les gens peuvent ou ne peuvent pas faire. Nous ne considérons pas que le fait de cartographier ou d'afficher une compétence illégale dans certains pays devrait être lui-même interdit. Par contre, Skill Project n'est pas un lieu où promouvoir des activités illégales ou immorales par le biais de l'arbre de compétences : les éditeurs peuvent supprimer ou signaler toutes compétences innappropriées.</p>
             </div>
         </div>
         <div class="faq-q">
-            <h4>Is there a way to link directly to a skill ?</h4>
+            <h4>Est-il possible de faire un lien directement vers une compétence&nbsp;?</h4>
             <div class="faq-a">
-                Sure! Open the Edit panel for any skill and click on “Share”. You will see an URL address you can copy and paste anywhere. By opening that URL, the tree will automatically expand itself up to the selected skill.</p>
+                <p>Bien sûr ! Ouvrez le panneau d'édition de n'importe quelle compétence, puis cliquez sur "Partager". Vous verrez l'URL de ce lien, que vous pouvez copier et coller n'importe où. En vous rendant sur cette URL, l'arbre des compétences va se déployer jusqu'à la compétence sélectionnée.</p>
             </div>
         </div>
         <div class="faq-q">
-            <h4>Is it possible for the same skill to be in two (or more) different branches ? </h4>
+            <h4>Est-il possible qu'une même compétence se retrouve dans deux branches différentes&nbsp;?</h4>
             <div class="faq-a">
-                Yes, absolutely. But as the database is concerned, these will be two different skills (only with the same name). We believe that many skills could have different meanings based on their parent (like “Photo editing”, which could be classified under “Arts” as well as under “Computer Sciences”, or “Technicals”).</p>
+                <p>Oui, tout à fait. Mais du point de vue de la base de données, ce seront deux compétences complètement distinctes (tout en ayant le même nom). Nous croyons que plusieurs compétences peuvent avoir des sens différents en fonction de leur parent (comme "Édition photo", qui peut être catégorisée sous "Arts" mais également sous "Informatique", ou "Techniques").</p>
             </div>
         </div>
 
         <div class="faq-q">
-            <h4>Is something like “to breathe” or “to walk” considered a skill ?</h4>
+            <h4>Est-ce que "respirer" ou "marcher" sont considérés comme étant des compétences&nbsp;?</h4>
             <div class="faq-a">
-                Remember what we call a “skill” : It’s anything you can do and is really important to you, in your daily job or in life in general. Even seemingly trivial skills can be really important for some people.<br />
-                Ask a Yoga teacher if breathing well may or may not be considered a skill. Sure it is! And what about Racewalking?<br />
-                So yes, they are skills. But if it’s not immediately obvious to you, it may be better to not add them because you might not add the to the right branchl. People who actually master the skills themselves are usually better at classifying them.</p>
+                <p>Souvenez-vous de ce que nous appelons une "compétence"&nbsp;: C'est tout ce que vous pouvez faire et qui est important pour vous, dans votre travail ou votre vie quotidienne. Même des compétences en apparence futile peuvent être cruciales pour quelqu'un d'autre.<br />
+                Demandez à un professeur de yoga si "respirer" n'est pas une compétence importante ! Et que dire de la "marche athélique" ?<br />
+                Donc oui, ce sont des compétences. Mais si ce n'est pas évident pour vous, il est sans doute préférable de ne pas les ajouter vous-même, car vous pourriez ne pas les ajouter à l'endroit le plus approprié. Ceux qui possèdent les compétences sont souvent les mieux placés pour les classifier.
+                </p>
             </div>
         </div>
         <div class="faq-q">
-            <h4>Is knowledge considered a skill in Skill Project ?</h4>
+            <h4>Les connaissances sont-elles des compétences sur Skill Project&nbsp;?</h4>
             <div class="faq-a">
-                Generally, yes. Because we have a broad definition of skill that is not limited to physical actions, or DIY skills. For example, we believe “Music” is a skill. A very general one, but still a concept that can relate to something one can learn, teach, master, excel at, etc. Of course, if you “know music”, chances are you also know many sub-skills of Music.</p>
+                <p>Globalement, oui. Puisque nous avons une définition très large des compétences, qui n'est pas limitée aux actions physiques. Par exemple nous croyons que "Musique" est une compétence. Une compétence très générale, mais tout de même un concept qu'on peut apprendre, enseigner, maîtriser, etc. Bien sûr, si vous "connaissez la musique", il y a de fortes chances pour que vous connaissiez des sous-compétences de "Musique".</p>
             </div>
         </div>
         <div class="faq-q">
-            <h4>Do skills have to be job/employment related ? </h4>
+            <h4>Est-ce que les compétences doivent être reliées au monde du travail&nbsp;?</h4>
             <div class="faq-a">
-                No, they don’t need to be related to a job. On the other hand, we struggled to think of any skill that was not at least partially connected to a job, if not for you, for someone else somewhere.</p>
+                <p>Non. Ceci dit, nous avons beaucoup de mal à trouver des compétences qui ne sont pas, au moins en partie, reliée à un travail (si ce n'est pour vous, pour quelqu'un d'autre).</p>
             </div>
         </div>
 
         <h3><?=_("Editing the Skills")?></h3>
         <div class="faq-q">
-            <h4>How do I add a skill ? </h4>
+            <h4>Comment puis-je ajouter une compétence&nbsp;?</h4>
             <div class="faq-a">
-                First, you must be logged in. If you don’t have an account yet, head over to the Sign up form.<br />
-                Then, click on the “+” button onthe skill that is linked to the skill you want to add. This will open a panel with the “Create skill” option.</p>
+                <p>D'abord, vous devez être connecté. Si vous n'avez pas encore de compte, rendez-vous au formulaire d'inscription.<br />
+                Ensuite, cliquez sur le bouton "+" situé sur la compétence depuis laquelle vous voulez ajouter une nouvelle compétence. Ceci ouvrira le panneau, où vous trouverez l'option "Ajouter une compétence".
+                </p>
             </div>
         </div>
         <div class="faq-q">
-            <h4>Why do you limit the number of children a skill can have?</h4>
+            <h4>Pourquoi limiter le nombre d'enfants que peut avoir une compétence&nbsp;?</h4>
             <div class="faq-a">
-                If we didn’t, some skills would have hundreds or even thousands of sub-skills (think about the spoken languages for example). That wouldn’t make a very nice tree. Nor would it be easy to explore.<br />
-                On the other hand, we noticed that it’s always possible to group skills together in such a way that the total number of skills in each group is always relatively small. This becomes obvious for skills you master because you can usually see that they naturally pertain to different groups.<br />
-                At the moment, we are limiting at 10 sub-skills, but we might slightly raise this limit in the future if it’s a problem. Do raise the issue on the community forum if it’s bothering you.</p>
+                <p>Si nous ne le faisions pas, une compétence pourrait avoir des centaines, voir des milliers de sous-compétences (pensez aux langues parlées par exemple). Ceci aurait pour effet de créer un arbre très difficile à consulter.<br />
+                Mais aussi, nous nous sommes aperçus qu'il était toujours possible de regrouper les compétences entre elles, afin d'obtenir un nombre relativement restreint de compétences par niveau, ceci étant particulièrement évident pour les compétences que vous maîtrisez, car vous pouvez les classifier très naturellement.<br />
+                Actuellement, nous limitions le nombre de sous-compétences à 10, mais nous pourrons augmenter légèrement cette limite si cela devient un problème. N'hésitez pas à en discuter sur notre forum si ça vous semble être un problème !</p>
             </div>
         </div>
         <div class="faq-q">
-            <h4>Sometimes, I can rename, delete or move a skill around, and sometimes not… What’s going on ?</h4>
+            <h4>Parfois, je peux déplacer, renommer ou effacer des compétences, et parfois non. C'est normal&nbsp;?</h4>
             <div class="faq-a">
-                You have all the editing rights on the skills you just created, but only for about an hour... so review your work quickly!</p>
+                <p>C'est normal ! Vous possédez tous les droits d'éditions sur une compétence que vous venez tout juste de créer, et ce pour une heure seulement ! Alors réviser votre travail rapidement !</p>
             </div>
         </div>
 
         <div class="faq-q">
-            <h4>I need to edit a skill name, but I’m not an Editor… What can I do ?</h4>
+            <h4>Je dois modifier une compétence, mais je ne suis pas un éditeur... Que puis-je faire&nbsp;?</h4>
             <div class="faq-a">
-                If you just created the skill, you should be able to edit it for one hour. Otherwise, you can suggest the new name to an Editor by writing a message in the “Discuss the skill” section of the skill’s panel. Or you can apply to become an Editor yourself!</p>
+                <p>Si vous venez de créer la compétence il y a moins d'une heure, vous devriez pouvoir la modifier vous-même. Sinon, vous pouvez suggérer des modifications dans le panneau de cette compétence, sous "Discuter". Ou vous pouvez faire la demande pour devenir éditeur vous-même !</p>
             </div>
         </div>
         <div class="faq-q">
-            <h4>Why doesn’t everyone has the Editor rights ? Like on Wikipedia ?</h4>
+            <h4>Pourquoi est-ce que tout le monde n'a pas les droits d'éditions&nbsp;?</h4>
             <div class="faq-a">
-                Unfortunately, sometimes we have to plan for the worse. Wreaking havoc on the tree is just a few clicks away when you have Editor rights. Because our data has an intrinsic hierarchical form, it is very easy to vandalize a few skills (on the top levels) and it will have a very visible effect.<br />
-                But we are constantly thinking about new and creative ways to improve and moderation system. If you have any ideas, we’ll be glad to hear it from you on the community forum.</p>
+                <p>Malheureusement, nous devons parfois prévoir le pire. Avec des droits d'éditeurs, il est relativement simple de détruire l'arbre, justement parce qu'il possède cette structure hiérarchique. Une modificataion sur quelques compétences haut-placées aura des effets très visible sur toutes ses branches.<br />
+                Mais nous réfléchissons en permanence à de nouvelles manières créatives d'améliorer ce système de modération. Si vous avez des idées, nous serons ravis de les lire dans le forum !</p>
             </div>
         </div>
         <div class="faq-q">
-            <h4>Why is the background pink ?</h4>
+            <h4>Pourquoi le fond est-il rose&nbsp;?</h4>
             <div class="faq-a">
-                It’s not “pink”, it’s “orchid”, you insensitive clod.</p>
+                <p>Il n'est pas "rose", il est "orchidée". Oh.</p>
             </div>
         </div>
         <div class="faq-q">
-            <h4>Is this shit made in Flash or what ?</h4>
+            <h4>Est-ce que l'arbre est fait en Flash ou bien&nbsp;?</h4>
             <div class="faq-a">
-                No sir. It’s genuine HTML 5 with a flavour of Canvas and some KineticJS magic on top of it! And let’s not forget the hidden part of the iceberg: the database is powered by the fantastic graph-based database Neo4J.</p>
+                <p>Non ! C'est du HTML 5 pur sang avec une touche de Canvas et un brin de magie KineticJS ! Et n'oublions pas la partie cachée de l'iceberg : la base de données est propulsée par le fantastique Neo4J, une base NOSQL de graph.</p>
             </div>
         </div>
 
         <h3><?=_("The Database")?></h3>
         <div class="faq-q">
-            <h4>How many skills is there in your database ?</h4>
+            <h4>Combien y-a-il de compétence dans la base de données&nbsp;?</h4>
             <div class="faq-a">
-                Skill Project started a few days ago with a little more than 300 skills. We expect the database to grow quickly into thousands of skills.</p>
+                <p>Skill Project a démarré il y a quelques jours avec quelques 300 compétences en base. Nous prévoyons que la base de données dépassera rapidement les milliers de compétences.</p>
             </div>
         </div>
         <div class="faq-q">
-            <h4>Where can I download the data ?</h4>
+            <h4>Où puis-je télécharger les données&nbsp;?</h4>
             <div class="faq-a">
-                We are working on it! If it’s important to you, drop us a line so we can speed up the process as fast as we can.</p>
+                <p>Nous travaillons là-dessus ! Si c'est important pour vous, faites-nous signe et nous tenterons d'accélérer le processus</p>
             </div>
         </div>
         <div class="faq-q">
-            <h4>Do you have a REST api ?</h4>
+            <h4>Avez-vous une API REST&nbsp;?</h4>
             <div class="faq-a">
-                It is on our roadmap but we don’t consider it a priority. If it’s important to you, raise the issue on the community forum so we can discuss it together and see if it would come handy to more people. We will then reconsider our priorities.</p>
+                <p>C'est dans nos plan, mais nous ne le considérons pas comme une priorité. Si c'est important pour vous, parlez-en sur le forum pour que nous puissions en discutez ensemble, et pour vous si d'autres utilisateurs ressentent ce besoin. Nous reverrons alors nos priorités !</p>
             </div>
         </div>
 
         <h3><?=_("Internationalization")?></h3>
         <div class="faq-q">
-            <h4>What happens when I add a skill in french ? Is it “copied” to the english tree ?</h4>
+            <h4>Que se passe-t-il quand j'ajoute une compétence en français ? Est-elle copiée à l'arbre anglais&nbsp;?</h4>
             <div class="faq-a">
-                When a skill is added to the tree, it gets automatically translated into all the supported languages. So it will effectively be present in the english tree as well. However, do not think of it as a copied skill because it is actually the exact same skill you added, only with a different (translated name). So if you decide to move it somewhere else, all other languages will be affected as well.</p>
+                <p>Quand une compétence est ajoutée à l'arbre, elle est alors automatiquement traduite dans toutes les langues supportées. Elle sera donc présente dans l'arbre anglais aussi ! Par contre, ne croyez pas qu'elle est copiée : c'est bel et bien la même compétence, mais avec un autre nom (traduit). Donc si vous faites un déplacement dans une langue, les autres langues suivront.
+                </p>
             </div>
         </div>
         <div class="faq-q">
-            <h4>Why is Skill Project not available in my language ?</h4>
+            <h4>Pourquoi Skill Project n'est-il pas disponible dans ma langue&nbsp;?</h4>
             <div class="faq-a">
-                We are planning to make Skill Project available to many, many languages. It is actually not so difficult to make the tree available in additional languages. But we also want to make the whole website available in those same languages and this takes a little bit more effort.<br />
-                If you can help with the translation drop us a line! We’d be very thankful!</p>
+                <p>Nous souhaitons rendre Skill Project disponible dans beaucoup, beaucoup de langues. C'est pour l'instant assez simple de rendre l'arbre disponible dans d'autres langues, mais nous souhaitons également que le site complet soit traduit pour les langues que nous proposons. Et ça, ça demande un peu plus de temps.<br />
+                Si vous pouvez nous aider avec la traduction, contactez-nous ! Nous serons plus que reconnaissant !</p>
             </div>
         </div>
 
         <h3><?=_("Our Mission")?></h3>
         <div class="faq-q">
-            <h4>What’s the purpose of all this ?</h4>
+            <h4>Quel est le but réel de tout ça&nbsp;?</h4>
             <div class="faq-a">
-                It is to collectively make the largest and most accurate database of all the human skills we, as humans, have learned in the last few millenias. And have it organized in such a way that we can easily explore it and keep it up to date.</p>
+                <p>C'est de réaliser collectivement la plus complète et la plus précise des base de données des compétences humains. Et organiser celle-ci afin qu'elle soit simple et agréable à explorer, et à maintenir à jour.</p>
             </div>
         </div>
         <div class="faq-q">
-            <h4>What is next for Skill Project ?</h4>
+            <h4>Quelle est la suite pour Skill Project&nbsp;?</h4>
             <div class="faq-a">
-                We believe our 21st century society is becoming more and more skill-centered, this is why we created Skill Project. We believe there will be many ways to leverage the power of a community curated comprehensive skill database, but have no definite plans as of today. We are definitely eager to read what you think about it! Let’s talk about it in the community forum.</p>
+                <p>Nous croyons que notre société du 21ème siècle devient de plus en plus centré sur les compétences, et c'est en partie pourquoi nous avons créé Skill Project. Nous croyons que les possibilités seront nombreuses de tirer tous les bénéfices d'une base de données de compétences, mais nous n'avons aucun plan pour le moment. Si vous avez une idée sur la question, parlez-en sur le forum !</p>
             </div>
         </div>
         <div class="faq-q">
-            <h4>How do you make money out of this ?</h4>
+            <h4>Comment faites-vous de l'argent avec ceci&nbsp;?</h4>
             <div class="faq-a">
-                At the moment, we don’t, but the satisfaction we get by working on a global scale project for humanity is more than enough to keep us focused!<br />
-                However, we do hope that a business plan will come out of it one day. We are never going to turn Skill Project into a for profit website. It just wouldn’t make any sense. But we might consider developing some side projects linked with Skill Project in one way or another. Not our priority right now, though.</p>
+                <p>Actuellement, nous n'en faisons pas, mais la satisfaction de travailler sur un projet à grande échelle est plus que suffisant pour nous motiver !<br />
+                Ceci dit, nous espérons qu'un plan d'affaire pourra un jour se dégager. Nous ne transformerons jamais Skill Project en un projet à but lucratif, ça n'aurait aucun sens. Mais nous pourrions consider développer des projets parrallèles, liés à Skill Project, dans un sens ou dans l'autre. Ce n'est pas notre priorité pour le moment.</p>
             </div>
         </div>
         <div class="faq-q">
-            <h4>I’d like to make my own skill tree… any way I can do that ?</h4>
+            <h4>J'aimerais réaliser mon propre arbre de compétences... c'est possible&nbsp;?</h4>
             <div class="faq-a">
-                Not right now, but it’s a feature we have given some thinking to. Care to discuss it on the community forum with us?</p>
+                <p>Pas pour le moment, mais c'est une possibilité que nous avons fortement envisagé. Vous souhaitez en discuter sur le forum ?</p>
             </div>
         </div>
 
         <div class="faq-q">
-            <h4>Is there a mobile Skill Project app available?</h4>
+            <h4>Y a-t-il une application mobile&nbsp;?</h4>
             <div class="faq-a">
-                Not yet. Would you like one? Come and tell us on the community forum.</p>
+                <p>Pas encore!</p>
             </div>
         </div>
 
         <h3><?=_("Becoming an Editor")?></h3>
         <div class="faq-q">
-            <h4>How hard is it to become an Editor ? </h4>
+            <h4>Est-ce vraiment difficile de devenir éditeur&nbsp;?</h4>
             <div class="faq-a">
-                It’s definitely not hard, you simple have to take a few minutes to fill the application form. But we will be careful to give Editors rights to people who take their application seriously. We don’t have an upper limit on the number of Editors Skill Project can have, but we will encourage Editorship for branches of the tree that are not yet catered for.</p>
+                <p>Ce n'est vraiment pas difficile, vous devez simplement prendre quelques minutes pour remplir le formulaire de demande. Mais nous ne souhaitons donner des droits d'éditions qu'aux personnes prenant leur rôle au sérieux.<br />Il n'y a pas de limite au nombre d'éditeur sur Skill Project, mais nous préférons accueillir de nouveaux éditeurs sur les branches qui ne sont pas encore sous supervision.</p>
             </div>
         </div>
         <div class="faq-q">
-            <h4>How many Editors are there ?</h4>
+            <h4>Combien y a-t-il d'éditeurs&nbsp;?</h4>
             <div class="faq-a">
-                We started Skill Project a few days ago and the only Editors then were the 3 core team members.</p>
+                <p>Skill Project a démarré il y a quelques jours avec seulement les 3 membres de l'équipe en tant qu'éditeurs.</p>
             </div>
         </div>
 
@@ -214,7 +217,7 @@
 <section>
     <div class="container">
         <h2><?= _("MEET THE TEAM"); ?></h2>
-        <p>Skill Project was brought to you by 3 friends living in Paris, France. We share a passion for learning, teaching and experimenting which has naturally led us to imagine Skill Project. Apart from that, we come from different cultural and gastronomical backgrounds! Come and chat with us in the <a href="<?= \Config\Config::VANILLA_URL?>" title="<?= _("Skill Project's Community"); ?>">community section</a>.
+        <p>Skill Project vous est présenté par 3 amis habitant Paris, France. Nous partageons une passion pour l'apprentissage, la formation et l'innovation qui nous a naturellement mené vers Skill Project. Et sinon, nous provenons de cultures et de background gastronomique différent ! Venez nous rencontrer dans la <a href="<?= \Config\Config::VANILLA_URL?>" title="<?= _("Skill Project's Community"); ?>">section communautaire</a>.
         </p>
         <div class="project-col">
             <div id="dario-pic" class="team-pic"></div>
@@ -224,7 +227,7 @@
         <div class="project-col">
             <div id="guillaume-pic" class="team-pic"></div>
             <h4>GUILLAUME SYLVESTRE</h4>
-            <p>Guillaume was born in Quebec, Canada and is now living in France. Passionate web developper and teacher, he fell in love with PHP and sexy databases some 8 years ago, and is now padding on this flaw through code and courses. He is known as SkillBill on Skill Project.</p>
+            <p>Guillaume est né au Québec, Canada. Développeur et formateur web passionné, il est tombé en amour avec PHP et les bases de données sexy il y a de ça 8 ans. Il est connu sous le nom de SkillBill sur Skill Project.</p>
         </div>
         <div class="project-col">
             <div id="raphael-pic" class="team-pic"></div>
