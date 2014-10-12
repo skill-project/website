@@ -2,7 +2,7 @@
 
 <section>
     <div class="container">
-        <h2><?= _("Legal terms"); ?></h2>
+        <h2><?= _("Terms of Use"); ?></h2>
         <h3><?= _("Our Services"); ?></h3>
         <p>Skill Project is dedicated to building a comprehensive human skills multilingual database. Our role is to host the database and the tools to edit it, which can be found <a href="http://www.skill-project.org" alt="Skill Project">here</a>. However, we act only as a hosting service, maintaining the infrastructure and organizational framework that allows our users to build the skills database by contributing and editing skills themselves. Because of our unique role, there are a couple of things you should be aware of when considering our relationship to you and the other users:</p>
         <ol >
@@ -92,7 +92,12 @@
     <div class="container">
         <h3><?= _("Password Security"); ?></h3>
         <p>You are responsible for safeguarding your own password and should never disclose it to any third party.</p>
-        <p>Trademarks</p>
+    </div>
+</section>
+<hr />
+<section>
+    <div class="container">
+        <h3><?=_("Trademarks");?></h3>
         <p>The trademarks, service marks and logos ("Marks") on the Skill Project website are owned by Skill Project, subject to copyright and other intellectual property rights under the law.</p>
     </div>
 </section>

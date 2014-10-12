@@ -1,6 +1,6 @@
 <header id="profile-header">
     <div class="container">
-        <h2><?= strtoupper(\Utils\SecurityHelper::encode($profileUser->getUsername())); ?><?= _("'S PROFILE") ?></h2>
+        <h2><?= sprintf(_("%s'S PROFILE"), strtoupper(\Utils\SecurityHelper::encode($profileUser->getUsername()))); ?></h2>
     </div>
 </header>
 <section>
@@ -19,7 +19,7 @@
                         <?= strtoupper(\Utils\SecurityHelper::encode($profileUser->getUsername())); ?>
                     </p>
                     <p>
-                        <?= _("Skillwalker since"); ?><br />
+                        <?= _("Member since"); ?><br />
                         <?= date(_("Y-m-d"), $profileUser->getDateCreated()); ?>
                     </p>
                     <p>

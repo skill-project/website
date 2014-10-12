@@ -1,6 +1,6 @@
 <form method="POST" action="<?= \Controller\Router::url('apply'); ?>" id="apply-form">
     <div class="apply-section">
-        <h3><?= _("PERSONNAL INFORMATIONS"); ?></h3>
+        <h3><?= _("PERSONAL INFORMATION"); ?></h3>
         <div class="row">
             <div>
                 <label for="real_name"><?= _("Real name") ?></label>

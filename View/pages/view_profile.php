@@ -10,7 +10,7 @@
                 <?php endif; ?>
             </div>
             <div class="profile-section personnal-info">
-                <h3><?= _("PERSONNAL INFORMATIONS"); ?></h3>
+                <h3><?= _("PERSONAL INFORMATION"); ?></h3>
                 <p><span class="pale-label">Country:</span> <?php echo ($profileUser->getCountry()) ? ($profileUser->getCountry()) : _("not set!"); ?></p>
                 <p><span class="pale-label">Languages:</span> <?php echo ($profileUser->getLanguages()) ? ($profileUser->getLanguages()) : _("not set!"); ?></p>
                 <p><span class="pale-label">Interests:</span> <?php echo ($profileUser->getInterests()) ? ($profileUser->getInterests()) : _("not set!"); ?></p>

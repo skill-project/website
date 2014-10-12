@@ -1,6 +1,6 @@
 <form method="POST" action="<?= \Controller\Router::url('profile', array('username' => $loggedUser->getUsername())); ?>" enctype="multipart/form-data">
     <div class="profile-section">
-        <h3 class="first special"><?= _("PERSONNAL INFORMATIONS"); ?></h3>
+        <h3 class="first special"><?= _("PERSONAL INFORMATION"); ?></h3>
         <div class="row">
             <div>
                 <label for="username"><?= _("Username") ?></label>
