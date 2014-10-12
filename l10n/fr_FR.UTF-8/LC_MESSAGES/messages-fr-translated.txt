@@ -813,7 +813,7 @@ msgstr  "Profil"
 
 #: trunk/View/layouts/default.php:35
 msgid   "Apply"
-msgstr  "Devenir un Éditeur"
+msgstr  "Devenir éditeur"
 
 #: trunk/View/layouts/default.php:36
 msgid   "Community"
