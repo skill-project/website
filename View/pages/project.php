@@ -72,7 +72,7 @@
         <div class="faq-q">
             <h4>How do I add a skill?</h4>
             <div class="faq-a">
-                <p>First, you must be logged in. If you don’t have an account yet, head over to the Sign up form.<br />
+                <p>First, you must <a class="login-link" href="<?= \Controller\Router::url("login"); ?>" title="<?= _("Sign in!"); ?>">be logged in</a>. If you don’t have an account yet, head over to the <a class="register-link" href="<?= \Controller\Router::url("register"); ?>" title="<?= _("Register!"); ?>">Sign up form</a>.<br />
                 Then, click on the “+” button on the skill that is linked to the skill you want to add. This will open a panel with the “Create skill” option.</p>
             </div>
         </div>
@@ -81,7 +81,7 @@
             <div class="faq-a">
                 <p>If we didn’t, some skills would have hundreds or even thousands of sub-skills (think about the spoken languages for example). That wouldn’t make a very nice tree. Nor would it be easy to explore.<br />
                 On the other hand, we noticed that it’s always possible to group skills together in such a way that the total number of skills in each group is always relatively small. This becomes obvious for skills you master because you can usually see that they naturally pertain to different groups.<br />
-                At the moment, we are limiting at 10 sub-skills, but we might slightly raise this limit in the future if it’s a problem. Do raise the issue on the community forum if it’s bothering you.</p>
+                At the moment, we are limiting at 10 sub-skills, but we might slightly raise this limit in the future if it’s a problem. Do raise the issue on the <a href="<?= \Config\Config::VANILLA_URL?>" title="<?= _("Skill Project's Community"); ?>">community forum</a> if it’s bothering you.</p>
             </div>
         </div>
         <div class="faq-q">
@@ -94,14 +94,14 @@
         <div class="faq-q">
             <h4>I need to edit a skill name, but I’m not an Editor… What can I do?</h4>
             <div class="faq-a">
-                <p>If you just created the skill, you should be able to edit it for one hour. Otherwise, you can suggest the new name to an Editor by writing a message in the “Discuss the skill” section of the skill’s panel. Or you can apply to become an Editor yourself!</p>
+                <p>If you just created the skill, you should be able to edit it for one hour. Otherwise, you can suggest the new name to an Editor by writing a message in the “Discuss the skill” section of the skill’s panel. Or you can <a href="<?= \Controller\Router::url("apply"); ?>" alt="<?= _("The skills"); ?>">apply to become an Editor yourself</a>!</p>
             </div>
         </div>
         <div class="faq-q">
             <h4>Why doesn’t everyone has the Editor rights ? Like on Wikipedia?</h4>
             <div class="faq-a">
                 <p>Unfortunately, sometimes we have to plan for the worse. Wreaking havoc on the tree is just a few clicks away when you have Editor rights. Because our data has an intrinsic hierarchical form, it is very easy to vandalize a few skills (on the top levels) and it will have a very visible effect.<br />
-                But we are constantly thinking about new and creative ways to improve and moderation system. If you have any ideas, we’ll be glad to hear it from you on the community forum.</p>
+                But we are constantly thinking about new and creative ways to improve and moderation system. If you have any ideas, we’ll be glad to hear it from you on the <a href="<?= \Config\Config::VANILLA_URL?>" title="<?= _("Skill Project's Community"); ?>">community forum</a>.</p>
             </div>
         </div>
         <div class="faq-q">
@@ -113,7 +113,7 @@
         <div class="faq-q">
             <h4>Is this made in Flash or what?</h4>
             <div class="faq-a">
-                <p>No sir. It’s genuine HTML 5 with a flavour of Canvas and some KineticJS magic on top of it! And let’s not forget the hidden part of the iceberg: the database is powered by the fantastic graph-based database Neo4J.</p>
+                <p>No sir. It’s genuine HTML 5 with a flavour of Canvas and some <a href="http://kineticjs.com/">KineticJS</a> magic on top of it! And let’s not forget the hidden part of the iceberg: the database is powered by the fantastic graph-based database <a href="http://www.neo4j.org/">Neo4J</a>.</p>
             </div>
         </div>
 
@@ -133,7 +133,7 @@
         <div class="faq-q">
             <h4>Do you have a REST API?</h4>
             <div class="faq-a">
-                <p>It is on our roadmap but we don’t consider it a priority. If it’s important to you, raise the issue on the community forum so we can discuss it together and see if it would come handy to more people. We will then reconsider our priorities.</p>
+                <p>It is on our roadmap but we don’t consider it a priority. If it’s important to you, raise the issue on the <a href="<?= \Config\Config::VANILLA_URL?>" title="<?= _("Skill Project's Community"); ?>">community forum</a> so we can discuss it together and see if it would come handy to more people. We will then reconsider our priorities.</p>
             </div>
         </div>
 
@@ -162,7 +162,7 @@
         <div class="faq-q">
             <h4>What is next for Skill Project?</h4>
             <div class="faq-a">
-                <p>We believe our 21st century society is becoming more and more skill-centered, this is why we created Skill Project. We believe there will be many ways to leverage the power of a community curated comprehensive skill database, but have no definite plans as of today. We are definitely eager to read what you think about it! Let’s talk about it in the community forum.</p>
+                <p>We believe our 21st century society is becoming more and more skill-centered, this is why we created Skill Project. We believe there will be many ways to leverage the power of a community curated comprehensive skill database, but have no definite plans as of today. We are definitely eager to read what you think about it! Let’s talk about it in the <a href="<?= \Config\Config::VANILLA_URL?>" title="<?= _("Skill Project's Community"); ?>">community forum</a>.</p>
             </div>
         </div>
         <div class="faq-q">
@@ -175,7 +175,7 @@
         <div class="faq-q">
             <h4>I’d like to make my own skill tree… any way I can do that?</h4>
             <div class="faq-a">
-                <p>Not right now, but it’s a feature we have given some thinking to. Care to discuss it on the community forum with us?</p>
+                <p>Not right now, but it’s a feature we have given some thinking to.</p>
             </div>
         </div>
 
@@ -190,7 +190,7 @@
         <div class="faq-q">
             <h4>How hard is it to become an Editor?</h4>
             <div class="faq-a">
-                <p>It’s definitely not hard, you simple have to take a few minutes to fill the application form. But we will be careful to give Editors rights to people who take their application seriously. We don’t have an upper limit on the number of Editors Skill Project can have, but we will encourage Editorship for branches of the tree that are not yet catered for.</p>
+                <p>It’s definitely not hard, you simple have to take a few minutes to fill the <a href="<?= \Controller\Router::url("apply"); ?>" title="<?= _("Become an Editor!"); ?>">application form</a>. But we will be careful to give Editors rights to people who take their application seriously. We don’t have an upper limit on the number of Editors Skill Project can have, but we will encourage Editorship for branches of the tree that are not yet catered for.</p>
             </div>
         </div>
         <div class="faq-q">
