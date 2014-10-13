@@ -89,7 +89,7 @@
 
             //url query params
             $params = array(
-                "q"         => ucfirst(mb_strtolower($string)),
+                "q"         => $this->convertCaseForGoogleTranslate($string),
                 "format"    => "text",
                 "key"       => \Config\Config::GOOGLE_TRANSLATE_API_KEY,
                 "source"    => $fromLang,
@@ -113,6 +113,25 @@
             }
             return false;
 
+        }
+
+        private function convertCaseForGoogleTranslate($string){
+
+            $newString = "";
+
+            $words = explode(" ", $string);
+            foreach($words as $w){
+                if (ctype_upper(preg_replace("#\d#", "", $w))){
+                    $newString .= " $w";
+                }
+                else {
+                    $newString .= " " . mb_strtolower($w);
+                }
+            }
+
+            $newString = ucfirst(trim($newString));
+
+            return $newString;
         }
 
     }
