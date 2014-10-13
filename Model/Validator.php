@@ -94,8 +94,8 @@
             if (empty($skillName)){
                 $this->addError("skillName", _("Please provide a skill name."));
             }
-            elseif (strlen($skillName) < 3 || strlen($skillName) > 45){
-                $this->addError("skillName", _("The skill name must be between 3 and 45 caracters long."));
+            elseif (strlen($skillName) < 1 || strlen($skillName) > 45){
+                $this->addError("skillName", _("The skill name must be between 1 and 45 caracters long."));
             }
         }
 

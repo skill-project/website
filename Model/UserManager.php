@@ -92,7 +92,7 @@
 
         public function findByUsername($username){
             $cypher = "MATCH (user:User) WHERE user.username =~ {data} RETURN user LIMIT 1";
-            return $this->getFindByResult($cypher, '(?i)'.$username);
+            return $this->getFindByResult($cypher, '(?i)'.$username);  //regexp for case insensitivity
         }
 
 
@@ -108,7 +108,7 @@
             $cypher = "MATCH (user:User) 
                         WHERE user.username =~ {data} OR user.email = {data} 
                         RETURN user LIMIT 1";
-            return $this->getFindByResult($cypher, '(?i)'.$emailOrUsername);
+            return $this->getFindByResult($cypher, '(?i)'.$emailOrUsername); //regexp for case insensitivity
         }
 
     }
