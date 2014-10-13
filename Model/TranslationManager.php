@@ -89,7 +89,7 @@
 
             //url query params
             $params = array(
-                "q"         => $string,
+                "q"         => ucfirst(mb_strtolower($string)),
                 "format"    => "text",
                 "key"       => \Config\Config::GOOGLE_TRANSLATE_API_KEY,
                 "source"    => $fromLang,
