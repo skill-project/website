@@ -22,17 +22,22 @@
         <?php if (!empty($loggedUser)): ?>
 
             <?php 
+                print_r($loggedUser);
                 if ($loggedUser->getRole() != "admin"){
                     switch ($loggedUser->getApplicationStatus()){
                         case 0:
                             include("../View/inc/apply_form.php");
                             break;
                         case 1:
+                            echo '<p class="emphasis">' . _("Your application has been accepted!") . '</p>';
                             break;
                         case 2:
                             echo '<p class="emphasis">' . _("Your application is beeing reviewed!") . '</p>';
                     }         
                 }   
+                else {
+                    echo '<p class="emphasis">' . _("Your are an Editor!") . '</p>';
+                }
             ?>
 
         <?php else: ?>
