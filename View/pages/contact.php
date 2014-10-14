@@ -1,9 +1,9 @@
 <section>
     <div class="container">
         <h2><?= _("LET'S TALK"); ?></h2>
-        <p>Nous voulons vraiment vous lire ! N'hésitez pas à utiliser le formulaire de contact ci-dessous pour nous partager vos réfléxions: nous répondons aux messages rapidement !</p>
-        <p>Si vous préférez discuter directement avec la communauté Skill Project, <a href="<?= \Config\Config::VANILLA_URL ?>" title="Skill Project Community">c'est par là !</a></p>
-        <p>Vous pouvez également nous contacter directement en utilisant notre adresse email : <a href="mailto:helpdesk@skill-project.org" title="<?= _("LET'S TALK"); ?>">helpdesk@skill-project.org</a>. Nous parlons français, anglais, italien et latin.</p>
+        <p>We would love to hear from you. Feel free to use the form below to share what's on your mind, we answer every message quickly.</p>
+        <p>If you would rather discuss with the Skill Project community, <a href="<?= \Config\Config::VANILLA_URL ?>" title="Skill Project Community">head over there !</a></p>
+        <p>You can also contact us directly by using our email address: <a href="mailto:helpdesk@skill-project.org" title="<?= _("LET'S TALK"); ?>">helpdesk@skill-project.org</a>. We speak english, french, italian and latin.</p>
     </div>
 </section>
 <hr />
