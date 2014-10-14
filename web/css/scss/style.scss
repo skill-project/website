@@ -21,6 +21,30 @@ input, textarea {
     font-family: $font;
 }
 
+strong {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+}
+
+q {
+    margin-top:10px;
+    margin-bottom:10px;
+    margin-left:20px;
+    border-left:5px solid #bbb;
+    padding-left:10px;
+    font-style: italic;
+    display:block;
+
+}
+
+sup {
+    vertical-align: super;
+    font-size: 80%;
+}
+
 #wrapper {
     min-height: 100%;
 }

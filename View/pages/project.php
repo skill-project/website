@@ -12,7 +12,7 @@
         <p>We imagined a simple ontology where <b>each skill can be split-up into more specific sub-skills</b>. All you have to do is add your own skills in the most appropriate section.</p>
         <p><a href="<?= \Controller\Router::url("graph"); ?>" alt="<?= _("The skills"); ?>">You can browse the skill database</a> right now. You don’t even need an account for that.</p>
         <p>If you want to add your skills, you can <a class="register-link" href="<?= \Controller\Router::url("register"); ?>" title="<?= _("Register!"); ?>">sign up</a> in a matter of seconds. Once you’ve signed up, you can add new skills and share your thoughts about existing ones.</p>
-        <p>For more advanced operations, like moving skills around, renaming or deleting them, you need to <a href="<?= \Controller\Router::url("apply"); ?>" title="<?= _("Become an Editor!"); ?>">apply to become an Editor</a>. Editor applications are reviewed daily so that you can quickly become a full-fledged member of our growing community!</p>
+        <p>If you want to edit skills added by other users, you need to <a href="<?= \Controller\Router::url("apply"); ?>" title="<?= _("Become an Editor!"); ?>">apply to become an Editor</a>. Editor applications are reviewed daily so that you can quickly become a full-fledged member of our growing community!</p>
         <p>If you want to meet the team and the first members of Skill Project, head straight for our <a href="<?= \Config\Config::VANILLA_URL?>" title="<?= _("Skill Project's Community"); ?>">community forum</a> and introduce yourself!</p>    
     </div>
 </section>
@@ -50,9 +50,13 @@
         <div class="faq-q">
             <h4>Is something like “to breathe” or “to walk” considered a skill?</h4>
             <div class="faq-a">
-                <p>Remember what we call a “skill” : It’s anything you can do and is really important to you, in your daily job or in life in general. Even seemingly trivial skills can be really important for some people.<br />
-                Ask a Yoga teacher if breathing well may or may not be considered a skill. Sure it is! And what about Racewalking?<br />
-                So yes, they are skills. But if it’s not immediately obvious to you, it may be better to not add them because you might not add the to the right branch. People who actually master the skills themselves are usually better at classifying them.</p>
+                <p>Remember what we call a “skill” : </p>
+                <q>
+                    It’s anything you can do and is really important to you, in your daily job or in life in general. Even seemingly trivial skills can be really important for some people.<br />
+                </q>
+                <p>
+                    Ask a Yoga teacher if breathing well may or may not be considered a skill. Sure it is! And what about Racewalking?<br />
+                    So yes, they are skills. But if it’s not immediately obvious to you, it may be better to not add them because you might not add the to the right branch. People who actually master the skills themselves are usually better at classifying them.</p>
             </div>
         </div>
         <div class="faq-q">

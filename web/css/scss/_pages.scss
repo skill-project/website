@@ -377,9 +377,10 @@ html.fourofour {
 
 html.legal #main-content ul, html.apply #main-content ul, html.legal #main-content ol{
     list-style: circle;
-    margin-left: 25px;
+    margin: 20px 0px 20px 40px;
 }
 
 html.legal #main-content li, html.apply #main-content li  {
     padding-left: 3px;
+    line-height: 30px;
 }

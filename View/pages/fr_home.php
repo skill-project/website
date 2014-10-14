@@ -25,13 +25,13 @@
 
 		<img class="home-illus circle-illus" alt="" src="img/SKP-page-home-circle.png" />
 		<h2>Parlez-en&nbsp;!</h2>
-		<p>En participant à Skill Project, vous contribuez à partageant votre compréhension personnelle de vos compétences.<br />La seule manière d'atteindre notre objectif est de créer une grande communauté diversifiée de personnes prêtes à participer comme vous.<br />Allez-y, parlez-en&nbsp;!</p>
+		<p>En participant à Skill Project, vous contribuez à partageant votre compréhension personnelle de vos compétences.<br />La seule manière d'atteindre notre objectif est de créer une grande communauté diversifiée de personnes prêtes à participer, comme vous.<br />Parlez-en autour de vous&nbsp;!</p>
 	</div> 
 </section>
 <section id="home-bottom-panel" class="green">
 	<div class="container">
 		<h2>Prêt pour vous lancer&nbsp;?</h2>
-		<p>Explorez l'arbre de compétences, et amusez-vous à ajouter les vôtres&nbsp;!</p>
+		<p>Explorez l'arbre des compétences, et amusez-vous à ajouter les vôtres&nbsp;!</p>
 		<div id="home-btn-go-bottom" class="home-btn"><a href="<?= \Controller\Router::url("graph"); ?>">Lancez-vous&nbsp;!</a></div>
 	</div> 
 </section>
