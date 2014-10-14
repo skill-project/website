@@ -125,11 +125,94 @@ Tree.prototype.executeMoveCopy = function() {
         depth: tree.targetNode.depth + 1
     }
 
+    var targetNode = tree.targetNode;
+    tree.exitTargetMode();
+
     //Remove editedNode from previous location
     tree.editedNode.deleteFromDB();
 
     //createNewChild will add the child if targetNode is already open, or simply expand it if it's closed
-    tree.targetNode.createNewChild(nodeData);      
+    targetNode.createNewChild(nodeData);
+}
 
-    tree.exitTargetMode();
+Tree.prototype.sanityCheck = function() {
+
+    var groupsFailed = [];
+
+    ////////////////////
+    //selectedNode tests
+    var groupName = "selectedNode";
+    var snErrors = [];
+    var sn = tree.selectedNode;
+
+    if (sn.isSelected !== true) snErrors.push("isSelected is false, should be true");
+    if (sn.open !== true) snErrors.push("open is false, should be true");
+    if (sn.isInPath !== true) snErrors.push("isInPath is false, should be true");
+
+    var checkPassed = tree.sanityCheckErrors(groupName, snErrors);
+    if (checkPassed === false) groupsFailed.push(groupName);
+    // End of selectedNode tests
+    ////////////////////////////
+
+
+    //////////////////////////////
+    //selectedNode siblings tests
+    var groupName = "sn siblings";
+    var sibErrors = [];
+
+    if (sn.parent !== null) {
+        if (sn.parent.getChildren().length !== sn.getSiblings().length + 1) sibErrors.push("selectedNode's parent children count doesn't match selectedNode's siblings count (+1)");
+    }
+
+    sn.getSiblings().forEach(function(sibling) {
+        if (sibling.open === true) sibErrors.push("sibling of selectedNode (" + sibling.name + ") is open, it shouldn't be");
+        if (sibling.isSelected === true) sibErrors.push("sibling of selectedNode (" + sibling.name + ") isSelected, it shouldn't be");
+        if (sibling.isInPath === true) sibErrors.push("sibling of selectedNode (" + sibling.name + ") isInPath, it shouldn't be");
+        if (sibling.freeSlots.length > 0) sibErrors.push("sibling of selectedNode (" + sibling.name + ") shouldn't have freeSlots because it's closed");
+    });
+
+    var checkPassed = tree.sanityCheckErrors(groupName, sibErrors);
+    if (checkPassed === false) groupsFailed.push(groupName);
+    //End of selectedNode siblings tests
+    ////////////////////////////////////
+
+    /////////////////
+    //editedNode tests
+    var groupName = "editedNode tests"
+    var enErrors = [];
+
+    if (typeof tree.editedNode !== "undefined") {
+        if (tree.editedNode.parent.getChildren().length === 0) enErrors.push("editedNode's parent (" + tree.editedNode.parent.name + ") has no children");
+    }
+
+    if ($("#panel").css("display") === "block" && typeof tree.editedNode === "undefined") enErrors.push("panel is open but there is no editedNode");
+
+    var checkPassed = tree.sanityCheckErrors(groupName, enErrors);
+    if (checkPassed === false) groupsFailed.push(groupName);
+    //editedNode tests
+    //////////////////
+
+    
+    if (groupsFailed.length === 0) {
+        console.log("Sanity check passed");
+        return true;
+    }else {
+        console.error("Sanity check failed");
+        return false;
+    }
+}
+
+Tree.prototype.sanityCheckErrors = function(groupName, errors) {
+    var checkPassed = true;
+
+    if (errors.length > 0) {
+        console.log("Errors on " + groupName);
+        checkPassed = false;
+
+        for (var errorIndex in errors) {
+          console.log(errors[errorIndex]);
+        }
+    }
+
+    return checkPassed;
 }

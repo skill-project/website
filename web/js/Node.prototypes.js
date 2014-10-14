@@ -250,11 +250,29 @@ Node.prototype.finishEdit = function(onComplete, force) {
   } else this.setVisualState("normal");
 }
 
+Node.prototype.getSiblings = function() {
+  var siblings = [];
+  for (var siblingIndex in this.siblings) {
+      var sibling = this.siblings[siblingIndex];
+      siblings.push(sibling);
+  }
+  return siblings;
+}
+
 Node.prototype.getSiblingMatch = function(propertyName, propertyValue) {
   for (var siblingIndex in this.siblings) {
       var sibling = this.siblings[siblingIndex];
       if (sibling[propertyName] == propertyValue) return sibling;
   }
+}
+
+Node.prototype.getChildren = function() {
+  var children = [];
+  for (var childIndex in this.children) {
+      var child = this.children[childIndex];
+      children.push(child);
+  }
+  return children;
 }
 
 Node.prototype.getChildrenMatch = function(propertyName, propertyValue) {
@@ -713,11 +731,13 @@ Node.prototype.deleteFromDB = function() {
     this.parent.select();
   }
 
-  //Add the current node Y position to parent's free slots array
-  //This will be used if a new node is added before the parent is contracted, 
-  //so it has a "missing tooth" that will be fille with the new node
-  this.parent.freeSlots.push(this.shapes.y());
-  this.parent.freeSlots.sort();
+  if (this.parent.open === true) {
+    //Add the current node Y position to parent's free slots array
+    //This will be used if a new node is added before the parent is contracted, 
+    //so it has a "missing tooth" that will be fille with the new node
+    this.parent.freeSlots.push(this.shapes.y());
+    this.parent.freeSlots.sort();
+  }
 
   if (this.isEdited) this.finishEdit();
 
