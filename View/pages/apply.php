@@ -37,7 +37,7 @@
 
         <?php else: ?>
         <p class="emphasis">
-            <?= ("Please"); ?> <a class="login-link" href="<?= \Controller\Router::url("login"); ?>" title="<?= _("Sign in!"); ?>"><?= _("sign in"); ?></a> <?= _("or"); ?> <a class="register-link" href="<?= \Controller\Router::url("register"); ?>" tile="<?= _("Create an account!"); ?>"><?= _("sign up"); ?></a> <?= _(" before applying!"); ?>
+            Please <a class="login-link" href="<?= \Controller\Router::url("login"); ?>" title="Log in!"> sign in </a> or <a class="register-link" href="<?= \Controller\Router::url("register"); ?>" tile="Create an account">sign up</a> before applying!
         </p>
         <?php endif; ?>
     </div>
