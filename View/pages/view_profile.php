@@ -11,16 +11,17 @@
             </div>
             <div class="profile-section personnal-info">
                 <h3><?= _("PERSONAL INFORMATION"); ?></h3>
-                <p><span class="pale-label">Country:</span> <?php echo ($profileUser->getCountry()) ? ($profileUser->getCountry()) : _("not set!"); ?></p>
-                <p><span class="pale-label">Languages:</span> <?php echo ($profileUser->getLanguages()) ? ($profileUser->getLanguages()) : _("not set!"); ?></p>
-                <p><span class="pale-label">Interests:</span> <?php echo ($profileUser->getInterests()) ? ($profileUser->getInterests()) : _("not set!"); ?></p>
+                <p><span class="pale-label"><?= _("Country:"); ?></span> <?php echo ($profileUser->getCountry()) ? ($profileUser->getCountry()) : _("not set!"); ?></p>
+                <p><span class="pale-label"><?= _("Languages:"); ?></span> <?php echo ($profileUser->getLanguages()) ? ($profileUser->getLanguages()) : _("not set!"); ?></p>
+                <p><span class="pale-label"><?= _("Interests:"); ?></span> <?php echo ($profileUser->getInterests()) ? ($profileUser->getInterests()) : _("not set!"); ?></p>
             </div>
             <div class="profile-section">
                 <h3><?= _("RECENT ACTIVITY"); ?></h3>
+                <?php _("Created"); _("Moved"); _("Translated"); _("Modified"); //possible activity ?>
                 <?php if (!empty($latestActivity)): ?>
                     <ul class="latest-activity">
                     <?php foreach($latestActivity as $la): ?>
-                        <li><?= date(_("Y-m-d H:i"), $la['timestamp']); ?>: <?= ucfirst(strtolower(_($la['action']))); ?> <span class="skill-name">"<?= $la['skillName']; ?>"</span></li>
+                        <li><?= date(_("Y-m-d H:i"), $la['timestamp']); ?>: <?= _(ucfirst(strtolower(_($la['action'])))); ?> <span class="skill-name">"<?= $la['skillName']; ?>"</span></li>
                     <?php endforeach; ?>
                     </ul>
                 <?php else: ?>

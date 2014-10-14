@@ -26,7 +26,7 @@ msgstr  "Nous avons bien reçu votre message sur Skill Project&nbsp;!"
 
 #: trunk/Controller/Mailer.php:153
 msgid   "Your application on Skill Project"
-msgstr  "Votre canidature à Skill Project"
+msgstr  "Votre candidature à Skill Project"
 
 #: trunk/Controller/Mailer.php:184
 msgid   "Forgot your password on Skill Project?"
@@ -73,7 +73,7 @@ msgstr  "Compétence copiée&nbsp;!"
 #: trunk/Controller/ApiController.php:390
 #: trunk/Controller/ApiController.php:556
 msgid   "Something went wrong."
-msgstr  "Quelque chose a mal tourné."
+msgstr  "Une erreur s'est produite."
 
 #: trunk/Controller/ApiController.php:316
 msgid   "Translation saved!"
@@ -300,7 +300,7 @@ msgstr  "Astuce : "
 
 #: trunk/View/panels/create-skill-panel.php:13
 msgid   "Tell yourself \"I can\" or \"I know how to\"."
-msgstr  "dites-vous \"Je peux...\" ou \"Je sais faire...\"."
+msgstr  "Dites-vous \"Je peux...\" ou \"Je sais faire...\"."
 
 #: trunk/View/panels/create-skill-panel.php:13
 msgid   "45 characters max."
@@ -374,7 +374,7 @@ msgstr  "Vous pouvez maintenant créer des compétences et échanger à leur suj
 
 #: trunk/View/mails/registration_confirmation.php:3
 msgid   "Remember that right after you create a skill, you have all Editor powers on it, but only for an hour!"
-msgstr  "Notez bien que que vous avez tous les droits sur les compétences que vous avez créés depuis une heure&nbsp;!"
+msgstr  "Notez que vous avez tous les droits sur les compétences que vous avez créés depuis une heure&nbsp;!"
 
 #: trunk/View/mails/registration_confirmation.php:5
 msgid   "Please confirm your email address by clicking on the link below."
@@ -427,7 +427,7 @@ msgstr  "ENVOYER"
 #: trunk/View/inc/forgot_password_form_1.php:31
 #: trunk/View/inc/login_form.php:29
 msgid   "You don't have an account yet?"
-msgstr  "Vous n'avez pas encore un compte&nbsp;?"
+msgstr  "Vous n'avez pas encore de compte&nbsp;?"
 
 #: trunk/View/inc/forgot_password_form_1.php:31
 #: trunk/View/inc/login_form.php:29
@@ -888,8 +888,8 @@ msgid   "Please provide a skill name."
 msgstr  "Vous devez indiquer un nom pour la compétence."
 
 #: trunk/Model/Validator.php:98
-msgid   "The skill name must be between 3 and 45 caracters long."
-msgstr  "Le nom de la compétence doit être compris entre 3 et 45 caractères."
+msgid   "The skill name must be between 1 and 45 caracters long."
+msgstr  "Le nom de la compétence doit être compris entre 1 et 45 caractères."
 
 #: trunk/Model/Validator.php:104
 msgid   "Please select a skill as parent of your node."
