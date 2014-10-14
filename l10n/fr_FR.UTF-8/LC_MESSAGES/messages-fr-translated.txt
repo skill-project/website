@@ -1008,3 +1008,11 @@ msgstr  "C'est ici que vous modifiez les compétences.<br>Vous devez disposer d'
 #: trunk/View/pages/graph.php:72
 msgid   "Finish"
 msgstr  "Fin du tutoriel"
+
+#: trunk/View/panels/discuss-skill-panel.php:9
+msgid   "In english please!"
+msgstr  "En anglais s'il vous plaît !"
+
+#: trunk/View/inc/header.php:8
+msgid   "Logout"
+msgstr  "Se déconnecter"

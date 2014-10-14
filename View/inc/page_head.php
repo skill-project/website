@@ -20,7 +20,7 @@
                 else $action = "";
 
                 if (!empty($jsonAutoLoad)) echo "var jsonAutoLoad=" . $jsonAutoLoad . ";\n";
-                if ((empty($_SESSION["tourDone"]) or true) and $action != "goto") {
+                if (empty($_SESSION["tourDone"]) and $action != "goto") {
                     $_SESSION["tourDone"] = true;
                     echo "var doTour = true;\n";
                 }else {

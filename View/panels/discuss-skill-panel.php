@@ -6,7 +6,7 @@
     <form method="POST" action="<?= \Controller\Router::url("discussSkill"); ?>" id="discuss-skill-form">
         <input type="hidden" name="skillUuid" id="discuss-skillUuid" value="<?= $skill->getUuid(); ?>" />
         <div>
-            In english please !
+            <?=_("In english please!");?>
             <?php
             /*
             <select name="topic" id="topic-select">
