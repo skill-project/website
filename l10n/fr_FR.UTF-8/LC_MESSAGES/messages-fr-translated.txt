@@ -938,3 +938,73 @@ msgstr  "Cette compétence n'existe pas."
 #: trunk/View/pages/legal.php:100
 msgid   "Trademarks"
 msgstr  "Marques commerciales"
+
+#: trunk/View/panels/panel-bottom.php:4
+msgid   "You are not logged in!<br />%Log in% or %create an account%"
+msgstr  "Vous n'êtes pas identifé !<br />Merci de %vous connecter% ou de %vous créer un compte%."
+
+#: trunk/View/pages/apply.php:32 trunk/View/pages/fr_apply.php:31
+msgid   "Your application has been accepted!"
+msgstr  "Votre candidature a été acceptée !"
+
+#: trunk/View/pages/apply.php:39 trunk/View/pages/fr_apply.php:38
+msgid   "Your are an Editor!"
+msgstr  "Vous êtes un Éditeur !"
+
+#: trunk/View/pages/view_profile.php:14
+msgid   "Country:"
+msgstr  "Pays :"
+
+#: trunk/View/pages/view_profile.php:15
+msgid   "Languages:"
+msgstr  "Langues :"
+
+#: trunk/View/pages/view_profile.php:16
+msgid   "Interests:"
+msgstr  "Centres d'intérêts :"
+
+#: trunk/View/pages/view_profile.php:20
+msgid   "Created"
+msgstr  "Créé"
+
+#: trunk/View/pages/view_profile.php:20
+msgid   "Moved"
+msgstr  "Déplacé"
+
+#: trunk/View/pages/view_profile.php:20
+msgid   "Translated"
+msgstr  "Traduit"
+
+#: trunk/View/pages/view_profile.php:20
+msgid   "Modified"
+msgstr  "Modifié"
+
+#: trunk/View/pages/graph.php:52
+msgid   "The skills ! First-level skills contain every other skill<br>Your walk among the skills starts here."
+msgstr  "Voici les compétences !<br>Celles de premier niveau contiennent toutes les autres.<br>Votre voyage à travers les compétences commence ici."
+
+#: trunk/View/pages/graph.php:53 trunk/View/pages/graph.php:59
+#: trunk/View/pages/graph.php:65
+msgid   "Next..."
+msgstr  "Suivant..."
+
+#: trunk/View/pages/graph.php:54 trunk/View/pages/graph.php:60
+#: trunk/View/pages/graph.php:66
+msgid   "Skip"
+msgstr  "Sortir du tutoriel"
+
+#: trunk/View/pages/graph.php:58
+msgid   "You can expand a skill to see<br>by clicking on its name"
+msgstr  "Vous pouvez ouvrir une compétence<br>en cliquant sur son nom."
+
+#: trunk/View/pages/graph.php:64
+msgid   "If you want to add a new skill as a child<br >or as a parent, you can just click<br>on the \"+\" button."
+msgstr  "Si vous voulez ajouter une compétence<br>en tant qu'enfant ou en tant que parent,<br>cliquez sur le bouton \"+\"."
+
+#: trunk/View/pages/graph.php:70
+msgid   "This is where you edit all the skills.<br>You need to create an account in order to perfom these actions.<br>Have fun!"
+msgstr  "C'est ici que vous modifiez les compétences.<br>Vous devez disposer d'un compte pour effectuer ces opérations.<br>Amusez-vous bien !"
+
+#: trunk/View/pages/graph.php:72
+msgid   "Finish"
+msgstr  "Fin du tutoriel"

@@ -152,5 +152,27 @@
             call_user_func_array(array($controller, $method), $params);
         }
 
+        //Returns the string containing the links provided
+        //Example :
+        // stringWithLinks(
+        //     "In order to continue, %do this% or %do that%",
+        //     array(
+        //         "<a href='http://www.first-link.com' title='%s'>%s</a>",
+        //         "<a href='http://www.second-link.com' title='%s'>%s</a>",
+        //         )
+        //     )
+        // Returns : In order to continue, <a href='http://www.first-link.com' title='do this'>do this</a> or <a href='http://www.second-link.com' title='do that'>do that</a>
+        public function stringWithLinks($string, $links) {
+            $matches = array();
+            preg_match_all("/%(.+?)%/im", $string, $matches, PREG_PATTERN_ORDER);
+
+            for ($i = 0; $i < count($links); $i++) {
+                $link = $links[$i];
+                $link = str_replace("%s", $matches[1][$i], $link);
+                $string = str_replace($matches[0][$i], $link, $string);
+            }
+            return $string;
+        }
+
 
     }
