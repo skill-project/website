@@ -6,7 +6,7 @@
     <form method="POST" action="<?= \Controller\Router::url("renameSkill"); ?>" id="rename-skill-form">
         <input type="hidden" name="skillUuid" id="skillUuid" value="<?= $skill->getUuid(); ?>" />
         <div>
-            <input type="text" name="skillName" id="rename-skillName" maxlength="45" value="<?= $skill->getName() ?>" />
+            <input type="text" name="skillName" id="rename-skillName" maxlength="45" value="<?= $skill->getLocalName(); ?>" />
         </div>
         <div>
             <input type="submit" value="<?= _("OK") ?>" />
