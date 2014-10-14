@@ -222,7 +222,7 @@ msgstr  "Vous pouvez copier-coller ce lien n'importe où et il pointera directem
 
 #: trunk/View/panels/discuss-skill-panel.php:5 trunk/View/panels/panel.php:24
 msgid   "DISCUSS THE SKILL"
-msgstr  "COMMENTER LA COMPÉTENCE"
+msgstr  "COMMENTER"
 
 #.
 #. <select name="topic" id="topic-select">
