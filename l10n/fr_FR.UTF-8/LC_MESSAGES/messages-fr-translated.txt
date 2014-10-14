@@ -524,7 +524,7 @@ msgstr  "Devenir un Éditeur&nbsp;!"
 
 #: trunk/View/inc/header.php:26 trunk/View/inc/apply_form.php:48
 msgid   "APPLY"
-msgstr  "DEVENIR UN ÉDITEUR"
+msgstr  "DEVENIR ÉDITEUR"
 
 #: trunk/View/inc/header.php:27 trunk/View/pages/fr_project.php:16
 #: trunk/View/pages/fr_project.php:220 trunk/View/pages/project.php:16
