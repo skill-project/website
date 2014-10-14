@@ -32,6 +32,6 @@
 	<div class="container">
 		<h2>Prêt pour vous lancer&nbsp;?</h2>
 		<p>Explorez l'arbre de compétences, et amusez-vous à ajouter les vôtres&nbsp;!</p>
-		<div id="home-btn-go-bottom" class="home-btn"><a href="<?= \Controller\Router::url("graph"); ?>">Commencez&nbsp;!</a></div>
+		<div id="home-btn-go-bottom" class="home-btn"><a href="<?= \Controller\Router::url("graph"); ?>">Lancez-vous&nbsp;!</a></div>
 	</div> 
 </section>
