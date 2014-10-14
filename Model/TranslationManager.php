@@ -125,7 +125,7 @@
                     $newString .= " $w";
                 }
                 else {
-                    $newString .= " " . mb_strtolower($w);
+                    $newString .= " " . mb_strtolower($w, 'UTF-8');
                 }
             }
 
