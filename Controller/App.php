@@ -162,7 +162,7 @@
         //         )
         //     )
         // Returns : In order to continue, <a href='http://www.first-link.com' title='do this'>do this</a> or <a href='http://www.second-link.com' title='do that'>do that</a>
-        public function stringWithLinks($string, $links) {
+        public static function stringWithLinks($string, $links) {
             $matches = array();
             preg_match_all("/%(.+?)%/im", $string, $matches, PREG_PATTERN_ORDER);
 
