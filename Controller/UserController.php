@@ -80,7 +80,6 @@
 
         public function logoutAction(){
             $_SESSION['user'] = NULL;
-            session_destroy();
             Router::redirect(Router::url('home'));
         }
 
