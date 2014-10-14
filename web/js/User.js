@@ -5,21 +5,25 @@ var User = function(){
             e.preventDefault();
             user.clickedHref = $(this).attr("href");
             user.showForm();
+            ga("send", "event", "uiAction", "registerLink");
         });
         $("body").on("click", ".change-password-link", function(e){
             e.preventDefault();
             user.clickedHref = $(this).attr("href");
             user.showForm();
+            ga("send", "event", "uiAction", "changePasswordLink");
         });
         $("body").on("click", ".login-link", function(e){
             e.preventDefault();
             user.clickedHref = $(this).attr("href");
             user.showForm();
+            ga("send", "event", "uiAction", "loginLink");
         });
         $("body").on("click", ".forgot-passowrd-link", function(e){
             e.preventDefault();
             user.clickedHref = $(this).attr("href");
             user.showForm();
+            ga("send", "event", "uiAction", "forgotPasswordLink");
         });
 
         $("body").on("submit", "#modal-wrapper form", function(e){

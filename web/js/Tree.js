@@ -19,6 +19,7 @@ var Tree = function() {
     this.rootNodeReady.add(function () {
         //Starting autoload
         if (tree.autoLoad == true) {
+            ga("send", "event", "gotoSkill");
             tree.autoLoadCurrentDepth = 0;
             tree.readyForNextLevel.fire();
         }

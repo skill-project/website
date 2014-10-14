@@ -271,11 +271,12 @@ var Node = function(nodeData, params) {
 
     //Node is closed, expanding it
     if (!that.open) {
-      ga("send", "event", "nodeClick", that.name);
+      ga("send", "event", "nodeOpen", that.name);
       that.select();
       that.expand();
     }else {
       //Node is open, contracting it
+      ga("send", "event", "nodeClose", that.name);
       that.deSelect();
       that.contract();
     }

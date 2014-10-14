@@ -26,6 +26,8 @@ var Search = function(){
         if (tour.isActive == true || doTour == true) tour.actionOnTree("search-click");
 
         var selectedSlug = $(this).data("slug");
+
+        ga("send", "event", "searchResultClicked", $(this).data("name"));
         
         var url = baseUrl + "api/getNodePathToRoot/" + selectedSlug + "/";
 
@@ -86,6 +88,7 @@ var Search = function(){
             gp = (response.data[uuid].gp) ? response.data[uuid].gp + " > " : "";
             $link = $("<a>")
                         .attr("href", "#")
+                        .data("name", response.data[uuid].name)
                         .data("uuid", uuid)
                         .data("slug", response.data[uuid].slug)
                         .html('<div class="search-result-name">' + response.data[uuid].name + '</div>' 

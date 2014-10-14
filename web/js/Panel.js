@@ -147,6 +147,8 @@ var Panel = function(node, initParams) {
                             if (response.status == "ok"){
                                 $("#create-skillName").val("");
                                 that.showMessage(response.message);
+
+                                ga("send", "event", "nodeCreate", response.data.name);
                                 
                                 var creationType = $(subPanel).find("#creationType").val();
                                 if (creationType == "child") {
