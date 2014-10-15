@@ -14,6 +14,39 @@
 
     </div>
 
+    <div>
+        <h3>Users !</h3>
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Applied ?</th>
+                <th>Actions</th>
+            </tr>
+        <?php foreach($users as $user): ?>
+        <tr>
+            <td><?= $user->getUsername(); ?></td>
+            <td><?= $user->getEmail(); ?></td>
+            <td><?= $user->getRole(); ?></td>
+            <td><?php
+                if ($user->getApplicationStatus() === 2){
+                    echo "waiting !";
+                } elseif ($user->getApplicationStatus() === 1){
+                    echo "accepted !";
+                } elseif ($user->getApplicationStatus() === 0){
+                    echo "denied !";
+                } else {
+                    echo "...";
+                }
+
+             ?></td>
+            <td><a href="<?= \Controller\Router::url("setAsEditor", array("uuid" => $user->getUuid())); ?>" onclick="return confirm('Sure to set <?= $user->getUsername() ?> as an Editor ?')">Set as Editor</a></td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+    </div>
+
     <div class="col" id="latest-changes-container">
         <h2>Latest changes</h2>
 

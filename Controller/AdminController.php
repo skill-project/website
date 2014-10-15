@@ -5,6 +5,7 @@
     use \View\AdminView;
     use \View\AdminAjaxView;
     use \Model\SkillManager;
+    use \Model\UserManager;
     use \Model\TranslationManager;
     use \Model\StatManager;
     use \Utils\SecurityHelper as SH;
@@ -20,6 +21,7 @@
             $params = array();
 
             $statManager = new StatManager();
+            $userManager = new UserManager();
             
             $params['title'] = "Statshit";
 
@@ -27,6 +29,9 @@
             $params['usersCount'] = $statManager->countLabel("User");
             $params['maxDepth'] = $statManager->getMaxDepth();
             $params['latestChanges']= $statManager->getLatestChanges();
+
+            $params['users'] = $userManager->findAll();
+
             //$params['meanNumber'] = $statManager->getMeanNumberOfSkillChildren();
 
             $view = new AdminView("stats.php", $params);
@@ -45,6 +50,8 @@
             
             $view->send();
         }
+
+
 
 
         public function powerEditAction(){
@@ -80,6 +87,23 @@
 
             }
             die("ok");
+        }
+
+
+        public function setAsEditorAction($uuid){
+            SH::lock("superadmin");
+
+            $userManager = new UserManager();
+            $user = $userManager->findByUuid($uuid);
+
+            if ($user){
+                $user->setRole("admin");
+                $user->setApplicationStatus(1);
+                $userManager->update($user);
+            }
+
+            Router::redirect(Router::url("stats"));
+
         }
 
     }

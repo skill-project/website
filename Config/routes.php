@@ -378,6 +378,14 @@
     );
 
     $routes->add(
+        'setAsEditor',
+        new Route('/admin/set-as-editor/{uuid}/', 
+            array('controller' => 'Admin', 'action' => 'setAsEditor'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
+    $routes->add(
         'latestChanges',
         new Route('/admin/latest-changes/', 
             array('controller' => 'Admin', 'action' => 'latestChanges'), array(), array(), 

@@ -111,4 +111,19 @@
             return $this->getFindByResult($cypher, '(?i)'.$emailOrUsername); //regexp for case insensitivity
         }
 
+
+        public function findAll(){
+            $cypher = "MATCH (user:User) RETURN user ORDER BY user.applicationStatus DESC";
+            $query = new Query($this->client, $cypher);
+            $resultSet = $query->getResultSet();
+            $users = array();
+            foreach($resultSet as $row){
+                $user = new User();
+                $user->setNode($row['user']);
+                $user->hydrateFromNode();
+                $users[] = $user;
+            }
+            return $users;
+        }
+
     }
