@@ -2,6 +2,7 @@
     <title><?php echo $title; ?></title>
     <meta name="description" content="Explore all the human skills. Map them out.">
     <base href="<?= $GLOBALS['base_url'] ?>/" />
+    <meta name="viewport" content="width=1050">
     <link rel="shortcut icon" href="img/favicon.png">
 <?php if (\Config\Config::DEBUG): ?>
     <link href="css/all.css" type="text/css" rel="stylesheet" />

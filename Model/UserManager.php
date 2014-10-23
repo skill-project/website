@@ -113,7 +113,7 @@
 
 
         public function findAll(){
-            $cypher = "MATCH (user:User) RETURN user ORDER BY user.applicationStatus DESC";
+            $cypher = "MATCH (user:User) RETURN user ORDER BY user.dateModified DESC";
             $query = new Query($this->client, $cypher);
             $resultSet = $query->getResultSet();
             $users = array();
