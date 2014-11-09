@@ -4,6 +4,7 @@ Node.prototype.expand = function(params) {
 
   if (params != null) {
     var onComplete = params.onComplete;
+    var animate = typeof params.animate !== "undefined" ? params.animate : true;
   }
   var url = baseUrl + "api/getNodeChildren/" + this.id + "/";
 
@@ -33,7 +34,8 @@ Node.prototype.expand = function(params) {
           rank: i,
           count: json.data.length,
           isLast: isLast,
-          onComplete: onComplete ? onComplete : null
+          onComplete: onComplete ? onComplete : null,
+          animate: animate
         })
       });
 
@@ -323,8 +325,13 @@ Node.prototype.setVisualState = function (state, draw, ignoreGlow) {
       }
       break;
     case "normal":
+
       this.knGlow.setImage($("img#glow-nonotch")[0]);
-      this.backImage.setImage($("img#node-normal" + imageSuffix)[0]);
+
+      if ((this.invisibleChildrenCount - this.childrenMarkedForDeleteCount) > 0) var imageRes = $("img#node-normal-children" + imageSuffix)[0];
+      else var imageRes = $("img#node-normal" + imageSuffix)[0];
+
+      this.backImage.setImage(imageRes);
       if (this.edge != null) this.edge.selected = false;
       this.text.setFill("#333333");
       if (!ignoreGlow) this.setGlow(0);
@@ -348,7 +355,10 @@ Node.prototype.setVisualState = function (state, draw, ignoreGlow) {
       if (!ignoreGlow) this.setGlow(1);
       break;
     case "normal-edit":
-      this.backImage.setImage($("img#node-edit" + imageSuffix)[0]);
+      if ((this.invisibleChildrenCount - this.childrenMarkedForDeleteCount) > 0) var imageRes = $("img#node-edit-children" + imageSuffix)[0];
+      else var imageRes = $("img#node-edit" + imageSuffix)[0];
+
+      this.backImage.setImage(imageRes);
       this.text.setFill("#fff");
       break;
     case "glow-edit":
@@ -679,8 +689,7 @@ Node.prototype.createNewParent = function (nodeData) {
 
 Node.prototype.setName = function (newName, twoLines, textObject) {
   this.name = newName;
-  // debugger;
-
+  
   if (typeof twoLines == "undefined") {
     //Writing the text of the skill
     //First attempt
@@ -740,6 +749,8 @@ Node.prototype.deleteFromDB = function() {
   }
 
   if (this.isEdited) this.finishEdit();
+
+  this.parent.invisibleChildrenCount--;
 
   //If deleted node is last of parent's children, remove notch from parent (glow-nochildren)
   if (Object.keys(this.parent.children).length - 1 === 0) {

@@ -365,15 +365,15 @@ msgid   "OTHER TRANSLATIONS"
 msgstr  "AUTRE TRADUCTIONS"
 
 #: trunk/View/mails/registration_confirmation.php:1
-msgid   "Thank you for signing up for Skill Project!"
+msgid   "Thank you for signing up to Skill Project!"
 msgstr  "Merci de vous être enregistré sur Skill Project&nbsp;!"
 
 #: trunk/View/mails/registration_confirmation.php:2
-msgid   "You can now create new skills and discuss them. "
+msgid   "You can now create skills and discuss them. "
 msgstr  "Vous pouvez maintenant créer des compétences et échanger à leur sujet."
 
 #: trunk/View/mails/registration_confirmation.php:3
-msgid   "Remember that right after you create a skill, you have all Editor powers on it, but only for an hour!"
+msgid   "Remember that when you create a new skill, you can edit it for a day only!"
 msgstr  "Notez que vous avez tous les droits sur les compétences que vous avez créés depuis une heure&nbsp;!"
 
 #: trunk/View/mails/registration_confirmation.php:5
@@ -385,11 +385,11 @@ msgid   "We just received your message! Thanks!"
 msgstr  "Nous avons bien reçu votre message. Merci&nbsp;!"
 
 #: trunk/View/mails/contact_message_confirmation.php:2
-msgid   "We will get back to you ASAP."
+msgid   "We'll get back to you ASAP."
 msgstr  "Nous vous répondrons au plus vite."
 
 #: trunk/View/mails/contact_message_confirmation.php:4
-msgid   "You can also reply to this automated email, we will get it."
+msgid   "You can also reply to this message, we'll get your email."
 msgstr  "Pour nous écrire, n'hésitez pas à répondre à ce message, nous le recevrons."
 
 #: trunk/View/mails/admin_application_confirmation.php:1
@@ -397,23 +397,23 @@ msgid   "We just received your application to become an Editor on Skill Project!
 msgstr  "Nous avons bien reçu votre candidature pour devenir Édtiteur sur Skill Project. Merci&nbsp;!"
 
 #: trunk/View/mails/admin_application_confirmation.php:2
-msgid   "We will review it ASAP, and we will get back to you."
+msgid   "We'll review it ASAP and get back to you."
 msgstr  "Nous en prendrons connaissance au plus vite et reviendrons vers vous rapidement."
 
 #: trunk/View/mails/admin_application_confirmation.php:4
-msgid   "If you want to talk about it, you can reply to this automated email."
+msgid   "If you want to add anything, you can reply to this automated email."
 msgstr  "Si vous souhaitez en parler ou nous donner plus de précisions, n'hésitez pas à répondre à ce message."
 
 #: trunk/View/mails/password_recovery.php:1
-msgid   "You forgot your password on skill-project.org?"
+msgid   "You forgot your password for skill-project.org?"
 msgstr  "Vous avez oublié votre mot de passe sur skill-project.org&nbsp;?"
 
 #: trunk/View/mails/password_recovery.php:2
-msgid   "If you did not ask for a password reset, please ignore this message."
+msgid   "If you didn't request a new password, please ignore this message."
 msgstr  "Si vous n'avez pas demandé une réinitialisation du mot de passe, vous pouvez ignorer ce message."
 
 #: trunk/View/mails/password_recovery.php:3
-msgid   "Otherwise, please click on the link below to complete the password reset process. "
+msgid   "Otherwise, just click on the link below to complete the password reset process."
 msgstr  "Dans le cas contraire, merci de cliquer sur le lien ci-dessous pour terminer la réinitialisation de votre mot de passe. "
 
 #: trunk/View/inc/forgot_password_form_1.php:3 trunk/View/inc/login_form.php:3
@@ -980,7 +980,7 @@ msgid   "Modified"
 msgstr  "Modifié"
 
 #: trunk/View/pages/graph.php:52
-msgid   "The skills ! First-level skills contain every other skill<br>Your walk among the skills starts here."
+msgid   "Welcome to the Skill Tree!<br>These are the first-level skills. They contain every other skills.<br>Click “Next” to continue the tour or “Skip” to start exploring the skills now."
 msgstr  "Voici les compétences !<br>Celles de premier niveau contiennent toutes les autres.<br>Votre voyage à travers les compétences commence ici."
 
 #: trunk/View/pages/graph.php:53 trunk/View/pages/graph.php:59
@@ -994,15 +994,15 @@ msgid   "Skip"
 msgstr  "Sortir du tutoriel"
 
 #: trunk/View/pages/graph.php:58
-msgid   "You can expand a skill to see<br>by clicking on its name"
+msgid   "Click on a skill name to see its sub-skills."
 msgstr  "Vous pouvez ouvrir une compétence<br>en cliquant sur son nom."
 
 #: trunk/View/pages/graph.php:64
-msgid   "If you want to add a new skill as a child<br >or as a parent, you can just click<br>on the \"+\" button."
+msgid   "Click on the “+” to open the “Edit Skill” panel."
 msgstr  "Si vous voulez ajouter une compétence<br>en tant qu'enfant ou en tant que parent,<br>cliquez sur le bouton \"+\"."
 
 #: trunk/View/pages/graph.php:70
-msgid   "This is where you edit all the skills.<br>You need to create an account in order to perfom these actions.<br>Have fun!"
+msgid   "In the “Edit Skill” panel, you can perform actions on skills, depending on your user status (regular user or Editor). You have Editor rights on a skill for one day after you create it."
 msgstr  "C'est ici que vous modifiez les compétences.<br>Vous devez disposer d'un compte pour effectuer ces opérations.<br>Amusez-vous bien !"
 
 #: trunk/View/pages/graph.php:72

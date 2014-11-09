@@ -21,7 +21,7 @@
                 else $action = "";
 
                 if (!empty($jsonAutoLoad)) echo "var jsonAutoLoad=" . $jsonAutoLoad . ";\n";
-                if (empty($_SESSION["tourDone"]) and $action != "goto") {
+                if (empty($_SESSION["tourDone"]) and $action != "goto" or (isset($_GET["tour"]) && $_GET["tour"] == 1)) {
                     $_SESSION["tourDone"] = true;
                     echo "var doTour = true;\n";
                 }else {

@@ -1,23 +1,28 @@
 <div id="preload">
-	<img src="img/node-sun.png" id="node-sun" />	
+	<img src="img/node/node-sun.png" id="node-sun" />	
 
-	<img src="img/node-normal.png" id="node-normal" />	
-	<img src="img/node-glow-nochildren.png" id="node-glow-nochildren" />
-	<img src="img/node-glow-children.png" id="node-glow-children" />
-	<img src="img/node-edit.png" id="node-edit" />
+	<img src="img/node/node-normal.png" id="node-normal" />	
+	<img src="img/node/node-normal-children.png" id="node-normal-children" />	
+	<img src="img/node/node-glow-nochildren.png" id="node-glow-nochildren" />
+	<img src="img/node/node-glow-children.png" id="node-glow-children" />
+	<img src="img/node/node-edit.png" id="node-edit" />
+	<img src="img/node/node-edit-children.png" id="node-edit-children" />
 
-	<img src="img/node-normal-t.png" id="node-normal-t" />	
-	<img src="img/node-glow-nochildren-t.png" id="node-glow-nochildren-t" />
-	<img src="img/node-glow-children-t.png" id="node-glow-children-t" />
-	<img src="img/node-edit-t.png" id="node-edit-t" />
+	<img src="img/node/node-normal-t.png" id="node-normal-t" />	
+	<img src="img/node/node-normal-children-t.png" id="node-normal-children-t" />	
+	<img src="img/node/node-glow-nochildren-t.png" id="node-glow-nochildren-t" />
+	<img src="img/node/node-glow-children-t.png" id="node-glow-children-t" />
+	<img src="img/node/node-edit-t.png" id="node-edit-t" />
 
-	<img src="img/node-normal-t-on.png" id="node-normal-t-on" />	
-	<img src="img/node-glow-nochildren-t-on.png" id="node-glow-nochildren-t-on" />
-	<img src="img/node-glow-children-t-on.png" id="node-glow-children-t-on" />
-	<img src="img/node-edit-t-on.png" id="node-edit-t-on" />
+	<?php
+	// <img src="img/node-normal-t-on.png" id="node-normal-t-on" />	
+	// <img src="img/node-glow-nochildren-t-on.png" id="node-glow-nochildren-t-on" />
+	// <img src="img/node-glow-children-t-on.png" id="node-glow-children-t-on" />
+	// <img src="img/node-edit-t-on.png" id="node-edit-t-on" />
+	?>
 
-	<img src="img/glow-children.png" id="glow-children" />
-	<img src="img/glow-nochildren.png" id="glow-nochildren" />
+	<img src="img/node/glow-children.png" id="glow-children" />
+	<img src="img/node/glow-nochildren.png" id="glow-nochildren" />
 	<p id="avenir-book">Skill Project</p>
 </div>
 <header id="header">
@@ -48,26 +53,26 @@
 	</div>
 </div>
 <ol class='tourbus-legs' id='my-tour-id'>
-  <li id="tour-leg1" data-orientation="left">
-    <p><?=_("The skills ! First-level skills contain every other skill<br>Your walk among the skills starts here.")?></p>
+  <li id="tour-leg1" data-orientation="left" data-arrow="false">
+    <p><?=_("Welcome to the Skill Tree!<br>These are the first-level skills. They contain every other skills.<br>Click “Next” to continue the tour or “Skip” to start exploring the skills now.")?></p>
    	<a href='javascript:void(0);' class='tourbus-next'><?=_("Next...")?></a>
     <a href='javascript:void(0);' class='tourbus-stop'><?=_("Skip")?></a>
   </li>
 
   <li id="tour-leg2">
-    <p><?=_("You can expand a skill to see<br>by clicking on its name")?></p>
+    <p><?=_("Click on a skill name to see its sub-skills.")?></p>
     <a href='javascript:void(0);' class='tourbus-next'><?=_("Next...")?></a>
     <a href='javascript:void(0);' class='tourbus-stop'><?=_("Skip")?></a>
   </li>
 
   <li id="tour-leg3">
-    <p><?=_("If you want to add a new skill as a child<br >or as a parent, you can just click<br>on the \"+\" button.")?></p>
+    <p><?=_("Click on the “+” to open the “Edit Skill” panel.")?></p>
     <a href='javascript:void(0);' class='tourbus-next'><?=_("Next...")?></a>
     <a href='javascript:void(0);' class='tourbus-stop'><?=_("Skip")?></a>
   </li>
 
   <li id="tour-leg4">
-    <p><?=_("This is where you edit all the skills.<br>You need to create an account in order to perfom these actions.<br>Have fun!")?>
+    <p><?=_("In the “Edit Skill” panel, you can perform actions on skills, depending on your user status (regular user or Editor). You have Editor rights on a skill for one day after you create it.")?>
   	</p>
     <a href='javascript:void(0);' class='tourbus-next'><?=_("Finish")?></a>
   </li>

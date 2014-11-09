@@ -183,9 +183,7 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": [
-
-                ]
+                "branch-alias": []
             },
             "autoload": {
                 "psr-0": {
@@ -312,12 +310,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
+<<<<<<< .courant
                 "reference": "c24942a7ec2d8409d1f60d02c4460ca8317e885a"
+=======
+                "reference": "4cd6c807598e560db7b3da50c4330fdb4808cfa1"
+>>>>>>> .fusion-droit.r311
             },
             "dist": {
                 "type": "zip",
+<<<<<<< .courant
                 "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/c24942a7ec2d8409d1f60d02c4460ca8317e885a",
                 "reference": "c24942a7ec2d8409d1f60d02c4460ca8317e885a",
+=======
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/4cd6c807598e560db7b3da50c4330fdb4808cfa1",
+                "reference": "4cd6c807598e560db7b3da50c4330fdb4808cfa1",
+>>>>>>> .fusion-droit.r311
                 "shasum": ""
             },
             "require": {
@@ -356,7 +363,11 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
+<<<<<<< .courant
             "time": "2014-10-07 14:06:18"
+=======
+            "time": "2014-11-03 03:55:50"
+>>>>>>> .fusion-droit.r311
         },
         {
             "name": "symfony/routing",
@@ -365,12 +376,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing.git",
+<<<<<<< .courant
                 "reference": "6e43bd277f1f7e181a65b85813312f428e4926ab"
+=======
+                "reference": "f0bb6f818f9a7ece41c7dfe14e08b13c2de55b0c"
+>>>>>>> .fusion-droit.r311
             },
             "dist": {
                 "type": "zip",
+<<<<<<< .courant
                 "url": "https://api.github.com/repos/symfony/Routing/zipball/6e43bd277f1f7e181a65b85813312f428e4926ab",
                 "reference": "6e43bd277f1f7e181a65b85813312f428e4926ab",
+=======
+                "url": "https://api.github.com/repos/symfony/Routing/zipball/f0bb6f818f9a7ece41c7dfe14e08b13c2de55b0c",
+                "reference": "f0bb6f818f9a7ece41c7dfe14e08b13c2de55b0c",
+>>>>>>> .fusion-droit.r311
                 "shasum": ""
             },
             "require": {
@@ -423,15 +443,11 @@
                 "uri",
                 "url"
             ],
-            "time": "2014-10-09 16:12:58"
+            "time": "2014-11-03 19:16:49"
         }
     ],
-    "packages-dev": [
-
-    ],
-    "aliases": [
-
-    ],
+    "packages-dev": [],
+    "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "everyman/neo4jphp": 20,
@@ -442,10 +458,7 @@
         "abeautifulsite/simpleimage": 20,
         "gabrielbull/browser": 20
     },
-    "platform": [
-
-    ],
-    "platform-dev": [
-
-    ]
+    "prefer-stable": false,
+    "platform": [],
+    "platform-dev": []
 }

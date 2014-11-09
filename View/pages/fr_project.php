@@ -237,7 +237,7 @@ faites-nous signe</a> et nous tenterons d'accélérer le processus.</p>
         <div class="project-col">
             <div id="raphael-pic" class="team-pic"></div>
             <h4>RAPHAEL BOUSQUET</h4>
-            <p>Raphael est français, mais adore parler latin comme ça : Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>
+            <p>Raphaël est français, mais adore parler le latin comme ça : lorem ipsum dolor sit amet. C’est le graphiste de la bande. Après plusieurs années passées dans les domaines de la télévision et de la presse en ligne, il est aujourd’hui directeur artistique web (ce qui ne l’empêche pas d’entamer une partie de jeux vidéos dès qu’il croise une manette de console).</p>
         </div>
     </div>
 </section>

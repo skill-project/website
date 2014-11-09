@@ -73,10 +73,12 @@ $(window).load(function  () {
       container: 'kinetic',
       width: $("#kinetic").width(),
       height: $("#kinetic").height(),
-      draggable: true,
       dragDistance: 10,
       fill: "black"
     });
+
+    if (tour.isActive == true || doTour == true) stage.draggable(false);
+    else stage.draggable(true);
 
     //Initialize drag and mousemove events
     camera.initDragEvents();
@@ -106,11 +108,6 @@ $(window).load(function  () {
     });
 
     nodesLayer.add(camera.dummyShape);
-
-    //Fadein effect on canvas objects (sky and nodes)
-    $("#kinetic, #backdrop").css("visibility", "visible").fadeIn({
-      duration: 800
-    });
 
     //global ajax handling
     //before ajax

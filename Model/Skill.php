@@ -16,6 +16,7 @@
         
         protected $node = null;
 
+        protected $childrenCount;
 
         public function __construct(Node $node = null){
             parent::__construct();
@@ -114,6 +115,7 @@
                 "name" => $localeName,
                 "slug" => $this->slug,
                 "depth" => $this->depth,
+                "childrenCount" => $this->childrenCount,
                 "translations" => $translations
             );
             return $data;
@@ -174,6 +176,19 @@
         public function setName($name){
             $this->name = $name;
             $this->getNode()->setProperty("name", $name);
+
+            return $this;
+        }
+
+        /**
+         * Sets the number of children
+         *
+         * @param mixed $childrenCount number of children
+         *
+         * @return self
+         */
+        public function setChildrenCount($childrenCount){
+            $this->childrenCount = $childrenCount;
 
             return $this;
         }

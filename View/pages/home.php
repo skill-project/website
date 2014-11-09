@@ -2,7 +2,7 @@
 	<div class="container">
 		<div class="left-content">
 			<h1>We are mapping every human skill out there.<br />And we need your help.</h1>
-			<p id="tagline">How many skills do you have? Think about them, and map them out.</p>
+			<p id="tagline">What are your skills? Join us. Think with us. Map them out.</p>
 
 			<div id="home-btn-go" class="home-btn"><a href="<?= \Controller\Router::url("graph"); ?>">Enter Skill Project</a></div>
 			<div id="home-btn-learn" class="home-btn"><a href="<?= \Controller\Router::url("project"); ?>">Learn more</a></div>
@@ -16,11 +16,11 @@
 	<div class="container">
 		<img class="home-illus brain-illus" alt="" src="img/SKP-page-home-brain.png" />
 		<h2>Welcome to Skill Project! What can you do?</h2>
-		<p>At Skill Project, we believe everyone has a unique share of humanity skills.<br />Become part of our skill loving community and share what you can do!</p>
+		<p>At Skill Project, we believe everyone has a unique share of humanity's skills.<br />Become part of our skill-loving community and share what you can do!</p>
 
 		<img class="home-illus network-illus" alt="" src="img/SKP-page-home-network.png" />
 		<h2>Every skill is connected to another one</h2>
-		<p>So you know how to play music? Well, this is definitely a skill!<br />And "Play Guitar" or "Play Piano" are simply sub-skills of "Play music".<br />And if you can do some "Flamenco Guitar" or "Bottleneck Guitar", they are a sub-skills of "Play Guitar".
+		<p>So you know how to play music? Well, this is definitely a skill!<br />And "Play Guitar" or "Play Piano" are sub-skills of "Play music".<br />"Flamenco Guitar" or "Bottleneck Guitar" are sub-skills of "Play Guitar".
 			<br />You get the picture?</p>
 
 		<img class="home-illus circle-illus" alt="" src="img/SKP-page-home-circle.png" />
@@ -31,7 +31,7 @@
 <section id="home-bottom-panel" class="green">
 	<div class="container">
 		<h2>Ready to go?</h2>
-		<p>Start exploring the skills and enjoy adding your own!</p>
+		<p>Start exploring skills and add your own!</p>
 		<div id="home-btn-go-bottom" class="home-btn"><a href="<?= \Controller\Router::url("graph"); ?>">Enter Skill Project</a></div>
 	</div> 
 </section>

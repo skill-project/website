@@ -146,7 +146,7 @@
                     $this->logUser($user);
                     $this->logUser($user);
                     $json = new \Model\JsonResponse();
-                    $json->setData(array("redirectTo" => Router::url('profile', array("username" => $user->getUsername()), true)));
+                    $json->setData(array("redirectTo" => Router::url('graph', array(), true)));
                     $json->send();
 
                 }
