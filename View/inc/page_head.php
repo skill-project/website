@@ -13,7 +13,11 @@
         var baseUrl="<?= $GLOBALS['base_url'] ?>/";
         <?php 
             $gaAccount = \Config\Config::GA_ACCOUNT;
-            echo "var gaC = '$gaAccount'\n"; 
+            echo "var gaC = '$gaAccount';\n"; 
+
+            if (\Config\Config::LOWPERF === true) {
+                echo "var lowPerf = true;\n";
+            }
 
             if (!empty($rootNode)) {
                 echo "var rootNodeId='" . $rootNode->getUuid() . "';\n";
@@ -58,6 +62,7 @@
     <script src="js/Site.js"></script>
     <script src="js/Node.js"></script>
     <script src="js/Node.prototypes.js"></script>
+    <script src="js/NewNode.js"></script>
     <script src="js/Edge.js"></script>
     <script src="js/Tree.js"></script>
     <script src="js/Panel.js"></script>

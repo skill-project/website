@@ -34,6 +34,7 @@ module.exports = function(grunt) {
                     'web/js/Site.js',
                     'web/js/Node.js',
                     'web/js/Node.prototypes.js',
+                    'web/js/NewNode.js',
                     'web/js/Edge.js',
                     'web/js/Tree.js',
                     'web/js/Panel.js',

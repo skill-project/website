@@ -39,6 +39,7 @@ var Node = function(nodeData, params) {
   this.text;
   this.sizes;
   this.freeSlots = [];
+  this.newNode;
 
   // Needed for nested functions
   var that = this;
@@ -211,28 +212,33 @@ var Node = function(nodeData, params) {
   //Chained animations of appearing nodes
   if (this.parent != null) {
     //Make this available on onFinish callback
-    var newNode = this;
+    var currentNode = this;
 
     var tween1 = new Kinetic.Tween({
       node: group, 
-      x: newNode.midX,
-      y: newNode.midY,
+      x: currentNode.midX,
+      y: currentNode.midY,
       duration: 0.05 + 0.10 * (this.rank / this.count),       // Animation speed for a single node is relative to node rank/position, first is fastest, etc.
       onFinish: function() {
         var tween2 = new Kinetic.Tween({
           node: group, 
-          x: newNode.appearDestX,
-          y: newNode.appearDestY,
-          duration: 0.05 + 0.10 * (newNode.rank / newNode.count),
+          x: currentNode.appearDestX,
+          y: currentNode.appearDestY,
+          duration: 0.05 + 0.10 * (currentNode.rank / currentNode.count),
           onFinish: function() {
-            newNode.nodeReady = true;
+            currentNode.nodeReady = true;
             //Last child has finished appearing
-            if (newNode.isLast == true) {
-              newNode.parent.setChildrenSiblings();
-              newNode.parent.invisibleChildrenCount = Object.keys(newNode.parent.children).length;
+            if (currentNode.isLast == true) {
+              newNode = new NewNode({
+                parent: currentNode.parent,
+                previous: currentNode
+              });
+
+              currentNode.parent.setChildrenSiblings();
+              currentNode.parent.invisibleChildrenCount = Object.keys(currentNode.parent.children).length;
               tree.busy = false;              //Releasing the tree-wide lock
-              if (newNode.onComplete != null) {
-                newNode.onComplete();
+              if (currentNode.onComplete != null) {
+                currentNode.onComplete();
               }
               tree.readyForNextLevel.fire();
             }
@@ -253,7 +259,6 @@ var Node = function(nodeData, params) {
   //Creating the edge / link with the parent node (except for the root node which has no parent)
   if (this.parent != null) {
     this.edge = new Edge(this.parent, this);
-    this.edge.shape.moveToBottom();
   }
 
   if (animate === false) {

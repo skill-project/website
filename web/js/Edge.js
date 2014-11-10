@@ -21,6 +21,11 @@ var Edge = function(nodeFrom, nodeTo) {
     edgeEndX = that.nodeTo.shapes.x()
     edgeEndY = that.nodeTo.shapes.y() + that.nodeTo.shapes.getHeight() / 2;
 
+    if (that.nodeTo.name === "NEW") {
+      console.log(that.nodeTo.shapes.height());  
+    }
+    
+
     return {
       nodeFrom: {
         x: edgeStartX + nodeFromCachedOffset,
@@ -84,7 +89,11 @@ var Edge = function(nodeFrom, nodeTo) {
 
   this.shape = line;
 
+
+
   nodesLayer.add(line);
+
+  this.shape.moveToBottom();
 
   this.getBoundingBox = function() {
     var startEndPoints = that.getStartEndPoints();

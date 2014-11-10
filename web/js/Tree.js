@@ -10,6 +10,9 @@ var Tree = function() {
     this.autoLoad = false;
     this.autoLoadCurrentDepth;
     this.targetMode = false;
+    this.newNodeMode = false;
+    this.activeNewNode;
+
 
     //Action is set by PHP based on URL, sort of controller/route for JS
     //this.autoload : the tree will expand itself up to the requested node

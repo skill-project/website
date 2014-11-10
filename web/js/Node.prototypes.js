@@ -41,8 +41,16 @@ Node.prototype.expand = function(params) {
 
     }else {
       //No children, releasing tree lock now
+
+      newNode = new NewNode({
+        parent: that
+      });
+      
+      that.open = true;
+      that.setVisualState("glow-children");
+
       tree.busy = false;
-      that.setVisualState("glow-nochildren");
+      
       camera.checkCameraPosition(that);
     }
   }).always(function(json) {
@@ -123,6 +131,8 @@ Node.prototype.contract = function(params) {
         var child = openChild.children[childIndex];
         child.delete();
     }
+
+    if (typeof openChild.newNode !== "undefined") openChild.newNode.delete();
     stage.draw();
   }
 
@@ -132,6 +142,7 @@ Node.prototype.contract = function(params) {
 
   //If no children, not much to do
   if (totalChildren == 0) {
+    if (typeof this.newNode !== "undefined") this.newNode.delete();
     if (releaseTreeLock == true) tree.busy = false;
     this.open = false;
     this.setVisualState("normal");
@@ -140,6 +151,8 @@ Node.prototype.contract = function(params) {
   //If one or more children, we animate all of them to the center, delete all but one and animate the last one
   }else {
     if (this.parent != null) this.parent.select();
+
+    if (typeof this.newNode !== "undefined") this.newNode.delete();
 
     for (var childIndex in this.children) {
       var child = this.children[childIndex];

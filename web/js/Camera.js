@@ -132,6 +132,8 @@ var Camera = function() {
         var destX = (moveDirection == "x" || moveDirection == "xy") ? stage.width() / 2 - (params.x - nodesLayer.offsetX() + camera.panelOffset / 2) * that.scale : stage.x();
         var destY = (moveDirection == "y" || moveDirection == "xy") ? stage.height() / 2 - (params.y - nodesLayer.offsetY() + camera.footerOffset / 2) * that.scale : stage.y();
 
+        if (tree.newNodeMode === true) tree.activeNewNode.input.hide();
+
         var tweenX = new Kinetic.Tween({
           node: stage,
           y: destY,
@@ -149,12 +151,14 @@ var Camera = function() {
                 that.redrawStageInterval = null;
 
                 if (tour.isActive === true) tour.updateLegPositionsAfterCameraMove();
+                if (tree.newNodeMode === true) tree.activeNewNode.repositionInput();
               }
             });
             tweenY.play();
           }
         });
         tweenX.play();
+        
     }
 
     this.moveStageBy = function(params) {
@@ -378,6 +382,8 @@ var Camera = function() {
 
           camera.backgroundImage.y(panBackImageStartCoords.y + (panDistanceY / (2000 / smaller)));
 
+          if (tree.newNodeMode === true) tree.activeNewNode.repositionInput();
+
           //If stars are not cached, we can animate their opacity based on "virtual altitude"
           // if (distToBottom < 480 && distToBottom > 384) {
           //   backStars.opacity((distToBottom*5-1920)/480);
@@ -417,11 +423,13 @@ var Camera = function() {
           //backLayer.y(backLayerOffset.y);
         });
 
-        $("#kinetic").mousemove(function (e) {
-            camera.backStars.x(Math.round((stage.getPointerPosition().x + camera.backStars.x()) /60));
-            camera.backStars.y(Math.round((stage.getPointerPosition().y + camera.backStars.y()) /60));
-            camera.backStars.batchDraw();
-        });
+        if (typeof lowPerf === "undefined") {
+            $("#kinetic").mousemove(function (e) {
+                camera.backStars.x(Math.round((stage.getPointerPosition().x + camera.backStars.x()) /60));
+                camera.backStars.y(Math.round((stage.getPointerPosition().y + camera.backStars.y()) /60));
+                camera.backStars.batchDraw();
+            });
+        }
 
         // stage.on("contentClick", function(e) {
         //     // e.cancelBubble = true;
@@ -576,4 +584,17 @@ Camera.prototype.checkIfPanelBlocksEditedNode = function() {
     if (blockedByPanel != false) {
       camera.moveStageBy({x: -blockedByPanel - 50, y:0 });
     }
+}
+
+
+Camera.prototype.setDefaultZoom = function(centerX, centerY) {
+    nodesLayer.offsetX(centerX);
+    nodesLayer.offsetY(centerY);
+    nodesLayer.scaleX(1);
+    nodesLayer.scaleY(1);
+    nodesLayer.batchDraw();
+
+    this.scale = 1;
+    this.origin.x = centerX;
+    this.origin.y = centerY;
 }
