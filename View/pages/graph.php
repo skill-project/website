@@ -62,13 +62,13 @@
   </li>
 
   <li id="tour-leg3">
-    <p><?=_("Click on the “+” to open the “Edit Skill” panel.")?></p>
+    <p><?=_("Click on the “pencil” to open the “Edit Skill” panel.")?></p>
     <a href='javascript:void(0);' class='tourbus-next'><?=_("Next...")?></a>
     <a href='javascript:void(0);' class='tourbus-stop'><?=_("Skip")?></a>
   </li>
 
   <li id="tour-leg4">
-    <p><?=_("In the “Edit Skill” panel, you can perform actions on skills, depending on your user status (regular user or Editor). You have Editor rights on a skill for one day after you create it.")?>
+    <p><?=_("In the “Edit Skill” panel, you can perform actions on skills,<br />depending on your user status (regular user or Editor).<br />You have Editor rights on a skill for one day after you create it.")?>
   	</p>
     <a href='javascript:void(0);' class='tourbus-next'><?=_("Finish")?></a>
   </li>

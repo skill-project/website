@@ -93,14 +93,14 @@
         <div class="faq-q">
             <h4>Parfois, je peux déplacer, renommer ou effacer des compétences, et parfois non. C'est normal&nbsp;?</h4>
             <div class="faq-a">
-                <p>C'est normal ! Vous possédez tous les droits d'édition sur une compétence que vous venez tout juste de créer, et ce <strong>pour une heure seulement</strong>. Alors finalisez votre contribution rapidement !</p>
+                <p>C'est normal ! Vous possédez tous les droits d'édition sur une compétence que vous venez tout juste de créer, et ce <strong>pour un jour seulement</strong>. Alors finalisez votre contribution rapidement !</p>
             </div>
         </div>
 
         <div class="faq-q">
             <h4>Je dois modifier une compétence, mais je ne suis pas un éditeur... Que puis-je faire&nbsp;?</h4>
             <div class="faq-a">
-                <p>Si vous venez de créer la compétence il y a moins d'une heure, vous devriez pouvoir la modifier vous-même. Sinon, vous pouvez suggérer des modifications dans le panneau de cette compétence, sous "Discuter". Ou vous pouvez faire la <a href="<?= \Controller\Router::url("apply"); ?>" title="<?= _("Become an Editor!"); ?>">demande pour devenir éditeur</a> vous-même !</p>
+                <p>Si vous venez de créer la compétence il y a moins d'un jour, vous devriez pouvoir la modifier vous-même. Sinon, vous pouvez suggérer des modifications dans le panneau de cette compétence, sous "Discuter". Ou vous pouvez faire la <a href="<?= \Controller\Router::url("apply"); ?>" title="<?= _("Become an Editor!"); ?>">demande pour devenir éditeur</a> vous-même !</p>
             </div>
         </div>
         <div class="faq-q">

@@ -374,7 +374,7 @@ msgstr  "Vous pouvez maintenant créer des compétences et échanger à leur suj
 
 #: trunk/View/mails/registration_confirmation.php:3
 msgid   "Remember that when you create a new skill, you can edit it for a day only!"
-msgstr  "Notez que vous avez tous les droits sur les compétences que vous avez créés depuis une heure&nbsp;!"
+msgstr  "Notez que vous avez tous les droits sur les compétences que vous avez créés depuis un jour&nbsp;!"
 
 #: trunk/View/mails/registration_confirmation.php:5
 msgid   "Please confirm your email address by clicking on the link below."
@@ -981,7 +981,7 @@ msgstr  "Modifié"
 
 #: trunk/View/pages/graph.php:52
 msgid   "Welcome to the Skill Tree!<br>These are the first-level skills. They contain every other skills.<br>Click “Next” to continue the tour or “Skip” to start exploring the skills now."
-msgstr  "Voici les compétences !<br>Celles de premier niveau contiennent toutes les autres.<br>Votre voyage à travers les compétences commence ici."
+msgstr  "Voici les compétences !<br>Celles de premier niveau contiennent toutes les autres.<br>Cliquez sur “Suivant” pour continuer ce tutoriel."
 
 #: trunk/View/pages/graph.php:53 trunk/View/pages/graph.php:59
 #: trunk/View/pages/graph.php:65
@@ -998,12 +998,12 @@ msgid   "Click on a skill name to see its sub-skills."
 msgstr  "Vous pouvez ouvrir une compétence<br>en cliquant sur son nom."
 
 #: trunk/View/pages/graph.php:64
-msgid   "Click on the “+” to open the “Edit Skill” panel."
-msgstr  "Si vous voulez ajouter une compétence<br>en tant qu'enfant ou en tant que parent,<br>cliquez sur le bouton \"+\"."
+msgid   "Click on the “pencil” to open the “Edit Skill” panel."
+msgstr  "Si vous voulez ajouter une compétence<br>en tant qu'enfant ou en tant que parent,<br>cliquez sur le “crayon”."
 
 #: trunk/View/pages/graph.php:70
-msgid   "In the “Edit Skill” panel, you can perform actions on skills, depending on your user status (regular user or Editor). You have Editor rights on a skill for one day after you create it."
-msgstr  "C'est ici que vous modifiez les compétences.<br>Vous devez disposer d'un compte pour effectuer ces opérations.<br>Amusez-vous bien !"
+msgid   "In the “Edit Skill” panel, you can perform actions on skills,<br />depending on your user status (regular user or Editor).<br />You have Editor rights on a skill for one day after you create it."
+msgstr  "C'est ici que vous modifiez les compétences.<br>Vous devez disposer d'un compte pour effectuer ces opérations.<br>Vous avez les droits d'éditions sur une compétence après l'avoir créée pendant une journée !<br>Amusez-vous bien !"
 
 #: trunk/View/pages/graph.php:72
 msgid   "Finish"

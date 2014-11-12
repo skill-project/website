@@ -560,6 +560,15 @@ Camera.prototype.resizeElements = function() {
     }
 
     camera.cacheInvisibleNodes();
+
+    if (tour.isActive === true) {
+        tour.overlay.css({
+            width: $(window).width(),
+            height: $("#kinetic").height()
+        });
+
+        //TODO : here we should reposition tour legs after resize
+    }
 }
 
 

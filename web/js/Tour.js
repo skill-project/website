@@ -160,12 +160,14 @@ Tour.prototype.overrideLegPosition = function(leg, newPosition) {
 
 //This is called by camera.goToCoords after camera has moved
 Tour.prototype.updateLegPositionsAfterCameraMove = function() {
-        var leg = tour.tourObj.data("tourbus").legs[this.legIndex];
+    if (this.legIndex !== 2) return;
 
-        var updatedPosition = tour.getUpdatedPositionForLeg(leg);
-        tour.overrideLegPosition(leg, updatedPosition);
+    var leg = tour.tourObj.data("tourbus").legs[this.legIndex];
 
-        leg.$el
-            .css( { visibility: 'visible', opacity: 0, zIndex: 9999 } )
-            .animate( { opacity: 0.8 }, 500, function() { leg.show(); } );
+    var updatedPosition = tour.getUpdatedPositionForLeg(leg);
+    tour.overrideLegPosition(leg, updatedPosition);
+
+    leg.$el
+        .css( { visibility: 'visible', opacity: 0, zIndex: 9999 } )
+        .animate( { opacity: 0.8 }, 500, function() { leg.show(); } );
 }
