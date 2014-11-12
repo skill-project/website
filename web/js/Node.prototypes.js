@@ -27,6 +27,8 @@ Node.prototype.expand = function(params) {
       var i = 0;
       var isLast = false;
 
+      fpsCounter.start();
+
       json.data.forEach(function(child) {
         if (++i == json.data.length) isLast = true;
         new Node(child, {
@@ -153,6 +155,7 @@ Node.prototype.contract = function(params) {
     if (this.parent != null) this.parent.select();
 
     if (typeof this.newNode !== "undefined") this.newNode.delete();
+    fpsCounter.start();
 
     for (var childIndex in this.children) {
       var child = this.children[childIndex];
@@ -185,6 +188,7 @@ Node.prototype.contract = function(params) {
               //scaleX: 0,
               duration: 0.15,
                onFinish: function() {
+                fpsCounter.end();
                 //Last child deletion and tree cleanup
                 lastChild.delete();
                 that.open = false;
@@ -781,7 +785,10 @@ Node.prototype.setTarget = function() {
   if (tree.targetNode) tree.targetNode.unsetTarget();
 
   this.isTarget = true;
-  this.setGlow(1);
+
+  if ((this.invisibleChildrenCount - this.childrenMarkedForDeleteCount) > 0) this.setVisualState("glow-children");
+  else this.setVisualState("glow-nochildren");
+
   tree.targetNode = this;
 
   tree.editedNode.panel.$activeSubpanel.find("#move-step3").css("display", "block");
@@ -796,7 +803,10 @@ Node.prototype.unsetTarget = function() {
   this.isTarget = false;
   // node.targetModeOver = false;
   // node.setVisualState(node.visualState, true, true);
-  if (!this.isInPath) this.setGlow(0);
+
+  // if (!this.isInPath) this.setGlow(0);
+  if (!this.isInPath) this.setVisualState("normal");
+
   tree.targetNode = null;
 }
 

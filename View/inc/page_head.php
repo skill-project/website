@@ -71,6 +71,7 @@
     <script src="js/User.js"></script>
     <script src="js/Tour.js"></script>
     <script src="js/Loader.js"></script>
+    <script src="js/FPSCounter.js"></script>
     <script src="js/script.js"></script>
     <?php else: ?>
     <script src="js/all.min.js"></script>

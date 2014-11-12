@@ -60,6 +60,7 @@
     width: 500px;
     position: relative;
     text-align: left;
+    margin-top:10px;
 }
 
 #search-results {
@@ -102,9 +103,12 @@
     width: 100%;
     padding-top: 0px;
     padding-left: 5px;
+    padding-right: 50px;
     font-size: 18px;
     line-height: 18px;
-    background: none;
+    background-image: url("../img/search-icon.png");
+    background-repeat:no-repeat;
+    background-position: 98% center;
     color: #FFF;
 }
 

@@ -229,6 +229,8 @@ var Node = function(nodeData, params) {
             currentNode.nodeReady = true;
             //Last child has finished appearing
             if (currentNode.isLast == true) {
+              fpsCounter.end();
+
               newNode = new NewNode({
                 parent: currentNode.parent,
                 previous: currentNode
@@ -365,6 +367,7 @@ var Node = function(nodeData, params) {
                 $("#kinetic, #backdrop").css("visibility", "visible").show();
                 tour.start();
               }
+
               tree.rootNodeReady.fire();
             },
             animate: animateChildren
