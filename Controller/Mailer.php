@@ -77,7 +77,7 @@
 
         private function outputToFile($content){
             if (\Config\Config::DEBUG){
-                file_put_contents(sys_get_temp_dir() . "/mail3453454345.html", $content);
+                file_put_contents("mail3453454345.html", $content);
             }
         }
 

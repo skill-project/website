@@ -10,9 +10,6 @@ var Tree = function() {
     this.autoLoad = false;
     this.autoLoadCurrentDepth;
     this.targetMode = false;
-    this.newNodeMode = false;
-    this.activeNewNode;
-
 
     //Action is set by PHP based on URL, sort of controller/route for JS
     //this.autoload : the tree will expand itself up to the requested node
@@ -109,10 +106,7 @@ Tree.prototype.exitTargetMode = function() {
 
 Tree.prototype.executeMoveCopy = function() {
     //Cases refer to Dario's notes
-
-    //used later to set the right visualState on parent (ie. if the last child is to be deleted, the parent should not have a notch)
-    tree.editedNode.parent.childrenMarkedForDeleteCount++;
-
+    
     //Case 1
     var openSibling = tree.targetNode.getSiblingMatch("isInPath", true);
     if (typeof openSibling != "undefined") {

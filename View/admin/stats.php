@@ -25,7 +25,7 @@
                 <th>Actions</th>
             </tr>
         <?php foreach($users as $user): ?>
-        <tr <?php if ($user->getApplicationStatus() === 2){ echo 'style="background-color: #89BEED"'; } ?>>
+        <tr>
             <td><?= $user->getUsername(); ?></td>
             <td><?= $user->getEmail(); ?></td>
             <td><?= $user->getRole(); ?></td>

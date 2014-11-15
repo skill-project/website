@@ -79,6 +79,27 @@ input {
     outline: 0;
 }
 
+#backdrop {
+    position:absolute;
+    /*width:1600px;*/
+    /*height:600px;*/
+    /*margin:auto;*/
+    /*border:1px solid gray;*/
+}
+
+#kinetic {
+    position:absolute;
+    /*width:1600px;*/
+    /*height:600px;*/
+    /*margin:auto;*/
+    /*border:1px solid gray;*/
+    visibility: hidden;
+}
+
+#preload {
+	visibility: hidden;
+}
+
 .clearfix {
     margin-top: 10px;
     clear: both;
@@ -111,8 +132,8 @@ input {
         border:none;
 
         .tourbus-leg-inner {
+            padding:10px;
             font-size: 14px;
-            line-height: 23px;
 
             h2,p {
                 color:white;
@@ -134,9 +155,6 @@ input {
 }
 /* end of jquery tourbus */
 
-/* panel */
-@import 'graph';
-/* end panel */
 /* panel */
 @import 'panel';
 /* end panel */

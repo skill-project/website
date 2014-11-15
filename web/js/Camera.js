@@ -22,10 +22,9 @@ var Camera = function() {
     // stage.on("wheel", function (event) {
         event.preventDefault();
         
-        if (tour.isActive == true || doTour == true) return;
+        if (tour.isActive == true || doTour == true) tour.actionOnTree("zoom");
 
         if ((that.scale <= 0.15 && event.deltaY < 0) || (that.scale >= 1.6 && event.deltaY > 0)) return;
-        // console.log(that.scale);
 
         var timeFromLastZoom = (new Date()).getTime() - camera.lastZoom;
 
@@ -42,15 +41,10 @@ var Camera = function() {
         var mx = evt.clientX - stage.x();
         var my = evt.clientY - stage.y() - $("#header").height();
         var zoom = (that.zoomFactor - (event.deltaY < 0 ? 0.02 : -0.02) * event.deltaFactor * zoomAcceleration);
-
-        //Strange condition we must catch in order to prevent the tree from turning upside down
-        if (zoom < 0) return;
-
         var newscale = that.scale * zoom;
 
         that.origin.x = mx / that.scale + that.origin.x - mx / newscale;
         that.origin.y = my / that.scale + that.origin.y - my / newscale;
-
 
         that.scale *= zoom;
 
@@ -132,8 +126,6 @@ var Camera = function() {
         var destX = (moveDirection == "x" || moveDirection == "xy") ? stage.width() / 2 - (params.x - nodesLayer.offsetX() + camera.panelOffset / 2) * that.scale : stage.x();
         var destY = (moveDirection == "y" || moveDirection == "xy") ? stage.height() / 2 - (params.y - nodesLayer.offsetY() + camera.footerOffset / 2) * that.scale : stage.y();
 
-        if (tree.newNodeMode === true) tree.activeNewNode.input.hide();
-
         var tweenX = new Kinetic.Tween({
           node: stage,
           y: destY,
@@ -151,14 +143,12 @@ var Camera = function() {
                 that.redrawStageInterval = null;
 
                 if (tour.isActive === true) tour.updateLegPositionsAfterCameraMove();
-                if (tree.newNodeMode === true) tree.activeNewNode.repositionInput();
               }
             });
             tweenY.play();
           }
         });
         tweenX.play();
-        
     }
 
     this.moveStageBy = function(params) {
@@ -366,6 +356,8 @@ var Camera = function() {
     //Sets up drag and move events for stage
     this.initDragEvents = function() {
         stage.on("dragstart", function(e) {
+            if (tour.isActive == true || doTour == true) tour.actionOnTree("drag");
+
             panStartCoords = stage.getPointerPosition();
             panLayerStartCoords = { x: camera.backLayer.x(), y: camera.backLayer.y() }
             panBackImageStartCoords = { x: 0, y: camera.backgroundImage.y() }
@@ -381,8 +373,6 @@ var Camera = function() {
           var smaller = distToTop < distToBottom ? distToTop : distToBottom;
 
           camera.backgroundImage.y(panBackImageStartCoords.y + (panDistanceY / (2000 / smaller)));
-
-          if (tree.newNodeMode === true) tree.activeNewNode.repositionInput();
 
           //If stars are not cached, we can animate their opacity based on "virtual altitude"
           // if (distToBottom < 480 && distToBottom > 384) {
@@ -423,13 +413,11 @@ var Camera = function() {
           //backLayer.y(backLayerOffset.y);
         });
 
-        if (typeof lowPerf === "undefined") {
-            $("#kinetic").mousemove(function (e) {
-                camera.backStars.x(Math.round((stage.getPointerPosition().x + camera.backStars.x()) /60));
-                camera.backStars.y(Math.round((stage.getPointerPosition().y + camera.backStars.y()) /60));
-                camera.backStars.batchDraw();
-            });
-        }
+        $("#kinetic").mousemove(function (e) {
+            camera.backStars.x(Math.round((stage.getPointerPosition().x + camera.backStars.x()) /60));
+            camera.backStars.y(Math.round((stage.getPointerPosition().y + camera.backStars.y()) /60));
+            camera.backStars.batchDraw();
+        });
 
         // stage.on("contentClick", function(e) {
         //     // e.cancelBubble = true;
@@ -560,15 +548,6 @@ Camera.prototype.resizeElements = function() {
     }
 
     camera.cacheInvisibleNodes();
-
-    if (tour.isActive === true) {
-        tour.overlay.css({
-            width: $(window).width(),
-            height: $("#kinetic").height()
-        });
-
-        //TODO : here we should reposition tour legs after resize
-    }
 }
 
 
@@ -593,17 +572,4 @@ Camera.prototype.checkIfPanelBlocksEditedNode = function() {
     if (blockedByPanel != false) {
       camera.moveStageBy({x: -blockedByPanel - 50, y:0 });
     }
-}
-
-
-Camera.prototype.setDefaultZoom = function(centerX, centerY) {
-    nodesLayer.offsetX(centerX);
-    nodesLayer.offsetY(centerY);
-    nodesLayer.scaleX(1);
-    nodesLayer.scaleY(1);
-    nodesLayer.batchDraw();
-
-    this.scale = 1;
-    this.origin.x = centerX;
-    this.origin.y = centerY;
 }

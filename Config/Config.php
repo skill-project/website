@@ -23,6 +23,4 @@
         const VANILLA_URL	= _VANILLA_URL;
 
         const GA_ACCOUNT = _GA_ACCOUNT;
-
-        const LOWPERF = _LOWPERF;
     }

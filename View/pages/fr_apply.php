@@ -2,7 +2,7 @@
     <div class="container">
         <img src="img/SKP-page-apply-illus.png" id="apply-illus" class="illus" />
         <h2>Devenir Éditeur</h2>
-        <p>Les Éditeurs sur Skill Project ont accès à toutes les fonctionnalités. Une fois que vous êtes Éditeur, vous pourrez effectuer toutes ces opérations sur l’ensemble des compétences et pas uniquement sur celles que vous avez créées depuis moins d'un jour :</p>
+        <p>Les Éditeurs sur Skill Project ont accès à toutes les fonctionnalités. Une fois que vous êtes Éditeur, vous pourrez effectuer toutes ces opérations sur l’ensemble des compétences et pas uniquement sur celles que vous avez créées depuis moins d’une heure :</p>
         <ul>
             <li>Ajouter une compétence en tant que parent d’une compétence existante</li>
             <li>Renommer une compétence existante</li>

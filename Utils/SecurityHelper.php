@@ -187,7 +187,7 @@
             //if user is the skill's creator, and the skill has been recently created
             //gives all rights also
             else if ($skillCreationInfo['creatorUuid'] == $user->getUuid() && 
-                    $skillCreationInfo['timestamp'] > (time() - 86400)){
+                    $skillCreationInfo['timestamp'] > (time() - 3600)){
                 $rights = $allRights;
             }
 

@@ -11,11 +11,8 @@ var Node = function(nodeData, params) {
   this.count = params.count;
   this.isLast = params.isLast;
   this.takePlaceOf = params.takePlaceOf ? params.takePlaceOf : null;
-  this.animate = typeof params.animate !== "undefined" ? params.animate : true;
   this.visualState = "normal";
   this.glow = 0;
-  this.invisibleChildrenCount = nodeData.childrenCount;
-  this.childrenMarkedForDeleteCount = 0;
   // this.targetModeOver = false;
   this.shapes;
   this.children = [];
@@ -39,7 +36,6 @@ var Node = function(nodeData, params) {
   this.text;
   this.sizes;
   this.freeSlots = [];
-  this.newNode;
 
   // Needed for nested functions
   var that = this;
@@ -107,16 +103,12 @@ var Node = function(nodeData, params) {
     
   } else {
     var targetModePrefix = (tree.targetMode == true) ? "-t" : "";
-
-    if (this.invisibleChildrenCount > 0) var imageRes = $("img#node-normal-children" + targetModePrefix)[0];
-    else var imageRes = $("img#node-normal" + targetModePrefix)[0];
-  
     var backImage = new Kinetic.Image({
       x:0,
       y:0,
       width:this.sizes.labelWidth + this.sizes.editButtonWidth,
       height:this.sizes.labelHeight,
-      image: imageRes
+      image: $("img#node-normal" + targetModePrefix)[0]
     });
     this.backImage = backImage;
 
@@ -173,8 +165,7 @@ var Node = function(nodeData, params) {
       this.midX = this.takePlaceOf.midX;
       this.midY = this.takePlaceOf.midY;
     }else {
-      var animate = this.animate;
-
+      var animate = true;
       //Final coordinates = each skill in its own place
       this.appearDestX = this.parent.shapes.x() + this.parent.sizes.midXOffset// + this.parent.shapes.getWidth() + this.sizes.horizontalGap;
 
@@ -212,59 +203,44 @@ var Node = function(nodeData, params) {
   //Chained animations of appearing nodes
   if (this.parent != null) {
     //Make this available on onFinish callback
-    var currentNode = this;
+    var newNode = this;
 
     var tween1 = new Kinetic.Tween({
       node: group, 
-      x: currentNode.midX,
-      y: currentNode.midY,
+      x: newNode.midX,
+      y: newNode.midY,
       duration: 0.05 + 0.10 * (this.rank / this.count),       // Animation speed for a single node is relative to node rank/position, first is fastest, etc.
       onFinish: function() {
         var tween2 = new Kinetic.Tween({
           node: group, 
-          x: currentNode.appearDestX,
-          y: currentNode.appearDestY,
-          duration: 0.05 + 0.10 * (currentNode.rank / currentNode.count),
+          x: newNode.appearDestX,
+          y: newNode.appearDestY,
+          duration: 0.05 + 0.10 * (newNode.rank / newNode.count),
           onFinish: function() {
-            currentNode.nodeReady = true;
+            newNode.nodeReady = true;
             //Last child has finished appearing
-            if (currentNode.isLast == true) {
-              fpsCounter.end();
-
-              newNode = new NewNode({
-                parent: currentNode.parent,
-                previous: currentNode
-              });
-
-              currentNode.parent.setChildrenSiblings();
-              currentNode.parent.invisibleChildrenCount = Object.keys(currentNode.parent.children).length;
+            if (newNode.isLast == true) {
+              newNode.parent.setChildrenSiblings();
               tree.busy = false;              //Releasing the tree-wide lock
-              if (currentNode.onComplete != null) {
-                currentNode.onComplete();
+              if (newNode.onComplete != null) {
+                newNode.onComplete();
               }
               tree.readyForNextLevel.fire();
             }
           }
         }); 
         if (animate == true) tween2.play();
-        else {
-          tween2.finish();
-        }
+        else tween2.finish();
       }
     });
     if (animate == true) tween1.play();
-    else {
-      tween1.finish();
-    }
+    else tween1.finish();
   }
 
   //Creating the edge / link with the parent node (except for the root node which has no parent)
   if (this.parent != null) {
     this.edge = new Edge(this.parent, this);
-  }
-
-  if (animate === false) {
-    stage.draw();
+    this.edge.shape.moveToBottom();
   }
 
   //Node events
@@ -345,34 +321,18 @@ var Node = function(nodeData, params) {
     this.editButton = editButton;
   }
 
+
   //Fire the rootNodeReady callback when the rootNode is ready
   if (this.parent == null) {
     if (tree.autoLoad == false) {
-
-      if (doTour === false) {
-        var duration = 500;
-        var animateChildren = true;
-        $("#kinetic, #backdrop").css("visibility", "visible").fadeIn({
-          duration: duration
-        });
-      }else {
-        duration = 0;
-        var animateChildren = false;
-      }
-
       setTimeout(function() {
           tree.rootNode.select().expand({
             onComplete: function() {
-              if (typeof doTour != "undefined" && doTour == true) {
-                $("#kinetic, #backdrop").css("visibility", "visible").show();
-                tour.start();
-              }
-
+              if (typeof doTour != "undefined" && doTour == true) tour.start();
               tree.rootNodeReady.fire();
-            },
-            animate: animateChildren
+            }
           });
-        }, duration);
+        }, 700);
     } else {
       tree.rootNodeReady.fire();
     }

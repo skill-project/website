@@ -144,25 +144,25 @@ var Panel = function(node, initParams) {
                         data: $("#create-skill-form").serialize(),
                         
                     }).done( function(response){
-                        if (response.status == "ok"){
-                            $("#create-skillName").val("");
-                            that.showMessage(response.message);
+                            if (response.status == "ok"){
+                                $("#create-skillName").val("");
+                                that.showMessage(response.message);
 
-                            ga("send", "event", "nodeCreate", response.data.name);
-                            
-                            var creationType = $(subPanel).find("#creationType").val();
-                            if (creationType == "child") {
-                                tree.editedNode.createNewChild(response.data);
-                            } else if (creationType == "parent") { 
-                                $("#creationTypeParent").data("parentuuid", response.data.uuid);
-                                $("#skillParentUuid").val(response.data.uuid);
-                                tree.editedNode.createNewParent(response.data)
+                                ga("send", "event", "nodeCreate", response.data.name);
+                                
+                                var creationType = $(subPanel).find("#creationType").val();
+                                if (creationType == "child") {
+                                    tree.editedNode.createNewChild(response.data);
+                                } else if (creationType == "parent") { 
+                                    $("#creationTypeParent").data("parentuuid", response.data.uuid);
+                                    $("#skillParentUuid").val(response.data.uuid);
+                                    tree.editedNode.createNewParent(response.data)
+                                }
                             }
-                        }
-                        else {
-                            that.showErrors(response);
-                        }
-                    });
+                            else {
+                                that.showErrors(response);
+                            }
+                        });
                 });
                 break;
             case "move-skill-panel":

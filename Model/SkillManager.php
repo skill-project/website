@@ -41,9 +41,9 @@
          * @return mixed Array if success, false otherwise
          */
         public function findChildren($uuid){
-            $cyp = "MATCH (parent:Skill)-[:HAS]->(s:Skill)-[:HAS*0..1]->(children:Skill) 
+            $cyp = "MATCH (parent:Skill)-[:HAS]->(s:Skill) 
                         WHERE parent.uuid = {uuid}
-                        RETURN s, count(children)-1 as childrenCount ORDER BY s.created ASC LIMIT 40";
+                        RETURN s ORDER BY s.created ASC LIMIT 40";
             $query = new Query($this->client, $cyp, array(
                 "uuid" => $uuid)
             );
@@ -52,7 +52,6 @@
                 $data = array();
                 foreach ($resultSet as $row) {
                     $skill = new Skill( $row['s'] );
-                    $skill->setChildrenCount( $row['childrenCount'] );
                     $data[] = $skill->getJsonData();
                 }
                 return $data;

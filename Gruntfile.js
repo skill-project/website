@@ -34,7 +34,6 @@ module.exports = function(grunt) {
                     'web/js/Site.js',
                     'web/js/Node.js',
                     'web/js/Node.prototypes.js',
-                    'web/js/NewNode.js',
                     'web/js/Edge.js',
                     'web/js/Tree.js',
                     'web/js/Panel.js',
@@ -43,7 +42,6 @@ module.exports = function(grunt) {
                     'web/js/User.js',
                     'web/js/Tour.js',
                     'web/js/Loader.js',
-                    'web/js/FPSCounter.js',
                     'web/js/script.js'
                 ],
                 dest : 'web/js/all.js',

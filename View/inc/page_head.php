@@ -2,7 +2,6 @@
     <title><?php echo $title; ?></title>
     <meta name="description" content="Explore all the human skills. Map them out.">
     <base href="<?= $GLOBALS['base_url'] ?>/" />
-    <meta name="viewport" content="width=1050">
     <link rel="shortcut icon" href="img/favicon.png">
 <?php if (\Config\Config::DEBUG): ?>
     <link href="css/all.css" type="text/css" rel="stylesheet" />
@@ -13,11 +12,7 @@
         var baseUrl="<?= $GLOBALS['base_url'] ?>/";
         <?php 
             $gaAccount = \Config\Config::GA_ACCOUNT;
-            echo "var gaC = '$gaAccount';\n"; 
-
-            if (\Config\Config::LOWPERF === true) {
-                echo "var lowPerf = true;\n";
-            }
+            echo "var gaC = '$gaAccount'\n"; 
 
             if (!empty($rootNode)) {
                 echo "var rootNodeId='" . $rootNode->getUuid() . "';\n";
@@ -25,7 +20,7 @@
                 else $action = "";
 
                 if (!empty($jsonAutoLoad)) echo "var jsonAutoLoad=" . $jsonAutoLoad . ";\n";
-                if (empty($_SESSION["tourDone"]) and $action != "goto" or (isset($_GET["tour"]) && $_GET["tour"] == 1)) {
+                if (empty($_SESSION["tourDone"]) and $action != "goto") {
                     $_SESSION["tourDone"] = true;
                     echo "var doTour = true;\n";
                 }else {
@@ -62,7 +57,6 @@
     <script src="js/Site.js"></script>
     <script src="js/Node.js"></script>
     <script src="js/Node.prototypes.js"></script>
-    <script src="js/NewNode.js"></script>
     <script src="js/Edge.js"></script>
     <script src="js/Tree.js"></script>
     <script src="js/Panel.js"></script>
@@ -71,7 +65,6 @@
     <script src="js/User.js"></script>
     <script src="js/Tour.js"></script>
     <script src="js/Loader.js"></script>
-    <script src="js/FPSCounter.js"></script>
     <script src="js/script.js"></script>
     <?php else: ?>
     <script src="js/all.min.js"></script>

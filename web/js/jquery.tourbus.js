@@ -169,11 +169,10 @@
       if (!this.running) {
         return;
       }
-      this.running = false;
       $.each(this.legs, $.proxy(this.hideLeg, this));
       this.currentLegIndex = null;
       this.options.onStop(this);
-      return this.running;
+      return this.running = false;
     };
 
     Bus.prototype.on = function(event, selector, fn) {

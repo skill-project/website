@@ -28,7 +28,6 @@ if (skillWalk === true) {
   var search = new Search;
   var tour = new Tour;  
   var loader = new Loader;
-  var fpsCounter = new FPSCounter;
 }
 
 var user = new User;
@@ -55,18 +54,14 @@ $(document).ready(function () {
       doResize = setTimeout(camera.resizeElements, 300);
     });
 
-
-    // $("#debug").show();
     // setInterval(function() {
-    //   $("#debug").empty();
-    //   $("#debug").append("Current FPS : " + fpsCounter.currentFPS);
-      
-    //   if (tree.selectedNode) $("#debug").append("selectedNode : " + tree.selectedNode.name + "<br />");
-    //   if (tree.editedNode) $("#debug").append("editedNode : " + tree.editedNode.name + "<br />");
+    //   // $("#debug").empty();
+    //   // if (tree.selectedNode) $("#debug").append("selectedNode : " + tree.selectedNode.name + "<br />");
+    //   // if (tree.editedNode) $("#debug").append("editedNode : " + tree.editedNode.name + "<br />");
 
-    //   if (typeof tree.selectedNode == "undefined") $("#debug").css({"background-color": "red"});
-    //   else $("#debug").css({"background-color": "white"});
-    //   camera.drawZone(camera.getSecurityZone(camera.defaultSecurityZoneFactor));
+    //   // if (typeof tree.selectedNode == "undefined") $("#debug").css({"background-color": "red"});
+    //   // else $("#debug").css({"background-color": "white"});
+    //   // camera.drawZone(camera.getSecurityZone(camera.defaultSecurityZoneFactor));
     // },200);
   }
 });
@@ -78,12 +73,10 @@ $(window).load(function  () {
       container: 'kinetic',
       width: $("#kinetic").width(),
       height: $("#kinetic").height(),
+      draggable: true,
       dragDistance: 10,
       fill: "black"
     });
-
-    if (tour.isActive == true || doTour == true) stage.draggable(false);
-    else stage.draggable(true);
 
     //Initialize drag and mousemove events
     camera.initDragEvents();
@@ -94,7 +87,7 @@ $(window).load(function  () {
  
     //Main layer, it contains everything
     nodesLayer = new Kinetic.Layer();
-
+    
     // Konami code, sort of
     // var anim = new Kinetic.Animation(function(frame) {
     //   nodesLayer.rotation(frame.time / 150);
@@ -113,6 +106,11 @@ $(window).load(function  () {
     });
 
     nodesLayer.add(camera.dummyShape);
+
+    //Fadein effect on canvas objects (sky and nodes)
+    $("#kinetic, #backdrop").css("visibility", "visible").fadeIn({
+      duration: 800
+    });
 
     //global ajax handling
     //before ajax
