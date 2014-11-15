@@ -345,6 +345,9 @@
                         name: {name},
                         slug: {slug},
                         depth: {depth},
+                        capIdealMax: {capIdealMax},
+                        capAlert: {capAlert},
+                        capNoMore: {capNoMore},
                         created: {now},
                         modified: {now} 
                         **trans**
@@ -360,7 +363,10 @@
                     "slug" => $skill->getSlug(),
                     "depth" => $skill->getDepth(),
                     "userUuid" => $userUuid,
-                    "parentUuid" => $skillParentUuid
+                    "parentUuid" => $skillParentUuid,
+                    "capIdealMax" => $skill->getCapIdealMax(),
+                    "capAlert" => $skill->getCapAlert(),
+                    "capNoMore" => $skill->getCapNoMore()
                 );
 
             //dynamic shit for translations
@@ -393,6 +399,9 @@
                     SET skill.name = {name},
                         skill.slug = {slug},
                         skill.depth = {depth},
+                        skill.capIdealMax= {capIdealMax},
+                        skill.capAlert= {capAlert},
+                        skill.capNoMore= {capNoMore},
                         skill.modified = {now}
                         **trans**
                     CREATE (skill)<-[:MODIFIED {
@@ -405,6 +414,9 @@
                     "name" => $skill->getName(),
                     "slug" => $skill->getSlug(),
                     "depth" => $skill->getDepth(),
+                    "capIdealMax" => $skill->getCapIdealMax(),
+                    "capAlert" => $skill->getCapAlert(),
+                    "capNoMore" => $skill->getCapNoMore(),
                     "userUuid" => $userUuid,
                     "fromName" => $previousName
                 );

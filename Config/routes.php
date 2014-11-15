@@ -344,6 +344,15 @@
         )
     );
 
+
+    $routes->add(
+        'skillSettings',
+        new Route('/api/skillSettings/', 
+            array('controller' => 'Api', 'action' => 'skillSettings'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
     $routes->add(
         'moveSkill',
         new Route('/api/moveSkill/', 

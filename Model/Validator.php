@@ -134,11 +134,34 @@
             return true;
         }
 
-        public function validateNumChild($parentSkillUuid){
+        public function validateNumChild(Skill $parentSkill){
             $skillManager = new \Model\SkillManager();
-            $numChild = $skillManager->countChildren($parentSkillUuid);
-            if ($numChild >= \Config\Config::MAX_CHILD){
+            $numChild = $skillManager->countChildren($parentSkill->getUuid());
+            if ($numChild >= $parentSkill->getCapNoMore()){
                 $this->addError("create-skillName", _("Too many children!"));
+            }
+        }
+
+        /*
+        IDEALMAX : doit être inférieur à ALERT
+        ALERT : supérieur à IDEALMAX et inférieur à NOMORE-3
+        NOMORE : supérieur à ALERT et inférieur à ABSOLUTEMAX
+        */
+        public function validateCaps(Skill $skill){
+            if ($skill->getCapIdealMax() >= $skill->getCapAlert()){
+                $this->addError("capIdealMax", _("Ideal Max Cap must be lower than Alert Cap!"));
+            }
+            if ($skill->getCapAlert() <= $skill->getCapIdealMax()){
+                $this->addError("capAlert", _("Alert Cap must be higher than Ideal Max Cap!"));
+            }
+            if ($skill->getCapAlert() >= ($skill->getCapNoMore() -3 )){
+                $this->addError("capAlert", _("Alert Cap must allow at max 3 children less than No More Cap!"));
+            }
+            if ($skill->getCapNoMore() <= $skill->getCapAlert()){
+                $this->addError("capNoMore", _("No More Cap must be higher than Alert Cap!"));
+            }
+            if ($skill->getCapNoMore() > \Config\Config::CAP_MAX_CHILD){
+                $this->addError("capNoMore", _("No More Cap must be lower or equal to ".\Config\Config::CAP_MAX_CHILD."!"));
             }
         }
 

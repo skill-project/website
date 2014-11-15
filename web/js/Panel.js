@@ -218,6 +218,24 @@ var Panel = function(node, initParams) {
                         });
                     });
                 break;
+            case "skill-settings-panel":
+                $("#skill-settings-form").on("submit", function(e){
+                    e.preventDefault();
+                    
+                    $.ajax({
+                        url: $("#skill-settings-form").attr("action"),
+                        type: $("#skill-settings-form").attr("method"),
+                        data: $("#skill-settings-form").serialize()
+                    }).done( function(response){
+                            if (response.status == "ok"){
+                                ga("send", "event", "settingsChanged", tree.editedNode.name);
+                            }
+                            else {
+                                that.showErrors(response);
+                            }
+                        });
+                    });
+                break;
             case "delete-skill-panel":
                 $("#delete-skill-form-submit").hide();
                 $('input[name=sureToDelete]').on("change", function(){

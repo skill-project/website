@@ -4,6 +4,7 @@
 
     use \Everyman\Neo4j\Node;
     use \Cocur\Slugify\Slugify;
+    use \Config\Config;
 
     class Skill extends Entity {
 
@@ -11,6 +12,9 @@
         protected $name;
         protected $depth;
         protected $slug;
+        protected $capIdealMax ;
+        protected $capAlert;
+        protected $capNoMore;
 
         protected $translations = array();
         
@@ -20,6 +24,11 @@
 
         public function __construct(Node $node = null){
             parent::__construct();
+
+            $this->setCapIdealMax(Config::CAP_IDEAL_MAX);
+            $this->setCapAlert(Config::CAP_ALERT);
+            $this->setCapNoMore(Config::CAP_NO_MORE);
+
             if ($node){
                 $this->setNode($node);
                 $this->hydrateFromNode();
@@ -72,7 +81,10 @@
                     "slug" => $this->slug,
                     "uuid" => $this->uuid,
                     "name" => $this->name,
-                    "depth" => $this->depth
+                    "depth" => $this->depth,
+                    "capIdealMax" => $this->capIdealMax,
+                    "capAlert" => $this->capAlert,
+                    "capNoMore" => $this->capNoMore
             );
 
             foreach($this->getTranslations() as $code => $name){
@@ -116,7 +128,10 @@
                 "slug" => $this->slug,
                 "depth" => $this->depth,
                 "childrenCount" => $this->childrenCount,
-                "translations" => $translations
+                "translations" => $translations,
+                "capIdealMax" => $this->capIdealMax,
+                "capAlert" => $this->capAlert,
+                "capNoMore" => $this->capNoMore
             );
             return $data;
         }
@@ -275,6 +290,86 @@
             $owner = $skillManager->getSkillOwner($this->getUuid());
 
             return $owner;
+        }
+
+        /**
+         * Gets the value of capIdealMax.
+         *
+         * @return mixed
+         */
+        public function getCapIdealMax()
+        {
+            return $this->capIdealMax;
+        }
+
+        /**
+         * Sets the value of capIdealMax.
+         *
+         * @param mixed $capIdealMax the capIdealMax
+         *
+         * @return self
+         */
+        public function setCapIdealMax($capIdealMax)
+        {
+            $this->capIdealMax = $capIdealMax;
+            if (!empty($this->getNode())){
+                $this->getNode()->setProperty('capIdealMax', $this->capIdealMax);
+            }
+            return $this;
+        }
+
+
+        /**
+         * Gets the value of capAlert.
+         *
+         * @return mixed
+         */
+        public function getCapAlert()
+        {
+            return $this->capAlert;
+        }
+
+        /**
+         * Sets the value of capAlert.
+         *
+         * @param mixed $capAlert the capAlert
+         *
+         * @return self
+         */
+        public function setCapAlert($capAlert)
+        {
+            $this->capAlert = $capAlert;
+            if (!empty($this->getNode())){
+                $this->getNode()->setProperty('capAlert', $this->capAlert);
+            }
+            return $this;
+        }
+
+
+        /**
+         * Gets the value of capNoMore.
+         *
+         * @return mixed
+         */
+        public function getCapNoMore()
+        {
+            return $this->capNoMore;
+        }
+
+        /**
+         * Sets the value of capNoMore.
+         *
+         * @param mixed $capNoMore the capNoMore
+         *
+         * @return self
+         */
+        public function setCapNoMore($capNoMore)
+        {
+            $this->capNoMore = $capNoMore;
+            if (!empty($this->getNode())){
+                $this->getNode()->setProperty('capNoMore', $this->capNoMore);
+            }
+            return $this;
         }
         
     }

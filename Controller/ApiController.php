@@ -230,6 +230,7 @@
                 $newParentUuid = $_POST['destinationUuid'];
                 $type = $_POST['moveType'];
                 $skill = $skillManager->findByUuid($skillUuid);
+                $newParent = $skillManager->findByUuid($newParentUuid);
                 
                 //retrieve current user uuid
                 $userUuid = SH::getUser()->getUuid();
@@ -238,7 +239,7 @@
                 $validator->validateSkillUuid($skillUuid);
                 $validator->validateSkillUuid($newParentUuid);
                 $validator->validateUniqueChild($newParentUuid, $skill->getName());
-                $validator->validateNumChild($newParentUuid);
+                $validator->validateNumChild($newParent);
 
                 if ($validator->isValid()){
 
@@ -482,7 +483,7 @@
                 //if creating as child, check children number 
                 //(do not check at all when creating as parent)
                 if ($selectedSkillUuid == $skillParentUuid){
-                    $validator->validateNumChild($skillParentUuid);
+                    $validator->validateNumChild($parentSkill);
                 }
                 
                 if ($validator->isValid() && $parentSkill){
@@ -644,6 +645,58 @@
             $mailer = new Mailer();
 
             $mailer->sendDiscussNotifications($recipients, $discussionData);
+        }
+
+
+        /**
+         * Edit skill children caps
+         */
+        public function skillSettingsAction(){
+
+            SH::lock("admin");
+            SH::checkUsage(40);
+            //lock is down there
+
+            if (!empty($_POST)){
+
+                $capIdealMax = $_POST['capIdealMax'];
+                $capAlert = $_POST['capAlert'];
+                $capNoMore = $_POST['capNoMore'];
+                $skillUuid = $_POST['skillUuid'];
+                
+                $skillManager = new SkillManager();
+                $skill = $skillManager->findByUuid($skillUuid);
+
+                if (!$skill){
+                    SH::forbid();
+                }
+
+                $skill->setCapIdealMax($capIdealMax);
+                $skill->setCapAlert($capAlert);
+                $skill->setCapNoMore($capNoMore);
+
+                $validator = new \Model\Validator();
+                $validator->validateCaps($skill);
+
+                if ($validator->isValid()){
+
+                    $user = SH::getUser();
+
+                    $skillManager->update($skill, $user->getUuid());
+
+                    //reload skill
+                    $skill = $skillManager->findByUuid($skill->getUuid());
+
+                    $json = new \Model\JsonResponse("ok", _("Skill saved!"));
+                    $json->setData($skill->getJsonData());
+                    $json->send();
+                }
+                else {
+                    $json = new \Model\JsonResponse("error", _("Something went wrong."));
+                    $json->setData($validator->getErrors());
+                    $json->send(); 
+                }
+            }
         }
 
     }

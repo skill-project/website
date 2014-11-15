@@ -123,7 +123,7 @@
                         WHERE child_num = {max_child}
                         RETURN s
                         ORDER BY s.created ASC";
-            $query = new Query($this->client, $cyp, array("max_child" => \Config\Config::MAX_CHILD));
+            $query = new Query($this->client, $cyp, array("max_child" => \Config\Config::CAP_MAX_CHILD));
             $resultSet = $query->getResultSet();
             if ($resultSet->count() > 0){
                 $data = array();

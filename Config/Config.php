@@ -14,7 +14,10 @@
         
         const DEBUG         = _DEBUG;
 
-        const MAX_CHILD     = 10;
+        const CAP_IDEAL_MAX     = 8;
+        const CAP_ALERT         = 12;
+        const CAP_NO_MORE       = 16;
+        const CAP_MAX_CHILD     = 25;
 
         const MANDRILL_KEY  = 'glIy6VMjJB5qi32A1a5qSg';
 
