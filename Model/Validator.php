@@ -15,7 +15,7 @@
             elseif (strlen($username) < 3 || strlen($username) > 50){
                 $this->addError("username", _("Your username must be between 3 and 50 caracters long."));
             }
-            elseif ( !preg_match("#^[A-Za-z0-9_-]{3,50}$#", $username) ){
+            elseif ( !preg_match("#^[0-9\p{L}_-]{3,50}$#ui", $username) ){
                 $this->addError("username", _("Your username must only contains letters, numbers and/or _-"));
             }
         }
@@ -52,7 +52,7 @@
             $emailValid = true;
             if (empty($loginUsername)
                     || strlen($loginUsername) < 3 || strlen($loginUsername) > 50 
-                    || !preg_match("#^[A-Za-z0-9_.-]{3,50}$#", $loginUsername) 
+                    || !preg_match("#^[0-9\p{L}_-]{3,50}$#ui", $loginUsername) 
 
                 ){
                 $usernameValid = false;
