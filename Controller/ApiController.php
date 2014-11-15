@@ -472,6 +472,7 @@
                 //retrieve parent skill
                 $skillManager = new SkillManager();
                 $parentSkill = $skillManager->findByUuid( $skillParentUuid );
+                $parentSkill->setChildrenCount( $skillManager->countChildren($parentSkill->getUuid()) );
 
                 //validation
                 $validator = new \Model\Validator();
@@ -564,12 +565,18 @@
                     $skill = $skillManager->findByUuid($skill->getUuid());
 
                     $json = new \Model\JsonResponse("ok", _("Skill saved!"));
-                    $json->setData($skill->getJsonData());
+                    $data = array();
+                    $data['skill'] = $skill->getJsonData();
+                    $data['parent'] = $parentSkill->getJsonData();
+                    $json->setData($data);
                     $json->send();
                 }
                 else {
                     $json = new \Model\JsonResponse("error", _("Something went wrong."));
-                    $json->setData($validator->getErrors());
+                    $data = array();
+                    $data['errors'] = $validator->getErrors();
+                    $data['parent'] = $parentSkill->getJsonData();
+                    $json->setData($data);
                     $json->send();
                 }
             }
