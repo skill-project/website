@@ -8,13 +8,18 @@ module.exports = function(grunt) {
                 },
                 files: {                                            // Dictionary of files
                     'web/css/all.css': 'web/css/scss/style.scss',       // 'destination': 'source'
+                    'web/css/editor.css': 'web/css/scss/editor.scss'
                 }
             }
         },
         cssmin : {
-            css:{
+            main:{
                 src: 'web/css/all.css',
                 dest: 'web/css/all.min.css'
+            },
+            editor:{
+              src: 'web/css/editor.css',
+              dest: 'web/css/editor.min.css'  
             }
         },
         concat: {
@@ -72,5 +77,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.registerTask('default', [ 'sass', 'cssmin:css', 'concat:js', 'uglify:js' ]);
+    grunt.registerTask('default', [ 'sass', 'cssmin:main', 'cssmin:editor', 'concat:js', 'uglify:js' ]);
 };
