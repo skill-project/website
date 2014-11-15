@@ -231,6 +231,7 @@
                 $type = $_POST['moveType'];
                 $skill = $skillManager->findByUuid($skillUuid);
                 $newParent = $skillManager->findByUuid($newParentUuid);
+                $newParent->setChildrenCount( $skillManager->countChildren($newParent->getUuid()) );
                 
                 //retrieve current user uuid
                 $userUuid = SH::getUser()->getUuid();
@@ -251,6 +252,10 @@
                             $skillManager->updateAllDepths();
 
                             $json = new \Model\JsonResponse("ok", _("Skill moved!"));
+                            $data = array();
+                            $data['skill'] = $skill->getJsonData();
+                            $data['parent'] = $newParent->getJsonData();
+                            $json->setData($data);
 
                             $this->warn("moved", $skill, array(
                                 "newParent" => $newParentUuid
@@ -261,13 +266,21 @@
                         case "copy":
                             $result = $skillManager->copy($skillUuid, $newParentUuid, $userUuid);
                             $json = new \Model\JsonResponse("ok", _("Skill copied!"));
+                            $data = array();
+                            $data['skill'] = $skill->getJsonData();
+                            $data['parent'] = $newParent->getJsonData();
+                            $json->setData($data);
                             break;
                     }
                         
                 }
                 else {
                     $json = new \Model\JsonResponse("error", _("Something went wrong."));
-                    $json->setData($validator->getErrors());
+                    $data = array();
+                    $data['skill'] = $skill->getJsonData();
+                    $data['errors'] = $validator->getErrors();
+                    $data['parent'] = $newParent->getJsonData();
+                    $json->setData($data);
                 }
             }        
             $json->send();
