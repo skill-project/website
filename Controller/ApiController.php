@@ -650,6 +650,7 @@
 
         /**
          * Edit skill children caps
+         * !! If we add more settings, watch out below for the updateCaps() call
          */
         public function skillSettingsAction(){
 
@@ -682,7 +683,8 @@
 
                     $user = SH::getUser();
 
-                    $skillManager->update($skill, $user->getUuid());
+                    //watch out, update caps only
+                    $skillManager->updateCaps($skill, $user->getUuid());
 
                     //reload skill
                     $skill = $skillManager->findByUuid($skill->getUuid());

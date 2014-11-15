@@ -333,6 +333,8 @@
          */
         public function save(Skill $skill, $skillParentUuid, $userUuid){
 
+
+            //intentionnally not saving caps, as they are not added at skill creation
             $cyp = "MATCH 
                     (parent:Skill {uuid: {parentUuid}}), 
                     (user:User {uuid: {userUuid}})
@@ -345,9 +347,6 @@
                         name: {name},
                         slug: {slug},
                         depth: {depth},
-                        capIdealMax: {capIdealMax},
-                        capAlert: {capAlert},
-                        capNoMore: {capNoMore},
                         created: {now},
                         modified: {now} 
                         **trans**
@@ -364,9 +363,6 @@
                     "depth" => $skill->getDepth(),
                     "userUuid" => $userUuid,
                     "parentUuid" => $skillParentUuid,
-                    "capIdealMax" => $skill->getCapIdealMax(),
-                    "capAlert" => $skill->getCapAlert(),
-                    "capNoMore" => $skill->getCapNoMore()
                 );
 
             //dynamic shit for translations
@@ -399,9 +395,6 @@
                     SET skill.name = {name},
                         skill.slug = {slug},
                         skill.depth = {depth},
-                        skill.capIdealMax= {capIdealMax},
-                        skill.capAlert= {capAlert},
-                        skill.capNoMore= {capNoMore},
                         skill.modified = {now}
                         **trans**
                     CREATE (skill)<-[:MODIFIED {
@@ -414,9 +407,6 @@
                     "name" => $skill->getName(),
                     "slug" => $skill->getSlug(),
                     "depth" => $skill->getDepth(),
-                    "capIdealMax" => $skill->getCapIdealMax(),
-                    "capAlert" => $skill->getCapAlert(),
-                    "capNoMore" => $skill->getCapNoMore(),
                     "userUuid" => $userUuid,
                     "fromName" => $previousName
                 );
@@ -430,12 +420,36 @@
             }
             $cyp = str_replace("**trans**", $transString, $cyp);
 
-/*
-            echo $cyp;
-            echo "\r\n";
-            print_r($namedParams);
-            die();
-*/
+            $query = new Query($this->client, $cyp, $namedParams);
+            $resultSet = $query->getResultSet();
+
+            return true;
+        }
+
+
+        /**
+         * Update an existing skill children caps
+         */
+        public function updateCaps(Skill $skill, $userUuid){
+
+            $cyp = "MATCH (skill:Skill {uuid:{skillUuid}}), (user:User {uuid: {userUuid}})
+                    SET skill.capIdealMax= {capIdealMax},
+                        skill.capAlert= {capAlert},
+                        skill.capNoMore= {capNoMore},
+                        skill.modified = {now}
+                    CREATE (skill)<-[:MODIFIED {
+                        timestamp: {now}
+                    }]-(user)";
+
+            $namedParams = array(
+                    "now" => time(),
+                    "skillUuid" => $skill->getUuid(),
+                    "capIdealMax" => $skill->getCapIdealMax(),
+                    "capAlert" => $skill->getCapAlert(),
+                    "capNoMore" => $skill->getCapNoMore(),
+                    "userUuid" => $userUuid
+                );
+
             $query = new Query($this->client, $cyp, $namedParams);
             $resultSet = $query->getResultSet();
 
