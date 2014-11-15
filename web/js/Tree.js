@@ -20,6 +20,7 @@ var Tree = function() {
         //Starting autoload
         if (tree.autoLoad == true) {
             ga("send", "event", "gotoSkill");
+            $("#kinetic, #backdrop").css("visibility", "visible").fadeIn({duration: 500});
             tree.autoLoadCurrentDepth = 0;
             tree.readyForNextLevel.fire();
         }
@@ -106,7 +107,10 @@ Tree.prototype.exitTargetMode = function() {
 
 Tree.prototype.executeMoveCopy = function() {
     //Cases refer to Dario's notes
-    
+
+    //used later to set the right visualState on parent (ie. if the last child is to be deleted, the parent should not have a notch)
+    tree.editedNode.parent.childrenMarkedForDeleteCount++;
+
     //Case 1
     var openSibling = tree.targetNode.getSiblingMatch("isInPath", true);
     if (typeof openSibling != "undefined") {

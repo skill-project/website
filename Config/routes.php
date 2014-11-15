@@ -240,6 +240,15 @@
         )
     );
 
+
+    $routes->add(
+        'deleteAccount',
+        new Route('/delete-account/{csrfToken}/', 
+            array('controller' => 'User', 'action' => 'deleteAccount'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
     $routes->add(
         'deletePicture',
         new Route('/delete-picture/', 
@@ -381,6 +390,15 @@
         'setAsEditor',
         new Route('/admin/set-as-editor/{uuid}/', 
             array('controller' => 'Admin', 'action' => 'setAsEditor'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
+
+    $routes->add(
+        'deactivateAccount',
+        new Route('/admin/deactivate-account/{uuid}/', 
+            array('controller' => 'Admin', 'action' => 'deactivateAccount'), array(), array(), 
             '{lang}.'.Config::DOMAIN
         )
     );

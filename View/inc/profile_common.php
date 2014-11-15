@@ -23,8 +23,16 @@
                         <?= date(_("Y-m-d"), $profileUser->getDateCreated()); ?>
                     </p>
                     <p>
-                        <?= strtoupper(\Utils\SecurityHelper::encode($profileUser->getRole())); ?>
+                        <?= strtoupper(\Utils\SecurityHelper::encode($profileUser->getRole(true))); ?>
                     </p>
                 </div>
             </div>
+            <br />
+            <?php
+            //own profile ?
+            $loggedUser = \Utils\SecurityHelper::getUser();
+            if ($loggedUser && $profileUser->getUsername() == $loggedUser->getUsername() && $pageName != "profile"):
+            ?>
+            <a href="<?= \Controller\Router::url("profile", array("username" => $loggedUser->getUsername())) ?>" title="<?= _("Edit your profile"); ?>"><b><?= _("Edit your profile"); ?></b></a>
+            <?php endif; ?>
         </div>

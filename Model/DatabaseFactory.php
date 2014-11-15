@@ -6,6 +6,13 @@
 
     class DatabaseFactory {
 
+        //**************
+        /*
+            If some requests fails strangely, it might be a good option to throw away the singleton used here
+            see -> goToAction in MainController
+        */
+        //**************
+
         private static $client;
 
         /**

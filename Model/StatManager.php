@@ -109,4 +109,32 @@
             die();
         }
 
+
+
+
+        /**
+         * Retrieve all nodes with max num child
+         * @param int depth
+         * @return array
+         */
+        public function getMaxedSkills(){
+            $cyp = "MATCH (s:Skill)-[:HAS]->(c:Skill)
+                        WITH s, COUNT(c) AS child_num
+                        WHERE child_num = {max_child}
+                        RETURN s
+                        ORDER BY s.created ASC";
+            $query = new Query($this->client, $cyp, array("max_child" => \Config\Config::MAX_CHILD));
+            $resultSet = $query->getResultSet();
+            if ($resultSet->count() > 0){
+                $data = array();
+                foreach ($resultSet as $row) {
+                    $skill = new Skill( $row['s'] );
+                    $data[] = $skill;
+                }
+                return $data;
+            }
+            return false;
+        }
+
+
     }

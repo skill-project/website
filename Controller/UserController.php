@@ -126,6 +126,8 @@
                     $user->setRole( "user" );
                     $user->setSalt( SH::randomString() );
                     $user->setToken( SH::randomString() );
+                    $user->setSiteLanguage( $GLOBALS['lang'] );
+                    $user->setActive( true );
 
                     $hashedPassword = $securityHelper->hashPassword( $password, $user->getSalt() );
                     
@@ -146,7 +148,7 @@
                     $this->logUser($user);
                     $this->logUser($user);
                     $json = new \Model\JsonResponse();
-                    $json->setData(array("redirectTo" => Router::url('profile', array("username" => $user->getUsername()), true)));
+                    $json->setData(array("redirectTo" => Router::url('graph', array(), true)));
                     $json->send();
 
                 }
@@ -320,20 +322,20 @@
         }
 
         /**
-         * Show the profile
+         * Show the profile (public)
          */
         public function viewProfileAction($username){
             $userManager = new UserManager();
             $securityHelper = new SH();
 
             $profileUser = $userManager->findByUsername($username);
+            if (!$profileUser){
+                Router::fourofour(_("This user never was born, or vanished."));
+            }
 
             $skillManager = new SkillManager();
             $latestActivity = $skillManager->getLatestActivity($profileUser);
 
-            if (!$profileUser){
-                Router::fourofour(_("This user never was born, or vanished."));
-            }
             $params = array();
             $params['latestActivity'] = $latestActivity;
 
@@ -347,7 +349,7 @@
         }
 
         /**
-         * Show the profile
+         * Show the profile edit page
          */
         public function profileAction($username, $withPassword = false){
 
@@ -464,6 +466,10 @@
 
             $usernameEncoded = SH::encode($username);
             $params['title'] = sprintf(_("%s's Profile"), $usernameEncoded);
+
+            //csrf token for delete account link
+            $params['csrfToken'] = SH::setNewCsrfToken();
+
             $view = new View("profile.php", $params);
             
             $view->send();
@@ -580,5 +586,23 @@
             WriteJsConnect($user, $_GET, $clientID, $secret, $secure);
 
         } 
+
+
+        public function deleteAccountAction($csrfToken){
+            
+            $userManager = new UserManager();
+            $securityHelper = new SH();
+
+            $user = $securityHelper->getUser();
+            if (!$user || !SH::checkCsrfToken($csrfToken)){
+                SH::forbid();
+            }
+
+            $user->setActive(false);
+            $userManager->update($user);
+
+            Router::redirect(Router::url("logout"));
+
+        }
 
     }

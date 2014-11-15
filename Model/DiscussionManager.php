@@ -55,10 +55,44 @@
                 $message['timestamp'] = $row['message']->getProperty("timestamp");
                 $message['date'] = date("F jS, Y \a\\t H:i", $message['timestamp']);
                 // $message['topic'] = SH::encode($row['message']->getProperty("topic"));
-                $message['postedBy'] = SH::encode($row['user']->getProperty("username"));
+
+                $user = new User();
+                $user->setNode($row['user']);
+                $user->hydrateFromNode();
+                $message['postedBy'] = SH::encode($user->getUsername());
+                //if desactivated, replace username by anon.
+                $message['userActive'] = true; //need in view to not show link to profile
+                if ($user->isActive() === false){
+                    $message['userActive'] = false;
+                    $message['postedBy'] = _("Anon.");
+                }
+                
                 $messages[] = $message;
             }
             return $messages;
+        }
+
+        public function getUsersInDiscussion($skillUuid) {
+            $cyp = "MATCH (user:User)-[:POSTED]->(message:Message)-[:IS_ABOUT]->(skill:Skill {uuid: {uuid}}) 
+                    RETURN DISTINCT user";
+
+            $query = new Query($this->client, $cyp, array(
+                "uuid" => $skillUuid
+            ));
+
+            $resultSet = $query->getResultSet();
+            $users = array();
+            foreach($resultSet as $row) {
+                $user = new User();
+                $user->setNode($row['user']);
+                $user->hydrateFromNode();
+                if ($user->isActive() === false){
+                    continue;
+                }
+                $users[] = $user;
+            }
+
+            return $users;
         }
 
 

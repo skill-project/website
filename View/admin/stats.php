@@ -3,32 +3,59 @@
     <h1>Here are your STATS!</h1>
 
     <div>
-        <h3>Skill count</h3>
-        <?= $skillsCount ?>
 
-        <h3>User count</h3>
-        <?= $usersCount ?>
-
-        <h3>Deepest skill at depth</h3>
-        <?= $maxDepth ?>
+        <table>
+            <tr>
+                <th>Skill count </th>
+                <th>User count </th>
+                <th>Deepest skill </th>
+            </tr>
+            <tr>
+                <td><?= $skillsCount ?></td>
+                <td><?= $usersCount ?></td>
+                <td><?= $maxDepth ?></td>
+            </tr>
+        </table>
 
     </div>
 
+
+    <div class="col" id="maxed-skills">
+        <h2>Maxed skills</h2>
+        <?php if ($maxedSkills): ?>
+        <table id="maxeds-skills-table">
+            <tr>
+                <th>Skill</th>
+            </tr>
+            <?php foreach($maxedSkills as $ms): ?>
+            <tr>
+                <td><a href="<?= \Controller\Router::url("goTo", array("slug" => $ms->getSlug())) ?>"><?= $ms->getName(); ?></a></td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <?php else: ?>
+        No skills with maximum number of children.
+        <?php endif; ?>
+    </div>
+        
+
     <div>
-        <h3>Users !</h3>
+        <h2>Users</h2>
         <table>
             <tr>
                 <th>Username</th>
                 <th>Email</th>
                 <th>Role</th>
+                <th>Ip</th>
                 <th>Applied ?</th>
                 <th>Actions</th>
             </tr>
         <?php foreach($users as $user): ?>
-        <tr>
+        <tr <?php if ($user->getApplicationStatus() === 2){ echo 'style="background-color: #89BEED"'; } ?>>
             <td><?= $user->getUsername(); ?></td>
             <td><?= $user->getEmail(); ?></td>
             <td><?= $user->getRole(); ?></td>
+            <td><?= $user->getIpAtRegistration(); ?></td>
             <td><?php
                 if ($user->getApplicationStatus() === 2){
                     echo "waiting !";
@@ -41,11 +68,15 @@
                 }
 
              ?></td>
-            <td><a href="<?= \Controller\Router::url("setAsEditor", array("uuid" => $user->getUuid())); ?>" onclick="return confirm('Sure to set <?= $user->getUsername() ?> as an Editor ?')">Set as Editor</a></td>
+            <td>
+                <a href="<?= \Controller\Router::url("setAsEditor", array("uuid" => $user->getUuid())); ?>" onclick="return confirm('Sure to set <?= $user->getUsername() ?> as an Editor ?')">Set as Editor</a>
+                <a href="<?= \Controller\Router::url("deactivateAccount", array("uuid" => $user->getUuid())); ?>" onclick="return confirm('Sure to deactivate <?= $user->getUsername() ?> account ?')">deactivate</a>
+            </td>
         </tr>
         <?php endforeach; ?>
     </table>
     </div>
+
 
     <div class="col" id="latest-changes-container">
         <h2>Latest changes</h2>
@@ -83,7 +114,8 @@
         </div>
     </div>
 
-        
+
+
 
     <script>
 

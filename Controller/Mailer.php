@@ -45,20 +45,10 @@
 
         private $admins =   array(
                                 array(
-                                    'email' => "guillaume@skill-project.org",
-                                    'name' => "Guillaume",
+                                    'email' => "helpdesk@skill-project.org",
+                                    'name' => "HelpDesk",
                                     'type' => 'to'
                                 ),
-                                array(
-                                    'email' => "raphael@skill-project.org",
-                                    'name' => "Raphael",
-                                    'type' => 'to'
-                                ),
-                                array(
-                                    'email' => "dario@skill-project.org",
-                                    'name' => "Dario",
-                                    'type' => 'to'
-                                )
                             );
 
 
@@ -77,7 +67,7 @@
 
         private function outputToFile($content){
             if (\Config\Config::DEBUG){
-                file_put_contents("mail3453454345.html", $content);
+                file_put_contents(sys_get_temp_dir() . "/mail3453454345.html", $content);
             }
         }
 
@@ -228,7 +218,7 @@
 
             $content = $this->getContent('contact_message.php', $params);
             $this->outputToFile($content);
-            die("toremove");
+            // die("toremove");
             try {
                 $mandrill = new \Mandrill(\Config\Config::MANDRILL_KEY);
 
@@ -274,6 +264,67 @@
                 $this->handleError($e);
             }
 
+        }
+
+        public function sendDiscussNotifications($recipients, $discussionData) {
+
+            foreach($recipients as $recipient) {
+                $type = $recipient["type"];
+                
+                $email = $recipient["email"];
+                $name = $recipient["name"];
+
+                $userLanguage = "en";
+                if (!empty($recipient['siteLanguage'])){
+                    $userLanguage = $recipient["siteLanguage"];
+                }
+
+                if ($userLanguage == "en") $skillName = $discussionData["skill"]->getName();
+                else $skillName = $discussionData["skill"]->getTranslation($userLanguage);
+
+
+                $data = array(
+                    "type"          => $type,
+                    "name"          => $name,
+                    "skillName"     => $skillName,
+                    "skillUrl"      => \Controller\Router::url("goTo", array("slug" => $discussionData["skill"]->getSlug()), true),
+                    "message"       => $discussionData["message"],
+                    "language"      => $userLanguage,
+                    "currentUser"   => $discussionData["currentUser"],
+                );
+
+                $content = $this->getContent("discuss_notification.php", $data);
+
+                if ($userLanguage == "en") $subject = sprintf("%s just commented on \"%s\"", $discussionData["currentUser"], $skillName);
+                else if ($userLanguage == "fr") $subject = sprintf("%s a commenté la compétence \"%s\"", $discussionData["currentUser"], $skillName);
+
+                // echo $email . "\n";
+                // echo $type . "\n";
+                // echo $userLanguage . "\n";
+                // echo $skillName . "\n";
+                // echo $subject . "\n\n";
+
+                try {
+                    $mandrill = new \Mandrill(\Config\Config::MANDRILL_KEY);
+                    $config = array(
+                        'html' => $content,
+                        'subject' => $subject,
+                        'to' => array(
+                                    array(
+                                        'email' => $email,
+                                        'name' => $name,
+                                        'type' => 'to'
+                                    )
+                                )
+                    );
+                    $message = array_merge($this->defaultConfig, $config);
+                    $async = false;
+                    $result = $mandrill->messages->send($message, $async);
+                } 
+                catch(\Mandrill_Error $e) {
+                    $this->handleError($e);
+                }
+            }
         }
 
         private function handleError($e){

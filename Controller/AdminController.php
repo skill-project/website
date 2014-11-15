@@ -25,10 +25,11 @@
             
             $params['title'] = "Statshit";
 
-            $params['skillsCount'] = $statManager->countLabel("Skill");
-            $params['usersCount'] = $statManager->countLabel("User");
-            $params['maxDepth'] = $statManager->getMaxDepth();
+            $params['skillsCount']  = $statManager->countLabel("Skill");
+            $params['usersCount']   = $statManager->countLabel("User");
+            $params['maxDepth']     = $statManager->getMaxDepth();
             $params['latestChanges']= $statManager->getLatestChanges();
+            $params['maxedSkills']  = $statManager->getMaxedSkills();
 
             $params['users'] = $userManager->findAll();
 
@@ -50,8 +51,6 @@
             
             $view->send();
         }
-
-
 
 
         public function powerEditAction(){
@@ -89,6 +88,22 @@
             die("ok");
         }
 
+
+
+        public function deactivateAccountAction($uuid){
+            SH::lock("superadmin");
+
+            $userManager = new UserManager();
+            $user = $userManager->findByUuid($uuid);
+
+            if ($user){
+                $user->setActive(false);
+                $userManager->update($user);
+            }
+
+            Router::redirect(Router::url("stats"));
+
+        }
 
         public function setAsEditorAction($uuid){
             SH::lock("superadmin");

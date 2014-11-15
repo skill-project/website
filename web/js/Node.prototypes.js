@@ -4,6 +4,7 @@ Node.prototype.expand = function(params) {
 
   if (params != null) {
     var onComplete = params.onComplete;
+    var animate = typeof params.animate !== "undefined" ? params.animate : true;
   }
   var url = baseUrl + "api/getNodeChildren/" + this.id + "/";
 
@@ -26,6 +27,8 @@ Node.prototype.expand = function(params) {
       var i = 0;
       var isLast = false;
 
+      fpsCounter.start();
+
       json.data.forEach(function(child) {
         if (++i == json.data.length) isLast = true;
         new Node(child, {
@@ -33,7 +36,8 @@ Node.prototype.expand = function(params) {
           rank: i,
           count: json.data.length,
           isLast: isLast,
-          onComplete: onComplete ? onComplete : null
+          onComplete: onComplete ? onComplete : null,
+          animate: animate
         })
       });
 
@@ -139,6 +143,8 @@ Node.prototype.contract = function(params) {
   }else {
     if (this.parent != null) this.parent.select();
 
+    fpsCounter.start();
+
     for (var childIndex in this.children) {
       var child = this.children[childIndex];
 
@@ -170,6 +176,7 @@ Node.prototype.contract = function(params) {
               //scaleX: 0,
               duration: 0.15,
                onFinish: function() {
+                fpsCounter.end();
                 //Last child deletion and tree cleanup
                 lastChild.delete();
                 that.open = false;
@@ -323,8 +330,13 @@ Node.prototype.setVisualState = function (state, draw, ignoreGlow) {
       }
       break;
     case "normal":
+
       this.knGlow.setImage($("img#glow-nonotch")[0]);
-      this.backImage.setImage($("img#node-normal" + imageSuffix)[0]);
+
+      if ((this.invisibleChildrenCount - this.childrenMarkedForDeleteCount) > 0) var imageRes = $("img#node-normal-children" + imageSuffix)[0];
+      else var imageRes = $("img#node-normal" + imageSuffix)[0];
+
+      this.backImage.setImage(imageRes);
       if (this.edge != null) this.edge.selected = false;
       this.text.setFill("#333333");
       if (!ignoreGlow) this.setGlow(0);
@@ -348,7 +360,10 @@ Node.prototype.setVisualState = function (state, draw, ignoreGlow) {
       if (!ignoreGlow) this.setGlow(1);
       break;
     case "normal-edit":
-      this.backImage.setImage($("img#node-edit" + imageSuffix)[0]);
+      if ((this.invisibleChildrenCount - this.childrenMarkedForDeleteCount) > 0) var imageRes = $("img#node-edit-children" + imageSuffix)[0];
+      else var imageRes = $("img#node-edit" + imageSuffix)[0];
+
+      this.backImage.setImage(imageRes);
       this.text.setFill("#fff");
       break;
     case "glow-edit":
@@ -679,8 +694,7 @@ Node.prototype.createNewParent = function (nodeData) {
 
 Node.prototype.setName = function (newName, twoLines, textObject) {
   this.name = newName;
-  // debugger;
-
+  
   if (typeof twoLines == "undefined") {
     //Writing the text of the skill
     //First attempt
@@ -741,6 +755,8 @@ Node.prototype.deleteFromDB = function() {
 
   if (this.isEdited) this.finishEdit();
 
+  this.parent.invisibleChildrenCount--;
+
   //If deleted node is last of parent's children, remove notch from parent (glow-nochildren)
   if (Object.keys(this.parent.children).length - 1 === 0) {
   	this.parent.setVisualState("glow-nochildren");
@@ -757,7 +773,10 @@ Node.prototype.setTarget = function() {
   if (tree.targetNode) tree.targetNode.unsetTarget();
 
   this.isTarget = true;
-  this.setGlow(1);
+
+  if ((this.invisibleChildrenCount - this.childrenMarkedForDeleteCount) > 0) this.setVisualState("glow-children");
+  else this.setVisualState("glow-nochildren");
+
   tree.targetNode = this;
 
   tree.editedNode.panel.$activeSubpanel.find("#move-step3").css("display", "block");
@@ -772,7 +791,10 @@ Node.prototype.unsetTarget = function() {
   this.isTarget = false;
   // node.targetModeOver = false;
   // node.setVisualState(node.visualState, true, true);
-  if (!this.isInPath) this.setGlow(0);
+
+  // if (!this.isInPath) this.setGlow(0);
+  if (!this.isInPath) this.setVisualState("normal");
+
   tree.targetNode = null;
 }
 

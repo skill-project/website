@@ -2,7 +2,11 @@
     <?php foreach($messages as $message): ?>
     <div class="message">
         <div class="by">
+            <?php if ($message['userActive']): ?>
             <?= _("By "); ?><a href="<?= \Controller\Router::url("profile", array("username" => $message['postedBy'])) ?>"><?= $message['postedBy']; ?></a><br />
+            <?php else: ?>
+            <?= _("By "); ?><?= $message['postedBy']; ?><br />
+            <?php endif; ?>
         </div>
         <div class="date">
             <?= $message['date']; ?>

@@ -187,7 +187,7 @@
             //if user is the skill's creator, and the skill has been recently created
             //gives all rights also
             else if ($skillCreationInfo['creatorUuid'] == $user->getUuid() && 
-                    $skillCreationInfo['timestamp'] > (time() - 3600)){
+                    $skillCreationInfo['timestamp'] > (time() - 86400)){
                 $rights = $allRights;
             }
 
@@ -198,6 +198,26 @@
             
             return $rights;
 
+        }
+
+        public static function setNewCsrfToken(){
+            $token = sha1(uniqid());
+            $_SESSION['csrfToken'] = $token;
+            return $token;
+        }
+
+        public static function getCsrfToken(){
+            if (empty($_SESSION['csrfToken'])){
+                self::setNewCsrfToken();
+            }
+            return $_SESSION['csrfToken'];
+        }
+
+        public static function checkCsrfToken($token){
+            if ($token === self::getCsrfToken()){
+                return true;
+            }
+            return false;
         }
 
     }

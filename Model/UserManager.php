@@ -41,7 +41,9 @@
                         u.picture = {picture},
                         u.password = {password},
                         u.token = {token},
-                        u.dateModified = {dateModified}";
+                        u.dateModified = {dateModified},
+                        u.siteLanguage = {siteLanguage},
+                        u.active = {active}";
 
             $query = new Query($this->client, $cyp, array(
                     "uuid" => $user->getUuid(),
@@ -57,7 +59,9 @@
                     "picture" => $user->getPicture(),
                     "password" => $user->getPassword(),
                     "token" => $user->getToken(),
-                    "dateModified" => time()
+                    "dateModified" => time(),
+                    "siteLanguage" => $user->getSiteLanguage(),
+                    "active" => $user->getActive()
                 )
             );
             $result = $query->getResultSet();
@@ -80,6 +84,10 @@
                 $user = new User();
                 $user->setNode($resultSet[0]['user']);
                 $user->hydrateFromNode();
+                //discard inactive user
+                if ($user->isActive() === false){
+                    return false;
+                }
                 return $user;
             }
             return false;
@@ -112,8 +120,8 @@
         }
 
 
-        public function findAll(){
-            $cypher = "MATCH (user:User) RETURN user ORDER BY user.applicationStatus DESC";
+        public function findAll($returnInactive = false){
+            $cypher = "MATCH (user:User) RETURN user ORDER BY user.dateModified DESC";
             $query = new Query($this->client, $cypher);
             $resultSet = $query->getResultSet();
             $users = array();
@@ -121,6 +129,10 @@
                 $user = new User();
                 $user->setNode($row['user']);
                 $user->hydrateFromNode();
+                //do not add inactive users
+                if (!$returnInactive && $user->isActive() === false){
+                    continue;
+                }
                 $users[] = $user;
             }
             return $users;

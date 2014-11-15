@@ -13,13 +13,9 @@
          * Home page
          */
         public function homeAction(){
-            $skillManager = new SkillManager();
-
-            $rootNode = $skillManager->findRootNode();
             $view = new View("home.php", array(
                 "title" => _("The Universal Skills Map"))
             );
-            
             $view->send();
         }
 
@@ -30,17 +26,11 @@
 
             $skillManager = new SkillManager();
             $rootNode = $skillManager->findRootNode();
-
-            $user = \Utils\SecurityHelper::getUser();
-            $userClass = "anonymous";
-            if ($user){
-                $userClass = $user->getRole();
-            }
             
             $view = new View("graph.php", array(
                     "rootNode"  => $rootNode,
                     "title"     => _("Explore"),
-                    "userClass" => $userClass
+                    "userClass" => $this->getUserClass()
 
                 )
             );
@@ -57,13 +47,19 @@
             $rootNode = $skillManager->findRootNode();
 
             $uuid = $skillManager->getUuidFromSlug($slug);
+
+            //will fail if called after findNodePathToRoot
+            //cause unknown 
+            //another workaround : get a new client before calling this one with:
+            //\Model\DatabaseFactory::setNewClient();
+            $skill = $skillManager->findByUuid($uuid);
+
             $path = $skillManager->findNodePathToRoot($uuid);
 
             if (!$path){
                 Router::fourofour();
             }
 
-            $skill = $skillManager->findByUuid($uuid);
             $json = new \Model\JsonResponse();
             $json->setData($path);
             
@@ -72,11 +68,23 @@
                 "title"     => $skill->getName(),
                 "action"    => "goto",
                 "jsonAutoLoad"  => $json->getJson($path, false),
-                "slug"      => $slug
+                "slug"      => $slug,
+                "userClass" => $this->getUserClass()
                 )
             );
             $view->setLayout("../View/layouts/graph.php");
             $view->send();
+        }
+
+        //quick fix on userClass error 
+        private function getUserClass(){
+
+            $user = \Utils\SecurityHelper::getUser();
+            $userClass = "anonymous";
+            if ($user){
+                $userClass = $user->getRole();
+            }
+            return $userClass;
         }
 
 

@@ -22,9 +22,10 @@ var Camera = function() {
     // stage.on("wheel", function (event) {
         event.preventDefault();
         
-        if (tour.isActive == true || doTour == true) tour.actionOnTree("zoom");
+        if (tour.isActive == true || doTour == true) return;
 
         if ((that.scale <= 0.15 && event.deltaY < 0) || (that.scale >= 1.6 && event.deltaY > 0)) return;
+        // console.log(that.scale);
 
         var timeFromLastZoom = (new Date()).getTime() - camera.lastZoom;
 
@@ -41,10 +42,15 @@ var Camera = function() {
         var mx = evt.clientX - stage.x();
         var my = evt.clientY - stage.y() - $("#header").height();
         var zoom = (that.zoomFactor - (event.deltaY < 0 ? 0.02 : -0.02) * event.deltaFactor * zoomAcceleration);
+
+        //Strange condition we must catch in order to prevent the tree from turning upside down
+        if (zoom < 0) return;
+
         var newscale = that.scale * zoom;
 
         that.origin.x = mx / that.scale + that.origin.x - mx / newscale;
         that.origin.y = my / that.scale + that.origin.y - my / newscale;
+
 
         that.scale *= zoom;
 
@@ -356,8 +362,6 @@ var Camera = function() {
     //Sets up drag and move events for stage
     this.initDragEvents = function() {
         stage.on("dragstart", function(e) {
-            if (tour.isActive == true || doTour == true) tour.actionOnTree("drag");
-
             panStartCoords = stage.getPointerPosition();
             panLayerStartCoords = { x: camera.backLayer.x(), y: camera.backLayer.y() }
             panBackImageStartCoords = { x: 0, y: camera.backgroundImage.y() }
@@ -548,6 +552,15 @@ Camera.prototype.resizeElements = function() {
     }
 
     camera.cacheInvisibleNodes();
+
+    if (tour.isActive === true) {
+        tour.overlay.css({
+            width: $(window).width(),
+            height: $("#kinetic").height()
+        });
+
+        //TODO : here we should reposition tour legs after resize
+    }
 }
 
 

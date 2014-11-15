@@ -23,6 +23,8 @@
 		protected $applicationStatus; //0 for no application, 1 for accepted, 2 for in process
 		protected $dateCreated;
 		protected $dateModified;
+		protected $siteLanguage;
+		protected $active;			//false for deleted account, true otherwise
 
 		protected $node;
 
@@ -74,6 +76,8 @@
 			$this->node->setProperty("ipAtRegistration", $this->ipAtRegistration);
 			$this->node->setProperty("dateCreated", $this->dateCreated);
 			$this->node->setProperty("dateModified", $this->dateModified);
+			$this->node->setProperty("siteLanguage", $this->siteLanguage);
+			$this->node->setProperty("active", $this->active);
 			
 			return $this->node;
 		}
@@ -87,6 +91,10 @@
 
 		public function isAdmin(){
 			return ($this->getRole() == "admin" || $this->getRole() == "superadmin");
+		}
+
+		public function isActive(){
+			return $this->getActive();
 		}
 
 		public function getUsername(){
@@ -176,9 +184,16 @@
 	     *
 	     * @return mixed
 	     */
-	    public function getRole()
+	    public function getRole($displayValue = false)
 	    {
-	        return $this->role;
+	    	$displayValues = array(
+	    		"user" 			=> _("User"),
+	    		"admin"			=> _("Editor"),
+	    		"superadmin"	=> _("Super Admin")
+	    	);
+
+	    	if ($displayValue == false) return $this->role;
+	    	else return $displayValues[$this->role];
 	    }
 
 	    /**
@@ -335,6 +350,55 @@
 	    public function setApplicationStatus($applicationStatus)
 	    {
 	        $this->applicationStatus = $applicationStatus;
+
+	        return $this;
+	    }
+
+	    /**
+	     * Gets the value of siteLanguage (the website language the user registered with).
+	     *
+	     * @return mixed
+	     */
+	    public function getSiteLanguage()
+	    {
+	        return $this->siteLanguage;
+	    }
+
+	    /**
+	     * Sets the value of siteLanguage (the website language the user registered with).
+	     *
+	     * @param mixed $siteLanguage (the website language the user registered with) the application status
+	     *
+	     * @return self
+	     */
+	    public function setSiteLanguage($siteLanguage)
+	    {
+	        $this->siteLanguage = $siteLanguage;
+
+	        return $this;
+	    }
+
+
+	    /**
+	     * Gets the value of active (account deleted or not).
+	     *
+	     * @return boolean
+	     */
+	    public function getActive()
+	    {
+	        return $this->active;
+	    }
+
+	    /**
+	     * Sets the value of active (account deleted or not).
+	     *
+	     * @param boolean $active true if active, false if deleted
+	     *
+	     * @return self
+	     */
+	    public function setActive($active)
+	    {
+	        $this->active = $active;
 
 	        return $this;
 	    }

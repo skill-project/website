@@ -13,7 +13,7 @@
 
         public function __construct(){
             parent::__construct();
-            $this->createSearchIndex();
+            //$this->createSearchIndex();
         }
 
         /**
@@ -41,9 +41,9 @@
          * @return mixed Array if success, false otherwise
          */
         public function findChildren($uuid){
-            $cyp = "MATCH (parent:Skill)-[:HAS]->(s:Skill) 
+            $cyp = "MATCH (parent:Skill)-[:HAS]->(s:Skill)-[:HAS*0..1]->(children:Skill) 
                         WHERE parent.uuid = {uuid}
-                        RETURN s ORDER BY s.created ASC LIMIT 40";
+                        RETURN s, count(children)-1 as childrenCount ORDER BY s.created ASC LIMIT 40";
             $query = new Query($this->client, $cyp, array(
                 "uuid" => $uuid)
             );
@@ -52,6 +52,7 @@
                 $data = array();
                 foreach ($resultSet as $row) {
                     $skill = new Skill( $row['s'] );
+                    $skill->setChildrenCount( $row['childrenCount'] );
                     $data[] = $skill->getJsonData();
                 }
                 return $data;
@@ -146,9 +147,9 @@
          */
         public function findNodePathToRoot($uuid){
 
-            $cyp = "MATCH (child:Skill)<-[:HAS*0..1]-(parents:Skill)-[:HAS*]->(s:Skill) 
+            $cyp = "MATCH (children:Skill) <-[:HAS*0..1]-(child:Skill)<-[:HAS*0..1]-(parents:Skill)-[:HAS*]->(s:Skill) 
                         WHERE s.uuid = {uuid}
-                        RETURN parents,s,child ORDER BY parents.depth ASC, child.created ASC";
+                        RETURN parents,s,child,count(children)-1 as childrenCount ORDER BY parents.depth ASC, child.created ASC";
             $query = new Query($this->client, $cyp, array(
                 "uuid" => $uuid)
             );
@@ -184,6 +185,7 @@
                         for($i=0;$i<count($path);$i++){
                             if ($path[$i]['uuid'] == $parentUuid){
                                 $skill = new Skill($row['child']);
+                                $skill->setChildrenCount($row['childrenCount']);
                                 $path[$i]['children'][] = $skill->getJsonData();
                                 if ($skill->getUuid() == $uuid){
                                     $path[$i]['selectedSkill'] = $childUuid;
@@ -663,6 +665,29 @@
                 return $uuid;
             }
             return false;
+        }
+
+        /**
+         * Return the user who created the skill
+         */
+        public function getSkillOwner($uuid){
+            $cyp = "MATCH 
+                        (user:User)-[:CREATED]->(skill:Skill {uuid: {uuid}}) 
+                    RETURN user";
+
+            $namedParams = array(
+                "uuid"  => $uuid
+            );
+            
+            $query = new Query($this->client, $cyp, $namedParams);
+            $resultSet = $query->getResultSet();
+
+            if ($resultSet->count() == 1){
+                $owner = new User();
+                $owner->setNode($resultSet[0]['user']);
+                $owner->hydrateFromNode();
+                return $owner;
+            }else return false;
         }
 
     }

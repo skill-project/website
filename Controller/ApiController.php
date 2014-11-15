@@ -5,7 +5,9 @@
     use \Model\SkillManager;
     use \Model\TranslationManager;
     use \Model\DiscussionManager;
+    use \Model\UserManager;
     use \Model\Skill;
+    use \Model\User;
     use \Utils\SecurityHelper as SH;
 
     use \Everyman\Neo4j\Cypher\Query;
@@ -168,6 +170,10 @@
 
             if (!empty($_POST)){
                 $skillUuid = $_POST['skillUuid'];
+
+                $skillManager = new SkillManager();
+                $skill = $skillManager->findByUuid($skillUuid);
+
                 $message = $_POST['message'];
                 // $topic = $_POST['topic'];
 
@@ -187,6 +193,9 @@
                         $this->warn("discussed", $skill, array(
                             "message" => $message
                         ));
+
+                        $this->sendNotifications($skill, $message);
+
                     }
                     else {
                         $json = new \Model\JsonResponse("error", _("Error posting message."));
@@ -469,7 +478,12 @@
                 $validator->validateSkillUuid($selectedSkillUuid);
                 $validator->validateSkillParentUuid($skillParentUuid);
                 $validator->validateUniqueChild($skillParentUuid, $skillName);
-                $validator->validateNumChild($skillParentUuid);
+
+                //if creating as child, check children number 
+                //(do not check at all when creating as parent)
+                if ($selectedSkillUuid == $skillParentUuid){
+                    $validator->validateNumChild($skillParentUuid);
+                }
                 
                 if ($validator->isValid() && $parentSkill){
 
@@ -582,6 +596,54 @@
             $mailer->sendWarning($params);
 
 
+        }
+
+        public function sendNotifications(Skill $skill, $postedMessage) {
+            //Get owner's email for notification
+            $skillOwner = $skill->getOwner();
+
+            //Get emails of users who participated in the discussion
+            $discussionMananager = new DiscussionManager();
+            $skillUuid = $skill->getUuid();
+            $usersInDiscussion = $discussionMananager->getUsersInDiscussion($skillUuid);
+
+            $userManager = new UserManager();
+            $currentUser = $userManager->findByUuid($_SESSION["user"]["uuid"]);
+
+            $discussionData = array(
+                "message"       => $postedMessage,
+                "skill"         => $skill,
+                "currentUser"   => $currentUser->getUsername()
+            );
+
+            $recipients = array();
+
+            if ($currentUser->getEmail() != $skillOwner->getEmail()) {
+                $recipients[] = array(
+                    "type"          => "owner", 
+                    "email"         => $skillOwner->getEmail(), 
+                    "name"          => $skillOwner->getUsername(),
+                    "siteLanguage"  => $skillOwner->getSiteLanguage()
+                );
+            }
+
+            foreach($usersInDiscussion as $user) {
+                if ($currentUser->getEmail() != $user->getEmail() &&    //Don't send the notification to the user who just sent commented (connected user)
+                    $user->getEmail() != $skillOwner->getEmail())       //Don't send the notification to the user who created the skill (we already added him a few lines back)
+                {
+                    $recipients[] = array(
+                        "type"          => "userInDiscussion", 
+                        "email"         => $user->getEmail(), 
+                        "name"          => $user->getUsername(),
+                        "siteLanguage"  => $user->getSiteLanguage()
+                    );
+
+                }
+            }
+
+            $mailer = new Mailer();
+
+            $mailer->sendDiscussNotifications($recipients, $discussionData);
         }
 
     }
