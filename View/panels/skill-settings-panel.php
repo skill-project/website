@@ -6,7 +6,8 @@
     <form method="POST" action="<?= \Controller\Router::url("skillSettings"); ?>" id="skill-settings-form">
         <input type="hidden" name="skillUuid" id="skillUuid" value="<?= $skill->getUuid(); ?>" />
         <div>
-            <h4><?= _("CHILDREN CAPS"); ?></h4>
+            <h4><?= _("SUB-SKILLS CAPS"); ?></h4>
+            <p><?=_("You can set the maximum number of sub-skills this skill can have. Please do not increase these values without first trying to group the sub-skills together.")?></p>
             
             <label for="skill-capIdealMax"><strong><?=strtoupper(_("Ideal max"))?></strong><br><?= _("Ideally, the maximum number of sub-skills this skill should have must not exceed:"); ?></label>
             <input type="text" name="capIdealMax" id="skill-capIdealMax" maxlength="2" value="<?= $skill->getCapIdealMax(); ?>" />
@@ -21,7 +22,7 @@
             <p class="hint"><?=sprintf(_("BLOCKING THRESHOLD must be between higher than ALERT THRESHOLD and lower than %s"), \Config\Config::CAP_MAX_CHILD)?></p>
         </div>
         <div>
-            <input type="submit" value="<?= _("OK") ?>" />
+            <input type="submit" value="<?= strtoupper(_("Save")) ?>" />
             <span class="message-zone"></span>
         </div>
     </form>
