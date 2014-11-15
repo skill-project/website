@@ -64,6 +64,16 @@ var Panel = function(node, initParams) {
         that.addPanelModal(content);        
     }
 
+    that.showWarning = function(warning) {
+        var content = '<div class="modal-content warning">';
+        content += '<a href="#" class="panelModalRemoveBtn"></a>';
+        content += '<p>' + warning + '</p>';
+        content += '<button class="panelModalOkBtn">' + jt.ok + '</button>';
+        content += '</div>';
+
+        that.addPanelModal(content);
+    }
+
     this.showMessage = function(content){
         this.$activeSubpanel.find(".message-zone").html(content).css("display", "inline-block");
         window.setTimeout(function(){
@@ -80,10 +90,10 @@ var Panel = function(node, initParams) {
         });
         $("#panel").append(panelModal);
         panelModal.fadeIn(200);
-        $(".panelModalRemoveBtn").on("tap click", function(e){
+        $(".panelModalRemoveBtn, .panelModalOkBtn").on("tap click", function(e){
             e.preventDefault();
             that.closePanelModal();
-        });
+        });        
     }
 
     this.closePanelModal = function(){
@@ -148,15 +158,25 @@ var Panel = function(node, initParams) {
                                 $("#create-skillName").val("");
                                 that.showMessage(response.message);
 
-                                ga("send", "event", "nodeCreate", response.data.name);
+                                ga("send", "event", "nodeCreate", response.data.skill.name);
+
+                                if (response.data.parent.childrenCount + 1 == response.data.parent.capNoMore) {
+                                    that.showWarning(jt.panel.capNoMore + "<p>" + jt.panel.capsDiscuss + "</p>");
+                                }else if (response.data.parent.childrenCount + 1 >= response.data.parent.capAlert) {
+                                    that.showWarning(jt.panel.capAlert + "<p>" + jt.panel.capsDiscuss + "</p>");
+                                }else if (response.data.parent.childrenCount + 1 > response.data.parent.capIdealMax) {
+                                    var warningMessage = jt.panel.capIdealMax.replace("%%%IDEAL%%%", response.data.parent.capIdealMax);
+                                    warningMessage = warningMessage.replace("%%%PARENTNAME%%%", response.data.parent.translations[jt.currentLang]);
+                                    that.showWarning(warningMessage + "<p>" + jt.panel.capsDiscuss + "</p>");
+                                }
                                 
                                 var creationType = $(subPanel).find("#creationType").val();
                                 if (creationType == "child") {
-                                    tree.editedNode.createNewChild(response.data);
+                                    tree.editedNode.createNewChild(response.data.skill);
                                 } else if (creationType == "parent") { 
-                                    $("#creationTypeParent").data("parentuuid", response.data.uuid);
-                                    $("#skillParentUuid").val(response.data.uuid);
-                                    tree.editedNode.createNewParent(response.data)
+                                    $("#creationTypeParent").data("parentuuid", response.data.skill.uuid);
+                                    $("#skillParentUuid").val(response.data.skill.uuid);
+                                    tree.editedNode.createNewParent(response.data.skill)
                                 }
                             }
                             else {

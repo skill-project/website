@@ -253,7 +253,7 @@ textarea {
 
 }
 
-input[type=submit] {
+input[type=submit], button {
     border: none;
     background-color: #FFF;
     color: #222;
@@ -291,6 +291,26 @@ input[type=submit] {
     background-position: 15px 50%;
     position: relative;
 }
+
+#panel .warning {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left:10px;
+    background: none;
+
+    button {
+        display:block;
+        margin:0px auto;
+        margin-top:30px;
+    }
+
+    p {
+        font-size: 15px;
+        line-height: 19px;
+    }
+
+}
+
 
 
 #panel #trans-form-submit {
