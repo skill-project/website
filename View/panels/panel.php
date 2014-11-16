@@ -27,7 +27,7 @@
     <a data-panel="share-skill-panel" class="panel-btn" href="#" title="<?= _("SHARE THE SKILL"); ?>"><?= _("SHARE THE SKILL"); ?><span class="arrow-btn arrow-btn-r"><img src="img/panel-icon-arrow-right.png" alt=">" /></span></a>
 <?php } 
  if (in_array("settings", $rights)){ ?>
-    <a data-panel="skill-settings-panel" class="panel-btn last" href="#" title="<?= _("SKILL SETTINGS"); ?>"><?= _("SKILL SETTINGS"); ?><span class="arrow-btn arrow-btn-r"><img src="img/panel-icon-arrow-right.png" alt=">" /></span></a>
+    <a data-panel="skill-settings-panel" class="panel-btn last" href="#" title="<?= _("Skill settings"); ?>"><?= _("Skill settings"); ?><span class="arrow-btn arrow-btn-r"><img src="img/panel-icon-arrow-right.png" alt=">" /></span></a>
 <?php } ?>
 
 

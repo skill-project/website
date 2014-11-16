@@ -51,7 +51,7 @@
     </div>
     <div class="submit-container">
         
-        <input class="pink-submit" type="submit" value="<?= _("SAVE") ?>" />
+        <input class="pink-submit" type="submit" value="<?= _("Save") ?>" />
         <?php
             if (!empty($errors)):
             echo '<div class="errors">';

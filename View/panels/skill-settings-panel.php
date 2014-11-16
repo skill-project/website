@@ -2,11 +2,11 @@
 
     <?php include("subpanel-top.php") ?>
 
-    <h3><?= _("SKILL SETTINGS"); ?></h3>
+    <h3><?= _("Skill settings"); ?></h3>
     <form method="POST" action="<?= \Controller\Router::url("skillSettings"); ?>" id="skill-settings-form">
         <input type="hidden" name="skillUuid" id="skillUuid" value="<?= $skill->getUuid(); ?>" />
         <div>
-            <h4><?= _("SUB-SKILLS CAPS"); ?></h4>
+            <h4><?= _("Sub-skill caps"); ?></h4>
             <p><?=_("You can set the maximum number of sub-skills this skill can have. Please do not increase these values without first trying to group the sub-skills together.")?></p>
             
             <label for="skill-capIdealMax"><strong><?=strtoupper(_("Ideal max"))?></strong><br><?= _("Ideally, the maximum number of sub-skills this skill should have must not exceed:"); ?></label>

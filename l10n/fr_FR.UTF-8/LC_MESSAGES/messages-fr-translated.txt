@@ -1031,3 +1031,124 @@ msgstr  "Super Admin"
 
 msgid   "%s just commented on \"%s\""
 msgstr  "%s a commenté la compétence \"%s\""
+
+#: View/panels/skill-settings-panel.php:5 View/panels/panel.php:30
+msgid   "Skill settings"
+msgstr  "Paramètres"
+
+#: View/panels/skill-settings-panel.php:9
+msgid   "Sub-skill caps"
+msgstr  "Limites du nombre d'enfants"
+
+#: View/panels/skill-settings-panel.php:10
+msgid   "You can set the maximum number of sub-skills this skill can have. Please do not increase these values without first trying to group the sub-skills together."
+msgstr  "Vous pouvez préciser ici le nombre maximum de sous-compétences qu'il est possible d'ajouter. Merci de ne pas augmenter ces limites avant d'avoir essayé de regrouper certaines sous-compétences esnemble."
+
+#: View/panels/skill-settings-panel.php:12
+msgid   "Ideal max"
+msgstr  "Maximum idéal"
+
+#: View/panels/skill-settings-panel.php:12
+msgid   "Ideally, the maximum number of sub-skills this skill should have must not exceed:"
+msgstr  "Idéalement, le nombre maximum de sous-compétences qu'il serait souhaitable d'ajouter à celle-ci n'excède pas :"
+
+#: View/panels/skill-settings-panel.php:14 Model/Validator.php:152
+msgid   "IDEAL MAX must be lower than ALERT THRESHOLD"
+msgstr  "Le MAXIMUM IDEAL doit être inférieur au SEUIL D'ALERTE"
+
+#: View/panels/skill-settings-panel.php:16
+msgid   "Alert threshold"
+msgstr  "Seuil d'alerte"
+
+#: View/panels/skill-settings-panel.php:16
+msgid   "Member receives a non-blocking warning when adding a new sub-skill if there already are this many siblings:"
+msgstr  "Une alerte non bloquante est affichée lorsqu'un membre ajoute une sous-compétence alors qu'il y en a déjà :"
+
+#: View/panels/skill-settings-panel.php:18 Model/Validator.php:156
+msgid   "ALERT THRESHOLD must be between IDEAL MAX and BLOCKING THRESHOLD - 3"
+msgstr  "Le SEUIL D'ALERTE doit être compris entre le MAXIMUM IDEAL et le SEUIL BLOQUANT - 3"
+
+#: View/panels/skill-settings-panel.php:20
+msgid   "Blocking threshold"
+msgstr  "SEUIL BLOQUANT"
+
+#: View/panels/skill-settings-panel.php:20
+msgid   "Maximum number of skills that can be created:"
+msgstr  "Nombre maximum de sous-compétences qu'il est possible de créer :"
+
+#: View/panels/skill-settings-panel.php:22 Model/Validator.php:160
+#, php-format
+msgid   "BLOCKING THRESHOLD must be between ALERT THRESHOLD and %s"
+msgstr  "Le SEUIL BLOQUANT doit être compris entre le SEUIL D'ALERTE et %s"
+
+#: View/panels/skill-settings-panel.php:25 View/inc/profile_form.php:54
+msgid   "Save"
+msgstr  "Enregistrer"
+
+#: View/panels/create-skill-panel.php:42
+#, php-format
+msgid   "You cannot add more skills to \"%s\""
+msgstr  "Vous ne pouvez plus ajouter de sous-compétences à \"%s\""
+
+#: View/panels/create-skill-panel.php:47
+#, php-format
+msgid   "Current number of sub-skills: <strong>%s</strong>"
+msgstr  "Nombre actuel de sous-compétences : <strong>%s</strong>"
+
+#: View/panels/create-skill-panel.php:50
+#, php-format
+msgid   "Ideally, this skill shouldn't contain more than <strong>%s&nbsp;sub-skills</strong>."
+msgstr  "Idéalement, cette compétence ne devrait pas contenir plus de <strong>%s&nbsp;sous-compétences</strong>."
+
+#: View/panels/create-skill-panel.php:51
+msgid   "This soft limit is meant to keep the tree simple and organized."
+msgstr  "Cette limite non bloquante sert à conserver un arbre facile à explorer et bien organisé."
+
+#: View/panels/create-skill-panel.php:54
+msgid   "In order to reduce the number of skills, you can group them into meaningful groups. However, if you think there are no meaningful ways to group the skills, you can explain it in the \"Discuss\" section and Editors will be able to raise this limit if appropriate."
+msgstr  "Pour réduire le nombre de compétences, vous pouvez essayer de les regrouper de manière logique. Cependant, si vous ne voyez aucune manière de les regrouper de manière logique, vous pouvez l'expliquer dans la section \"Commenter\" et les Éditeurs pourront l'augmenter si nécessaire."
+
+#: View/pages/profile.php:13
+msgid   "Account"
+msgstr  "Mon compte"
+
+#: View/pages/profile.php:18
+msgid   "Are you sure that you want to delete your account?"
+msgstr  "Souhaitez-vous confirmer la suppression de votre compte ?"
+
+#: View/pages/profile.php:18
+msgid   "Delete my account"
+msgstr  "Supprimer mon compte"
+
+#: View/layouts/editor.php:12
+msgid   "Editor Dashboard"
+msgstr  "Tableau de bord des Éditeurs"
+
+#: l10n/JSTranslations.php:15
+msgid   "Ok"
+msgstr  "Ok"
+
+#: l10n/JSTranslations.php:21
+msgid   "The new skill has been created but for the tree of skills to remain simple, only <strong>%%%IDEAL%%%&nbsp;skills</strong> should be added to <strong>\"%%%PARENTNAME%%%\"</strong>. Please start thinking of a way to group the skills."
+msgstr  "La nouvelle compétence a été créée mais pour que l'arbre reste simple, il ne faudrait pas ajouter plus de <strong>%%%IDEAL%%%&nbsp;compétences</strong> à <strong>\"%%%PARENTNAME%%%\"</strong>. Merci de commencer à réfléchir à une manière de les regrouper."
+
+#: l10n/JSTranslations.php:22
+msgid   "It's getting crowded here! Only <strong>%%%IDEAL%%%&nbsp;skills</strong> should be added to <strong>\"%%%PARENTNAME%%%\"</strong>. Please start thinking of a way to group the skills. You will not be able to add more than <strong>%%%NOMORE%%%&nbsp;skills</strong>."
+msgstr  "On commence à être serrés ici! Il ne faudrait pas ajouter plus de <strong>%%%IDEAL%%%&nbsp;compétences</strong> à <strong>\"%%%PARENTNAME%%%\"</strong>. Merci de commencer à réfléchir à une manière de les regrouper. Il ne sera pas possible d'ajouter plus de <strong>%%%NOMORE%%%&nbsp;compétences</strong>."
+
+#: l10n/JSTranslations.php:23
+msgid   "Oh dear! This is the last skill you can add to <strong>\"%%%PARENTNAME%%%\"</strong>. You have reached the hard limit of <strong>%%%NOMORE%%%&nbsp;skills</strong> (ideal maximum:&nbsp;<strong>%%%IDEAL%%%</strong>). Please think of a way to group the skills."
+msgstr  "Oops ! C'était la dernière compétence qu'il était possible d'ajouter à <strong>\"%%%PARENTNAME%%%\"</strong>. Vous avez atteint la limite des <strong>%%%NOMORE%%%&nbsp;compétences</strong> (maximum idéal :&nbsp;<strong>%%%IDEAL%%%</strong>)."
+
+#: l10n/JSTranslations.php:25 Model/Validator.php:141
+msgid   "If you think this limit is too low, please explain why in the \"Discuss\" panel and an Editor will raise it if appropriate."
+msgstr  "Si vous pensez que cette limite est trop basse, vous pouvez l'expliquez dans la section \"Commenter\" et les Éditeurs pourront l'augmenter si nécessaire."
+
+#: Model/Validator.php:141
+#, php-format
+msgid   "You cannot add more than %s skills to %s."
+msgstr  "Vous ne pouvez pas ajouter plus de %s compétences à %s."
+
+#: Model/DiscussionManager.php:67
+msgid   "Anonymous"
+msgstr  "Anonyme"

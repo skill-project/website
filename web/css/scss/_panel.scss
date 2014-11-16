@@ -50,12 +50,14 @@
     display: inline-block;
     font-weight: normal;
     font-size: 32px;
+    text-transform: uppercase;
 }
 
 #panel h4 {
     font-size: 18px;
     margin: 15px 0 3px 0;
     font-weight: normal;
+    text-transform: uppercase;
 }
 
 #panel ul {
@@ -77,6 +79,7 @@ a.panel-btn {
     width: 100%;
     border-top: 1px solid #FFF;
     display: block;
+    text-transform: uppercase;
 }
 
 a.panel-btn.last {

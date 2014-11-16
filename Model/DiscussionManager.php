@@ -64,7 +64,7 @@
                 $message['userActive'] = true; //need in view to not show link to profile
                 if ($user->isActive() === false){
                     $message['userActive'] = false;
-                    $message['postedBy'] = _("Anon.");
+                    $message['postedBy'] = _("Anonymous");
                 }
                 
                 $messages[] = $message;
