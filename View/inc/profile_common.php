@@ -1,6 +1,6 @@
 <header id="profile-header">
     <div class="container">
-        <h2><?= sprintf(_("%s'S PROFILE"), strtoupper(\Utils\SecurityHelper::encode($profileUser->getUsername()))); ?></h2>
+        <h2><?= sprintf(_("%s'S PROFILE"), mb_strtoupper(\Utils\SecurityHelper::encode($profileUser->getUsername())), "utf-8"); ?></h2>
     </div>
 </header>
 <section>
@@ -16,14 +16,14 @@
                     <img class="avatar" src="img/SKP-profile-avatar-defaut-logged.png" />
                     <?php endif; ?>
                     <p>
-                        <?= strtoupper(\Utils\SecurityHelper::encode($profileUser->getUsername())); ?>
+                        <?= mb_strtoupper(\Utils\SecurityHelper::encode($profileUser->getUsername()), "utf-8"); ?>
                     </p>
                     <p>
                         <?= _("Member since"); ?><br />
                         <?= date(_("Y-m-d"), $profileUser->getDateCreated()); ?>
                     </p>
                     <p>
-                        <?= strtoupper(\Utils\SecurityHelper::encode($profileUser->getRole(true))); ?>
+                        <?= mb_strtoupper(\Utils\SecurityHelper::encode($profileUser->getRole(true)), "utf-8"); ?>
                     </p>
                 </div>
             </div>

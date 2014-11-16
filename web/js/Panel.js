@@ -75,7 +75,7 @@ var Panel = function(node, initParams) {
     }
 
     this.showMessage = function(content){
-        this.$activeSubpanel.find(".message-zone").html(content).css("display", "inline-block");
+        this.$activeSubpanel.find(".message-zone").html(content).css("display", "block");
         window.setTimeout(function(){
             $(".message-zone").fadeOut("fast");
         }, 3000);
@@ -248,6 +248,7 @@ var Panel = function(node, initParams) {
                         data: $("#skill-settings-form").serialize()
                     }).done( function(response){
                             if (response.status == "ok"){
+                                that.showMessage(response.message);
                                 ga("send", "event", "settingsChanged", tree.editedNode.name);
                             }
                             else {

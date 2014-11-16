@@ -1142,7 +1142,7 @@ msgstr  "Oops ! C'était la dernière compétence qu'il était possible d'ajoute
 
 #: l10n/JSTranslations.php:25 Model/Validator.php:141
 msgid   "If you think this limit is too low, please explain why in the \"Discuss\" panel and an Editor will raise it if appropriate."
-msgstr  "Si vous pensez que cette limite est trop basse, vous pouvez l'expliquez dans la section \"Commenter\" et les Éditeurs pourront l'augmenter si nécessaire."
+msgstr  "Si vous pensez que cette limite est trop basse, vous pouvez l'expliquer dans la section \"Commenter\" et les Éditeurs pourront l'augmenter si nécessaire."
 
 #: Model/Validator.php:141
 #, php-format
