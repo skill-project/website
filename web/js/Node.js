@@ -225,6 +225,19 @@ var Node = function(nodeData, params) {
           y: newNode.appearDestY,
           duration: 0.05 + 0.10 * (newNode.rank / newNode.count),
           onFinish: function() {
+            //If we are in targetMode, it's possible that an editedNode was collapsed. Now we bring it back.
+            if (tree.targetMode === true && typeof tree.editedNode !== "undefined") {
+
+              //Here it is!
+              if (tree.editedNode.id === newNode.id) {
+                newNode.panel = tree.editedNode.panel;
+                tree.editedNode = newNode;
+
+                newNode.isEdited = true;
+                newNode.setVisualState("normal-edit");
+              }
+            }
+
             newNode.nodeReady = true;
             //Last child has finished appearing
             if (newNode.isLast == true) {

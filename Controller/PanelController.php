@@ -24,6 +24,8 @@
             //retrieve the selected skill
             $skillManager = new SkillManager();
             $skill = $skillManager->findByUuid($uuid);
+            $skill->setChildrenCount(count($skillManager->findChildren($skill->getUuid())));
+
             $params['skill'] = $skill;
 
             //get rights 

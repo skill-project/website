@@ -50,9 +50,9 @@ var Panel = function(node, initParams) {
         content += '<a href="#" class="panelModalRemoveBtn"></a>';
         if (typeof response.message != "undefined"){
             content += '<h5>' + response.message + "</h5>";
-            for (var key in response.data) {
-                if (response.data.hasOwnProperty(key)) {
-                    content += response.data[key] + '<br />';
+            for (var key in response.data.errors) {
+                if (response.data.errors.hasOwnProperty(key)) {
+                    content += response.data.errors[key] + '<br />';
                 }
             }
         }
@@ -64,14 +64,14 @@ var Panel = function(node, initParams) {
         that.addPanelModal(content);        
     }
 
-    that.showWarning = function(warning) {
+    this.showWarning = function(warning, callback) {
         var content = '<div class="modal-content warning">';
         content += '<a href="#" class="panelModalRemoveBtn"></a>';
         content += '<p>' + warning + '</p>';
         content += '<button class="panelModalOkBtn">' + jt.ok + '</button>';
         content += '</div>';
 
-        that.addPanelModal(content);
+        this.addPanelModal(content, callback);
     }
 
     this.showMessage = function(content){
@@ -81,7 +81,7 @@ var Panel = function(node, initParams) {
         }, 3000);
     }
 
-    this.addPanelModal = function(html){
+    this.addPanelModal = function(html, callback){
         var panelModal = $('<div class="panelModal">');
         panelModal.html(html).hide();
         panelModal.css({
@@ -93,6 +93,8 @@ var Panel = function(node, initParams) {
         $(".panelModalRemoveBtn, .panelModalOkBtn").on("tap click", function(e){
             e.preventDefault();
             that.closePanelModal();
+
+            if (typeof callback !== "undefined") callback();
         });        
     }
 
@@ -160,16 +162,10 @@ var Panel = function(node, initParams) {
 
                                 ga("send", "event", "nodeCreate", response.data.skill.name);
 
-                                if (response.data.parent.childrenCount + 1 == response.data.parent.capNoMore) {
-                                    that.showWarning(jt.panel.capNoMore + "<p>" + jt.panel.capsDiscuss + "</p>");
-                                }else if (response.data.parent.childrenCount + 1 >= response.data.parent.capAlert) {
-                                    that.showWarning(jt.panel.capAlert + "<p>" + jt.panel.capsDiscuss + "</p>");
-                                }else if (response.data.parent.childrenCount + 1 > response.data.parent.capIdealMax) {
-                                    var warningMessage = jt.panel.capIdealMax.replace("%%%IDEAL%%%", response.data.parent.capIdealMax);
-                                    warningMessage = warningMessage.replace("%%%PARENTNAME%%%", response.data.parent.translations[jt.currentLang]);
-                                    that.showWarning(warningMessage + "<p>" + jt.panel.capsDiscuss + "</p>");
-                                }
-                                
+                                that.checkChildrenCaps({
+                                    response: response
+                                });
+
                                 var creationType = $(subPanel).find("#creationType").val();
                                 if (creationType == "child") {
                                     tree.editedNode.createNewChild(response.data.skill);
@@ -207,7 +203,11 @@ var Panel = function(node, initParams) {
                             if (response.status == "ok"){
                                 that.showMessage(response.message);
                                 ga("send", "event", "nodeMove", tree.editedNode.name);
-                                tree.executeMoveCopy();
+
+                                that.checkChildrenCaps({
+                                    response: response,
+                                    afterCheckCallback: tree.executeMoveCopy
+                                });
                             }
                             else {
                                 that.showErrors(response);
@@ -433,4 +433,33 @@ Panel.prototype.setOrUpdateScrollbar = function() {
     else this.$activeSubpanel.tinyscrollbar();
 
     this.$activeSubpanel[0].scrollBarLoaded = true;
+}
+
+Panel.prototype.checkChildrenCaps = function(params) {
+    var response = params.response;
+    var afterCheckCallback = params.afterCheckCallback;
+
+    //Check for the NoMore (blocking) threshold 
+    if (response.data.parent.childrenCount + 1 == response.data.parent.capNoMore) {
+        var warningMessage = jt.panel.capNoMore.replace("%%%IDEAL%%%", response.data.parent.capIdealMax);
+        warningMessage = warningMessage.replace("%%%PARENTNAME%%%", response.data.parent.translations[jt.currentLang]);
+        warningMessage = warningMessage.replace("%%%NOMORE%%%", response.data.parent.capNoMore);
+        this.showWarning(warningMessage + "<p>" + jt.panel.capsDiscuss + "</p>", afterCheckCallback);
+    
+    //Check for the Alert threshold
+    }else if (response.data.parent.childrenCount + 1 >= response.data.parent.capAlert) {
+        var warningMessage = jt.panel.capAlert.replace("%%%IDEAL%%%", response.data.parent.capIdealMax);
+        warningMessage = warningMessage.replace("%%%PARENTNAME%%%", response.data.parent.translations[jt.currentLang]);
+        warningMessage = warningMessage.replace("%%%NOMORE%%%", response.data.parent.capNoMore);
+        this.showWarning(warningMessage + "<p>" + jt.panel.capsDiscuss + "</p>", afterCheckCallback);
+
+
+    //Check for the Ideal Max thresholld
+    }else if (response.data.parent.childrenCount + 1 > response.data.parent.capIdealMax) {
+        var warningMessage = jt.panel.capIdealMax.replace("%%%IDEAL%%%", response.data.parent.capIdealMax);
+        warningMessage = warningMessage.replace("%%%PARENTNAME%%%", response.data.parent.translations[jt.currentLang]);
+        this.showWarning(warningMessage + "<p>" + jt.panel.capsDiscuss + "</p>", afterCheckCallback);
+    }else {
+        afterCheckCallback();
+    }
 }

@@ -138,7 +138,7 @@
             $skillManager = new \Model\SkillManager();
             $numChild = $skillManager->countChildren($parentSkill->getUuid());
             if ($numChild >= $parentSkill->getCapNoMore()){
-                $this->addError("create-skillName", _("Too many children!"));
+                $this->addError("create-skillName", sprintf(_("You cannot add more than %s skills to %s."), $parentSkill->getCapNoMore(), $parentSkill->getName()) . "<br>" . _("If you think this limit is too low, please explain why in the \"Discuss\" panel and an Editor will raise it if appropriate."));
             }
         }
 
@@ -149,19 +149,15 @@
         */
         public function validateCaps(Skill $skill){
             if ($skill->getCapIdealMax() >= $skill->getCapAlert()){
-                $this->addError("capIdealMax", _("Ideal Max Cap must be lower than Alert Cap!"));
+                $this->addError("capIdealMax", _("IDEAL MAX must be lower than ALERT THRESHOLD"));
             }
-            if ($skill->getCapAlert() <= $skill->getCapIdealMax()){
-                $this->addError("capAlert", _("Alert Cap must be higher than Ideal Max Cap!"));
+            if (($skill->getCapAlert() <= $skill->getCapIdealMax()) ||
+                ($skill->getCapAlert() > ($skill->getCapNoMore() -3))){
+                $this->addError("capAlert", _("ALERT THRESHOLD must be between IDEAL MAX and BLOCKING THRESHOLD - 3"));
             }
-            if ($skill->getCapAlert() >= ($skill->getCapNoMore() -3 )){
-                $this->addError("capAlert", _("Alert Cap must allow at max 3 children less than No More Cap!"));
-            }
-            if ($skill->getCapNoMore() <= $skill->getCapAlert()){
-                $this->addError("capNoMore", _("No More Cap must be higher than Alert Cap!"));
-            }
-            if ($skill->getCapNoMore() > \Config\Config::CAP_MAX_CHILD){
-                $this->addError("capNoMore", _("No More Cap must be lower or equal to ".\Config\Config::CAP_MAX_CHILD."!"));
+            if (($skill->getCapNoMore() <= $skill->getCapAlert()) ||
+                ($skill->getCapNoMore() > \Config\Config::CAP_MAX_CHILD)){
+                $this->addError("capNoMore", sprintf(_("BLOCKING THRESHOLD must be between ALERT THRESHOLD and %s"), \Config\Config::CAP_MAX_CHILD));
             }
         }
 

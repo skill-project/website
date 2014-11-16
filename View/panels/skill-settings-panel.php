@@ -19,7 +19,7 @@
 
             <label for="skill-capNoMore"><strong><?= strtoupper(_("Blocking threshold")); ?></strong><br><?=_("Maximum number of skills that can be created:")?></label>
             <input type="text" name="capNoMore" id="skill-capNoMore" maxlength="2" value="<?= $skill->getCapNoMore(); ?>" />
-            <p class="hint"><?=sprintf(_("BLOCKING THRESHOLD must be higher than ALERT THRESHOLD and lower than %s"), \Config\Config::CAP_MAX_CHILD)?></p>
+            <p class="hint"><?=sprintf(_("BLOCKING THRESHOLD must be between ALERT THRESHOLD and %s"), \Config\Config::CAP_MAX_CHILD)?></p>
         </div>
         <div>
             <input type="submit" value="<?= strtoupper(_("Save")) ?>" />

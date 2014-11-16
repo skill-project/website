@@ -497,6 +497,13 @@
                 //if creating as child, check children number 
                 //(do not check at all when creating as parent)
                 if ($selectedSkillUuid == $skillParentUuid){
+
+                    //--------------------------------------------------
+                    //WARNING !!!
+                    //Request new client to avoid strangest bug on earth
+                    //--------------------------------------------------
+                    \Model\DatabaseFactory::setNewClient();
+
                     $validator->validateNumChild($parentSkill);
                 }
                 

@@ -208,6 +208,15 @@
             return $this;
         }
 
+        /**
+         * Gets the number of children
+         *
+         * @return number of children
+         */
+        public function getChildrenCount(){
+            return $this->childrenCount;
+        }
+
         
         
         /**

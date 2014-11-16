@@ -231,7 +231,6 @@ Node.prototype.startEdit = function() {
 
 //Closes the panel
 Node.prototype.finishEdit = function(onComplete, force) {
-
   if (tree.targetMode == true) return;
   if (!this.isEdited) return;
 
@@ -247,7 +246,7 @@ Node.prototype.finishEdit = function(onComplete, force) {
         }
       }
     });
-  }
+  }else tree.busy = false;
 
   this.isEdited = false;
   delete tree.editedNode;
@@ -360,6 +359,8 @@ Node.prototype.setVisualState = function (state, draw, ignoreGlow) {
       if (!ignoreGlow) this.setGlow(1);
       break;
     case "normal-edit":
+      if (this.isEdited === true && tree.targetMode === true) imageSuffix = "";
+
       if ((this.invisibleChildrenCount - this.childrenMarkedForDeleteCount) > 0) var imageRes = $("img#node-edit-children" + imageSuffix)[0];
       else var imageRes = $("img#node-edit" + imageSuffix)[0];
 
@@ -486,6 +487,7 @@ Node.prototype.delete = function() {
 
   if (this.isEdited) this.finishEdit();
   if (this.isSelected) this.deSelect();
+  if (this.isTarget) this.unsetTarget();
 
   this.edge.shape.destroy();
   this.shapes.destroy();
@@ -795,7 +797,11 @@ Node.prototype.unsetTarget = function() {
   // if (!this.isInPath) this.setGlow(0);
   if (!this.isInPath) this.setVisualState("normal");
 
-  tree.targetNode = null;
+  delete tree.targetNode;
+
+  tree.editedNode.panel.$activeSubpanel.find("#move-step3").css("display", "none");
+  tree.editedNode.panel.$activeSubpanel.find("#destinationUuid").empty();
+  tree.editedNode.panel.$activeSubpanel.find("#destination-skill-name").empty();
 }
 
 Node.prototype.isNodeOnScreen = function() {
