@@ -121,12 +121,12 @@
                             WITH s, COUNT(c) AS child_num, gp, p, toInt(s.$capProperty) AS skillMax
                             WHERE 
                             (
-                                child_num >= {max_child} 
+                                child_num > {max_child} 
                                 AND child_num <= {upper_limit}
                             )
                             OR (
                                 HAS (s.$capProperty) 
-                                AND child_num >= skillMax 
+                                AND child_num > skillMax 
                                 AND child_num <= {upper_limit}
                             ) 
                             RETURN s,gp,p,child_num";
