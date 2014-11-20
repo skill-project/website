@@ -116,12 +116,21 @@
          * Retrieve all nodes with max num child
          * @return array
          */
-        public function getMaxedSkillsByCap($max_child, $capProperty = "capMaxChild"){
+        public function getMaxedSkillsByCap($max_child, $capProperty = "capMaxChild", $upper_limit = 99){
             $cyp = "MATCH (gp:Skill)-[:HAS*0..1]->(p:Skill)-[:HAS]->(s:Skill)-[:HAS]->(c:Skill)
                             WITH s, COUNT(c) AS child_num, gp, p, toInt(s.$capProperty) AS skillMax
-                            WHERE child_num >= {max_child} OR (HAS (s.$capProperty) AND child_num >= skillMax)
+                            WHERE 
+                            (
+                                child_num >= {max_child} 
+                                AND child_num <= {upper_limit}
+                            )
+                            OR (
+                                HAS (s.$capProperty) 
+                                AND child_num >= skillMax 
+                                AND child_num <= {upper_limit}
+                            ) 
                             RETURN s,gp,p,child_num";
-            $query = new Query($this->client, $cyp, array("max_child" => $max_child));
+            $query = new Query($this->client, $cyp, array("max_child" => $max_child, "upper_limit" => $upper_limit));
             $resultSet = $query->getResultSet();
             if ($resultSet->count() > 0){
                 $results = array();

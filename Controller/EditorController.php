@@ -29,8 +29,8 @@
 
             //$statManager->getMaxedSkillsByCap(\Config\Config::CAP_IDEAL_MAX);
             $params['cappedSkills'] = array(
-                "idealMax" => $statManager->getMaxedSkillsByCap(\Config\Config::CAP_IDEAL_MAX, "capIdealMax"),
-                "alert" => $statManager->getMaxedSkillsByCap(\Config\Config::CAP_ALERT, "alert"),
+                "idealMax" => $statManager->getMaxedSkillsByCap(\Config\Config::CAP_IDEAL_MAX, "capIdealMax", \Config\Config::CAP_ALERT),
+                "alert" => $statManager->getMaxedSkillsByCap(\Config\Config::CAP_ALERT, "alert", \Config\Config::CAP_NO_MORE),
                 "noMore" => $statManager->getMaxedSkillsByCap(\Config\Config::CAP_NO_MORE, "noMore"),
             );
 
