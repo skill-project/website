@@ -15,29 +15,32 @@
         /**
          * Recent changes
          */
-        public function recentChangesAction(){
+        public function editorDashboardAction(){
 
             SH::lock("admin");
-            // $params = array();
+            $params = array();
 
-            // $statManager = new StatManager();
+            $statManager = new StatManager();
             // $userManager = new UserManager();
             
             $params['title'] = "Editor Dashboard";
 
-            // $params['skillsCount']  = $statManager->countLabel("Skill");
-            // $params['usersCount']   = $statManager->countLabel("User");
-            // $params['maxDepth']     = $statManager->getMaxDepth();
+            //$statManager->getMaxedSkillsByCap(\Config\Config::CAP_IDEAL_MAX);
+            $params['cappedSkills'] = array(
+                "idealMax" => $statManager->getMaxedSkillsByCap(\Config\Config::CAP_IDEAL_MAX, "capIdealMax"),
+                "alert" => $statManager->getMaxedSkillsByCap(\Config\Config::CAP_ALERT, "alert"),
+                "noMore" => $statManager->getMaxedSkillsByCap(\Config\Config::CAP_NO_MORE, "noMore"),
+            );
+
+
+
+            $params['skillsCount']  = $statManager->countLabel("Skill");
             // $params['latestChanges']= $statManager->getLatestChanges();
-            // $params['maxedSkills']  = $statManager->getMaxedSkills();
+            $params['maxedSkills']  = $statManager->getMaxedSkills();
 
-            // $params['users'] = $userManager->findAll();
-
-            //$params['meanNumber'] = $statManager->getMeanNumberOfSkillChildren();
-
-            $view = new EditorView("recentChanges.php", $params);
-            
+            $view = new EditorView("editor/editor_dashboard.php", $params);
             $view->send();
         }
+
 
     }

@@ -4,6 +4,5 @@
 
     class EditorView extends View{
 
-        protected $layout = "../View/layouts/editor.php";
 
     }

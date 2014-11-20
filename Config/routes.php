@@ -430,9 +430,9 @@
 
 //Editor Dashboard
     $routes->add(
-        'stats',
+        'editorDashboard',
         new Route('/editor/', 
-            array('controller' => 'Editor', 'action' => 'recentChanges'), array(), array(), 
+            array('controller' => 'Editor', 'action' => 'editorDashboard'), array(), array(), 
             '{lang}.'.Config::DOMAIN
         )
     );

@@ -106,7 +106,7 @@
                 echo $row['meanNumber'];
                 //return $row['meanNumber'];
             }
-            die();
+            die("todo");
         }
 
 
@@ -114,7 +114,47 @@
 
         /**
          * Retrieve all nodes with max num child
-         * @param int depth
+         * @return array
+         */
+        public function getMaxedSkillsByCap($max_child, $capProperty = "capMaxChild"){
+            $cyp = "MATCH (gp:Skill)-[:HAS*0..1]->(p:Skill)-[:HAS]->(s:Skill)-[:HAS]->(c:Skill)
+                            WITH s, COUNT(c) AS child_num, gp, p, toInt(s.$capProperty) AS skillMax
+                            WHERE child_num >= {max_child} OR (HAS (s.$capProperty) AND child_num >= skillMax)
+                            RETURN s,gp,p,child_num";
+            $query = new Query($this->client, $cyp, array("max_child" => $max_child));
+            $resultSet = $query->getResultSet();
+            if ($resultSet->count() > 0){
+                $results = array();
+                foreach ($resultSet as $row) {
+
+                    $skill = new Skill($row['s']);
+                    $uuid = $skill->getUuid();
+                    if (array_key_exists($uuid, $results)){
+                        continue;
+                    }
+                    $results[$uuid] = array(
+                        "skill" => $skill,
+                        "child_num" => $row['child_num']
+                    );
+                    if (empty($results[$uuid]['parent']) && !empty($row['p']->getProperty('name'))){
+                        $parentSkill = new Skill($row['p']);
+                        $results[$uuid]['parent'] = $parentSkill;
+                    }
+                    if (empty($results[$uuid]['gp']) && !empty($row['gp']->getProperty('name')) 
+                            && $row['gp']->getProperty('name') != $row['p']->getProperty('name')){
+                        $gpSkill = new Skill($row['gp']);
+                        $results[$uuid]['gp'] = $gpSkill;
+                    }
+                }
+                return $results;
+            }
+
+            return false;
+        }
+
+
+        /**
+         * Retrieve all nodes with max num child
          * @return array
          */
         public function getMaxedSkills(){
