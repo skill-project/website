@@ -2,6 +2,7 @@
     
     namespace Model;
 
+    use \Model\SkillManager;
     use \Everyman\Neo4j\Cypher\Query;
 
     class StatManager extends Manager {
@@ -51,13 +52,16 @@
          */
         public function getLatestChanges(){
 
-            $limit = (!empty($_GET['limit'])) ? $_GET['limit'] : 40;
+
+
+            $languageCodes = new \Model\LanguageCode();
+
+            $limit = (!empty($_GET['limit'])) ? $_GET['limit'] : 50;
             $skip = (!empty($_GET['skip'])) ? $_GET['skip'] : 0;
 
-                    //not specifying node label cause it can be different from :Skill
-            $cyp = "MATCH (s)<-[r:CREATED|MODIFIED|TRANSLATED|AUTO_TRANSLATED|DELETED|MOVED]-
-                    (u:User) 
-                    RETURN r,s,u
+            $cyp = "MATCH (s)<-[r:CREATED|MODIFIED|TRANSLATED|AUTO_TRANSLATED|DELETED|MOVED]-(u:User)
+                    WHERE s:Skill OR s:DeletedSkill
+                    RETURN r,s,u, labels(s) AS labels
                     ORDER BY r.timestamp DESC SKIP {skip} LIMIT {limit}";
 
             $query = new Query($this->client, $cyp, array(
@@ -68,11 +72,24 @@
 
             $activities = array();
             if ($resultSet->count() > 0){
+                $skillManager = new skillManager();
+
+                // print_r($skillManager->getContext("5464913149d684f59212071"));
+                // die();
+
                 foreach($resultSet as $row){
                     $act = array();
+                    $act['skillDeleted'] = $row["labels"][0] == "DeletedSkill" ? true : false;
                     $act['skillName'] = $row['s']->getProperty('name');
+                    $act['skillURL'] = \Controller\Router::url("goTo", array("slug" => $row['s']->getProperty('slug')), true);
+                    $act['skillContext'] = $skillManager->getContext($row['s']->getProperty('uuid'));
+
+                    if ($act['skillDeleted'] == false)  $act['skillFormatted'] = $act["skillContext"] . " > <a href='" . $act["skillURL"] . "'>" . $act["skillName"] .  "</a>";
+                    else                                $act['skillFormatted'] = $act["skillContext"] . " > <strike>" . $act["skillName"] . "</strike>";
+
                     $act['action'] = $row['r']->getType();
                     $act['timestamp'] = $row['r']->getProperty('timestamp');
+                    $act['userProfileURL'] = \Controller\Router::url('viewProfile', array('username' => $row['u']->getProperty('username')));
 
                     foreach($row['s']->getProperties() as $key => $value){
                         $act['skillProps'][$key] = $value;
@@ -83,6 +100,43 @@
                     foreach($row['u']->getProperties() as $key => $value){
                         $act['userProps'][$key] = $value;
                     }
+
+                    switch ($act['action']) {
+                        case "CREATED":
+                            $act['actionDetails'] = _("Created");
+                            break;
+                        case "AUTO_TRANSLATED":
+                            $translatedInto = $languageCodes->getNames($act['relProps']['to']);
+                            
+                            $act['actionDetails'] = sprintf(_("Automatically translated into %s : \"%s\""), $translatedInto["name"], $act['relProps']['name']);
+                            break;
+                        case "MOVED":
+                            $fromParent = $skillManager->findByUuid($act['relProps']['fromParent']);
+                            if (!$fromParent) $fromParentDeleted = $skillManager->findDeletedByUuid($act['relProps']['fromParent']);
+                            $fromParentName = $fromParent ? "\"" . $fromParent->getName() . "\"" : "<strike>" . $fromParentDeleted->getName() . "</strike> <em>(deleted)</em>";
+                            
+                            $toParent = $skillManager->findByUuid($act['relProps']['toParent']);
+                            if (!$toParent) $toParentDeleted = $skillManager->findDeletedByUuid($act['relProps']['toParent']);
+                            $toParentName = $toParent ? "\"" . $toParent->getName() . "\"" : "<strike>" . $toParentDeleted->getName() . "</strike> <em>(deleted)</em>";
+                            
+                            $act['actionDetails'] = sprintf(_("Moved from %s into %s"), $fromParentName, $toParentName);
+                            break;
+                        case "MODIFIED": //Renamed really
+                            $act['actionDetails'] = sprintf(_("Renamed from \"%s\" to \"%s\""), $act['relProps']['fromName'], $act['skillName']);
+                            break;
+                        case "TRANSLATED":
+                            $translatedInto = $languageCodes->getNames($act['relProps']['to']);
+                            
+                            $act['actionDetails'] = sprintf(_("Translated into %s : \"%s\""), $translatedInto["name"], $act['relProps']['name']);
+                            break;
+                        case "DELETED":
+                            $act['actionDetails'] = _("Deleted");
+                            break;
+                        default:
+                            $act['actionDetails'] = $act['action'];
+                            break;
+                    }
+
                     $activities[] = $act;
                 }
             }

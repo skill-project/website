@@ -14,6 +14,31 @@
 <hr />
 <section>
     <div class="container">
+        <h2><?= _("Latest changes"); ?></h2>
+        <table>
+            <tr>
+                <th>Date & Time</th>
+                <th>Skill</th>
+                <th>User</th>
+                <th>Action</th>
+            </tr>
+        <?php
+        foreach ($latestChanges as $change) {
+            echo "<tr>";
+            echo "<td>" . date("d/m/Y H:i:s", $change["timestamp"]) . "</td>";
+            echo "<td>" . $change["skillFormatted"] . "</td>";
+            echo "<td><a href='" . $change["userProfileURL"] . "'>" . $change["userProps"]["username"] . "</a></td>";
+            echo "<td>" . $change["actionDetails"] . "</td>";
+            
+            echo "</tr>";
+        }
+        ?>
+    </table>
+    </div>
+</section>
+<hr />
+<section>
+    <div class="container">
         <h2><?= _("Recent discussions"); ?></h2>
         <table id="recent-discussions-table">
             <tr>

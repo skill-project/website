@@ -124,10 +124,12 @@
          * @param string $id
          * @return mixed 
          */
-        public function findByUuid($uuid){
-            $cyp = "MATCH (skill:Skill { uuid: {uuid} }) RETURN skill LIMIT 1";
+        public function findByUuid($uuid, $findDeleted = false){
+            $skillLabel = $findDeleted ? "DeletedSkill" : "Skill";
+
+            $cyp = "MATCH (skill:$skillLabel { uuid: {uuid} }) RETURN skill LIMIT 1";
             $query = new Query($this->client, $cyp, array(
-                "uuid" => $uuid)
+                "uuid"          => $uuid)
             );
             $resultSet = $query->getResultSet();
             if ($resultSet->count() == 1){
@@ -138,6 +140,15 @@
             }
 
             return false;
+        }
+
+        /**
+         * Return the Skill object of a deleted skill based on his uuid, false on failure
+         * @param string $id
+         * @return mixed 
+         */
+        public function findDeletedByUuid($uuid){
+            return $this->findByUuid($uuid, true);
         }
 
         /**
@@ -323,6 +334,40 @@
             $this->searchIndex->add($skill->getNode(), 'name', strtolower($skill->getName()));
         }
 
+        /**
+         * Returns the parent and grand parent of a given skill by its uuid
+         */
+        public function getContext($uuid, $formatted = true) {
+            $cyp = "MATCH (gp:Skill)-[:HAS*0..1]->(p:Skill)-[:HAS]->(s {uuid: {uuid}})
+                    WHERE s:Skill OR s:DeletedSkill
+                    RETURN s,gp,p
+                    LIMIT 1";
+
+            $query = new Query($this->client, $cyp, array("uuid" => $uuid));
+
+            $resultSet = $query->getResultSet();
+            if ($resultSet->count() > 0){
+                $row = $resultSet[0];
+
+                if ($formatted) {
+
+                    if ($row["gp"]->getProperty("uuid") != $row["p"]->getProperty("uuid")) $gp = $row["gp"]->getProperty("name") . " > ";
+                    else $gp = "";
+
+                    //--------------------------------------------------
+                    //WARNING !!!
+                    //Request new client to avoid strangest bug on earth
+                    //--------------------------------------------------
+                    \Model\DatabaseFactory::setNewClient();
+
+                    $parent = $row["p"]->getProperty("name");
+
+                    $context = $gp . $parent;
+                }
+                return $context;
+            }
+            return false;
+        }
 
         /**
          * Save a NEW Skill to DB

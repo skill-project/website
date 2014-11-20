@@ -37,7 +37,7 @@
             $params['recentMessages'] = $discussionManager->getRecentMessages();
 
             $params['skillsCount']  = $statManager->countLabel("Skill");
-            // $params['latestChanges']= $statManager->getLatestChanges();
+            $params['latestChanges']= $statManager->getLatestChanges();
             $params['maxedSkills']  = $statManager->getMaxedSkills();
 
             $view = new EditorView("editor/editor_dashboard.php", $params);
