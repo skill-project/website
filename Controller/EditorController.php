@@ -8,6 +8,7 @@
     use \Model\UserManager;
     use \Model\TranslationManager;
     use \Model\StatManager;
+    use \Model\DiscussionManager;
     use \Utils\SecurityHelper as SH;
 
     class EditorController extends Controller {
@@ -21,6 +22,7 @@
             $params = array();
 
             $statManager = new StatManager();
+            $discussionManager = new DiscussionManager();
             // $userManager = new UserManager();
             
             $params['title'] = "Editor Dashboard";
@@ -32,7 +34,7 @@
                 "noMore" => $statManager->getMaxedSkillsByCap(\Config\Config::CAP_NO_MORE, "noMore"),
             );
 
-
+            $params['recentMessages'] = $discussionManager->getRecentMessages();
 
             $params['skillsCount']  = $statManager->countLabel("Skill");
             // $params['latestChanges']= $statManager->getLatestChanges();

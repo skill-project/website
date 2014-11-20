@@ -14,6 +14,31 @@
 <hr />
 <section>
     <div class="container">
+        <h2><?= _("Recent discussions"); ?></h2>
+        <table id="recent-discussions-table">
+            <tr>
+                <th>Date & Time</th>
+                <th>Skill</th>
+                <th>User</th>
+                <th>Message</th>
+            </tr>
+            <?php foreach($recentMessages as $rm): ?>
+            <tr>
+                <td><?= $rm['date']; ?></td>
+                <td>
+                    <a href="<?= \Controller\Router::url("goTo", array("slug" => $rm["skillSlug"])) ?>"><?= $rm["skillName"]; ?>
+                    </a>
+                </td>
+                <td><?= _($rm['postedBy']); ?></td>
+                <td><?= $rm["message"]; ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+</section>
+<hr />
+<section>
+    <div class="container">
         <h2><?= _("Oversized Skills"); ?></h2>
         <h3><?= _("Skills with more sub-skills than their 'Ideal' setting"); ?></h3>
         <?php if ($cappedSkills['idealMax']): ?>
@@ -48,6 +73,6 @@
         No skills with maximum number of children.
         <?php endif; ?>
 
-        
+
     </div>
 </section>
