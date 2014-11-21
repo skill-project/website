@@ -9,7 +9,17 @@ foreach($history as $item) {
 		<?=$item["actionName"]?>
 	</div>
 	<div class="details">
-		<?=$item["actionDetails"]?>
+		<?php
+			if (!empty($item["actionDetails"])) echo $item["actionDetails"];
+			else {
+				switch ($item["action"]) {
+					case "MOVED":
+						echo _("New parent:") . " " . $item["toParentName"] . "<br>";
+						echo _("Old parent:") . " " . $item["fromParentName"];
+						break;
+				}
+			}
+		?>
 	</div>
 </div>
 

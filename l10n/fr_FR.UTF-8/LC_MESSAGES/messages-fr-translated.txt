@@ -1152,3 +1152,97 @@ msgstr  "Vous ne pouvez pas ajouter plus de %s compétences à %s."
 #: Model/DiscussionManager.php:67
 msgid   "Anonymous"
 msgstr  "Anonyme"
+
+#: View/pages/editor/editor_dashboard.php:8
+msgid   "Recent activity"
+msgstr  "Activité récente"
+
+#: View/pages/editor/editor_dashboard.php:9
+msgid   "Recent discussions"
+msgstr  "Commentaires récents"
+
+#: View/pages/editor/editor_dashboard.php:10
+msgid   "Oversized skills"
+msgstr  "Nombreux enfants"
+
+#: View/pages/editor/tabs/oversized_skills_ideal_max.php:1
+msgid   "Skills with more sub-skills than their 'Ideal' setting"
+msgstr  "Compétences ayant plus d'enfants que le paramètre MAXIMUM IDEAL"
+
+#: View/panels/skill-history-panel.php:5 View/panels/panel.php:30
+msgid   "History"
+msgstr  "Historique"
+
+#: View/panels/skill-history-content.php:6
+#, php-format
+msgid   "by %s"
+msgstr  "par %s"
+
+#: View/panels/skill-history-content.php:17
+msgid   "New parent:"
+msgstr  "Nouveau parent :"
+
+#: View/panels/skill-history-content.php:18
+msgid   "Old parent:"
+msgstr  "Ancien arent :"
+
+#: Model/SkillManager.php:818
+msgid   "Automatically translated"
+msgstr  "Traduit automatiquement"
+
+#: Model/SkillManager.php:819 Model/SkillManager.php:860
+#, php-format
+msgid   "%s: \"%s\""
+msgstr  "%s \"%s\""
+
+#. Renamed really
+#: Model/SkillManager.php:848
+msgid   "Renamed"
+msgstr  "Renommé"
+
+#: Model/SkillManager.php:854
+#, php-format
+msgid   "Old name: \"%s\""
+msgstr  "Ancien nom :\"%s\""
+
+#. Probably useless, as this skill will never show in the tree
+#: Model/SkillManager.php:863 Model/StatManager.php:135
+msgid   "Deleted"
+msgstr  "Supprimé"
+
+#: Model/SkillManager.php:880
+msgid   "Discussed"
+msgstr  "Commenté"
+
+#: Model/StatManager.php:108
+#, php-format
+msgid   "Automatically translated into %s: \"%s\""
+msgstr  "Traduit automatiquement en %s : \"%s\""
+
+#: Model/StatManager.php:119
+#, php-format
+msgid   "Moved from %s into %s"
+msgstr  "Déplacé de %s vers %s"
+
+#: Model/StatManager.php:123
+#, php-format
+msgid   "Renamed from \"%s\" to \"%s\""
+msgstr  "Renommé de \"%s\" en \"%s\""
+
+#: Model/StatManager.php:126
+#, php-format
+msgid   "Renamed to \"%s\""
+msgstr  "Renommé en \"%s\""
+
+#: Model/StatManager.php:132
+#, php-format
+msgid   "Translated into %s: \"%s\""
+msgstr  "Traduit en %s: \"%s\""
+
+#: Model/LanguageCode.php:64
+msgid   "English"
+msgstr  "Anglais"
+
+#: Model/LanguageCode.php:65
+msgid   "French"
+msgstr  "Français"

@@ -352,7 +352,10 @@
 
                 if ($formatted) {
 
-                    if ($row["gp"]->getProperty("uuid") != $row["p"]->getProperty("uuid")) $gp = $row["gp"]->getProperty("name") . " > ";
+                    if ($row["gp"]->getProperty("depth") > 0) $beforeGp = "[...] > ";
+                    else $beforeGp = "";
+
+                    if ($row["gp"]->getProperty("uuid") != $row["p"]->getProperty("uuid")) $gp = $beforeGp . $row["gp"]->getProperty("name") . " > ";
                     else $gp = "";
 
                     //--------------------------------------------------
@@ -818,21 +821,34 @@
                         case "MOVED":
                             $act['actionName'] = _("Moved");
                             
+                            //Retrieving old parent of skill before move operation
                             $fromParent = $this->findByUuid($act['relProps']['fromParent']);
                             if (!$fromParent) $fromParentDeleted = $this->findDeletedByUuid($act['relProps']['fromParent']);
-                            $fromParentName = $fromParent ? "\"" . $fromParent->getName() . "\"" : "<strike>" . $fromParentDeleted->getName() . "</strike> <em>(deleted)</em>";
-                            
+                            $fromParentName = $fromParent ? "<strong>" . $fromParent->getName() . "</strong>" : "<strike>" . $fromParentDeleted->getName() . "</strike> <em>(deleted)</em>";
+                            //Old parent context
+                            $fromParentContext = $this->getContext($act['relProps']['fromParent']);
+                            if (!empty($fromParentContext)) $fromParentContext .= " > ";
+                            $fromParentName = $fromParentContext . $fromParentName;
+
+                            //Retrieving new parent of skill after move operation
                             $toParent = $this->findByUuid($act['relProps']['toParent']);
                             if (!$toParent) $toParentDeleted = $this->findDeletedByUuid($act['relProps']['toParent']);
-                            $toParentName = $toParent ? "\"" . $toParent->getName() . "\"" : "<strike>" . $toParentDeleted->getName() . "</strike> <em>(deleted)</em>";
+                            $toParentName = $toParent ? "<strong>" . $toParent->getName() . "</strong>" : "<strike>" . $toParentDeleted->getName() . "</strike> <em>(deleted)</em>";
+                            //New parent context
+                            $toParentContext = $this->getContext($act['relProps']['toParent']);
+                            if (!empty($toParentContext)) $toParentContext .= " > ";
+                            $toParentName = $toParentContext . $toParentName;
                             
-                            $act['actionDetails'] = sprintf(_("%s -> %s"), $fromParentName, $toParentName);
+                            $act["fromParentName"] = $fromParentName;
+                            $act["toParentName"] = $toParentName;
+
+                            // $act['actionDetails'] = sprintf(_("%s -> %s"), $fromParentName, $toParentName);
                             break;
                         case "MODIFIED": //Renamed really
                             $act['actionName'] = _("Renamed");
 
                             if (!empty($act['relProps']['fromName']) && !empty($act['relProps']['toName'])){
-                                $act['actionDetails'] = sprintf(_("\"%s\" -> \"%s\""), $act['relProps']['fromName'], $act['relProps']['toName']);
+                                $act['actionDetails'] = sprintf("\"%s\" -> \"%s\"", $act['relProps']['fromName'], $act['relProps']['toName']);
                             }
                             else if (!empty($act['relProps']['fromName']) && empty($act['relProps']['toName'])){
                                 $act['actionDetails'] = sprintf(_("Old name: \"%s\""), $act['relProps']['fromName']);
