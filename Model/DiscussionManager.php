@@ -56,6 +56,10 @@
                 $message['date'] = date("F jS, Y \a\\t H:i", $message['timestamp']);
                 // $message['topic'] = SH::encode($row['message']->getProperty("topic"));
 
+                foreach($row['user']->getProperties() as $key => $value){
+                    $message['userProps'][$key] = $value;
+                }
+
                 $user = new User();
                 $user->setNode($row['user']);
                 $user->hydrateFromNode();

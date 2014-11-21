@@ -118,6 +118,9 @@ var Panel = function(node, initParams) {
                         });
 
                         that.$activeSubpanel = $("#" + panelToLoad);
+
+                        that.panelPreloadEvents();
+
                         $("#" + panelToLoad).show("slide", {
                             direction: "right",
                         }, function(){
@@ -161,7 +164,6 @@ var Panel = function(node, initParams) {
                                 that.showMessage(response.message);
 
                                 ga("send", "event", "nodeCreate", response.data.skill.name);
-
                                 that.checkChildrenCaps({
                                     response: response
                                 });
@@ -413,6 +415,22 @@ Panel.prototype.panelLoadEvents = function() {
     }
 }
 
+Panel.prototype.panelPreloadEvents = function() {
+    var panel = tree.editedNode.panel;
+
+    switch (panel.$activeSubpanel[0].id) {
+        case "skill-history-panel":
+            $.ajax({
+                url: $("#skill-history-form").attr("action"),
+                type: $("#skill-history-form").attr("method"),
+                data: $("#skill-history-form").serialize()
+            }).done(function(response){
+                $("#skill-history-content").empty().append(response);
+            });
+            break;
+    }
+}
+
 
 Panel.prototype.setOrUpdateScrollbar = function() {
 
@@ -438,7 +456,7 @@ Panel.prototype.setOrUpdateScrollbar = function() {
 
 Panel.prototype.checkChildrenCaps = function(params) {
     var response = params.response;
-    var afterCheckCallback = params.afterCheckCallback;
+    var afterCheckCallback = typeof params.afterCheckCallback != "undefined" ? params.afterCheckCallback : function() { };
 
     //Check for the NoMore (blocking) threshold 
     if (response.data.parent.childrenCount + 1 == response.data.parent.capNoMore) {

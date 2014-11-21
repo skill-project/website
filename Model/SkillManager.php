@@ -6,6 +6,7 @@
     use \Everyman\Neo4j\Traversal;
     use \Everyman\Neo4j\Relationship;
     use \Everyman\Neo4j\Cypher\Query;
+    use Carbon\Carbon;
 
     class SkillManager extends Manager {
 
@@ -396,7 +397,8 @@
                         modified: {now} 
                         **trans**
                     })<-[:CREATED {
-                        timestamp: {now}
+                        timestamp: {now},
+                        originalName: {originalName}
                     }]-(user)";
 
             
@@ -408,6 +410,7 @@
                     "depth" => $skill->getDepth(),
                     "userUuid" => $userUuid,
                     "parentUuid" => $skillParentUuid,
+                    "originalName" => $skill->getName()
                 );
 
             //dynamic shit for translations
@@ -443,7 +446,7 @@
                         skill.modified = {now}
                         **trans**
                     CREATE (skill)<-[:MODIFIED {
-                        timestamp: {now}, fromName: {fromName}
+                        timestamp: {now}, fromName: {fromName}, toName: {toName}
                     }]-(user)";
 
             $namedParams = array(
@@ -453,7 +456,8 @@
                     "slug" => $skill->getSlug(),
                     "depth" => $skill->getDepth(),
                     "userUuid" => $userUuid,
-                    "fromName" => $previousName
+                    "fromName" => $previousName,
+                    "toName" => $skill->getName()
                 );
 
             //dynamic shit for translations
@@ -759,6 +763,133 @@
                 $owner->hydrateFromNode();
                 return $owner;
             }else return false;
+        }
+
+        /**
+         * Return the skill history
+         */
+        public function getSkillHistory($uuid){
+
+            $cyp = "MATCH (s:Skill {uuid: {uuid}})<-[r:CREATED|MODIFIED|TRANSLATED|AUTO_TRANSLATED|DELETED|MOVED|IS_ABOUT]-(u:User)
+                    RETURN r,u
+                    ORDER BY r.timestamp DESC SKIP {skip} LIMIT {limit}";
+
+            $namedParams = array(
+                "uuid"  => $uuid,
+                "skip"  => 0,
+                "limit" => 10
+            );
+            
+            $query = new Query($this->client, $cyp, $namedParams);
+            $resultSet = $query->getResultSet();
+
+            $activities = "";
+            if ($resultSet->count() > 0){
+                $languageCodes = new \Model\LanguageCode();
+
+                foreach($resultSet as $row){
+                    $act = array();
+                    $act['action'] = $row['r']->getType();
+
+                    $interval = time() - $row['r']->getProperty('timestamp');
+                    $act['timestamp'] = $row['r']->getProperty('timestamp');
+
+                    $act['diffHuman'] = $languageCodes->localizeCarbon(Carbon::now()->subSeconds($interval)->diffForHumans(), $GLOBALS["lang"]);
+                    $act['exactTime'] = strftime("%c", $row['r']->getProperty('timestamp'));
+
+                    $act['userProfileURL'] = \Controller\Router::url('viewProfile', array('username' => $row['u']->getProperty('username')), true);
+
+                    foreach($row['r']->getProperties() as $key => $value){
+                        $act['relProps'][$key] = $value;
+                    }
+                    foreach($row['u']->getProperties() as $key => $value){
+                        $act['userProps'][$key] = $value;
+                    }
+
+                    switch ($act['action']) {
+                        case "CREATED":
+                            $act['actionName'] = _("Created");
+                            $act['actionDetails'] = "";
+                            break;
+                        case "AUTO_TRANSLATED":
+                            $act['actionName'] = _("Automatically translated");
+                            $act['actionDetails'] = sprintf(_("%s: \"%s\""), $languageCodes->getLocalName($act['relProps']['to']), $act['relProps']['name']);
+                            break;
+                        case "MOVED":
+                            $act['actionName'] = _("Moved");
+                            
+                            $fromParent = $this->findByUuid($act['relProps']['fromParent']);
+                            if (!$fromParent) $fromParentDeleted = $this->findDeletedByUuid($act['relProps']['fromParent']);
+                            $fromParentName = $fromParent ? "\"" . $fromParent->getName() . "\"" : "<strike>" . $fromParentDeleted->getName() . "</strike> <em>(deleted)</em>";
+                            
+                            $toParent = $this->findByUuid($act['relProps']['toParent']);
+                            if (!$toParent) $toParentDeleted = $this->findDeletedByUuid($act['relProps']['toParent']);
+                            $toParentName = $toParent ? "\"" . $toParent->getName() . "\"" : "<strike>" . $toParentDeleted->getName() . "</strike> <em>(deleted)</em>";
+                            
+                            $act['actionDetails'] = sprintf(_("%s -> %s"), $fromParentName, $toParentName);
+                            break;
+                        case "MODIFIED": //Renamed really
+                            $act['actionName'] = _("Renamed");
+
+                            if (!empty($act['relProps']['fromName']) && !empty($act['relProps']['toName'])){
+                                $act['actionDetails'] = sprintf(_("\"%s\" -> \"%s\""), $act['relProps']['fromName'], $act['relProps']['toName']);
+                            }
+                            else if (!empty($act['relProps']['fromName']) && empty($act['relProps']['toName'])){
+                                $act['actionDetails'] = sprintf(_("Old name: \"%s\""), $act['relProps']['fromName']);
+                            }
+
+                            break;
+                        case "TRANSLATED":
+                            $act['actionName'] = _("Translated");                           
+                            $act['actionDetails'] = sprintf(_("%s: \"%s\""), $languageCodes->getLocalName($act['relProps']['to']), $act['relProps']['name']);
+                            break;
+                        case "DELETED": //Probably useless, as this skill will never show in the tree
+                            $act['actionName'] = _("Deleted");
+                            $act['actionDetails'] = "";
+                            break;
+                        default:
+                            $act['actionName'] = $act['action'];
+                            $act['actionDetails'] = "";
+                            break;
+                    }
+
+                    $activities[] = $act;
+                }
+
+                $discussionManager = new DiscussionManager();
+                $skillMessages = $discussionManager->getSkillMessages($uuid);
+
+                foreach($skillMessages as $message) {
+                    $message["action"] = "COMMENT";
+                    $message["actionName"] = _("Discussed");
+                    $message["actionDetails"] = $message["message"];
+
+                    $message['userProfileURL'] = \Controller\Router::url('viewProfile', array('username' => $message["userProps"]["username"]), true);
+
+                    $interval = time() - $message["timestamp"];
+                    $message['diffHuman'] = $languageCodes->localizeCarbon(Carbon::now()->subSeconds($interval)->diffForHumans(), $GLOBALS["lang"]);
+                    $message['exactTime'] = strftime("%c", $row['r']->getProperty('timestamp'));
+
+                    $activities[] = $message;
+                }
+
+                //Better sorting of discussions and CREATED/AUTO_TRANSLATED
+                usort($activities, array($this, "sortActivities"));
+
+                return $activities;
+            }else return false;
+        }
+
+        public function sortActivities($a, $b) {
+            //AUTO_TRANSLATED and CREATED always have the same timestamp
+            //so ordering is forced : first CREATED, second AUTO_TRANSLATED (makes more sense)
+            if ($a["timestamp"] == $b["timestamp"] &&
+                ($a["action"] == "AUTO_TRANSLATED" && $b["action"] == "CREATED")) {
+                return false;
+            }else {
+                //General case used to order discussions with other actions
+                return $a["timestamp"] <= $b["timestamp"];
+            }
         }
 
     }

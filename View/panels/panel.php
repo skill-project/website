@@ -26,6 +26,9 @@
  if (in_array("share", $rights)){ ?>    
     <a data-panel="share-skill-panel" class="panel-btn" href="#" title="<?= _("SHARE THE SKILL"); ?>"><?= _("SHARE THE SKILL"); ?><span class="arrow-btn arrow-btn-r"><img src="img/panel-icon-arrow-right.png" alt=">" /></span></a>
 <?php } 
+ if (in_array("history", $rights)){ ?>
+    <a data-panel="skill-history-panel" class="panel-btn" href="#" title="<?= _("History"); ?>"><?= _("History"); ?><span class="arrow-btn arrow-btn-r"><img src="img/panel-icon-arrow-right.png" alt=">" /></span></a>
+<?php } 
  if (in_array("settings", $rights)){ ?>
     <a data-panel="skill-settings-panel" class="panel-btn last" href="#" title="<?= _("Skill settings"); ?>"><?= _("Skill settings"); ?><span class="arrow-btn arrow-btn-r"><img src="img/panel-icon-arrow-right.png" alt=">" /></span></a>
 <?php } ?>
@@ -43,5 +46,6 @@ if (in_array("move", $rights)){ include("move-skill-panel.php");}
 if (in_array("delete", $rights)){ include("delete-skill-panel.php");}
 if (in_array("discuss", $rights)){ include("discuss-skill-panel.php");}
 if (in_array("share", $rights)){ include("share-skill-panel.php"); }
+if (in_array("history", $rights)){ include("skill-history-panel.php"); }
 
 ?>

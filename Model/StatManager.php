@@ -74,9 +74,6 @@
             if ($resultSet->count() > 0){
                 $skillManager = new skillManager();
 
-                // print_r($skillManager->getContext("5464913149d684f59212071"));
-                // die();
-
                 foreach($resultSet as $row){
                     $act = array();
                     $act['skillDeleted'] = $row["labels"][0] == "DeletedSkill" ? true : false;
@@ -108,7 +105,7 @@
                         case "AUTO_TRANSLATED":
                             $translatedInto = $languageCodes->getNames($act['relProps']['to']);
                             
-                            $act['actionDetails'] = sprintf(_("Automatically translated into %s : \"%s\""), $translatedInto["name"], $act['relProps']['name']);
+                            $act['actionDetails'] = sprintf(_("Automatically translated into %s: \"%s\""), $translatedInto["name"], $act['relProps']['name']);
                             break;
                         case "MOVED":
                             $fromParent = $skillManager->findByUuid($act['relProps']['fromParent']);
@@ -132,7 +129,7 @@
                         case "TRANSLATED":
                             $translatedInto = $languageCodes->getNames($act['relProps']['to']);
                             
-                            $act['actionDetails'] = sprintf(_("Translated into %s : \"%s\""), $translatedInto["name"], $act['relProps']['name']);
+                            $act['actionDetails'] = sprintf(_("Translated into %s: \"%s\""), $translatedInto["name"], $act['relProps']['name']);
                             break;
                         case "DELETED":
                             $act['actionDetails'] = _("Deleted");

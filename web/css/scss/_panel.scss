@@ -455,3 +455,36 @@ ul {
         }
     }
 }
+
+#panel {
+    #skill-history-panel {
+        #skill-history-form {
+            display:none;
+        }
+
+        #skill-history-content {
+            .item {
+                font-size: 15px;
+                line-height: 18px;
+                margin-top: 20px;
+                border-left: 5px solid rgba(255,255,255,0.3);
+                padding-left: 10px;
+                transition: border-left-color 0.2s linear;
+
+                .when-who {
+                    
+                }
+
+                .action {
+                    font-weight:bold;
+                }
+            }
+
+            .item:hover {
+                border-left-color: rgba(255,255,255,0.7);
+                transition: border-left-color 0.2s linear;
+            }
+
+        }
+    }
+}

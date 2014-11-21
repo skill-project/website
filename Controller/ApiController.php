@@ -9,6 +9,7 @@
     use \Model\Skill;
     use \Model\User;
     use \Utils\SecurityHelper as SH;
+    use \View\AjaxView;
 
     use \Everyman\Neo4j\Cypher\Query;
     use \Everyman\Neo4j\Relationship;
@@ -725,6 +726,31 @@
                     $json->setData($validator->getErrors());
                     $json->send(); 
                 }
+            }
+        }
+
+        /**
+         * Retrieve the skill's history
+         */
+        public function skillHistoryAction(){
+            SH::checkUsage(40);
+
+            if (!empty($_GET)){
+                $skillUuid = $_GET['skillUuid'];
+
+                $skillManager = new SkillManager();
+                $skill = $skillManager->findByUuid($skillUuid);
+
+                if (!$skill){
+                    SH::forbid();
+                }
+
+                $history = $skillManager->getSkillHistory($skillUuid);
+
+                $view = new AjaxView("panels/skill-history-content.php", array(
+                        "history"  => $history
+                    ));
+                $view->send();
             }
         }
 

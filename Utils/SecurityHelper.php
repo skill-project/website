@@ -167,8 +167,8 @@
             $rights = array();
 
             $allRights = array("create_as_child", "create_as_parent", "move", 
-                    "copy", "translate", "discuss", "share", "rename", "delete", "settings");
-            $defaultRights = array("create_as_child", "discuss", "share");
+                    "copy", "translate", "discuss", "share", "rename", "delete", "settings", "history");
+            $defaultRights = array("create_as_child", "discuss", "share", "history");
             
             if (!$user){
                 return $defaultRights;

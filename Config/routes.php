@@ -385,6 +385,14 @@
         )
     );
 
+    $routes->add(
+        'skillHistory',
+        new Route('/skill-history/', 
+            array('controller' => 'Api', 'action' => 'skillHistory'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
 //Back-office
 
     $routes->add(

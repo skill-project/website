@@ -55,4 +55,43 @@
             'isoCode' => 'fr_LU.UTF-8'
           ),
         );
+
+        public function getLocalName($languageCode) {
+          try {
+            if (!in_array($languageCode, array_keys($this->codes))) throw new \Exception("Invalid languageCode");
+
+            $localNames = array(
+              'en'  => _("English"),
+              'fr'  => _("French"),
+              'xl'  => "xLang"
+            );
+
+            return $localNames[$languageCode];  
+          }
+          catch (\Exception $e) {
+            die("Error: " . $e->getMessage() . " @ " . $e->getFile() . ":" . $e->getLine());
+          }
+          
+        }
+
+        public function localizeCarbon($string, $languageCode = "") {
+          if (empty($languageCode) or !in_array($languageCode, array_keys($this->codes))) $languageCode = $GLOBALS["lang"];
+
+          switch ($languageCode) {
+            case "en":
+              return $string;
+              break;
+            case "fr":
+              $localizedString = preg_replace("/([0-9]+) second(s)? ago/", 'Il y a ${1} seconde${2}', $string);
+              $localizedString = preg_replace("/([0-9]+) minute(s)? ago/", 'Il y a ${1} minute${2}', $localizedString);
+              $localizedString = preg_replace("/([0-9]+) hour(s)? ago/", 'Il y a ${1} heure${2}', $localizedString);
+              $localizedString = preg_replace("/([0-9]+) day(s)? ago/", 'Il y a ${1} jour${2}', $localizedString);
+              $localizedString = preg_replace("/([0-9]+) week(s)? ago/", 'Il y a ${1} semaine${2}', $localizedString);
+              $localizedString = preg_replace("/([0-9]+) month(s)? ago/", 'Il y a ${1} mois', $localizedString);
+              $localizedString = preg_replace("/([0-9]+) year(s)? ago/", 'Il y a ${1} année${2}', $localizedString);
+              break;
+          }
+
+          return $localizedString;
+        }
     }
