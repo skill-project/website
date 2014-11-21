@@ -130,7 +130,7 @@ var Panel = function(node, initParams) {
 
                             ga("send", "event", "panelLoad", panelToLoad);
 
-                            if ($("body").hasClass("anonymous") && panelToLoad != "share-skill-panel"){
+                            if ($("body").hasClass("anonymous") && panelToLoad != "share-skill-panel" && panelToLoad != "skill-history-panel"){
                                 that.addPanelModal(
                                     '<div class="modal-content">' + 
                                     '<h5>' + jt.panel.haveToBeSigned + '</h5>' + 
