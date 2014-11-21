@@ -11,29 +11,12 @@
                 </ul>
                 <div class="clearfix"></div>
             </nav>
-
             <div id="tab-content">
-                <?php include("tabs/recent_activities.php"); ?>
+                <?php //include("tabs/recent_activities.php"); ?>
             </div>
+            <div id="loader"></div>
 
         </div>
 
     </div>
 </section>
-
-<script>
-    $("#editor-tabs-nav a").on("click tap", function(e){
-        e.preventDefault();
-        $("#editor-tabs-nav li").removeClass("selected");
-        $(this).parent().addClass("selected");
-
-        $(".editor-dashboard-content").hide();
-        $.ajax({
-            url: $(this).attr("href")
-        }).done(function(response){
-            $("#tab-content").html(response);
-        });
-
-        $( "#"+$(this).data("tab") ).show();
-    });
-</script>

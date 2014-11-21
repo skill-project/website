@@ -1,7 +1,7 @@
 <div class="editor-dashboard-content" id="recent-discussions-content">
     <table id="recent-discussions-table">
         <tr>
-            <th>Date & Time</th>
+            <th class="date">Date & Time</th>
             <th>Skill</th>
             <th>User</th>
             <th>Message</th>
@@ -18,4 +18,6 @@
         </tr>
         <?php endforeach; ?>
     </table>
+
+    <a href="<?=$route?>" data-skip="<?=$nextSkip?>" data-limit="<?=$nextLimit?>" id="show-more"><?=_("See more messages")?></a>
 </div>

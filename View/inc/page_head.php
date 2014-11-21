@@ -13,7 +13,8 @@
         var baseUrl="<?= $GLOBALS['base_url'] ?>/";
         <?php 
             $gaAccount = \Config\Config::GA_ACCOUNT;
-            echo "var gaC = '$gaAccount'\n"; 
+            echo "var gaC = '$gaAccount';\n";
+            echo "var pageName = '$lastPageName';\n"; //Defined in View/layouts/default.php
             
             if (!empty($rootNode)) {
                 echo "var rootNodeId='" . $rootNode->getUuid() . "';\n";
@@ -69,6 +70,7 @@
     <script src="js/Tour.js"></script>
     <script src="js/Loader.js"></script>
     <script src="js/FPSCounter.js"></script>
+    <script src="js/Editor.js"></script>
     <script src="js/script.js"></script>
     <?php else: ?>
     <script src="js/all.min.js"></script>

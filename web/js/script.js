@@ -31,8 +31,31 @@ if (skillWalk === true) {
   var fpsCounter = new FPSCounter;
 }
 
+if (pageName == "editor_dashboard") {
+  var loader;
+  var editor;
+}
+
 var user = new User;
 var site;
+
+//global ajax handling
+//before ajax
+$( document ).ajaxStart(function() {
+  if (typeof loader != "undefined"){
+    loader.show();
+  }
+});
+//on error
+$(document).ajaxError(function( event, jqxhr, settings, thrownError ) {
+  //if (jqxhr.status == "403"){}
+});
+//on complete
+$( document ).ajaxComplete(function( event, xhr, settings ) {
+    if (typeof loader != "undefined"){
+      loader.hide();
+    }
+});
 
 $(document).ready(function () {
   site = new Site;
@@ -68,6 +91,14 @@ $(document).ready(function () {
     //   else $("#debug").css({"background-color": "white"});
     //   camera.drawZone(camera.getSecurityZone(camera.defaultSecurityZoneFactor));
     // },200);
+  }
+
+  if (pageName == "editor_dashboard") {
+    editor = new Editor();
+    
+    editor.init();
+    editor.loadEvents();
+    
   }
 });
 
@@ -113,24 +144,6 @@ $(window).load(function  () {
     });
 
     nodesLayer.add(camera.dummyShape);
-
-    //global ajax handling
-    //before ajax
-    $( document ).ajaxStart(function() {
-      if (typeof loader != "undefined"){
-        loader.show();
-      }
-    });
-    //on error
-    $(document).ajaxError(function( event, jqxhr, settings, thrownError ) {
-      //if (jqxhr.status == "403"){}
-    });
-    //on complete
-    $( document ).ajaxComplete(function( event, xhr, settings ) {
-        if (typeof loader != "undefined"){
-          loader.hide();
-        }
-    });
 });
 
 

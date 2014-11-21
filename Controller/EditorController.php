@@ -25,7 +25,7 @@
             $params['title'] = "Editor Dashboard";
 
             $statManager = new StatManager();
-            $params['latestChanges']= $statManager->getLatestChanges();
+            // $params['latestChanges']= $statManager->getLatestChanges();
 
             $view = new EditorView("editor/editor_dashboard.php", $params);
             $view->send();
@@ -37,7 +37,18 @@
 
             $statManager = new StatManager();
             
-            $params['latestChanges']= $statManager->getLatestChanges();
+            if (!empty($_GET["limit"]) && !empty($_GET["skip"])) {
+                $limit = $_GET["limit"];
+                $skip = $_GET["skip"];
+            }else {
+                $limit = 20;
+                $skip = 0;
+            }
+
+            $params['latestChanges'] = $statManager->getLatestChanges($limit, $skip);
+            $params['route'] = \Controller\Router::url("editorDashboardRecentActivities", array(), true); 
+            $params['nextSkip'] = $skip + $limit;
+            $params['nextLimit'] = $limit;
 
             $view = new AjaxView("pages/editor/tabs/recent_activities.php", $params);
             $view->send();

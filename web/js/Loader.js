@@ -1,4 +1,13 @@
-var Loader = function() {
+var Loader = function(params) {
+	this.color = typeof params.color != "undefined" ? params.color : "#fef7f9";
+	this.diameter = typeof params.diameter != "undefined" ? params.diameter : 47;
+	this.density = typeof params.density != "undefined" ? params.density : 22;
+	this.range = typeof params.range != "undefined" ? params.range : 1.2;
+
+	if (typeof params.css != "undefined") {
+		$('#loader').css(params.css);
+	}
+
 	this.isVisible = false;
 	this.isWaitingToShow = false;
 	this.timer;
@@ -7,14 +16,15 @@ var Loader = function() {
 
 Loader.prototype.show = function() {
 	if (typeof this.cl === "undefined" && this.isVisible === false && this.isWaitingToShow === false) {
+		$("#loader").show();
 		this.isWaitingToShow = true;
 		this.timer = setTimeout(function() {
 			loader.cl = new CanvasLoader('loader');
-			loader.cl.setColor('#fef7f9');
+			loader.cl.setColor(loader.color);
 			loader.cl.setShape('spiral');
-			loader.cl.setDiameter(47);
-			loader.cl.setDensity(22);
-			loader.cl.setRange(1.2);
+			loader.cl.setDiameter(loader.diameter);
+			loader.cl.setDensity(loader.density);
+			loader.cl.setRange(loader.range);
 			loader.cl.setSpeed(1);
 			loader.cl.setFPS(30);
 			loader.cl.show();
@@ -39,4 +49,5 @@ Loader.prototype.hide = function() {
 
 		delete this.cl;
 	}
+	$("#loader").hide();
 }

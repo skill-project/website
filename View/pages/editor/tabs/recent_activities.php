@@ -1,10 +1,10 @@
 <div class="editor-dashboard-content" id="recent-activity-content">
-    <table>
+    <table id="recent-activity-table">
         <tr>
-            <th>Date & Time</th>
-            <th>Skill</th>
-            <th>User</th>
-            <th>Action</th>
+            <th class="date">Date & Time</th>
+            <th class="skill">Skill</th>
+            <th class="user">User</th>
+            <th class="action">Action</th>
         </tr>
         <?php
         foreach ($latestChanges as $change) {
@@ -17,4 +17,6 @@
         }
         ?>
     </table>
+
+    <a href="<?=$route?>" data-skip="<?=$nextSkip?>" data-limit="<?=$nextLimit?>" id="show-more"><?=_("See more activities")?></a>
 </div>

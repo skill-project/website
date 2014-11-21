@@ -48,6 +48,7 @@ module.exports = function(grunt) {
                     'web/js/Tour.js',
                     'web/js/Loader.js',
                     'web/js/FPSCounter.js',
+                    'web/js/Editor.js',
                     'web/js/script.js'
                 ],
                 dest : 'web/js/all.js',

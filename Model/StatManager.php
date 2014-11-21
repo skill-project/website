@@ -50,14 +50,8 @@
         /**
          * Find last editions
          */
-        public function getLatestChanges(){
-
-
-
+        public function getLatestChanges($limit = 20, $skip = 0){
             $languageCodes = new \Model\LanguageCode();
-
-            $limit = (!empty($_GET['limit'])) ? $_GET['limit'] : 50;
-            $skip = (!empty($_GET['skip'])) ? $_GET['skip'] : 0;
 
             $cyp = "MATCH (s)<-[r:CREATED|MODIFIED|TRANSLATED|AUTO_TRANSLATED|DELETED|MOVED]-(u:User)
                     WHERE s:Skill OR s:DeletedSkill
@@ -142,6 +136,8 @@
                     $activities[] = $act;
                 }
             }
+
+            usort($activities, array($skillManager, "sortActivities"));
 
             return $activities;
 

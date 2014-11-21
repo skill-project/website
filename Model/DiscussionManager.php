@@ -117,7 +117,7 @@
                 $message = array();
                 $message['message'] = SH::encode($row['message']->getProperty("message"));
                 $message['timestamp'] = $row['message']->getProperty("timestamp");
-                $message['date'] = date("F jS, Y \a\\t H:i", $message['timestamp']);
+                $message['date'] = date("d/m/Y H:i:s", $message['timestamp']);
                 $message['skillSlug'] = $row['skill']->getProperty('slug');
                 $message['skillName'] = $row['skill']->getProperty('name');
                 // $message['topic'] = SH::encode($row['message']->getProperty("topic"));

@@ -1,3 +1,5 @@
+$darkerBlue: #10a0ac;
+
 /* Editor Dashboard */
 .editor {
 
@@ -19,7 +21,19 @@
 
     h2 {
         text-transform: uppercase;
-    } 
+    }
+
+    #loader {
+        position: relative;
+        top: auto;
+        left: auto;
+        z-index: auto;
+        width: 30px;
+        height: 30px;
+        margin: 0 auto;
+        display:none;
+        margin-top:20px;
+    }
 
     #editor-tabs-nav {
 
@@ -44,10 +58,37 @@
         }
     }
 
-    .editor-dashboard-content h4 {
-        background-color: #BDEACB;
-        display: inline-block;
-        padding: 5px 10px;
+    .editor-dashboard-content {
+        h4 {
+            background-color: #BDEACB;
+            display: inline-block;
+            padding: 5px 10px;
+        }
+
+        #show-more {
+            font-weight: bold;
+            display: block;
+            text-align: center;
+            border: 1px solid black;
+            width: 200px;
+            margin: 0 auto;
+            padding: 10px;
+            margin-top: 20px;
+            border:1px solid $darkerBlue;
+        }
+    }
+
+    #recent-discussions-table {
+        th.date {
+            width: 150px;
+        }
+    }
+
+    #recent-activity-table {
+        th.date { width: 13.2%; }
+        th.skill { width: 32.8%; }
+        th.user { width: 6.3%; }
+        th.action { width: 37.7% ;}
     }
 
 }

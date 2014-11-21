@@ -2,6 +2,9 @@
 	$pageLangName = str_replace(".php", "", $page);
 	$pageName = preg_replace("#^[a-z]{2}_#", "", $pageLangName);
 	$htmlClasses = ($pageLangName == $pageName) ? $pageName : $pageName . " " . $pageLangName;
+
+	$pageNames = explode("/", $pageName);
+	$lastPageName = $pageNames[count($pageNames) - 1];
 ?>
 <!DOCTYPE html>
 <html lang="fr" class="page <?= $htmlClasses ?>">
