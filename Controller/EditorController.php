@@ -23,11 +23,9 @@
 
             $statManager = new StatManager();
             $discussionManager = new DiscussionManager();
-            // $userManager = new UserManager();
             
             $params['title'] = "Editor Dashboard";
 
-            //$statManager->getMaxedSkillsByCap(\Config\Config::CAP_IDEAL_MAX);
             $params['cappedSkills'] = array(
                 "idealMax" => $statManager->getMaxedSkillsByCap(\Config\Config::CAP_IDEAL_MAX, "capIdealMax", \Config\Config::CAP_ALERT),
                 "alert" => $statManager->getMaxedSkillsByCap(\Config\Config::CAP_ALERT, "alert", \Config\Config::CAP_NO_MORE),

@@ -122,7 +122,12 @@
                             $act['actionDetails'] = sprintf(_("Moved from %s into %s"), $fromParentName, $toParentName);
                             break;
                         case "MODIFIED": //Renamed really
-                            $act['actionDetails'] = sprintf(_("Renamed from \"%s\" to \"%s\""), $act['relProps']['fromName'], $act['skillName']);
+                            if (!empty($act['relProps']['fromName'])){
+                                $act['actionDetails'] = sprintf(_("Renamed from \"%s\" to \"%s\""), $act['relProps']['fromName'], $act['skillName']);
+                            }
+                            else {
+                                $act['actionDetails'] = sprintf(_("Renamed to \"%s\""), $act['skillName']);
+                            }
                             break;
                         case "TRANSLATED":
                             $translatedInto = $languageCodes->getNames($act['relProps']['to']);
