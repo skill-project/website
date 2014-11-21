@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1a6c876bcd6885a7b08988c5e711a8e8",
+    "hash": "faf25b2a706e50933e1b5c452021c7d2",
     "packages": [
         {
             "name": "abeautifulsite/simpleimage",
@@ -348,46 +348,6 @@
                 "time"
             ],
             "time": "2014-10-01 01:04:30"
-        },
-        {
-            "name": "smirik/php-datetime-ago",
-            "version": "v1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/smirik/php-datetime-ago.git",
-                "reference": "5c4d57386ad1e71c570fd77fbfea2aedae5e9cd6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/smirik/php-datetime-ago/zipball/5c4d57386ad1e71c570fd77fbfea2aedae5e9cd6",
-                "reference": "5c4d57386ad1e71c570fd77fbfea2aedae5e9cd6",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "phpspec/phpspec": "2.0.*@dev"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Smirik\\PHPDateTimeAgo\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Evgeny Smirnov",
-                    "email": "smirik@gmail.com",
-                    "homepage": "http://4xxi.com"
-                }
-            ],
-            "description": "How much time ago in text format",
-            "time": "2013-07-29 09:05:05"
         },
         {
             "name": "symfony/http-foundation",

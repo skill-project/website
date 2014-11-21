@@ -15,7 +15,6 @@
         "mandrill/mandrill": "1.0.*",
         "abeautifulsite/simpleimage": "dev-master",
         "gabrielbull/browser": "dev-master",
-        "smirik/php-datetime-ago": "1.0.*",
-	    "nesbot/carbon": "dev-master"
+	"nesbot/carbon": "dev-master"
     }
 }
