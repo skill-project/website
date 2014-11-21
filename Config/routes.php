@@ -437,6 +437,31 @@
         )
     );
 
+    //ajax routes for tabs
+    $routes->add(
+        'editorDashboardOversizedSkills',
+        new Route('/editor/oversized-skills/', 
+            array('controller' => 'Editor', 'action' => 'oversizedSkillsTab'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
+    $routes->add(
+        'editorDashboardRecentDiscussions',
+        new Route('/editor/recent-discussions/', 
+            array('controller' => 'Editor', 'action' => 'recentDiscussionsTab'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
+    $routes->add(
+        'editorDashboardRecentActivities',
+        new Route('/editor/recent-activities/', 
+            array('controller' => 'Editor', 'action' => 'recentActivitiesTab'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
 
 //Fixtures
 
