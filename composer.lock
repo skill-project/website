@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "58c463bcb553cd353fc8b3d747f8e287",
+    "hash": "d2591c37a9d9c04a43dab7b51193bb25",
     "packages": [
         {
             "name": "abeautifulsite/simpleimage",
@@ -304,18 +304,58 @@
             "time": "2014-10-16 21:08:20"
         },
         {
+            "name": "smirik/php-datetime-ago",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smirik/php-datetime-ago.git",
+                "reference": "5c4d57386ad1e71c570fd77fbfea2aedae5e9cd6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smirik/php-datetime-ago/zipball/5c4d57386ad1e71c570fd77fbfea2aedae5e9cd6",
+                "reference": "5c4d57386ad1e71c570fd77fbfea2aedae5e9cd6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "2.0.*@dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Smirik\\PHPDateTimeAgo\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Evgeny Smirnov",
+                    "email": "smirik@gmail.com",
+                    "homepage": "http://4xxi.com"
+                }
+            ],
+            "description": "How much time ago in text format",
+            "time": "2013-07-29 09:05:05"
+        },
+        {
             "name": "symfony/http-foundation",
             "version": "dev-master",
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "440c406598d32ea8522bf1afaad3e523a441a9e3"
+                "reference": "f49ca692f4831f3675c84c9e75f858c8eb1462a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/440c406598d32ea8522bf1afaad3e523a441a9e3",
-                "reference": "440c406598d32ea8522bf1afaad3e523a441a9e3",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/f49ca692f4831f3675c84c9e75f858c8eb1462a9",
+                "reference": "f49ca692f4831f3675c84c9e75f858c8eb1462a9",
                 "shasum": ""
             },
             "require": {
@@ -354,7 +394,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2014-11-11 08:37:22"
+            "time": "2014-11-20 13:24:36"
         },
         {
             "name": "symfony/routing",
@@ -363,12 +403,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing.git",
-                "reference": "a1d36434e26fb66fc4a0c70816d68734814b9025"
+                "reference": "21d7d84d0711887e41d3bd55cf81872f0640504b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Routing/zipball/a1d36434e26fb66fc4a0c70816d68734814b9025",
-                "reference": "a1d36434e26fb66fc4a0c70816d68734814b9025",
+                "url": "https://api.github.com/repos/symfony/Routing/zipball/21d7d84d0711887e41d3bd55cf81872f0640504b",
+                "reference": "21d7d84d0711887e41d3bd55cf81872f0640504b",
                 "shasum": ""
             },
             "require": {
@@ -421,7 +461,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2014-11-11 08:37:22"
+            "time": "2014-11-16 17:28:29"
         }
     ],
     "packages-dev": [],
