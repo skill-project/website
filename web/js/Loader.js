@@ -1,4 +1,6 @@
 var Loader = function(params) {
+	var params = typeof params != "undefined" ? params : {};
+
 	this.color = typeof params.color != "undefined" ? params.color : "#fef7f9";
 	this.diameter = typeof params.diameter != "undefined" ? params.diameter : 47;
 	this.density = typeof params.density != "undefined" ? params.density : 22;

@@ -31,7 +31,7 @@ if (skillWalk === true) {
   var fpsCounter = new FPSCounter;
 }
 
-if (pageName == "editor_dashboard") {
+if (typeof pageName != "undefined" && pageName == "editor_dashboard") {
   var loader;
   var editor;
 }
@@ -93,7 +93,7 @@ $(document).ready(function () {
     // },200);
   }
 
-  if (pageName == "editor_dashboard") {
+  if (typeof pageName != "undefined" && pageName == "editor_dashboard") {
     editor = new Editor();
     
     editor.init();

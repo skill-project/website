@@ -14,7 +14,9 @@
         <?php 
             $gaAccount = \Config\Config::GA_ACCOUNT;
             echo "var gaC = '$gaAccount';\n";
-            echo "var pageName = '$lastPageName';\n"; //Defined in View/layouts/default.php
+            if (!empty($lastPageName)) {
+                echo "var pageName = '$lastPageName';\n"; //Defined in View/layouts/default.php
+            }
             
             if (!empty($rootNode)) {
                 echo "var rootNodeId='" . $rootNode->getUuid() . "';\n";
