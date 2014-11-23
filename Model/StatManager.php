@@ -71,7 +71,10 @@
                 foreach($resultSet as $row){
                     $act = array();
                     $act['skillDeleted'] = $row["labels"][0] == "DeletedSkill" ? true : false;
-                    $act['skillName'] = $row['s']->getProperty('name');
+
+                    $skill = new Skill($row['s']);
+                    $act['skillName'] = $skill->getLocalName();
+
                     $act['skillURL'] = \Controller\Router::url("goTo", array("slug" => $row['s']->getProperty('slug')), true);
                     $act['skillContext'] = $skillManager->getContext($row['s']->getProperty('uuid'));
 

@@ -128,14 +128,22 @@
                 $message['timestamp'] = $row['message']->getProperty("timestamp");
                 $message['date'] = date("d/m/Y H:i:s", $message['timestamp']);
                 $message['skillURL'] = \Controller\Router::url("goTo", array("slug" => $row['skill']->getProperty('slug')));
-                $message['skillName'] = $row['skill']->getProperty('name');
+
+                $skill = new Skill($row['skill']);
+                $message['skillName'] = $skill->getLocalName();
+
                 $message['skillContext'] = $skillManager->getContext($row['skill']->getProperty('uuid'));
                 // $message['topic'] = SH::encode($row['message']->getProperty("topic"));
 
                 $user = new User();
                 $user->setNode($row['user']);
                 $user->hydrateFromNode();
+                
+                if ($user->isActive()) $message['userProfileURL'] = \Controller\Router::url('viewProfile', array('username' => $row['u']->getProperty('username')));
+                else $message['userProfileURL'] = "";
+
                 $message['postedBy'] = SH::encode($user->getUsername());
+
                 //if desactivated, replace username by anon.
                 $message['userActive'] = true; //need in view to not show link to profile
                 if ($user->isActive() === false){

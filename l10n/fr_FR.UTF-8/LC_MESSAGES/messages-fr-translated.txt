@@ -1070,7 +1070,7 @@ msgstr  "Le SEUIL D'ALERTE doit être compris entre le MAXIMUM IDEAL et le SEUIL
 
 #: View/panels/skill-settings-panel.php:20
 msgid   "Blocking threshold"
-msgstr  "SEUIL BLOQUANT"
+msgstr  "Seuil bloquant"
 
 #: View/panels/skill-settings-panel.php:20
 msgid   "Maximum number of skills that can be created:"
@@ -1246,3 +1246,41 @@ msgstr  "Anglais"
 #: Model/LanguageCode.php:65
 msgid   "French"
 msgstr  "Français"
+
+#: View/pages/editor/tabs/oversized_skills_cap.php:1
+#, php-format
+msgid   "Skills with more sub-skills than their %s setting"
+msgstr  "Compétences ayant plus d'enfant que le paramètre %"
+
+#: View/pages/editor/tabs/oversized_skills_cap.php:5
+msgid   "Skill"
+msgstr  "Compétence"
+
+#: View/pages/editor/tabs/oversized_skills_cap.php:6
+msgid   "Sub-skills"
+msgstr  "Enfants"
+
+#: View/pages/editor/tabs/oversized_skills_cap.php:31
+msgid   "No skills in this section."
+msgstr  "Pas de compétences dans cette section."
+
+#: View/pages/editor/tabs/recent_discussions.php:22
+msgid   "See more messages"
+msgstr  "Voir plus de messages"
+
+#: View/pages/editor/tabs/recent_activities.php:21
+msgid   "See more activities"
+msgstr  "Voir plus d'activités"
+
+#: View/pages/editor/tabs/recent_discussions.php:4
+#: View/pages/editor/tabs/recent_activities.php:4
+msgid   "Date & Time"
+msgstr  "Date & heure"
+
+#: View/pages/editor/tabs/recent_discussions.php:7
+msgid   "Message"
+msgstr  "Message"
+
+#: View/pages/editor/tabs/recent_activities.php:7
+msgid   "Action"
+msgstr  "Action"

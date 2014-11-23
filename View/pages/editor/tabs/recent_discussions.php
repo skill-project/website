@@ -1,10 +1,10 @@
 <div class="editor-dashboard-content" id="recent-discussions-content">
     <table id="recent-discussions-table">
         <tr>
-            <th class="date">Date & Time</th>
-            <th class="skill">Skill</th>
-            <th class="user">User</th>
-            <th class="message">Message</th>
+            <th class="date"><?=_("Date & Time")?></th>
+            <th class="skill"><?=_("Skill")?></th>
+            <th class="user"><?=_("User")?></th>
+            <th class="message"><?=_("Message")?></th>
         </tr>
         <?php foreach($recentMessages as $rm): ?>
         <tr>
@@ -13,7 +13,15 @@
                 <?= $rm["skillContext"]; ?> > <a href="<?= $rm["skillURL"] ?>"><?= $rm["skillName"]; ?>
                 </a>
             </td>
-            <td><?= _($rm['postedBy']); ?></td>
+            
+            <?php
+            if (!empty($rm["userProfileURL"])) {
+                echo "<td><a href='" . $rm["userProfileURL"] . "'>" . $rm["postedBy"] . "</a></td>";
+            }else {
+                echo "<td>" . $rm["postedBy"] . "</td>";
+            }
+            ?>
+
             <td class="message"><?= $rm["message"]; ?></td>
         </tr>
         <?php endforeach; ?>

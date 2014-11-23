@@ -356,11 +356,12 @@
                         if ($row["gp"]->getProperty("depth") > 0) $beforeGp = "[...] > ";
                         else $beforeGp = "";
 
-                        $gp = $beforeGp . $row["gp"]->getProperty("name") . " > ";
+                        $gpSkill = new Skill($row["gp"]);
+
+                        $gp = $beforeGp . $gpSkill->getLocalName() . " > ";
                     }else {
                         $gp = "";
                     }
-
 
                     //--------------------------------------------------
                     //WARNING !!!
@@ -368,7 +369,8 @@
                     //--------------------------------------------------
                     \Model\DatabaseFactory::setNewClient();
 
-                    $parent = $row["p"]->getProperty("name");
+                    $parentSkill = new Skill($row["p"]);
+                    $parent = $parentSkill->getLocalName();
 
                     $context = $gp . $parent;
                 }

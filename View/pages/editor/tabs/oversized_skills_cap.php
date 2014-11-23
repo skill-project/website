@@ -1,12 +1,12 @@
-<h4><?= _("Skills with more sub-skills than their '$capName' setting"); ?></h4>
+<h4><?= sprintf(_("Skills with more sub-skills than their %s setting"), $capName); ?></h4>
 <?php if ($cappedSkills[$cap]): ?>
 <table id="capped-skills-table">
     <tr>
-        <th>Skill</th>
-        <th>Sub-skills</th>
-        <th>Ideal</th>
-        <th>Alert</th>
-        <th>Max</th>
+        <th><?=_("Skill")?></th>
+        <th><?=_("Sub-skills")?></th>
+        <th><?=_("Ideal max")?></th>
+        <th><?=_("Alert threshold")?></th>
+        <th><?=_("Blocking threshold")?></th>
     </tr>
     <?php foreach($cappedSkills[$cap] as $uuid => $ms): ?>
     <tr>
@@ -20,7 +20,7 @@
             <a href="<?= \Controller\Router::url("goTo", array("slug" => $ms["skill"]->getSlug())) ?>"><?= $ms["skill"]->getName(); ?>
             </a>
         </td>
-        <td><?= _($ms['child_num']); ?></td>
+        <td><?= $ms['child_num']; ?></td>
         <td><?= $ms["skill"]->getCapIdealMax(); ?></td>
         <td><?= $ms["skill"]->getCapAlert(); ?></td>
         <td><?= $ms["skill"]->getCapNoMore(); ?></td>
@@ -28,5 +28,5 @@
     <?php endforeach; ?>
 </table>
 <?php else: ?>
-<p>No skills with maximum number of children.</p>
+<p><?=_("No skills in this section.")?></p>
 <?php endif; ?>
