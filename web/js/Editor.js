@@ -32,6 +32,7 @@ Editor.prototype.loadEvents = function() {
         });
 
         $( "#"+$(this).data("tab") ).show();
+        ga("send", "event", "editor", "loadTab", $(this).data("tab"));
     });
 
     $("#editor-tabs-nav li:first-child a").trigger("click");
@@ -56,5 +57,7 @@ Editor.prototype.loadEvents = function() {
             var newRows = $(response).find("tr").splice(1);
             $("#tab-content table").append(newRows);
         });
+
+        ga("send", "event", "editor", "showMore", $(this).attr("href"));
     });
 }

@@ -7,6 +7,8 @@
     use \Everyman\Neo4j\Relationship;
     use \Everyman\Neo4j\Cypher\Query;
 
+    use \Model\SkillManager;
+
     use \Utils\SecurityHelper as SH;
 
     class DiscussionManager extends Manager {
@@ -105,12 +107,19 @@
         }
 
 
-        public function getRecentMessages(){
+        public function getRecentMessages($limit, $skip){
+            $skillManager = new skillManager();
+
             $cyp = "MATCH (user:User)-[:POSTED]->(message:Message)-[:IS_ABOUT]->(skill:Skill)
                     RETURN user, message, skill
                     ORDER BY message.timestamp DESC 
-                    LIMIT 100";
-            $query = new Query($this->client, $cyp);
+                    SKIP {skip} LIMIT {limit}";
+            
+            $query = new Query($this->client, $cyp, array(
+                "skip" => (int) $skip,
+                "limit" => (int) $limit
+                ));
+
             $resultSet = $query->getResultSet();
             $messages = array();
             foreach($resultSet as $row){
@@ -118,8 +127,9 @@
                 $message['message'] = SH::encode($row['message']->getProperty("message"));
                 $message['timestamp'] = $row['message']->getProperty("timestamp");
                 $message['date'] = date("d/m/Y H:i:s", $message['timestamp']);
-                $message['skillSlug'] = $row['skill']->getProperty('slug');
+                $message['skillURL'] = \Controller\Router::url("goTo", array("slug" => $row['skill']->getProperty('slug')));
                 $message['skillName'] = $row['skill']->getProperty('name');
+                $message['skillContext'] = $skillManager->getContext($row['skill']->getProperty('uuid'));
                 // $message['topic'] = SH::encode($row['message']->getProperty("topic"));
 
                 $user = new User();

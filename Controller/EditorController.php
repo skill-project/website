@@ -59,8 +59,19 @@
             $params = array();
 
             $discussionManager = new DiscussionManager();
+
+             if (!empty($_GET["limit"]) && !empty($_GET["skip"])) {
+                $limit = $_GET["limit"];
+                $skip = $_GET["skip"];
+            }else {
+                $limit = 50;
+                $skip = 0;
+            }
             
-            $params['recentMessages'] = $discussionManager->getRecentMessages();
+            $params['recentMessages'] = $discussionManager->getRecentMessages($limit, $skip);
+            $params['route'] = \Controller\Router::url("editorDashboardRecentDiscussions", array(), true); 
+            $params['nextSkip'] = $skip + $limit;
+            $params['nextLimit'] = $limit;
 
             $view = new AjaxView("pages/editor/tabs/recent_discussions.php", $params);
             $view->send();

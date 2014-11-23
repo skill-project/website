@@ -50,7 +50,7 @@
         /**
          * Find last editions
          */
-        public function getLatestChanges($limit = 20, $skip = 0){
+        public function getLatestChanges($limit, $skip){
             $languageCodes = new \Model\LanguageCode();
 
             $cyp = "MATCH (s)<-[r:CREATED|MODIFIED|TRANSLATED|AUTO_TRANSLATED|DELETED|MOVED]-(u:User)

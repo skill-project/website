@@ -91,4 +91,15 @@ $darkerBlue: #10a0ac;
         th.action { width: 37.7% ;}
     }
 
+    #recent-discussions-table {
+        th.date { width: 15%; }
+        th.skill { width: 30%; }
+        th.user { width: 11%; }
+        th.message { width: 29% ;}
+
+        td.message {
+            word-break: break-word;
+        }
+    }
+
 }
