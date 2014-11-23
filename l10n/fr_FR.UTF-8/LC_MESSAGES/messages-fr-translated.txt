@@ -1266,7 +1266,7 @@ msgstr  "Pas de compétences dans cette section."
 
 #: View/pages/editor/tabs/recent_discussions.php:22
 msgid   "See more messages"
-msgstr  "Voir plus de messages"
+msgstr  "Voir plus de commentaires"
 
 #: View/pages/editor/tabs/recent_activities.php:21
 msgid   "See more activities"
@@ -1284,3 +1284,7 @@ msgstr  "Message"
 #: View/pages/editor/tabs/recent_activities.php:7
 msgid   "Action"
 msgstr  "Action"
+
+#: View/inc/header.php:25
+msgid   "Moderation"
+msgstr  "Modération"

@@ -41,7 +41,7 @@
 
         <?php else: ?>
         <p class="emphasis">
-            Merci de <a class="login-link" href="<?= \Controller\Router::url("login"); ?>" title="Connectez-vous !">vous connecter</a> ou de <a class="register-link" href="<?= \Controller\Router::url("register"); ?>" tile="Enregistez-vous !">créer un compte</a> avant de nous soumettre votre application !
+            Merci de <a class="login-link" href="<?= \Controller\Router::url("login"); ?>" title="Connectez-vous !">vous connecter</a> ou de <a class="register-link" href="<?= \Controller\Router::url("register"); ?>" tile="Enregistez-vous !">créer un compte</a> avant de nous envoyer votre candidature.
         </p>
         <?php endif; ?>
     </div>

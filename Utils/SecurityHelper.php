@@ -113,6 +113,15 @@
             return false;
         }
 
+        public static function getRole() {
+            if (!empty($_SESSION['user']['uuid'])){
+                $userManager = new \Model\UserManager;
+                $user = $userManager->findByUuid($_SESSION['user']['uuid']);
+                if ($user) return $user->getRole();
+                else return false;
+            }else return false;
+        }
+
         public static function getUser(){
             if (self::userIsLogged()){
                 $userManager = new \Model\UserManager;
