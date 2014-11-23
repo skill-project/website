@@ -11,13 +11,8 @@
     <?php foreach($cappedSkills[$cap] as $uuid => $ms): ?>
     <tr>
         <td>
-            <?php if (!empty($ms["gp"])): ?>
-                <a href="<?= \Controller\Router::url("goTo", array("slug" => $ms["gp"]->getSlug())) ?>"><?= $ms["gp"]->getName(); ?>
-                </a>&nbsp;>&nbsp;
-            <?php endif; ?>
-            <a href="<?= \Controller\Router::url("goTo", array("slug" => $ms["parent"]->getSlug())) ?>"><?= $ms["parent"]->getName(); ?>
-            </a>&nbsp;>&nbsp;
-            <a href="<?= \Controller\Router::url("goTo", array("slug" => $ms["skill"]->getSlug())) ?>"><?= $ms["skill"]->getName(); ?>
+           <?=$ms["context"]?> > 
+           <a href="<?= \Controller\Router::url("goTo", array("slug" => $ms["skill"]->getSlug()), true) ?>"><?= $ms["skill"]->getLocalName(); ?>
             </a>
         </td>
         <td><?= $ms['child_num']; ?></td>

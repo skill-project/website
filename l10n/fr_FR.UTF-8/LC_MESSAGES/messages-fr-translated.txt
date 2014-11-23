@@ -1163,7 +1163,7 @@ msgstr  "Commentaires récents"
 
 #: View/pages/editor/editor_dashboard.php:10
 msgid   "Oversized skills"
-msgstr  "Nombreux enfants"
+msgstr  "Compétences volumineuses"
 
 #: View/pages/editor/tabs/oversized_skills_ideal_max.php:1
 msgid   "Skills with more sub-skills than their 'Ideal' setting"
@@ -1250,7 +1250,7 @@ msgstr  "Français"
 #: View/pages/editor/tabs/oversized_skills_cap.php:1
 #, php-format
 msgid   "Skills with more sub-skills than their %s setting"
-msgstr  "Compétences ayant plus d'enfant que le paramètre %"
+msgstr  "Compétences ayant plus d'enfants que le paramètre %"
 
 #: View/pages/editor/tabs/oversized_skills_cap.php:5
 msgid   "Skill"

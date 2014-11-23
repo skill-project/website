@@ -188,6 +188,8 @@
             $query = new Query($this->client, $cyp, array("max_child" => $max_child, "upper_limit" => $upper_limit));
             $resultSet = $query->getResultSet();
             if ($resultSet->count() > 0){
+                $skillManager = new SkillManager();
+
                 $results = array();
                 foreach ($resultSet as $row) {
 
@@ -198,17 +200,9 @@
                     }
                     $results[$uuid] = array(
                         "skill" => $skill,
-                        "child_num" => $row['child_num']
+                        "child_num" => $row['child_num'],
+                        "context" => $skillManager->getContext($uuid)
                     );
-                    if (empty($results[$uuid]['parent']) && !empty($row['p']->getProperty('name'))){
-                        $parentSkill = new Skill($row['p']);
-                        $results[$uuid]['parent'] = $parentSkill;
-                    }
-                    if (empty($results[$uuid]['gp']) && !empty($row['gp']->getProperty('name')) 
-                            && $row['gp']->getProperty('name') != $row['p']->getProperty('name')){
-                        $gpSkill = new Skill($row['gp']);
-                        $results[$uuid]['gp'] = $gpSkill;
-                    }
                 }
                 return $results;
             }
