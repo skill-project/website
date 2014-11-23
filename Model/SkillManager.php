@@ -339,9 +339,10 @@
          * Returns the parent and grand parent of a given skill by its uuid
          */
         public function getContext($uuid, $formatted = true) {
-            $cyp = "MATCH (gp:Skill)-[:HAS*0..1]->(p:Skill)-[:HAS]->(s {uuid: {uuid}})
+            $cyp = "MATCH (p:Skill)-[:HAS]->(s {uuid: {uuid}})
+                    OPTIONAL MATCH (gp:Skill)-[:HAS]->(p)
                     WHERE s:Skill OR s:DeletedSkill
-                    RETURN s,gp,p
+                    RETURN gp,p,s
                     LIMIT 1";
 
             $query = new Query($this->client, $cyp, array("uuid" => $uuid));
@@ -351,12 +352,15 @@
                 $row = $resultSet[0];
 
                 if ($formatted) {
+                    if (!empty($row["gp"])) {
+                        if ($row["gp"]->getProperty("depth") > 0) $beforeGp = "[...] > ";
+                        else $beforeGp = "";
 
-                    if ($row["gp"]->getProperty("depth") > 0) $beforeGp = "[...] > ";
-                    else $beforeGp = "";
+                        $gp = $beforeGp . $row["gp"]->getProperty("name") . " > ";
+                    }else {
+                        $gp = "";
+                    }
 
-                    if ($row["gp"]->getProperty("uuid") != $row["p"]->getProperty("uuid")) $gp = $beforeGp . $row["gp"]->getProperty("name") . " > ";
-                    else $gp = "";
 
                     //--------------------------------------------------
                     //WARNING !!!
