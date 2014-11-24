@@ -10,6 +10,8 @@ var FPSCounter = function() {
 };
 
 FPSCounter.prototype.start = function () {
+	if (typeof requestAnimationFrame == "undefined") return;
+
 	if (this.running === true || this.averageSent === true) return;
 	this.running = true;
 	this.startTime = Date.now();
@@ -29,11 +31,15 @@ FPSCounter.prototype.end = function () {
 };
 
 FPSCounter.prototype.countFrames = function () {
+	if (typeof requestAnimationFrame == "undefined") return;
+
 	this.frames++;
 	if (this.running === true) requestAnimationFrame($.proxy(this.countFrames, this));
 };
 
 FPSCounter.prototype.saveFPS = function() {
+	if (typeof requestAnimationFrame == "undefined") return;
+
 	this.readings.push(this.currentFPS);
 	
 	if (this.readings.length === 5) {
@@ -49,6 +55,8 @@ FPSCounter.prototype.saveFPS = function() {
 }
 
 FPSCounter.prototype.reset = function() {
+	if (typeof requestAnimationFrame == "undefined") return;
+
 	this.currentFPS = 0;
 	this.startTime = 0;
 	this.frames = 0;
