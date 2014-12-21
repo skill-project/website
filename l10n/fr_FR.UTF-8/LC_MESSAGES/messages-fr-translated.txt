@@ -1288,3 +1288,8 @@ msgstr  "Action"
 #: View/inc/header.php:25
 msgid   "Moderation"
 msgstr  "Modération"
+
+#: View/panels/create-skill-panel.php:13
+#, php-format
+msgid   "<strong><em>%s</em> has %s children</strong> (it should not exceed %s). Can you find a way to group them?"
+msgstr  "<strong><em>%s</em> a %s compétences</strong> (il ne devrait pas y en avoir plus de %s). Sauriez-vous comment les regrouper ?"
