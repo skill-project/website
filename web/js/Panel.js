@@ -3,6 +3,9 @@ var Panel = function(node, initParams) {
 	this.$subPanels = {};
 	this.$activeSubpanel;
 
+    //Locks panel during AJAX requests
+    this.locked = false;
+
 	var that = this;
     var userRole = "user"; //editor, anonymous
 
@@ -149,10 +152,15 @@ var Panel = function(node, initParams) {
                     $(subPanel).find("#creationType").val($(this).data("value"));
                     $(subPanel).find("#skillParentUuid").val($(this).data("parentuuid"));
                     $(subPanel).find(".img-btn").toggleClass("selected");
+
+                    if ($(subPanel).find("#creationType").val() === "child") $(subPanel).find("#childrenCapAlert").show();
+                    else $(subPanel).find("#childrenCapAlert").hide();
                 });
 
-                $("#create-skill-form").on("submit", function(e){
+                $("#create-skill-form").on("submit", $.proxy(function(e){
                     e.preventDefault();
+                    this.locked = true;
+
                     $.ajax({
                         url: $("#create-skill-form").attr("action"),
                         type: $("#create-skill-form").attr("method"),
@@ -180,8 +188,9 @@ var Panel = function(node, initParams) {
                             else {
                                 that.showErrors(response);
                             }
+                            that.locked = false;
                         });
-                });
+                }, this));
                 break;
             case "move-skill-panel":
                 /*$(subPanel).find(".img-btn").on("tap click", function() {
@@ -197,6 +206,7 @@ var Panel = function(node, initParams) {
 
                 $("#move-skill-form").on("submit", function(e){
                     e.preventDefault();
+                    that.locked = true;
                     $.ajax({
                         url: $("#move-skill-form").attr("action"),
                         type: $("#move-skill-form").attr("method"),
@@ -214,13 +224,15 @@ var Panel = function(node, initParams) {
                             else {
                                 that.showErrors(response);
                             }
+                            that.locked = false;
                         });
                 });
                 break;
             case "rename-skill-panel":
                 $("#rename-skill-form").on("submit", function(e){
                     e.preventDefault();
-                    
+                    that.locked = true;
+
                     $.ajax({
                         url: $("#rename-skill-form").attr("action"),
                         type: $("#rename-skill-form").attr("method"),
@@ -237,13 +249,15 @@ var Panel = function(node, initParams) {
                             else {
                                 that.showErrors(response);
                             }
+                            that.locked = false;
                         });
                     });
                 break;
             case "skill-settings-panel":
                 $("#skill-settings-form").on("submit", function(e){
                     e.preventDefault();
-                    
+                    that.locked = true;
+
                     $.ajax({
                         url: $("#skill-settings-form").attr("action"),
                         type: $("#skill-settings-form").attr("method"),
@@ -256,6 +270,7 @@ var Panel = function(node, initParams) {
                             else {
                                 that.showErrors(response);
                             }
+                            that.locked = false;
                         });
                     });
                 break;
@@ -273,7 +288,8 @@ var Panel = function(node, initParams) {
                 });
                 $("#delete-skill-form").on("submit", function(e){
                     e.preventDefault();
-                    
+                    that.locked = true;
+
                     $.ajax({
                         url: $("#delete-skill-form").attr("action"),
                         type: $("#delete-skill-form").attr("method"),
@@ -290,12 +306,14 @@ var Panel = function(node, initParams) {
                             else {
                                 that.showErrors(response);
                             }
+                            that.locked = false;
                         });
                 });
                 break;
             case "translate-skill-panel":                
                 $("#translate-skill-form").on("submit", function(e){
                     e.preventDefault();
+                    that.locked = true;
                     
                     $.ajax({
                         url: $("#translate-skill-form").attr("action"),
@@ -319,12 +337,14 @@ var Panel = function(node, initParams) {
                             else {
                                 that.showErrors(response);
                             }
+                            that.locked = false;
                         });
                 });
                 break;
             case "discuss-skill-panel":
                 $("#discuss-skill-form").on("submit", function(e){
                     e.preventDefault();
+                    that.locked = true;
                     
                     $.ajax({
                         url: $("#discuss-skill-form").attr("action"),
@@ -347,6 +367,7 @@ var Panel = function(node, initParams) {
                             else {
                                 that.showErrors(response);
                             }
+                            that.locked = false;
                         });
                 });
                 break;
@@ -358,8 +379,10 @@ var Panel = function(node, initParams) {
         }
 
         //Common events
-        $(subPanel).find(".back-to-panel-btn").on("tap click", function(e) {
+        $(subPanel).find(".back-to-panel-btn").on("tap click", $.proxy(function(e) {
             e.preventDefault();
+            if (this.locked === true) return;
+
             $(subPanel).hide("slide", {
                 direction:"right",
                 complete: function() {
@@ -375,15 +398,17 @@ var Panel = function(node, initParams) {
             that.$activeSubpanel = that.$subPanels["first-panel"];
 
             if (tree.targetMode == true) tree.exitTargetMode();
-        });
+        }, this));
 
-        $(subPanel).find(".close-panel-btn").on("tap click", function(e) {
+        $(subPanel).find(".close-panel-btn").on("tap click", $.proxy(function(e) {
             e.preventDefault();
+            if (this.locked === true) return;
+
             if (tour.isActive == true || doTour == true) tour.actionOnTree("close-panel");
 
             if (tree.targetMode == true) tree.exitTargetMode();
             tree.editedNode.finishEdit();
-        });
+        }, this));
 
         // Click/tap on the stage only fires on nodes, not on empty space (TODO)
         // stage.on("click tap", function(e) {

@@ -205,7 +205,9 @@
                 }
                 else {
                     $json = new \Model\JsonResponse("error", _("An error occured."));
-                    $json->setData($validator->getErrors());
+                    $data = array();
+                    $data["errors"] = $validator->getErrors();
+                    $json->setData($data);
                 }      
 
             }
@@ -343,7 +345,9 @@
                 }
                 else {
                     $json = new \Model\JsonResponse("error", _("Something went wrong."));
-                    $json->setData($validator->getErrors());
+                    $data = array();
+                    $data["errors"] = $validator->getErrors();
+                    $json->setData($data);
                     $json->send(); 
                 }
             }
@@ -412,7 +416,9 @@
                 }
                 else {
                     $json = new \Model\JsonResponse("error", _("Something went wrong."));
-                    $json->setData($validator->getErrors());
+                    $data = array();
+                    $data["errors"] = $validator->getErrors();
+                    $json->setData($data);
                     $json->send(); 
                 }
             }
@@ -723,7 +729,9 @@
                 }
                 else {
                     $json = new \Model\JsonResponse("error", _("Something went wrong."));
-                    $json->setData($validator->getErrors());
+                    $data = array();
+                    $data["errors"] = $validator->getErrors();
+                    $json->setData($data);
                     $json->send(); 
                 }
             }

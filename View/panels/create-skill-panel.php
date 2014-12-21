@@ -5,6 +5,16 @@
     <h3><?= _("CREATE SKILL"); ?></h3>
 <?php
     if ($skill->getChildrenCount() < $skill->getCapNoMore()) {
+
+        if ($skill->getChildrenCount() > $skill->getCapIdealMax()) {
+        ?>
+            <div id="childrenCapAlert" class="text alert">
+                <p>
+                    <?=sprintf(_("<strong><em>%s</em> has %s children</strong> (it should not exceed %s). Can you find a way to group them?"), $skill->getLocalName(), $skill->getChildrenCount(), $skill->getCapIdealMax())?>
+                </p>
+            </div>
+        <?php
+        }
 ?>
     <form method="POST" action="<?= \Controller\Router::url("addSkill"); ?>" id="create-skill-form">
         <input type="hidden" name="selectedSkillUuid" id="selectedSkillUuid" value="<?= $skill->getUuid(); ?>" />
@@ -27,12 +37,15 @@
                 <img src="img/panel-icon-create-after-noborder.png" alt="<?= _("AFTER (as a child)"); ?>" />
                 <span class="legend"><?= _("AFTER (as a child)"); ?></span>
             </div>
+            <div style="clear:both"></div>
         </div>
         <?php } ?>
         <?php endif; ?>
         <div>
+            <div style="clear:both"></div>
             <input type="submit" value="<?= _("CREATE") ?>" />
             <span class="message-zone"></span>
+            <div class="clearfix"></div>
         </div>
     </form>
 <?php

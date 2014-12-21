@@ -233,6 +233,7 @@ Node.prototype.startEdit = function() {
 Node.prototype.finishEdit = function(onComplete, force) {
   if (tree.targetMode == true) return;
   if (!this.isEdited) return;
+  if (this.panel.locked === true) return;
 
   if (this.panel) {
     this.panel.close({
