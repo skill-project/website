@@ -1,0 +1,74 @@
+{
+   "controller": {
+   },
+   "workers": [
+      {
+         "type": "router",
+         "realms": [
+            {
+               "name": "skp",
+               "roles": [
+                  {
+                     "name": "anonymous",
+                     "permissions": [
+                        {
+                           "uri": "ws.skillCount",
+                           "publish": true,
+                           "subscribe": true,
+                           "call": false,
+                           "register": false
+                        }
+                     ]
+                  },
+                  // {
+                  //    "name": "frontend",
+                  //    "permissions": [
+                  //       {
+                  //          "uri": "ws.skillCount",
+                  //          "publish": false,
+                  //          "subscribe": true,
+                  //          "call": false,
+                  //          "register": false
+                  //       }
+                  //    ]
+                  // }
+               ]
+            }
+         ],
+         "transports": [
+            {
+               "type": "web",
+               "endpoint": {
+                  "type": "tcp",
+                  "port": %%%WS_PORT%%%
+               },
+               "paths": {
+                  "/": {
+                     "type": "static",
+                     "directory": ".."
+                  },
+                  "ws": {
+                     "type": "websocket",
+                     "url": "%%%WS_URL%%%",
+                     // "auth": {
+                     //    "wampcra": {
+                     //       "type": "static",
+                     //       "users": {
+                     //          "backend": {
+                     //             "role": "backend",
+                     //             "secret": "test123"
+                     //          },
+                     //          "frontend": {
+                     //             "role": "frontend",
+                     //             "secret": "anon"
+                     //          }
+                     //       }
+                     //    }
+                     // }
+                  }
+               }
+            }
+         ]
+      }
+   ]
+}

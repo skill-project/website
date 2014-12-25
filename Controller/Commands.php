@@ -54,4 +54,25 @@
             else return false;
         }
 
+        public function generateCrossbarConfigAction() {
+
+            $configPath = Config::BASE_PATH . "crossbar/.crossbar/config.json";
+
+            $config = file_get_contents($configPath . ".template");
+
+            $config = str_replace("%%%WS_PORT%%%", Config::CROSSBAR_WS_PORT, $config);
+            $config = str_replace("%%%REDIRECT_URL%%%", Config::CROSSBAR_REDIRECT_URL, $config);
+            $config = str_replace("%%%WS_URL%%%", Config::CROSSBAR_WS_URL, $config);
+
+            file_put_contents($configPath, $config);
+
+            if (file_exists($configPath)) {
+                echo "Written config file : ";
+                echoC("$configPath", "green");
+                echo "\nYou can start crossbar with \"crossbar start\"";
+            }else {
+                echoC("Config file $configPath could not be written.", "red");
+            }
+        }
+
     }

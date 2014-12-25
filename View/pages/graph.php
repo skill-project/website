@@ -42,7 +42,7 @@
         <form id="search-form" method="GET" action="<?= \Controller\Router::url("skillSearch"); ?>">
 		<div id="autocomplete-container">
 			<div id="search-results"></div>
-			<input type="search" name="q" id="kw-input" value="" autocomplete="off" placeholder="<?=_("SEARCH A SKILL"); ?>" />
+			<input type="search" name="q" id="kw-input" value="" autocomplete="off" placeholder="<?=sprintf(_("SEARCH A SKILL (%s)"), $skillCount); ?>" />
 		</div>
 		</form>
 

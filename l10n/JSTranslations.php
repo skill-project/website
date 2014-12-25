@@ -23,6 +23,10 @@
                     "capNoMore"         => _("Oh dear! This is the last skill you can add to <strong>\"%%%PARENTNAME%%%\"</strong>. You have reached the hard limit of <strong>%%%NOMORE%%%&nbsp;skills</strong> (ideal maximum:&nbsp;<strong>%%%IDEAL%%%</strong>). Please think of a way to group the skills."),
 
                     "capsDiscuss"       => _("If you think this limit is too low, please explain why in the \"Discuss\" panel and an Editor will raise it if appropriate."),
+                ),
+
+                "footer" => array(
+                    "searchPlaceholder" => _("SEARCH A SKILL (%s)")
                 )
             );
        }

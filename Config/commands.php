@@ -15,4 +15,9 @@ $GLOBALS["commands"] = array(
             "controller"    =>  "Commands",
             "action"        =>  "getNewStrings"
     ),
+
+    "generateCrossbarConfig" => array(
+        "controller"    =>  "Commands",
+        "action"        =>  "generateCrossbarConfig"
+    )
 );

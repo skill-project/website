@@ -34,6 +34,7 @@ module.exports = function(grunt) {
                     'web/js/jquery.tinyscrollbar.js',
                     'web/js/kinetic-v5.1.0.custom.min.js',
                     'web/js/canvas-loader.min.js',
+                    'web/js/autobahn.js',
                     'web/js/compatibility.js',
                     'web/js/functions.js',
                     'web/js/Site.js',

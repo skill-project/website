@@ -1,0 +1,47 @@
+{
+   "controller": {
+   },
+   "workers": [
+      {
+         "type": "router",
+         "realms": [
+            {
+               "name": "skp",
+               "roles": [
+                  {
+                     "name": "anonymous",
+                     "permissions": [
+                        {
+                           "uri": "ws.skillCount",
+                           "publish": true,
+                           "subscribe": true,
+                           "call": false,
+                           "register": false
+                        }
+                     ]
+                  }
+               ]
+            }
+         ],
+         "transports": [
+            {
+               "type": "web",
+               "endpoint": {
+                  "type": "tcp",
+                  "port": %%%WS_PORT%%%
+               },
+               "paths": {
+                  "/": {
+                     "type": "static",
+                     "directory": ".."
+                  },
+                  "ws": {
+                     "type": "websocket",
+                     "url": "%%%WS_URL%%%"
+                  }
+               }
+            }
+         ]
+      }
+   ]
+}

@@ -11,6 +11,10 @@
 
         const NEO_HOST      = _NEO_HOST;
         const NEO_PORT      = _NEO_PORT;
+
+        const CROSSBAR_WS_PORT      = _CROSSBAR_WS_PORT;  // 8080/
+        const CROSSBAR_WS_URL       = _CROSSBAR_WS_URL;  // ws://127.0.0.1:8080/ws
+        const CROSSBAR_REDIRECT_URL = _BASE_URL;
         
         const DEBUG         = _DEBUG;
 

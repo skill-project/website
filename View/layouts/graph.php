@@ -1,6 +1,9 @@
 <?php
 	$pageLangName = str_replace(".php", "", $page);
     $pageName = "graph";
+
+    $pageNames = explode("/", $pageName);
+	$lastPageName = $pageNames[count($pageNames) - 1];
 ?>
 <!DOCTYPE html>
 <html lang="fr" class="graph">

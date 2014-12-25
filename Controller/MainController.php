@@ -24,14 +24,15 @@
          */
         public function graphAction(){
 
+            $statManager = new \Model\StatManager;
             $skillManager = new SkillManager();
             $rootNode = $skillManager->findRootNode();
             
             $view = new View("graph.php", array(
                     "rootNode"  => $rootNode,
                     "title"     => _("Explore"),
-                    "userClass" => $this->getUserClass()
-
+                    "userClass" => $this->getUserClass(),
+                    "skillCount" => $statManager->countLabel("Skill")
                 )
             );
             $view->setLayout("../View/layouts/graph.php");

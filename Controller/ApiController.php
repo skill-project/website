@@ -6,6 +6,7 @@
     use \Model\TranslationManager;
     use \Model\DiscussionManager;
     use \Model\UserManager;
+    use \Model\NotificationManager;
     use \Model\Skill;
     use \Model\User;
     use \Utils\SecurityHelper as SH;
@@ -540,6 +541,9 @@
                     $skill->setDepth( $parentSkill->getDepth() + 1 );
                     $skillManager->save($skill, $skillParentUuid, $userUuid);
 
+                    //Refresh skill count on the client
+                    \Utils\PushManager::pushSkillCount();
+
                     $translations = array();
 
                     //then auto translate
@@ -568,6 +572,8 @@
                       
                     }
 
+                    // $notificationManager = new NotificationManager();
+
                     if($creationType == "parent") {
                         //right now, the new skill was added on the same level as the selected skill
                         //the new skill has a correct depth
@@ -580,6 +586,17 @@
                         
                         //correct all depths
                         $skillManager->updateAllDepths();
+
+                        // $notificationManager->sendNotification(array(
+                        //     "type"          =>  "add-parent",
+                        //     "parentSkill"   =>  
+                        // ));
+                    }else {
+                        // $notificationManager->sendNotification(array(
+                        //     "type"          =>  "add-child",
+                        //     "parentSkill"   =>  $parentSkill,
+                        //     "newSkill"      =>  $skill
+                        // ));
                     }
 
                     $infos = array_merge($translations, array(

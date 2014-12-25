@@ -8,13 +8,14 @@
     ],
     "require": {
         "everyman/neo4jphp":"dev-master",
-        "symfony/routing":"dev-master",
-        "symfony/http-foundation":"dev-master",
+        "symfony/routing":"2.7.x-dev",
+        "symfony/http-foundation":"2.7.x-dev",
         "fzaninotto/faker": "@stable",
         "cocur/slugify": "@stable",
         "mandrill/mandrill": "1.0.*",
         "abeautifulsite/simpleimage": "dev-master",
         "gabrielbull/browser": "dev-master",
-	"nesbot/carbon": "dev-master"
+	    "nesbot/carbon": "dev-master",
+        "voryx/thruway":"0.2.*"
     }
 }

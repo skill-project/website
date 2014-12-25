@@ -45,6 +45,7 @@
             alert("<?= _("Your browser is too old for this modern app. Please use a recent one!"); ?>");
             window.location.href = "/";
         }
+        AUTOBAHN_DEBUG = true;
     </script>
     <script src="scripts/js-translations.js"></script>
 <?php if (\Config\Config::DEBUG): ?>
@@ -57,6 +58,7 @@
     <script src="js/jquery.tinyscrollbar.js"></script>
     <script src="js/kinetic-v5.1.0.custom.min.js"></script>
     <script src="js/canvas-loader.min.js"></script>
+    <script src="js/autobahn.js"></script>
     <script src="js/compatibility.js"></script>
 
     <script src="js/functions.js"></script>
