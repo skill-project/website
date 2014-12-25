@@ -4,6 +4,7 @@
 
     use \View\View;
     use \Model\SkillManager;
+    use Config\Config;
 
     use \Utils\SecurityHelper as SH;
 
@@ -13,9 +14,14 @@
          * Home page
          */
         public function homeAction(){
+
+            $statManager = new \Model\StatManager;
+
             $view = new View("home.php", array(
-                "title" => _("The Universal Skills Map"))
-            );
+                "title" => _("The Universal Skills Map"),
+                "skillCount" => $statManager->countLabel("Skill"),
+                "wsUrl" => Config::CROSSBAR_WS_URL
+            ));
             $view->send();
         }
 
@@ -32,7 +38,8 @@
                     "rootNode"  => $rootNode,
                     "title"     => _("Explore"),
                     "userClass" => $this->getUserClass(),
-                    "skillCount" => $statManager->countLabel("Skill")
+                    "skillCount" => $statManager->countLabel("Skill"),
+                    "wsUrl" => Config::CROSSBAR_WS_URL
                 )
             );
             $view->setLayout("../View/layouts/graph.php");

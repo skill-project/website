@@ -9,6 +9,10 @@
 		</div>
 
 		<img src="img/SKP-page-home-sun.png" id="home-sun" />
+		<div id="skillCount">
+			Skills so far
+			<span id="skillCountNum">000000</span>
+		</div>
 	</div>
 </div>
 

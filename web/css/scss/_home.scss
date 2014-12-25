@@ -22,6 +22,31 @@ html.home {
     right: -20px;
 }
 
+#skillCount {
+    width: 178px;
+    height: 56px;
+    background: url("../img/SKP-page-home-counter.png") no-repeat;
+    position:absolute;
+    top: 445px;
+    left: 683px;
+    text-transform: uppercase;
+    font-weight:bold;
+    text-align:center;
+    font-size:14px;
+    padding-top: 11px;
+
+    #skillCountNum {
+        display:block;
+        color: $blue;
+        margin-top:5px;
+        font-size:20px;
+        letter-spacing: 7px;
+        padding-left: 7px;
+    }
+}
+
+
+
 #tagline {
     margin: 90px 0;
     text-align: left;

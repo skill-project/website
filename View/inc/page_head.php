@@ -33,6 +33,9 @@
                     echo "var doTour = false;\n";
                 }
             }
+
+            echo "var skillCount = " . $skillCount . ";\n";
+            echo "var wsUrl = '" . $wsUrl . "';\n";
         ?>
 
         //Do dinosaurs still exist ?
@@ -45,7 +48,7 @@
             alert("<?= _("Your browser is too old for this modern app. Please use a recent one!"); ?>");
             window.location.href = "/";
         }
-        AUTOBAHN_DEBUG = true;
+        // AUTOBAHN_DEBUG = true;
     </script>
     <script src="scripts/js-translations.js"></script>
 <?php if (\Config\Config::DEBUG): ?>
@@ -59,6 +62,8 @@
     <script src="js/kinetic-v5.1.0.custom.min.js"></script>
     <script src="js/canvas-loader.min.js"></script>
     <script src="js/autobahn.js"></script>
+    <script src="js/jquery.waypoints.js"></script>
+    <script src="js/countUp.js"></script>
     <script src="js/compatibility.js"></script>
 
     <script src="js/functions.js"></script>
