@@ -42,9 +42,10 @@
          * @return mixed Array if success, false otherwise
          */
         public function findChildren($uuid){
-            $cyp = "MATCH (parent:Skill)-[:HAS]->(s:Skill)-[:HAS*0..1]->(children:Skill) 
+            $cyp = "MATCH (parent:Skill)-[:HAS]->(s:Skill) 
                         WHERE parent.uuid = {uuid}
-                        RETURN s, count(children)-1 as childrenCount ORDER BY s.created ASC LIMIT 40";
+                        RETURN s 
+                        ORDER BY s.created ASC LIMIT 40";
             $query = new Query($this->client, $cyp, array(
                 "uuid" => $uuid)
             );
@@ -53,7 +54,6 @@
                 $data = array();
                 foreach ($resultSet as $row) {
                     $skill = new Skill( $row['s'] );
-                    $skill->setChildrenCount( $row['childrenCount'] );
                     $data[] = $skill->getJsonData();
                 }
                 return $data;
@@ -159,9 +159,9 @@
          */
         public function findNodePathToRoot($uuid){
 
-            $cyp = "MATCH (children:Skill) <-[:HAS*0..1]-(child:Skill)<-[:HAS*0..1]-(parents:Skill)-[:HAS*]->(s:Skill) 
+            $cyp = "MATCH (child:Skill)<-[:HAS*0..1]-(parents:Skill)-[:HAS*]->(s:Skill) 
                         WHERE s.uuid = {uuid}
-                        RETURN parents,s,child,count(children)-1 as childrenCount ORDER BY parents.depth ASC, child.created ASC";
+                        RETURN parents,s,child ORDER BY parents.depth ASC, child.created ASC";
             $query = new Query($this->client, $cyp, array(
                 "uuid" => $uuid)
             );
@@ -197,7 +197,6 @@
                         for($i=0;$i<count($path);$i++){
                             if ($path[$i]['uuid'] == $parentUuid){
                                 $skill = new Skill($row['child']);
-                                $skill->setChildrenCount($row['childrenCount']);
                                 $path[$i]['children'][] = $skill->getJsonData();
                                 if ($skill->getUuid() == $uuid){
                                     $path[$i]['selectedSkill'] = $childUuid;
@@ -402,6 +401,7 @@
                         name: {name},
                         slug: {slug},
                         depth: {depth},
+                        childrenCount: 0,
                         created: {now},
                         modified: {now} 
                         **trans**
@@ -433,6 +433,8 @@
 
             $query = new Query($this->client, $cyp, $namedParams);
             $resultSet = $query->getResultSet();
+
+            $this->updateChildrenCount($skillParentUuid);
 
             return true;
         }
@@ -557,6 +559,15 @@
             );
             $resultSet = $query->getResultSet();
 
+            foreach($resultSet as $row){
+                $oldParentUuid = $row['oldParent']->getProperty('uuid');
+                break;
+            }
+
+            //update old and new parents children count
+            $this->updateChildrenCount($oldParentUuid);
+            $this->updateChildrenCount($newParentUuid);
+
             return $resultSet;
         }
 
@@ -582,6 +593,8 @@
             );
             $resultSet = $query->getResultSet();
 
+            $this->updateChildrenCount($newParentUuid);
+
         }
 
 
@@ -602,7 +615,8 @@
                             SET s.previousParentUuid = parent.uuid 
                             SET s :DeletedSkill
                             REMOVE s:Skill 
-                            CREATE (u)-[r:DELETED {timestamp:{now}}]->(s)";
+                            CREATE (u)-[r:DELETED {timestamp:{now}}]->(s) 
+                            RETURN parent";
                     $query = new Query($this->client, $cyp, array(
                             "skillUuid" => $skillUuid,
                             "userUuid" => $userUuid,
@@ -610,6 +624,9 @@
                         )
                     );
                     $resultSet = $query->getResultSet();
+                    $oldParentUuid = $resultSet[0]['parent']->getProperty("uuid");
+                    $this->updateChildrenCount($oldParentUuid);
+
                     return true;
                 }
                 else {
@@ -621,6 +638,31 @@
             }
             return false;
 
+        }
+
+        /**
+         * Update all childrenCount
+         * takes about one second to perform with 2000 skills
+         */
+        public function updateAllChildrenCounts(){
+            $cyp = "MATCH (children:Skill)<-[r:HAS*0..1]-(s:Skill)
+                    WITH s, count(children) AS childrenNum
+                    SET s.childrenCount = childrenNum-1";
+            $query = new Query($this->client, $cyp);
+            $query->getResultSet();
+        }
+
+
+        /**
+         * Update one skill's childrenCount
+         */
+        public function updateChildrenCount($uuid){
+            $cyp = "MATCH (children:Skill)<-[r:HAS*0..1]-(s:Skill {uuid: {uuid}})
+                    WITH s, count(children) AS childrenNum
+                    SET s.childrenCount = childrenNum-1 ";
+            $query = new Query($this->client, $cyp, array("uuid" => $uuid));
+            $query->getResultSet();
+            return $this->findByUuid($uuid);
         }
 
 

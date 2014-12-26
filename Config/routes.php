@@ -436,6 +436,14 @@
         )
     );
 
+    $routes->add(
+        'runQuery',
+        new Route('/admin/run-query/awjfkw9f2eeewq2qqjjr32329r0/', 
+            array('controller' => 'Admin', 'action' => 'runQuery'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
 //Editor Dashboard
     $routes->add(
         'editorDashboard',

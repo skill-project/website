@@ -121,4 +121,18 @@
 
         }
 
+
+        /*
+        * For running code once...
+        * might change anytime
+        */
+        public function runQueryAction(){
+            SH::lock("superadmin");
+
+            $skillManager = new SkillManager();
+            //$skillManager->updateAllChildrenCounts();
+
+            //die("done");
+        }
+
     }

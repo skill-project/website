@@ -235,7 +235,6 @@
                 $type = $_POST['moveType'];
                 $skill = $skillManager->findByUuid($skillUuid);
                 $newParent = $skillManager->findByUuid($newParentUuid);
-                $newParent->setChildrenCount( $skillManager->countChildren($newParent->getUuid()) );
                 
                 //retrieve current user uuid
                 $userUuid = SH::getUser()->getUuid();
@@ -493,7 +492,6 @@
                 //retrieve parent skill
                 $skillManager = new SkillManager();
                 $parentSkill = $skillManager->findByUuid( $skillParentUuid );
-                $parentSkill->setChildrenCount( $skillManager->countChildren($parentSkill->getUuid()) );
 
                 //validation
                 $validator = new \Model\Validator();
