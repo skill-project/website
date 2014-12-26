@@ -25,8 +25,21 @@
 		protected $dateModified;
 		protected $siteLanguage;
 		protected $active;			//false for deleted account, true otherwise
+		protected $notificationSettings;
 
 		protected $node;
+
+		public function __construct(){
+		    parent::__construct();
+
+		    //Setting default settings
+		    $this->setNotificationSettings(array(
+		    	"add-child" => array(
+		    		"owner"		=> true,
+		    		"discussed"	=> true
+		    	)
+		    ));
+		}
 
 		/**
 		 * Hydrate all object properties from the node
@@ -38,6 +51,16 @@
 			foreach($props as $prop => $value){
 				$methodName = "set" . ucfirst($prop);
 				if (method_exists($this, $methodName)){
+
+					switch ($prop) {
+						case "notificationSettings":
+							$value = unserialize($value);
+							break;
+						default:
+							//Do nothing
+							break;
+					}
+
 					$this->$methodName($value);
 				}
 			}
@@ -401,5 +424,38 @@
 	        $this->active = $active;
 
 	        return $this;
+	    }
+
+	    private function setNotificationSettings($settings) {
+	    	$this->notificationSettings = $settings;
+
+	    	return $this;
+	    }
+
+	    public function getNotificationSettings() {
+	    	return $this->notificationSettings;
+	    }
+
+	    public function wantsEmailNotification($setting, $reason) {
+	    	//WORK IN PROGRESS
+	    	
+	  		// print_r($this->notificationSettings[$setting]);
+			// print_r($this->notificationSettings["add-child"]);
+
+			// $localVar = $this->notificationSettings;
+
+			// print_r($this->{"notificationSettings"}["add-child"]);
+			// echo $this->{"notificationSettings"};
+
+	    	echo "DEBUG\n";
+			echo gettype($this->notificationSettings["add-child"]);
+
+			echo array_key_exists($reason, $this->notificationSettings[$setting]);
+
+			die();
+
+	    	if (!array_key_exists($reason, $this->notificationSettings[$setting])) throw new \Exception("Invalid setting / reason given : $setting / $reason");
+
+	    	return $this->notificationSettings[$setting][$reason];
 	    }
 	}

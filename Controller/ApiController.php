@@ -572,7 +572,7 @@
                       
                     }
 
-                    // $notificationManager = new NotificationManager();
+                    $notificationManager = new NotificationManager();
 
                     if($creationType == "parent") {
                         //right now, the new skill was added on the same level as the selected skill
@@ -587,16 +587,12 @@
                         //correct all depths
                         $skillManager->updateAllDepths();
 
-                        // $notificationManager->sendNotification(array(
-                        //     "type"          =>  "add-parent",
-                        //     "parentSkill"   =>  
-                        // ));
+                        // TODO : send add-parent notification
                     }else {
-                        // $notificationManager->sendNotification(array(
-                        //     "type"          =>  "add-child",
-                        //     "parentSkill"   =>  $parentSkill,
-                        //     "newSkill"      =>  $skill
-                        // ));
+                        $notificationManager->sendNotification("add-child", array(
+                            "parentSkill"   =>  $parentSkill,
+                            "newSkill"      =>  $skill
+                        ));
                     }
 
                     $infos = array_merge($translations, array(

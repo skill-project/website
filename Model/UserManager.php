@@ -43,7 +43,8 @@
                         u.token = {token},
                         u.dateModified = {dateModified},
                         u.siteLanguage = {siteLanguage},
-                        u.active = {active}";
+                        u.active = {active},
+                        u.notificationSettings = {notificationSettings}";
 
             $query = new Query($this->client, $cyp, array(
                     "uuid" => $user->getUuid(),
@@ -61,9 +62,11 @@
                     "token" => $user->getToken(),
                     "dateModified" => time(),
                     "siteLanguage" => $user->getSiteLanguage(),
-                    "active" => $user->getActive()
+                    "active" => $user->getActive(),
+                    "notificationSettings" => $user->getNotificationSettings()
                 )
             );
+
             $result = $query->getResultSet();
             return $result;
         }

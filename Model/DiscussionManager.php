@@ -78,8 +78,11 @@
             return $messages;
         }
 
-        public function getUsersInDiscussion($skillUuid) {
-            $cyp = "MATCH (user:User)-[:POSTED]->(message:Message)-[:IS_ABOUT]->(skill:Skill {uuid: {uuid}}) 
+        //$returnUsers
+        //  true (default) : return an array of User objects
+        //  false : return an array of user uuids
+        public function getUsersInDiscussion($skillUuid, $returnUsers = true) {
+            $cyp = "MATCH (user:User {active: true})-[:POSTED]->(message:Message)-[:IS_ABOUT]->(skill:Skill {uuid: {uuid}}) 
                     RETURN DISTINCT user";
 
             $query = new Query($this->client, $cyp, array(
@@ -87,15 +90,19 @@
             ));
 
             $resultSet = $query->getResultSet();
+
             $users = array();
             foreach($resultSet as $row) {
-                $user = new User();
-                $user->setNode($row['user']);
-                $user->hydrateFromNode();
-                if ($user->isActive() === false){
-                    continue;
+                if ($returnUsers) {
+                    $user = new User();
+                    $user->setNode($row['user']);
+                    $user->hydrateFromNode();
+                    $users[] = $user;
                 }
-                $users[] = $user;
+                else {
+                    $users[] = $row['user']->getProperty('uuid');
+                }
+                
             }
 
             return $users;
