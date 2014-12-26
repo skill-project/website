@@ -151,6 +151,11 @@
 
             if ($deletionResult === true){
                 $this->warn("deleted", $skill);
+
+                //send notification
+                $notificationManager = new NotificationManager();
+                $notificationManager->sendNotification("delete", $skill);
+
                 $json = new \Model\JsonResponse("ok", _("Node deleted."));
             }
             else {
@@ -195,6 +200,10 @@
                         $this->warn("discussed", $skill, array(
                             "message" => $message
                         ));
+
+                        //send notification
+                        $notificationManager = new NotificationManager();
+                        $notificationManager->sendNotification("discuss", $skill);
 
                         $this->sendNotifications($skill, $message);
 
@@ -260,6 +269,10 @@
                             $data['parent'] = $newParent->getJsonData();
                             $json->setData($data);
 
+                            //send notification
+                            $notificationManager = new NotificationManager();
+                            $notificationManager->sendNotification("move", $skill);
+
                             $this->warn("moved", $skill, array(
                                 "newParent" => $newParentUuid
                             ));
@@ -272,6 +285,11 @@
                             $data = array();
                             $data['skill'] = $skill->getJsonData();
                             $data['parent'] = $newParent->getJsonData();
+
+                            //send notification
+                            //$notificationManager = new NotificationManager();
+                            //$notificationManager->sendNotification("copy", $skill);
+
                             $json->setData($data);
                             break;
                     }
@@ -338,6 +356,10 @@
                             "translation" => $skillTrans
                         ));
                     }
+
+                    //send notification
+                    $notificationManager = new NotificationManager();
+                    $notificationManager->sendNotification("translate", $skill);
 
                     $json = new \Model\JsonResponse("ok", _("Translation saved!"));
                     $json->setData($skill->getJsonData());
@@ -406,6 +428,11 @@
                             "new name" => $skillName
                         ));
                     }
+
+
+                    //send rename notification
+                    $notificationManager = new NotificationManager();
+                    $notificationManager->sendNotification("rename", $skill);
 
                     //reload skill
                     $skill = $skillManager->findByUuid($skill->getUuid());
@@ -540,7 +567,8 @@
                     $skillManager->save($skill, $skillParentUuid, $userUuid);
 
                     //Refresh skill count on the client
-                    \Utils\PushManager::pushSkillCount();
+                    // needs installs on windows
+                    //\Utils\PushManager::pushSkillCount();
 
                     $translations = array();
 
@@ -585,11 +613,16 @@
                         //correct all depths
                         $skillManager->updateAllDepths();
 
-                        // TODO : send add-parent notification
-                    }else {
-                        $notificationManager->sendNotification("add-child", array(
-                            "parentSkill"   =>  $parentSkill,
-                            "newSkill"      =>  $skill
+                        //send add-parent notification
+                        $notificationManager->sendNotification("add-parent", $skill, array(
+                            "selectedSkill"     =>  $selectedSkill
+                        ));
+                    }
+
+                    //as child
+                    else {
+                        $notificationManager->sendNotification("add-child", $skill, array(
+                            "parentSkill"   =>  $parentSkill
                         ));
                     }
 

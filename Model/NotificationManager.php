@@ -2,11 +2,8 @@
 
     namespace Model;
 
-    use \Model\SkillManager;
-
     use \Everyman\Neo4j\Node;
     use \Everyman\Neo4j\Cypher\Query;
-    use \Cocur\Slugify\Slugify;
     use \Config\Config;
 
     class NotificationManager extends Manager {
@@ -15,18 +12,17 @@
     		parent::__construct();
     	}
 
-        public function sendNotification($type, array $params) {
+        public function sendNotification($type, Skill $skill, array $params = array()) {
             extract($params);
 
-            $skillManager = new SkillManager();
             $discussionManager = new DiscussionManager();
+            
+            //Create Notification node
+            $notificationUuid = $this->saveNotification($type, $skill);
 
             switch ($type) {
                 case "add-child":
-                    if (!isset($parentSkill) or !isset($newSkill)) throw new \Exception("Required when sending add-child notification : parentSkill, newSkill");
-                    
-                    //Create Notification node
-                    $notificationUuid = $this->saveNotification($type, $newSkill);
+                    if (!isset($parentSkill)) throw new \Exception("Required when sending add-child notification : parentSkill");
 
                     //Create relationship with owner
                     $parentSkillOwner = $parentSkill->getOwner();
@@ -35,17 +31,45 @@
                     //Create as many relationships as there are users who discussed the skill
                     //Retrieves an array of user uuids of users who discussed the skill
                     $usersInDiscussion = $discussionManager->getUsersInDiscussion($parentSkill->getUuid(), false);
-        
                     $this->saveMultipleRelationsWithUsers($usersInDiscussion, $notificationUuid, "discussed");
 
                     break;
+
+                case "add-parent":
+                    if (!isset($selectedSkill)) throw new \Exception("Required when sending add-parent notification : selectedSkill");
+
+                    $selectedSkillOwner = $selectedSkill->getOwner();
+                    $this->saveSingleRelationWithUser($selectedSkillOwner, $notificationUuid, "owner");
+
+                    $usersInDiscussion = $discussionManager->getUsersInDiscussion($selectedSkill->getUuid(), false);
+                    $this->saveMultipleRelationsWithUsers($usersInDiscussion, $notificationUuid, "discussed");
+
+                    break;
+
+                case "delete":
+                case "rename":
+                case "discuss":
+                case "translate":
+                case "moved":
+
+                    $skillOwner = $skill->getOwner();
+                    $this->saveSingleRelationWithUser($skillOwner, $notificationUuid, "owner");
+
+                    $usersInDiscussion = $discussionManager->getUsersInDiscussion($skill->getUuid(), false);
+                    $this->saveMultipleRelationsWithUsers($usersInDiscussion, $notificationUuid, "discussed");
+
+                    break;
+
             }
         }
 
-
+        /*  
+        * Create a Notification node and relates it to the skill (or deleted skill)
+        */
         protected function saveNotification($type, Skill $skill){
             
-            $cyp = "MATCH (s:Skill {uuid: {skillUuid}}) 
+            $cyp = "MATCH (s {uuid: {skillUuid}}) 
+                    WHERE s:Skill OR s:DeletedSkill 
                     CREATE 
                     (notification:Notification {
                         uuid: {notificationUuid},
@@ -68,6 +92,10 @@
             return $notificationUuid;
         }
 
+
+        /*  
+        * Create a relation between a notification and a user
+        */
         protected function saveSingleRelationWithUser(User $user, $notificationUuid, $reason){
             $cyp = "MATCH
                         (u:User {uuid: {ownerUuid} }), 
@@ -84,6 +112,10 @@
         }
 
 
+
+        /*  
+        * Create a relationship between a notification and many users
+        */
         protected function saveMultipleRelationsWithUsers(array $userUuids, $notificationUuid, $reason){
             $cyp = "MATCH
                         (u:User), 
