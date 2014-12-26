@@ -798,7 +798,8 @@
          */
         public function getSkillOwner($uuid){
             $cyp = "MATCH 
-                        (user:User)-[:CREATED]->(skill:Skill {uuid: {uuid}}) 
+                        (user:User)-[:CREATED]->(skill {uuid: {uuid}})
+                    WHERE skill:Skill OR skill:DeletedSkill  
                     RETURN user";
 
             $namedParams = array(
