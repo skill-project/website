@@ -426,36 +426,32 @@
 	        return $this;
 	    }
 
-	    private function setNotificationSettings($settings) {
-	    	$this->notificationSettings = $settings;
+	    private function setNotificationSettings(array $settings) {
+	    	$this->notificationSettings = serialize($settings);
 
 	    	return $this;
 	    }
 
-	    public function getNotificationSettings() {
-	    	return $this->notificationSettings;
+	    public function getNotificationSettings($asArray = true) {
+	    	if (!$asArray){
+	    		return $this->notificationSettings;
+	    	}
+	    	return unserialize($this->notificationSettings);
 	    }
 
+	    //will return false if the setting is not defined on the user
 	    public function wantsEmailNotification($setting, $reason) {
-	    	//WORK IN PROGRESS
+	    	$userSettings = $this->getNotificationSettings();
 	    	
-	  		// print_r($this->notificationSettings[$setting]);
-			// print_r($this->notificationSettings["add-child"]);
+	    	//the setting exist for this user ?
+	    	if (array_key_exists($setting, $userSettings)){
+	    		//the reason is set on this setting ?
+	    		if (array_key_exists($reason, $userSettings[$setting])){
+	    			//return the value
+	    			return $userSettings[$setting][$reason];
+	    		}
+	    	}
 
-			// $localVar = $this->notificationSettings;
-
-			// print_r($this->{"notificationSettings"}["add-child"]);
-			// echo $this->{"notificationSettings"};
-
-	    	echo "DEBUG\n";
-			echo gettype($this->notificationSettings["add-child"]);
-
-			echo array_key_exists($reason, $this->notificationSettings[$setting]);
-
-			die();
-
-	    	if (!array_key_exists($reason, $this->notificationSettings[$setting])) throw new \Exception("Invalid setting / reason given : $setting / $reason");
-
-	    	return $this->notificationSettings[$setting][$reason];
+	    	return false;
 	    }
 	}

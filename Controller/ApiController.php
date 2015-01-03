@@ -811,12 +811,19 @@
          * Retrieve user notifications
          */
         public function userNotificationsAction(){
+
             SH::lock("admin");
+            
             $user = SH::getUser();
             $notificationManager = new NotificationManager();
             $notifications = $notificationManager->getAllUserNotifications($user->getUuid());
-            
+
             foreach($notifications as $notif){
+
+                $wouldReceivedThat = $user->wantsEmailNotification($notif['notif']->getType(), $notif['reason']);
+                echo ($wouldReceivedThat) ? "would be sent" : "would NOT be sent";
+                echo "<br />";
+               
                 echo $notif['reason'] . "<br />";
                 echo $notif['relatedSkill']->getName() . "<br />";
                 echo "notif uuid: " . $notif['notif']->getUuid() . "<br />";
