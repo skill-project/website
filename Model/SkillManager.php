@@ -820,7 +820,7 @@
         /**
          * Return the skill history
          */
-        public function getSkillHistory($uuid){
+        public function getSkillHistory($uuid, $limit = 10, $skip = 0){
 
             $cyp = "MATCH (s:Skill {uuid: {uuid}})<-[r:CREATED|MODIFIED|TRANSLATED|AUTO_TRANSLATED|DELETED|MOVED|IS_ABOUT]-(u:User)
                     RETURN r,u
@@ -828,8 +828,8 @@
 
             $namedParams = array(
                 "uuid"  => $uuid,
-                "skip"  => 0,
-                "limit" => 10
+                "limit" => $limit,
+                "skip"  => $skip
             );
             
             $query = new Query($this->client, $cyp, $namedParams);

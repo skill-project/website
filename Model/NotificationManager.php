@@ -14,53 +14,78 @@
 
         public function sendNotification($type, Skill $skill, array $params = array()) {
             extract($params);
-
-            $discussionManager = new DiscussionManager();
             
             //Create Notification node
             $notificationUuid = $this->saveNotification($type, $skill);
 
+            //mainly set the skill on wich we are adding relations
             switch ($type) {
+                //adding a child
                 case "add-child":
                     if (!isset($parentSkill)) throw new \Exception("Required when sending add-child notification : parentSkill");
-
-                    //Create relationship with owner
-                    $parentSkillOwner = $parentSkill->getOwner();
-                    $this->saveSingleRelationWithUser($parentSkillOwner, $notificationUuid, "owner");
-
-                    //Create as many relationships as there are users who discussed the skill
-                    //Retrieves an array of user uuids of users who discussed the skill
-                    $usersInDiscussion = $discussionManager->getUsersInDiscussion($parentSkill->getUuid(), false);
-                    $this->saveMultipleRelationsWithUsers($usersInDiscussion, $notificationUuid, "discussed");
-
+                    //sets the skill of interest
+                    $currentSkill = $parentSkill;
                     break;
 
+                //adding a parent
                 case "add-parent":
                     if (!isset($selectedSkill)) throw new \Exception("Required when sending add-parent notification : selectedSkill");
-
-                    $selectedSkillOwner = $selectedSkill->getOwner();
-                    $this->saveSingleRelationWithUser($selectedSkillOwner, $notificationUuid, "owner");
-
-                    $usersInDiscussion = $discussionManager->getUsersInDiscussion($selectedSkill->getUuid(), false);
-                    $this->saveMultipleRelationsWithUsers($usersInDiscussion, $notificationUuid, "discussed");
-
+                    $currentSkill = $selectedSkill;
                     break;
 
+                //default ?
                 case "delete":
                 case "rename":
                 case "discuss":
                 case "translate":
                 case "moved":
-
-                    $skillOwner = $skill->getOwner();
-                    $this->saveSingleRelationWithUser($skillOwner, $notificationUuid, "owner");
-
-                    $usersInDiscussion = $discussionManager->getUsersInDiscussion($skill->getUuid(), false);
-                    $this->saveMultipleRelationsWithUsers($usersInDiscussion, $notificationUuid, "discussed");
-
+                    $currentSkill = $skill;
                     break;
-
             }
+
+            //relation between skill creator and notification
+            $skillOwner = $currentSkill->getOwner();
+            $this->saveSingleRelationWithUser($skillOwner, $notificationUuid, "owner");
+
+            //relations between people who discussed the skill and the notif
+            $discussionManager = new DiscussionManager();
+            $usersInDiscussion = $discussionManager->getUsersInDiscussion($currentSkill->getUuid(), false);
+            $this->saveMultipleRelationsWithUsers($usersInDiscussion, $notificationUuid, "discussed");
+        
+            //retrieve skill history to get users who renamed, translated or moved that skill
+            $skillManager = new SkillManager();
+            $history = $skillManager->getSkillHistory($currentSkill->getUuid(), 100);
+            
+            //stores only the user uuids in arrays before calling methods that create the relations
+            $usersWhoMoved = array();
+            $usersWhoTranslated = array();
+            $usersWhoRenamed = array();
+            foreach($history as $event){
+                switch($event['action']){
+                    case "MOVED":
+                        $userWhoMoved[] = $event['userProps']['uuid'];
+                        break;
+                    case "TRANSLATED":
+                        $usersWhoTranslated[] = $event['userProps']['uuid'];
+                        break;
+                    case "RENAMED":
+                        $userWhoRenamed[] = $event['userProps']['uuid'];
+                        break;
+                }
+            }
+
+            //remove duplicates (like if a user discussed more than one time the same skill)
+            $usersWhoMoved = array_unique($usersWhoMoved);
+            $usersWhoRenamed = array_unique($usersWhoRenamed);
+            $usersWhoTranslated = array_unique($usersWhoTranslated);
+
+            //create the relations
+            if (!empty($usersWhoMoved))
+                $this->saveMultipleRelationsWithUsers($usersWhoMoved, $notificationUuid, "moved");
+            if (!empty($usersWhoTranslated))
+                $this->saveMultipleRelationsWithUsers($usersWhoTranslated, $notificationUuid, "translated");
+            if (!empty($usersWhoRenamed))
+                $this->saveMultipleRelationsWithUsers($usersWhoRenamed, $notificationUuid, "renamed");
         }
 
         /*  
@@ -122,7 +147,7 @@
                         (n:Notification {uuid: {notificationUuid} }) 
                     WHERE u.uuid IN ['" . implode("', '", $userUuids) . "']
                     CREATE (u)<-[:SENT {reason: {reason}}]-(n)";
-
+            die($cyp);
             $namedParams = array(
                 "notificationUuid"  => $notificationUuid,
                 "reason"            => $reason
