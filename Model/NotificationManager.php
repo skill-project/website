@@ -147,7 +147,7 @@
                         (n:Notification {uuid: {notificationUuid} }) 
                     WHERE u.uuid IN ['" . implode("', '", $userUuids) . "']
                     CREATE (u)<-[:SENT {reason: {reason}}]-(n)";
-            die($cyp);
+
             $namedParams = array(
                 "notificationUuid"  => $notificationUuid,
                 "reason"            => $reason
@@ -155,5 +155,32 @@
             $query = new Query($this->client, $cyp, $namedParams);
             $resultSet = $query->getResultSet();
         }
+
+
+        /*
+        * Get all user's notifications 
+        */
+        public function getAllUserNotifications($userUuid){
+            $cyp = "MATCH 
+                    (u:User {uuid:{userUuid}})<-[r:SENT]-(n:Notification)-[:IS_ABOUT]->(s) 
+                    RETURN r,n,s
+                    ORDER BY n.timestamp DESC 
+                    LIMIT 100";
+
+            $namedParams = array(
+                "userUuid"  => $userUuid
+            );
+            $query = new Query($this->client, $cyp, $namedParams);
+            $resultSet = $query->getResultSet();
+            
+            $notifs = array();
+            if ($resultSet->count() > 0){
+                foreach($resultSet as $row){
+                    $notif = new Notification($row['n']);
+                    $notifs[] = $notif;
+                }
+            }
+            return $notifs;
+        } 
 
     }

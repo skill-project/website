@@ -806,4 +806,16 @@
             }
         }
 
+
+        /**
+         * Retrieve user notifications
+         */
+        public function userNotificationsAction(){
+            SH::lock("admin");
+            $user = SH::getUser();
+            $notificationManager = new NotificationManager();
+            $notifications = $notificationManager->getAllUserNotifications($user->getUuid());
+            print_r($notifications);
+        }
+
     }

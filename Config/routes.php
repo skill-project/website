@@ -393,6 +393,15 @@
         )
     );
 
+    
+    $routes->add(
+        'userNotifications',
+        new Route('/notifications/', 
+            array('controller' => 'Api', 'action' => 'userNotifications'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
+
 //Back-office
 
     $routes->add(
