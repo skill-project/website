@@ -815,7 +815,13 @@
             $user = SH::getUser();
             $notificationManager = new NotificationManager();
             $notifications = $notificationManager->getAllUserNotifications($user->getUuid());
-            print_r($notifications);
+            
+            foreach($notifications as $notif){
+                echo $notif['reason'] . "<br />";
+                echo $notif['relatedSkill']->getName() . "<br />";
+                echo "notif uuid: " . $notif['notif']->getUuid() . "<br />";
+                echo $notif['notif']->getTimestamp() . "<br /><br />";
+            }
         }
 
     }

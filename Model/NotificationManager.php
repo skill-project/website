@@ -176,8 +176,11 @@
             $notifs = array();
             if ($resultSet->count() > 0){
                 foreach($resultSet as $row){
-                    $notif = new Notification($row['n']);
-                    $notifs[] = $notif;
+                    $notifContainer = array();
+                    $notifContainer['relatedSkill'] = new Skill($row['s']);
+                    $notifContainer['notif'] = new Notification($row['n']);
+                    $notifContainer['reason'] = $row['r']->getProperty("reason");
+                    $notifs[] = $notifContainer;
                 }
             }
             return $notifs;
