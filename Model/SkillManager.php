@@ -1,5 +1,5 @@
 <?php
-    
+
     namespace Model;
 
     use \Everyman\Neo4j\Node;
@@ -17,6 +17,53 @@
             //$this->createSearchIndex();
         }
 
+        public function findAllForDump(){
+
+            $cyp = 'MATCH (parent:Skill)-[:HAS]->(skill:Skill)<-[r:AUTO_TRANSLATED|TRANSLATED]-()
+                    RETURN skill, parent, r ORDER BY skill.depth ASC, skill.name ASC LIMIT 100000';
+            $query = new Query($this->client, $cyp);
+            $resultSet = $query->getResultSet();
+
+            if ($resultSet->count() > 0){
+                $csvData = array();
+                foreach ($resultSet as $row) {
+                    $csvRow = [];
+                    $csvRow['uuid'] = $row['skill']->getProperty('uuid');
+
+                    $csvRow['name_en'] = $row['skill']->getProperty('name');
+                    $csvRow['name_fr'] = $row['skill']->getProperty('l_fr');
+                    //$csvRow['translated_to'] = $row['r']->getProperty('to'); //always fr ?
+                    $csvRow['auto_translated'] = ($row['r']->getType() == "AUTO_TRANSLATED") ? 1 : 0;
+                    $csvRow['translation_date'] = $row['r']->getProperty('timestamp');
+
+                    $csvRow['date_added'] = $row['skill']->getProperty('created');
+                    $csvRow['date_updated'] = $row['skill']->getProperty('modified');
+                    $csvRow['depth_level'] = $row['skill']->getProperty('depth');
+
+                    //do not add parent uuid for depth 1 nodes
+                    $csvRow['parent_uuid'] = ($csvRow['depth_level'] > 1) ? $row['parent']->getProperty('uuid') : "";
+
+                    //replace if exists in array
+                    $found = false;
+                    for($i=0, $count = count($csvData); $i<$count; $i++){
+                        if ($csvData[$i]['uuid'] == $csvRow['uuid']){
+                            $found = true;
+                            $csvData[$i] = $csvRow;
+                            break;
+                        }
+                    }
+
+                    //else append
+                    if (!$found){
+                        $csvData[] = $csvRow;
+                    }
+                }
+                return $csvData;
+            }
+            return false;
+        }
+
+
         /**
          * Find and return the top skill node
          * @return mixed
@@ -25,7 +72,7 @@
             $cyp = 'MATCH (skill:Skill {name: "Skills"}) RETURN skill LIMIT 1';
             $query = new Query($this->client, $cyp);
             $resultSet = $query->getResultSet();
-            
+
             if ($resultSet->count() == 1){
                 $rootNode = $resultSet[0]['skill'];
                 $skill = new Skill( $rootNode );
@@ -42,9 +89,9 @@
          * @return mixed Array if success, false otherwise
          */
         public function findChildren($uuid){
-            $cyp = "MATCH (parent:Skill)-[:HAS]->(s:Skill) 
+            $cyp = "MATCH (parent:Skill)-[:HAS]->(s:Skill)
                         WHERE parent.uuid = {uuid}
-                        RETURN s 
+                        RETURN s
                         ORDER BY s.created ASC LIMIT 40";
             $query = new Query($this->client, $cyp, array(
                 "uuid" => $uuid)
@@ -84,7 +131,7 @@
          * @return array
          */
         public function findRevisionHistory(Skill $skill){
-            $cyp = "MATCH (s:Skill {uuid:{uuid}})<-[r]-(u:User) 
+            $cyp = "MATCH (s:Skill {uuid:{uuid}})<-[r]-(u:User)
                         RETURN r,u ORDER BY r.timestamp DESC";
             $query = new Query($this->client, $cyp, array("uuid" => $skill->getUuid()));
             $resultSet = $query->getResultSet();
@@ -107,7 +154,7 @@
          * WARNING: should not be trusted
          * Return a Skill object based on his id, false on failure
          * @param int $id
-         * @return mixed 
+         * @return mixed
          */
         public function findById($id){
             $node = $this->client->getNode($id);
@@ -123,7 +170,7 @@
         /**
          * Return a Skill object based on his uuid, false on failure
          * @param string $id
-         * @return mixed 
+         * @return mixed
          */
         public function findByUuid($uuid, $findDeleted = false){
             $skillLabel = $findDeleted ? "DeletedSkill" : "Skill";
@@ -146,7 +193,7 @@
         /**
          * Return the Skill object of a deleted skill based on his uuid, false on failure
          * @param string $id
-         * @return mixed 
+         * @return mixed
          */
         public function findDeletedByUuid($uuid){
             return $this->findByUuid($uuid, true);
@@ -155,11 +202,11 @@
         /**
          * Return all parents up to the root, and all parent's siblings, false on failure
          * @param string Uuid
-         * @return mixed 
+         * @return mixed
          */
         public function findNodePathToRoot($uuid){
 
-            $cyp = "MATCH (child:Skill)<-[:HAS*0..1]-(parents:Skill)-[:HAS*]->(s:Skill) 
+            $cyp = "MATCH (child:Skill)<-[:HAS*0..1]-(parents:Skill)-[:HAS*]->(s:Skill)
                         WHERE s.uuid = {uuid}
                         RETURN parents,s,child ORDER BY parents.depth ASC, child.created ASC";
             $query = new Query($this->client, $cyp, array(
@@ -172,7 +219,7 @@
                 $parentsAdded = array();
                 $childrenAdded = array();
 
-                
+
                 foreach($resultSet as $row){
                     $parentUuid = $row['parents']->getProperty("uuid");
 
@@ -215,7 +262,7 @@
         /**
          * Return a Skill object based on his slug, false on failure
          * @param string $id
-         * @return mixed 
+         * @return mixed
          */
         public function findBySlug($slug){
 
@@ -242,11 +289,11 @@
          * @return mixed Skill parent if found, else false
          */
         public function findParent(Skill $skill){
-            $cyp = 'MATCH (parent:Skill)-[:HAS]->(child:Skill {uuid: {uuid}}) 
+            $cyp = 'MATCH (parent:Skill)-[:HAS]->(child:Skill {uuid: {uuid}})
                     RETURN parent LIMIT 1';
             $query = new Query($this->client, $cyp, array("uuid" => $skill->getUuid()));
             $resultSet = $query->getResultSet();
-            
+
             if ($resultSet->count() == 1){
                 $node = $resultSet[0]['parent'];
                 $parent = new Skill( $node );
@@ -263,7 +310,7 @@
          */
         public function findParentAndGrandParent($uuid){
             //fetch grand pa at same time to get to parent's parent id
-            $cyp = "MATCH (parents:Skill)-[:HAS*1..2]->(child:Skill) 
+            $cyp = "MATCH (parents:Skill)-[:HAS*1..2]->(child:Skill)
                     WHERE child.uuid = {uuid}
                     RETURN parents
                     ORDER BY parents.created ASC";
@@ -279,7 +326,7 @@
          */
         public function findCreationInfo($skillUuid){
             //fetch grand pa at same time to get to parent's parent id
-            $cyp = "MATCH (s:Skill {uuid:{skillUuid}})<-[r:CREATED]-(u:User) 
+            $cyp = "MATCH (s:Skill {uuid:{skillUuid}})<-[r:CREATED]-(u:User)
                     RETURN u.uuid AS creatorUuid, r.timestamp AS timestamp";
             $query = new Query($this->client, $cyp, array(
                 "skillUuid" => $skillUuid)
@@ -308,9 +355,9 @@
             }
 
             $cyp = "MATCH (gp:Skill)-[:HAS*0..1]->(p:Skill)-[:HAS]->(s:Skill)
-                    WHERE $local_string =~ {keywords} 
+                    WHERE $local_string =~ {keywords}
                     RETURN s,gp,p LIMIT 10";
-            
+
             $keywords = trim(urldecode($keywords));
             $eachWords = explode(" ", addslashes($keywords));
             $regexp = "(?i).*";
@@ -389,8 +436,8 @@
 
 
             //intentionnally not saving caps, as they are not added at skill creation
-            $cyp = "MATCH 
-                    (parent:Skill {uuid: {parentUuid}}), 
+            $cyp = "MATCH
+                    (parent:Skill {uuid: {parentUuid}}),
                     (user:User {uuid: {userUuid}})
                     CREATE (parent)
                     -[:HAS {
@@ -403,14 +450,14 @@
                         depth: {depth},
                         childrenCount: 0,
                         created: {now},
-                        modified: {now} 
+                        modified: {now}
                         **trans**
                     })<-[:CREATED {
                         timestamp: {now},
                         originalName: {originalName}
                     }]-(user)";
 
-            
+
             $namedParams = array(
                     "now" => time(),
                     "skillUuid" => $skill->getUuid(),
@@ -539,11 +586,11 @@
          * @return bool true on success, false otherwise
          */
         public function move($skillUuid, $newParentUuid, $userUuid){
-            $cyp = "MATCH 
+            $cyp = "MATCH
                     (oldParent:Skill)-[r:HAS]->(skill:Skill {uuid: {skillUuid}}),
                     (newParent:Skill {uuid: {newParentUuid}}),
                     (user:User {uuid: {userUuid}})
-                    CREATE 
+                    CREATE
                     (newParent)-[newR:HAS {since: {timestamp}}]->
                     (skill)
                     <-[:MOVED {timestamp: {timestamp}, fromParent: oldParent.uuid, toParent: {newParentUuid}}]
@@ -551,7 +598,7 @@
                     DELETE r
                     RETURN newParent,oldParent,skill,newR";
             $query = new Query($this->client, $cyp, array(
-                    "skillUuid" => $skillUuid, 
+                    "skillUuid" => $skillUuid,
                     "newParentUuid" => $newParentUuid,
                     "timestamp" => time(),
                     "userUuid" => $userUuid
@@ -582,8 +629,8 @@
 
             $firstSkill = $this->findByUuid($skillUuid);
 
-            $cyp = "MATCH 
-                    (p:Skill {uuid: {skillUuid}})-[:HAS*1..4]->(s:Skill)<-[:HAS]-(directParent:Skill) 
+            $cyp = "MATCH
+                    (p:Skill {uuid: {skillUuid}})-[:HAS*1..4]->(s:Skill)<-[:HAS]-(directParent:Skill)
                     RETURN s, directParent.uuid AS parentUuid
                     ORDER BY s.depth ASC
                     ";
@@ -612,10 +659,10 @@
 
                     //change the label from :Skill to :DeletedSkill
                     $cyp = "MATCH (parent:Skill)-[:HAS]->(s:Skill {uuid:{skillUuid}}), (u:User {uuid:{userUuid}})
-                            SET s.previousParentUuid = parent.uuid 
+                            SET s.previousParentUuid = parent.uuid
                             SET s :DeletedSkill
-                            REMOVE s:Skill 
-                            CREATE (u)-[r:DELETED {timestamp:{now}}]->(s) 
+                            REMOVE s:Skill
+                            CREATE (u)-[r:DELETED {timestamp:{now}}]->(s)
                             RETURN parent";
                     $query = new Query($this->client, $cyp, array(
                             "skillUuid" => $skillUuid,
@@ -692,7 +739,7 @@
          * Update skill and all children's depth in db (not reliable)
          */
         public function updateDepthOnSkillAndChildren($skill){
-            $cyp = "MATCH (parent)-[:HAS*]->(c:Skill) 
+            $cyp = "MATCH (parent)-[:HAS*]->(c:Skill)
                     WHERE parent.uuid = {uuid}
                     SET c.depth = c.depth+1,parent.depth = parent.depth+1
                     RETURN c";
@@ -720,7 +767,7 @@
          * Count number of children of a skill
          * @param string uuid of the node
          * @return int Number of children
-         * 
+         *
          */
         public function countParents($uuid){
             $cyp = "MATCH (s:Skill {uuid: {uuid}})<-[r:HAS*]-(:Skill) RETURN count(r) as parentsNumber";
@@ -735,11 +782,11 @@
          * Count number of children of a skill
          * @param string uuid of the node
          * @return int Number of children
-         * 
+         *
          */
         public function countChildren($uuid){
-            $cyp = "MATCH (n:Skill)-[:HAS]->(:Skill) 
-                        WHERE n.uuid = {uuid} 
+            $cyp = "MATCH (n:Skill)-[:HAS]->(:Skill)
+                        WHERE n.uuid = {uuid}
                         RETURN count(*) as childrenNumber";
             $query = new Query($this->client, $cyp, array(
                 "uuid" => $uuid)
@@ -758,7 +805,7 @@
         public function getLatestActivity(User $user){
                     //not specifying node label cause it can be different from :Skill
             $cyp = "MATCH (s)<-[r:CREATED|MODIFIED|TRANSLATED|DELETED|MOVED]-
-                    (u:User {uuid: {userUuid}}) 
+                    (u:User {uuid: {userUuid}})
                     RETURN r, s
                     ORDER BY r.timestamp DESC LIMIT 50";
 
@@ -797,15 +844,15 @@
          * Return the user who created the skill
          */
         public function getSkillOwner($uuid){
-            $cyp = "MATCH 
+            $cyp = "MATCH
                         (user:User)-[:CREATED]->(skill {uuid: {uuid}})
-                    WHERE skill:Skill OR skill:DeletedSkill  
+                    WHERE skill:Skill OR skill:DeletedSkill
                     RETURN user";
 
             $namedParams = array(
                 "uuid"  => $uuid
             );
-            
+
             $query = new Query($this->client, $cyp, $namedParams);
             $resultSet = $query->getResultSet();
 
@@ -831,7 +878,7 @@
                 "limit" => $limit,
                 "skip"  => $skip
             );
-            
+
             $query = new Query($this->client, $cyp, $namedParams);
             $resultSet = $query->getResultSet();
 
@@ -869,7 +916,7 @@
                             break;
                         case "MOVED":
                             $act['actionName'] = _("Moved");
-                            
+
                             //Retrieving old parent of skill before move operation
                             $fromParent = $this->findByUuid($act['relProps']['fromParent']);
                             if (!$fromParent) $fromParentDeleted = $this->findDeletedByUuid($act['relProps']['fromParent']);
@@ -887,7 +934,7 @@
                             $toParentContext = $this->getContext($act['relProps']['toParent']);
                             if (!empty($toParentContext)) $toParentContext .= " > ";
                             $toParentName = $toParentContext . $toParentName;
-                            
+
                             $act["fromParentName"] = $fromParentName;
                             $act["toParentName"] = $toParentName;
 
@@ -905,7 +952,7 @@
 
                             break;
                         case "TRANSLATED":
-                            $act['actionName'] = _("Translated");                           
+                            $act['actionName'] = _("Translated");
                             $act['actionDetails'] = sprintf(_("%s: \"%s\""), $languageCodes->getLocalName($act['relProps']['to']), $act['relProps']['name']);
                             break;
                         case "DELETED": //Probably useless, as this skill will never show in the tree

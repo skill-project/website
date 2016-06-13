@@ -7,6 +7,13 @@
 
 //common
 
+    $routes->add(
+        'generateDump',
+        new Route('/export/', 
+            array('controller' => 'Dump', 'action' => 'generateDump'), array(), array(), 
+            '{lang}.'.Config::DOMAIN
+        )
+    );
 
     $routes->add(
         'home',
