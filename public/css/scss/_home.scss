@@ -1,0 +1,147 @@
+html.home {
+    body {
+        background-color: #FFF;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 30px;
+        margin: 10px 0 25px 0;
+    }
+
+}
+
+#home-sun {
+    float: right;
+    width: 511px;
+    position: absolute;
+    bottom: 0;
+    right: -20px;
+}
+
+#skillCount {
+    width: 178px;
+    height: 56px;
+    background: url("../img/SKP-page-home-counter.png") no-repeat;
+    position:absolute;
+    top: 445px;
+    left: 683px;
+    text-transform: uppercase;
+    font-weight:bold;
+    text-align:center;
+    font-size:14px;
+    padding-top: 11px;
+
+    #skillCountNum {
+        display:block;
+        color: $blue;
+        margin-top:5px;
+        font-size:20px;
+        letter-spacing: 7px;
+        padding-left: 7px;
+    }
+}
+
+
+
+#tagline {
+    margin: 90px 0;
+    text-align: left;
+}
+
+.home-btn {
+
+    background: url("../img/SKP-page-home-btn-off.png") no-repeat;
+    height: 112px;
+    width: 236px;
+    display: inline-block;
+    text-align: center;
+
+    a, a:hover {
+        color: #000;
+        cursor: pointer;
+        width: 182px;
+        height: 57px;
+        font-size: 14px;
+        line-height: 57px;
+        display: block;
+        text-transform: uppercase;
+        padding-right: 55px;
+    }
+
+}
+
+#home-btn-go {
+    background: url("../img/SKP-page-home-btn-glow.png") no-repeat;
+}
+
+#home-btn-go, #home-btn-learn {
+    position: relative;
+    left: -28px;
+}
+
+#home-btn-go a, #home-btn-learn a{
+    margin: 28px 0 0 28px;
+}
+
+#home-top-panel {
+    height: 613px;
+    width: 100%;
+    color: #fff;
+    position: relative;
+    text-align: left;
+    background: url("../img/SKP-page-home-bg-1px.png") repeat-x;
+
+    h1 {
+        font-size: 36px;
+        color: #FFF;
+        font-weight: normal;
+        margin: 0 0 80px 0;
+        padding-top: 120px;
+        line-height: normal;
+    }
+
+    .home-btn {
+        width: 292px;
+    }
+
+}
+
+#home-main-panel {
+    text-align: center;
+}
+
+
+.green {
+    background-color: $green;
+}
+
+#home-bottom-panel {
+    text-align: center;
+
+    p {
+        margin: 40px 0;
+    }
+}
+
+.home-illus {
+    margin-top: 80px;
+    margin-bottom: 15px;
+}
+.brain-illus {
+    margin-top: 0px;
+}
+
+#home-btn-go-bottom {
+    background: url("../img/SKP-btn.png") no-repeat;
+    height: 57px;
+
+    a { color: #000; }
+}
+
+#home-btn-go-bottom:hover a {
+    color: #FFF;
+}

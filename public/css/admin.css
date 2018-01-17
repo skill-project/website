@@ -1,0 +1,37 @@
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td {
+    border-top: 1px solid #333;
+    padding: 4px 10px;
+}
+
+.col {
+}
+
+#latest-changes-container {
+    width: 800px;
+}
+
+#latest-changes-container table {
+    width: 100%;
+}
+
+#power-edit-form-container {
+    width: 200px;
+    position: fixed;
+    bottom: 60px;
+    left: 840px;
+}
+
+label {
+    display: block;
+    margin-top: 5px;
+}
+
+input {
+    display: block;
+    width: 100%;
+}

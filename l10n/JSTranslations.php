@@ -7,8 +7,8 @@
         function getJSTranslations() {
 
             return array(
-                "currentLang"   => $GLOBALS["lang"],
-
+//                "currentLang"   => $GLOBALS["lang"],
+                "currentLang"   => env('lang'),
                 "or"    => _("or"),
 
                 "error" => _("An error occurred"),
