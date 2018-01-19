@@ -15,8 +15,8 @@
                 <tr>
                     <td width="40" style="width: 40px;"></td>
                     <td width="520" style="width: 520px; text-align: center; font-size: 13px;">
-                            <a href="<?= $GLOBALS['base_url']; ?>" title="Skill Project" style="outline: none; color: #14AFB7; text-decoration: none;">
-                                <img src="<?= $GLOBALS['base_url']; ?>/img/SKP-logo-email.png" alt="Skill Project" />
+                            <a href="http://en.skill-project.com" title="Skill Project" style="outline: none; color: #14AFB7; text-decoration: none;">
+                                <img src="http://en.skill-project.com/img/SKP-logo-email.png" alt="Skill Project" />
                             </a>
                     </td>
                     <td width="40" style="width: 40px;"></td>
@@ -26,9 +26,9 @@
                     <td width="40" style="width: 40px;"></td>
                     <td width="520" style="width: 520px; font-family: Tahoma, Verdana, Arial; text-align: justify; font-size: 13px;">
                         @include('mails.'.$contentFile)
-                        <?php include ("../View/mails/".$contentFile); ?>
+                        <?php include view("mails/".$contentFile,['params'=>$params]); ?>
                         <br /><br />
-                        See you soon on <a style="color: #14AFB7;" href="<?= $GLOBALS['base_url']; ?>">Skill Project</a>,<br />
+                        See you soon on <a style="color: #14AFB7;" href="http://en.skill-project.org">Skill Project</a>,<br />
                         The Skill Project Team
                     </td>
                     <td width="40" style="width: 40px;"></td>

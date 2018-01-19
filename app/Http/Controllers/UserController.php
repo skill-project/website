@@ -533,11 +533,10 @@
                     $params[$key] = SH::safe($value);
                 }
 
-
-//                $mailer = new Mailer();
-//                if ($mailer->sendAdminApplication($params)){
-//                    $mailer->sendAdminApplicationConfirmation($params);
-//                }
+                $mailer = new Mailer();
+                if ($mailer->sendAdminApplication($params)[0]['reject_reason'] == null){
+                    $mailer->sendAdminApplicationConfirmation($params);
+                }
                 return view('pages.apply');
             }
 

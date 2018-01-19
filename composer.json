@@ -10,6 +10,7 @@
         "everyman/neo4jphp":"dev-master",
         "laravel/framework": "5.5.*",
         "laravel/tinker":   "~1.0",
+        "mandrill/mandrill": "1.0.*",
         "cocur/slugify": "@stable"
     },
     "require-dev": {

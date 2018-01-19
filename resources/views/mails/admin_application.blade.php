@@ -2,15 +2,15 @@
 <table>
     <tr>
         <td>User id</td>
-        <td><?= $loggedUser->getUuid() ?></td>
+        <td><?= Session::get('user')['uuid'] ?></td>
     </tr>
     <tr>
         <td>Username</td>
-        <td><?= $loggedUser->getUsername() ?></td>
+        <td><?= Session::get('user')['username'] ?></td>
     </tr>
     <tr>
         <td>Email</td>
-        <td><?= $loggedUser->getEmail() ?></td>
+        <td><?= Session::get('user')['email'] ?></td>
     </tr>
     <?php
         foreach($params as $key => $value):

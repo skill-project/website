@@ -12,6 +12,7 @@
     use App\Helpers\SecurityHelper as SH;
     use App\Model\UserManager;
     use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Session;
     use \l10n\JSTranslations;
     use Psy\Util\Json;
     use \View\AjaxView;
@@ -877,8 +878,8 @@
             );
 
             $params['contact_message_sent'] = false;
-            if (!empty($_SESSION['contact_message_sent'])){
-                unset($_SESSION['contact_message_sent']);
+            if (Session::has('contact_message_sent')){
+                $request->session()->forget('contact_message_sent');
                 $params['contact_message_sent'] = true;
             }
 
@@ -900,12 +901,11 @@
                     //send mail to us
 
                     $mailer = new Mailer();
-                    if ($mailer->sendContactMessage($params)){
-//                        $_SESSION['contact_message_sent'] = true;
-//                        $mailer->sendContactMessageConfirmation($params);
-//                        Router::reload();
+                    if ($mailer->sendContactMessage($params)[0]['reject_reason'] ==  null){
+                        $request->session()->put('contact_message_sent',true);
+                        Session::save();
+                        $mailer->sendContactMessageConfirmation($params);
                         return redirect()->to('/contact');
-
                     }
                     else {
                         $validator->addError("global", _("A problem occurred while sending your message. Please try again!"));
