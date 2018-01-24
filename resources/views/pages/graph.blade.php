@@ -1,14 +1,14 @@
 @extends('layouts.graph')
 @section('content')
 	<div id="preload" style="display: none;">
-	<img src="img/node/node-sun.png" id="node-sun" />	
+	<img src="img/node/node-sun.svg" id="node-sun" />	
 
-	<img src="img/node/node-normal.png" id="node-normal" />	
-	<img src="img/node/node-normal-children.png" id="node-normal-children" />	
-	<img src="img/node/node-glow-nochildren.png" id="node-glow-nochildren" />
-	<img src="img/node/node-glow-children.png" id="node-glow-children" />
-	<img src="img/node/node-edit.png" id="node-edit" />
-	<img src="img/node/node-edit-children.png" id="node-edit-children" />
+	<img src="img/node/node-normal.svg" id="node-normal" />	
+	<img src="img/node/node-normal-children.svg" id="node-normal-children" />	
+	<img src="img/node/node-glow-nochildren.svg" id="node-glow-nochildren" />
+	<img src="img/node/node-glow-children.svg" id="node-glow-children" />
+	<img src="img/node/node-edit.svg" id="node-edit" />
+	<img src="img/node/node-edit-children.svg" id="node-edit-children" />
 
 	<img src="img/node/node-normal-t.png" id="node-normal-t" />	
 	<img src="img/node/node-normal-children-t.png" id="node-normal-children-t" />	
