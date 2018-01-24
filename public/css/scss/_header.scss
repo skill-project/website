@@ -1,0 +1,132 @@
+
+#header ul {
+    margin: 0;
+}
+
+#header-right {
+    position: relative;
+    float: right;
+    text-align: right;
+    height: 100%;
+    min-height: 100%;
+}
+
+#header-right ul {
+    width: 750px;
+}
+
+a.active { 
+    color: $blue;
+}
+
+#top-user-nav {
+    margin-top: 20px;
+    overflow: visible;
+
+    #lang-nav {
+        position: relative;
+        z-index: 994;
+
+        img:nth-child(1) {
+            width: 10px;
+            height: 11px;
+            margin-right: 7px;
+        }
+
+        img:nth-child(3) {
+            width: 10px;
+            height: 6px;
+        }
+    }
+}
+
+body.graph #top-user-nav {
+    margin-top: 5px;
+}
+
+#top-user-nav li.last, #top-main-nav li.last {
+    margin-right: 0;
+}
+
+#top-user-nav li {
+    margin: 0 10px;
+    font-size: 13px;
+    line-height: 13px;
+}
+
+#top-user-nav ul {
+    margin: 0;
+    display: inline-block;
+}
+
+#lang-nav.open #lang-title {
+    background-color: $gray;
+    padding: 5px;
+}
+
+#top-user-nav #lang-nav ul {
+    position: absolute;
+    left: 0px;
+    top: 18px;
+    text-align: left;
+    width: 80px;
+    margin-left: 17px;
+    display: none;
+}
+
+#top-user-nav #lang-nav:hover {
+    cursor: pointer;
+}
+
+#top-user-nav #lang-nav li {
+    display: block;
+    margin: 0px;
+    background-color: $gray;
+    z-index: 50;
+}
+
+#lang-nav a {
+    padding: 5px;
+    display: block;
+}
+
+#top-main-nav, #main-logo {
+    position: absolute;
+    bottom: 4px;
+}
+
+#top-main-nav li {
+    display: inline-block;
+    margin: 0 12px;
+
+    a {
+        text-transform: uppercase;
+    }
+}
+
+#top-user-nav li {
+    display: inline-block;
+}
+
+#avenir-book {
+    font-family: "Avenir-Book";
+}
+
+#header {
+    width:100%;
+    background-color:$gray;
+    height:65px;
+    position: relative;
+}
+
+#main-logo img {
+    height: 52px;
+}
+
+#header-container {
+    position: relative;
+    width: 1000px;
+    margin:0 auto;
+    height: 100%;
+    min-height: 100%;
+}

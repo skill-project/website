@@ -1,1 +1,0 @@
-<?php include("../View/inc/login_form.php"); ?>

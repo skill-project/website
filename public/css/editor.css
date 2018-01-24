@@ -1,0 +1,95 @@
+/* Editor Dashboard */
+.editor {
+  font-size: 14px;
+}
+.editor td, .editor th {
+  padding: 5px 25px 5px 0;
+}
+.editor th {
+  text-transform: uppercase;
+  text-align: left;
+  padding: 25px 25px 25px 0;
+}
+.editor tr:nth-child(even) {
+  background-color: #EBEBEB;
+}
+.editor h2 {
+  text-transform: uppercase;
+}
+.editor #loader {
+  position: relative;
+  top: auto;
+  left: auto;
+  z-index: auto;
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+  display: none;
+  margin-top: 20px;
+}
+.editor #editor-tabs-nav {
+  width: 100%;
+  border-bottom: 5px solid #BDEACB;
+}
+.editor #editor-tabs-nav li {
+  float: left;
+  margin-right: 5px;
+}
+.editor #editor-tabs-nav a {
+  padding: 20px 30px;
+  display: block;
+  text-transform: uppercase;
+  color: #000;
+  background-color: #EBEBEB;
+}
+.editor #editor-tabs-nav li.selected a {
+  background-color: #BDEACB;
+}
+.editor .editor-dashboard-content h4 {
+  background-color: #BDEACB;
+  display: inline-block;
+  padding: 5px 10px;
+}
+.editor .editor-dashboard-content #show-more {
+  font-weight: bold;
+  display: block;
+  text-align: center;
+  border: 1px solid black;
+  width: 200px;
+  margin: 0 auto;
+  padding: 10px;
+  margin-top: 20px;
+  border: 1px solid #10a0ac;
+}
+.editor #recent-discussions-table th.date {
+  width: 150px;
+}
+.editor #recent-activity-table th.date {
+  width: 13.2%;
+}
+.editor #recent-activity-table th.skill {
+  width: 32.8%;
+}
+.editor #recent-activity-table th.user {
+  width: 6.3%;
+}
+.editor #recent-activity-table th.action {
+  width: 37.7%;
+}
+.editor #recent-discussions-table th.date {
+  width: 15%;
+}
+.editor #recent-discussions-table th.skill {
+  width: 30%;
+}
+.editor #recent-discussions-table th.user {
+  width: 11%;
+}
+.editor #recent-discussions-table th.message {
+  width: 29%;
+}
+.editor #recent-discussions-table td.message {
+  word-break: break-word;
+}
+
+/*# sourceMappingURL=editor.css.map */
